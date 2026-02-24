@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="lv_MinimumExpectedLOBranchAssignmentCount">
+  <defaultvalue>10</defaultvalue>
+  <description default="We once had a scare with Assurance where ALL loan officers were missing a branch code. This means that for Branch Managers, we have no way of knowing what loan officers are in the branch, and therefore that kind of login does not work properly. This value is used by our integrity checker: if fewer than this many assigned loan officers are found, an email alert is generated">
+    <label description="We once had a scare with Assurance where ALL loan officers were missing a branch code. This means that for Branch Managers, we have no way of knowing what loan officers are in the branch, and therefore that kind of login does not work properly. This value is used by our integrity checker: if fewer than this many assigned loan officers are found, an email alert is generated" languagecode="1033" />
+  </description>
+  <displayname default="MinimumExpectedLOBranchAssignmentCount">
+    <label description="MinimumExpectedLOBranchAssignmentCount" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000001</type>
+</environmentvariabledefinition>

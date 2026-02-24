@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="lv_CompanyName">
+  <defaultvalue>YouNeedToDefineCompanyNameInEnvVars</defaultvalue>
+  <description default="The company name, to be used, for example, in system messages or emails. For example, we have our Data Integrity Check flow that may send emails. The email subject line will use this company name">
+    <label description="The company name, to be used, for example, in system messages or emails. For example, we have our Data Integrity Check flow that may send emails. The email subject line will use this company name" languagecode="1033" />
+  </description>
+  <displayname default="CompanyName">
+    <label description="CompanyName" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

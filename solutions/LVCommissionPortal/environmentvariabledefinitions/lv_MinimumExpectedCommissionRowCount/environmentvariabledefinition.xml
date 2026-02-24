@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="lv_MinimumExpectedCommissionRowCount">
+  <defaultvalue>20</defaultvalue>
+  <description default="Used by Power Automate data integrity checker. If the number of rows in table lv_lvcompcommission is less than this value, then an alert is generated">
+    <label description="Used by Power Automate data integrity checker. If the number of rows in table lv_lvcompcommission is less than this value, then an alert is generated" languagecode="1033" />
+  </description>
+  <displayname default="MinimumExpectedCommissionRowCount">
+    <label description="MinimumExpectedCommissionRowCount" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000001</type>
+</environmentvariabledefinition>

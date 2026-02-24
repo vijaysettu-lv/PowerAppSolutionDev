@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{ca49269b-0458-f011-877b-6045bd078e56}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="lv_name" select="1" icon="1" preview="1">
+        <row name="result" id="lv_lvcomploanofficerid">
+          <cell name="lv_name" width="200" />
+          <cell name="lv_code" width="100" />
+          <cell name="lv_branch" width="100" />
+          <cell name="modifiedon" width="113" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical">
+        <entity name="lv_lvcomploanofficer">
+          <attribute name="lv_name" />
+          <attribute name="lv_lvcomploanofficerid" />
+          <attribute name="lv_code" />
+          <attribute name="lv_branch" />
+          <attribute name="modifiedon" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.8</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="ViewCreatedInSolutionForOfficer" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="Description of ViewCreatedInSolutionForOfficer" languagecode="1033" />
+    </Descriptions>
+  </savedquery>
+</savedqueries>

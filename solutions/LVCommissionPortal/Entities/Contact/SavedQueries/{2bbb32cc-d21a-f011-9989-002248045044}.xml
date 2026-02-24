@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{2bbb32cc-d21a-f011-9989-002248045044}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="fullname" select="1" icon="1" preview="1">
+        <row name="result" id="contactid">
+          <cell name="fullname" width="200" />
+          <cell name="lv_loanofficer" width="127" />
+          <cell name="emailaddress1" width="210" />
+          <cell name="lv_roles" width="300" />
+          <cell name="modifiedon" width="113" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="true">
+        <entity name="contact">
+          <attribute name="fullname" />
+          <attribute name="contactid" />
+          <attribute name="emailaddress1" />
+          <attribute name="lv_roles" />
+          <attribute name="modifiedon" />
+          <attribute name="lv_loanofficer" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.2.0.2</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Loan Officer / Contacts" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

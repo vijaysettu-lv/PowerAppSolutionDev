@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="lv_CompanyTwoChar">
+  <defaultvalue>XX</defaultvalue>
+  <description default="The two character code for this client, for example, &quot;LP&quot; for LoanPeople">
+    <label description="The two character code for this client, for example, &quot;LP&quot; for LoanPeople" languagecode="1033" />
+  </description>
+  <displayname default="CompanyTwoChar">
+    <label description="CompanyTwoChar" languagecode="1033" />
+  </displayname>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>
