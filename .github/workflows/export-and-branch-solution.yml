@@ -20,14 +20,11 @@ jobs:
           - debtlog
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Install Power Platform CLI
-        uses: microsoft/powerplatform-actions/actions-install@v1
+      - uses: microsoft/powerplatform-actions/actions-install@v1
 
-      # Clean previous zip files (prevents collision error)
-      - name: Cleanup existing ZIP files
+      - name: Cleanup ZIP files
         run: |
           Get-ChildItem -Path . -Filter *.zip | Remove-Item -Force -ErrorAction SilentlyContinue
 
@@ -49,11 +46,10 @@ jobs:
           solution-folder: solutions/${{ matrix.solution }}
           solution-type: unmanaged
 
-      - name: Commit and Push to Main
+      - name: Commit and Push
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add .
+          git add solutions/
           git commit -m "Auto-export solutions from DEV" || echo "No changes to commit"
-          git pull --rebase origin main
-          git push origin main
+          git push
