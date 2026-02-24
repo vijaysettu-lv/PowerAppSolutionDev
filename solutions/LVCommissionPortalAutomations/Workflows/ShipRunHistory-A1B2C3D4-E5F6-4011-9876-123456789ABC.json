@@ -1,0 +1,121 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "lv_sharedcommondataserviceforapps_f3ceb"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "CompanyTwoChar (lv_CompanyTwoChar)": {
+          "defaultValue": "GM",
+          "type": "String",
+          "metadata": {
+            "schemaName": "lv_CompanyTwoChar",
+            "description": "The two character code for this client, for example, \"LP\" for LoanPeople"
+          }
+        }
+      },
+      "triggers": {
+        "Recurrence": {
+          "recurrence": {
+            "frequency": "Hour",
+            "interval": 1,
+            "startTime": "2025-11-21T16:00:00Z"
+          },
+          "evaluatedRecurrence": {
+            "frequency": "Hour",
+            "interval": 1,
+            "startTime": "2025-11-21T16:00:00Z"
+          },
+          "metadata": {
+            "operationMetadataId": "b1c2d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e"
+          },
+          "type": "Recurrence"
+        }
+      },
+      "actions": {
+        "List_flow_runs": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "c2d3e4f5-a6b7-4c8d-9e0f-1a2b3c4d5e6f"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "flowruns",
+              "$select": "name,status,starttime,endtime,durationinms,errorcode,errormessage,clienttrackingid,workflowid",
+              "$filter": "starttime ge @{addHours(utcNow(), -2)} and starttime le @{addHours(utcNow(), 0)}",
+              "$expand": "workflow($select=name,workflowidunique)"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Apply_to_each_flow_run": {
+          "foreach": "@outputs('List_flow_runs')?['body/value']",
+          "actions": {
+            "HTTP_Ship_Run_History": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "d3e4f5a6-b7c8-4d9e-0f1a-2b3c4d5e6f7a"
+              },
+              "type": "Http",
+              "inputs": {
+                "method": "POST",
+                "uri": "https://lvcommportaldevteamutils.azurewebsites.net/api/IngestFlowRun?code=Y5GO53V4jEUT6ZQ-OSDtaunRgvyjXO0cVApEjOAB4gkbAzFubxPqmg==",
+                "headers": {
+                  "Content-Type": "application/json"
+                },
+                "body": {
+                  "clientCode": "@{parameters('CompanyTwoChar (lv_CompanyTwoChar)')}",
+                  "flowId": "@{items('Apply_to_each_flow_run')?['workflowid']}",
+                  "flowName": "@{items('Apply_to_each_flow_run')?['workflow']?['name']}",
+                  "runName": "@{items('Apply_to_each_flow_run')?['name']}",
+                  "status": "@{items('Apply_to_each_flow_run')?['status']}",
+                  "startTime": "@{items('Apply_to_each_flow_run')?['starttime']}",
+                  "endTime": "@{items('Apply_to_each_flow_run')?['endtime']}",
+                  "durationMs": "@{items('Apply_to_each_flow_run')?['durationinms']}",
+                  "errorCode": "@{items('Apply_to_each_flow_run')?['errorcode']}",
+                  "errorMessage": "@{items('Apply_to_each_flow_run')?['errormessage']}",
+                  "clientTrackingId": "@{items('Apply_to_each_flow_run')?['clienttrackingid']}"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "List_flow_runs": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e4f5a6b7-c8d9-4e0f-1a2b-3c4d5e6f7a8b"
+          },
+          "type": "Foreach"
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

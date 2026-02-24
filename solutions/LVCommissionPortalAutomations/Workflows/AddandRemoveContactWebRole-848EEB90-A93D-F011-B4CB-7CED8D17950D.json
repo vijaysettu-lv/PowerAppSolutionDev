@@ -1,0 +1,186 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        },
+        "connection": {
+          "connectionReferenceLogicalName": "lv_sharedcommondataserviceforapps_f3ceb"
+        },
+        "runtimeSource": "embedded"
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "description": "A test note. Wondering why name change does not save.",
+          "kind": "Http",
+          "inputs": {
+            "triggerAuthenticationType": "All",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "action": {
+                  "type": "string",
+                  "description": "Either 'add' or 'remove'"
+                },
+                "contactId": {
+                  "type": "string",
+                  "description": "GUID of the contact"
+                },
+                "roleId": {
+                  "type": "string",
+                  "description": "GUID of the PowerPageComponent"
+                },
+                "userEmail": {
+                  "type": "string",
+                  "description": "Email of the user making the request"
+                },
+                "timestamp": {
+                  "type": "string",
+                  "description": "When the request was made"
+                },
+                "source": {
+                  "type": "string",
+                  "description": "Source system (PowerPages)"
+                }
+              },
+              "required": [
+                "action",
+                "contactId",
+                "roleId"
+              ]
+            }
+          },
+          "metadata": {
+            "operationMetadataId": "617c6e9d-b6b5-4aa3-9140-bfd9421ecf98"
+          }
+        }
+      },
+      "actions": {
+        "Condition": {
+          "type": "If",
+          "expression": {
+            "and": [
+              {
+                "equals": [
+                  "@triggerBody()?['action']",
+                  "add"
+                ]
+              }
+            ]
+          },
+          "actions": {
+            "Relate_rows": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "entityName": "contacts",
+                  "recordId": "@triggerBody()?['contactId']",
+                  "associationEntityRelationship": "powerpagecomponent_mspp_webrole_contact",
+                  "item/@odata.id": "@concat('https://vjtest.crm.dynamics.com/api/data/v9.1/powerpagecomponents(', triggerBody()?['roleId'], ')')"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                  "operationId": "AssociateEntities",
+                  "connectionName": "shared_commondataserviceforapps_1"
+                }
+              },
+              "metadata": {
+                "operationMetadataId": "2f418d29-0761-4765-afe2-f8b2ec705da0"
+              }
+            },
+            "Response": {
+              "type": "Response",
+              "kind": "Http",
+              "inputs": {
+                "statusCode": 200,
+                "body": {
+                  "success": true,
+                  "message": "Association created successfully",
+                  "action": "add",
+                  "contactId": "@{triggerBody()?['contactId']}",
+                  "roleId": "@{triggerBody()?['roleId']}"
+                }
+              },
+              "runAfter": {
+                "Relate_rows": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "d2fc570d-5088-4f00-892a-b4f53a82c7bb"
+              }
+            }
+          },
+          "else": {
+            "actions": {
+              "Unrelate_rows": {
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "parameters": {
+                    "entityName": "contacts",
+                    "recordId": "@triggerBody()?['contactId']",
+                    "associationEntityRelationship": "powerpagecomponent_mspp_webrole_contact",
+                    "$id": "@triggerBody()?['roleId']"
+                  },
+                  "host": {
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                    "operationId": "DisassociateEntities",
+                    "connectionName": "shared_commondataserviceforapps_1"
+                  }
+                },
+                "metadata": {
+                  "operationMetadataId": "2f04b825-f03a-49cd-9ada-e5f383193629"
+                }
+              },
+              "Response_1": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                  "statusCode": 200,
+                  "body": {
+                    "success": true,
+                    "message": "Association created successfully",
+                    "action": "add",
+                    "contactId": "@{triggerBody()?['contactId']}",
+                    "roleId": "@{triggerBody()?['roleId']}"
+                  }
+                },
+                "runAfter": {
+                  "Unrelate_rows": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "d79c18ec-ebbf-4d90-956a-1ecb40313e02"
+                }
+              }
+            }
+          },
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "4163c038-e7fb-45a5-8fd9-7638af42147c"
+          }
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

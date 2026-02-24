@@ -1,0 +1,201 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_dataflows": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_shareddataflows_a8788"
+        },
+        "api": {
+          "name": "shared_dataflows"
+        }
+      },
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "lv_sharedcommondataserviceforapps_f3ceb"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "When_a_dataflow_refresh_completes": {
+          "recurrence": {
+            "interval": 1,
+            "frequency": "Minute"
+          },
+          "metadata": {
+            "operationMetadataId": "777d2dd2-a17c-45fc-ad68-0288af70fac8"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "workspaceType": "Environment",
+              "groupIdForOnRefreshComplete": "7118badc-3cfc-e87b-a9a4-103f974b470d-31c688f59-us",
+              "dataflowIdForOnRefreshComplete": "c33c59ba-adf6-4e11-9bb2-4c3bd9529490"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_dataflows",
+              "operationId": "OnRefreshComplete",
+              "connectionName": "shared_dataflows"
+            }
+          }
+        }
+      },
+      "actions": {
+        "Get_LV_Contacts": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "5628161f-aca7-416b-a7f0-4cf66fdd952b"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "entityName": "contacts",
+              "$select": "contactid,lv_excludefromweb,statecode",
+              "$filter": "lv_excludefromweb ne null"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "connectionName": "shared_commondataserviceforapps"
+            }
+          }
+        },
+        "For_each": {
+          "foreach": "@outputs('Get_LV_Contacts')?['body/value']",
+          "actions": {
+            "Exclude_from_Web_is_On": {
+              "actions": {
+                "Mark_Inactive": {
+                  "metadata": {
+                    "operationMetadataId": "8c689986-6422-4777-880e-b9141f217383"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "parameters": {
+                      "entityName": "contacts",
+                      "recordId": "@item()?['contactid']",
+                      "item/statecode": 1,
+                      "item/statuscode": 2
+                    },
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                      "operationId": "UpdateOnlyRecord",
+                      "connectionName": "shared_commondataserviceforapps"
+                    }
+                  }
+                }
+              },
+              "else": {
+                "actions": {}
+              },
+              "expression": {
+                "and": [
+                  {
+                    "equals": [
+                      "@item()?['lv_excludefromweb']",
+                      "@true"
+                    ]
+                  },
+                  {
+                    "equals": [
+                      "@item()?['statecode']",
+                      0
+                    ]
+                  }
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "4f254cdb-ee0f-45f5-b7a7-d5a1e8228b5d"
+              },
+              "type": "If"
+            },
+            "Exclude_from_Web_is_Off": {
+              "actions": {
+                "Mark_Active": {
+                  "metadata": {
+                    "operationMetadataId": "cfbd0698-e166-4c0e-89a3-b51cd7fdf3d2"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "parameters": {
+                      "entityName": "contacts",
+                      "recordId": "@item()?['contactid']",
+                      "item/statecode": 0,
+                      "item/statuscode": 1
+                    },
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                      "operationId": "UpdateOnlyRecord",
+                      "connectionName": "shared_commondataserviceforapps"
+                    }
+                  }
+                }
+              },
+              "runAfter": {
+                "Exclude_from_Web_is_On": [
+                  "Succeeded"
+                ]
+              },
+              "else": {
+                "actions": {}
+              },
+              "expression": {
+                "and": [
+                  {
+                    "equals": [
+                      "@item()?['lv_excludefromweb']",
+                      "@false"
+                    ]
+                  },
+                  {
+                    "equals": [
+                      "@item()?['statecode']",
+                      1
+                    ]
+                  }
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "41c5efc3-b078-43f9-9150-54d926450e3b"
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "Get_LV_Contacts": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "7296d306-e552-4900-b615-7446282037b4"
+          },
+          "type": "Foreach",
+          "runtimeConfiguration": {
+            "concurrency": {
+              "repetitions": 20
+            }
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

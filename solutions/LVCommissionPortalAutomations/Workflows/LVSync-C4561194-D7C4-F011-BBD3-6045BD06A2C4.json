@@ -1,0 +1,121 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "lv_sharedcommondataserviceforapps_f3ceb"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "CompanyTwoChar (lv_CompanyTwoChar)": {
+          "defaultValue": "GM",
+          "type": "String",
+          "metadata": {
+            "schemaName": "lv_CompanyTwoChar",
+            "description": "The two character code for this client, for example, \"LP\" for LoanPeople"
+          }
+        }
+      },
+      "triggers": {
+        "Recurrence": {
+          "recurrence": {
+            "frequency": "Minute",
+            "interval": 15,
+            "startTime": "2025-11-18T15:00:00Z"
+          },
+          "evaluatedRecurrence": {
+            "frequency": "Minute",
+            "interval": 15,
+            "startTime": "2025-11-18T15:00:00Z"
+          },
+          "metadata": {
+            "operationMetadataId": "a5ea1406-f70e-4e71-b263-4c07803fd7f5"
+          },
+          "type": "Recurrence"
+        }
+      },
+      "actions": {
+        "List_rows": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "bccf5858-cc8c-4e27-8e2c-dd9eff9054db"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "lv_logs",
+              "$filter": "createdon ge @{addMinutes(utcNow(), -90)} and createdon le @{addMinutes(utcNow(), 0)}"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Apply_to_each_log_row": {
+          "foreach": "@outputs('List_rows')?['body/value']",
+          "actions": {
+            "HTTP": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "dfa2214e-6521-4ed8-b6a0-65ed47554883"
+              },
+              "type": "Http",
+              "inputs": {
+                "method": "POST",
+                "uri": "https://lvcommportaldevteamutils.azurewebsites.net/api/IngestLogRow?code=Y5GO53V4jEUT6ZQ-OSDtaunRgvyjXO0cVApEjOAB4gkbAzFubxPqmg==",
+                "headers": {
+                  "Content-Type": "application/json"
+                },
+                "body": {
+                  "clientCode": "@{parameters('CompanyTwoChar (lv_CompanyTwoChar)')}",
+                  "logId": "@{items('Apply_to_each_log_row')?['lv_logid']}",
+                  "name": "@{items('Apply_to_each_log_row')?['lv_name']}",
+                  "kind": "@{items('Apply_to_each_log_row')?['lv_kind']}",
+                  "detail": "@{items('Apply_to_each_log_row')?['lv_detail']}",
+                  "memo": "@{items('Apply_to_each_log_row')?['lv_memo']}",
+                  "userFullName": "@{items('Apply_to_each_log_row')?['lv_userfullname']}",
+                  "userId": "@{items('Apply_to_each_log_row')?['lv_userid']}",
+                  "key1Name": "@{items('Apply_to_each_log_row')?['lv_key1name']}",
+                  "key1Value": "@{items('Apply_to_each_log_row')?['lv_key1value']}",
+                  "key2Name": "@{items('Apply_to_each_log_row')?['lv_key2name']}",
+                  "key2Value": "@{items('Apply_to_each_log_row')?['lv_key2value']}",
+                  "createdOn": "@{items('Apply_to_each_log_row')?['createdon']}"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "List_rows": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4ba30366-b7c3-4417-a0b6-53fc955ccad6"
+          },
+          "type": "Foreach"
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

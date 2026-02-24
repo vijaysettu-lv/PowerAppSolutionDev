@@ -1,0 +1,333 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_dynamicssmbsaas": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "lv_shareddynamicssmbsaas_6e33d"
+        },
+        "api": {
+          "name": "shared_dynamicssmbsaas"
+        }
+      },
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "lv_sharedcommondataserviceforapps_f3ceb"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "New_Approval": {
+          "metadata": {
+            "operationMetadataId": "1ef60e66-12d1-4f2c-8721-9c98315367bb"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 1,
+              "subscriptionRequest/entityname": "lv_lvcompcommissionapproval",
+              "subscriptionRequest/scope": 4
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "varBranchCode": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "1ea2313f-94b7-4a93-90f2-19e04b3271f3"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varBranchCode",
+                "type": "string",
+                "value": "@triggerOutputs()?['body/lv_branchcode']"
+              }
+            ]
+          }
+        },
+        "varCompanyName": {
+          "runAfter": {
+            "varBranchCode": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "185da48c-eb08-4673-9e64-18a7af4c79be"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varCompanyName",
+                "type": "string",
+                "value": "@triggerOutputs()?['body/lv_companyname']"
+              }
+            ]
+          }
+        },
+        "varEmailAddress": {
+          "runAfter": {
+            "varCompanyName": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b44b5805-7f18-4590-8017-8304f2549569"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varEmailAddress",
+                "type": "string",
+                "value": "@triggerOutputs()?['body/lv_emailaddress']"
+              }
+            ]
+          }
+        },
+        "varFullName": {
+          "runAfter": {
+            "varEmailAddress": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b6afc8b1-61a3-4a1c-b19d-7fad237d23e0"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varFullName",
+                "type": "string",
+                "value": "@triggerOutputs()?['body/lv_fullname']"
+              }
+            ]
+          }
+        },
+        "varLoanOfficerCode": {
+          "runAfter": {
+            "varFullName": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4d35d9a9-3878-47cc-b76c-c267bf0c82fd"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varLoanOfficerCode",
+                "type": "string",
+                "value": "@triggerOutputs()?['body/lv_loanofficercode']"
+              }
+            ]
+          }
+        },
+        "varPeriodCode": {
+          "runAfter": {
+            "varLoanOfficerCode": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0979c7d8-7534-4a23-911c-9a4b174ed300"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varPeriodCode",
+                "type": "string",
+                "value": "@triggerOutputs()?['body/lv_periodcode']"
+              }
+            ]
+          }
+        },
+        "varPeriodNo": {
+          "runAfter": {
+            "varPeriodCode": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6519f684-c39f-496a-883c-2947906940f1"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varPeriodNo",
+                "type": "integer",
+                "value": "@triggerOutputs()?['body/lv_periodno']"
+              }
+            ]
+          }
+        },
+        "varWebRole": {
+          "runAfter": {
+            "varPeriodNo": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5d643f82-31f5-4e72-94ad-365f30d940e6"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varWebRole",
+                "type": "string",
+                "value": "@triggerOutputs()?['body/lv_webrole']"
+              }
+            ]
+          }
+        },
+        "Create_record_(V3)": {
+          "runAfter": {
+            "varSystemRowVersion": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c9ea0a44-1a57-43ba-b953-c352482826bb"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_dynamicssmbsaas",
+              "operationId": "PostItemV3",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_dynamicssmbsaas"
+            },
+            "parameters": {
+              "bcenvironment": "PRODUCTION",
+              "company": "eb308ba0-7422-ef11-9f88-6045bddb8303",
+              "dataset": "loanVision/loanVision/v2.0",
+              "table": "commissionPeriodApprovals",
+              "item/periodNo": "@variables('varPeriodNo')",
+              "item/periodCode": "@variables('varPeriodCode')",
+              "item/fullName": "@variables('varFullName')",
+              "item/emailAddress": "@variables('varEmailAddress')",
+              "item/companyName": "@variables('varCompanyName')",
+              "item/branchCode": "@variables('varBranchCode')",
+              "item/loanOfficerCode": "@variables('varLoanOfficerCode')",
+              "item/webRole": "@variables('varWebRole')"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "varSystemCreatedAt": {
+          "runAfter": {
+            "varWebRole": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e7db759c-466a-4556-96ff-843213e3b618"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varSystemCreatedAt",
+                "type": "string",
+                "value": "@triggerOutputs()?['body/lv_systemcreatedat']"
+              }
+            ]
+          }
+        },
+        "varSystemID": {
+          "runAfter": {
+            "varSystemCreatedAt": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0fe4bc76-541e-46e2-9d79-c1148004ade8"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varSystemID",
+                "type": "string",
+                "value": "@triggerOutputs()?['body/lv_systemid']"
+              }
+            ]
+          }
+        },
+        "varSystemModifiedAt": {
+          "runAfter": {
+            "varSystemID": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "328383db-8f36-4f22-9864-9df2f372093c"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varSystemModifiedAt",
+                "type": "string",
+                "value": "@triggerOutputs()?['body/lv_systemmodifiedat']"
+              }
+            ]
+          }
+        },
+        "varSystemRowVersion": {
+          "runAfter": {
+            "varSystemModifiedAt": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "3e71a93d-407c-4c1d-a458-919ce5d5c125"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varSystemRowVersion",
+                "type": "string",
+                "value": "@triggerOutputs()?['body/lv_systemrowversion']"
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {}
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

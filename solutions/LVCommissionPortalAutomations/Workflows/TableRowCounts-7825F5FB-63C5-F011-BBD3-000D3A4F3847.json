@@ -1,0 +1,339 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "lv_sharedcommondataserviceforapps_f3ceb"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "CompanyTwoChar (lv_CompanyTwoChar)": {
+          "defaultValue": "GM",
+          "type": "String",
+          "metadata": {
+            "schemaName": "lv_CompanyTwoChar",
+            "description": "The two character code for this client, for example, \"LP\" for LoanPeople"
+          }
+        }
+      },
+      "triggers": {
+        "Recurrence": {
+          "recurrence": {
+            "frequency": "Day",
+            "interval": 1,
+            "startTime": "2025-11-19T10:00:00Z"
+          },
+          "evaluatedRecurrence": {
+            "frequency": "Day",
+            "interval": 1,
+            "startTime": "2025-11-19T10:00:00Z"
+          },
+          "metadata": {
+            "operationMetadataId": "db2444ca-741f-4e3f-b7d9-aefc87f25b6c"
+          },
+          "type": "Recurrence"
+        }
+      },
+      "actions": {
+        "Initialize_variable": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "728ac7f1-4391-4513-b574-9c4b4421f0e1"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "jsonData",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Count_Branch": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "24aff051-6ebc-4100-afaf-447e7edb3144"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "lv_lvcompbranchs",
+              "fetchXml": "<fetch aggregate='true'><entity name='lv_lvcompbranch'><attribute name='lv_lvcompbranchid' aggregate='count' alias='rowcount'/></entity></fetch>"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Count_LO": {
+          "runAfter": {
+            "Count_Branch": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b701e67f-168c-44ec-969f-79e156934686"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "lv_lvcomploanofficers",
+              "fetchXml": "<fetch aggregate='true'><entity name='lv_lvcomploanofficer'><attribute name='lv_lvcomploanofficerid' aggregate='count' alias='rowcount'/></entity></fetch>"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Count_Period": {
+          "runAfter": {
+            "Count_LO": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a67ecf31-06e4-4563-ac4d-9c7fdb46e8c6"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "lv_lvcompcommperiodcalcs",
+              "fetchXml": "<fetch aggregate='true'><entity name='lv_lvcompcommperiodcalc'><attribute name='lv_lvcompcommperiodcalcid' aggregate='count' alias='rowcount'/></entity></fetch>"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Count_Commission": {
+          "runAfter": {
+            "Count_Period": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "11111111-1111-1111-1111-111111111111"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "lv_lvcompcommissions",
+              "fetchXml": "<fetch aggregate='true'><entity name='lv_lvcompcommission'><attribute name='lv_lvcompcommissionid' aggregate='count' alias='rowcount'/></entity></fetch>"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Count_Contact": {
+          "runAfter": {
+            "Count_Commission": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "22222222-2222-2222-2222-222222222222"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "contacts",
+              "fetchXml": "<fetch aggregate='true'><entity name='contact'><attribute name='contactid' aggregate='count' alias='rowcount'/></entity></fetch>"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Count_Log": {
+          "runAfter": {
+            "Count_Contact": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "33333333-3333-3333-3333-333333333333"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "lv_logs",
+              "fetchXml": "<fetch aggregate='true'><entity name='lv_log'><attribute name='lv_logid' aggregate='count' alias='rowcount'/></entity></fetch>"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Count_RBLO": {
+          "runAfter": {
+            "Count_Log": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "44444444-4444-4444-4444-444444444444"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "lv_lvcompregionbranchloanofficers",
+              "fetchXml": "<fetch aggregate='true'><entity name='lv_lvcompregionbranchloanofficer'><attribute name='lv_lvcompregionbranchloanofficerid' aggregate='count' alias='rowcount'/></entity></fetch>"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Count_EmailLog": {
+          "runAfter": {
+            "Count_RBLO": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "55555555-5555-5555-5555-555555555555"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "lv_lvcompemaillogs",
+              "fetchXml": "<fetch aggregate='true'><entity name='lv_lvcompemaillog'><attribute name='lv_lvcompemaillogid' aggregate='count' alias='rowcount'/></entity></fetch>"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Count_Approval": {
+          "runAfter": {
+            "Count_EmailLog": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "66666666-6666-6666-6666-666666666666"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "lv_lvcompcommissionapprovals",
+              "fetchXml": "<fetch aggregate='true'><entity name='lv_lvcompcommissionapproval'><attribute name='lv_lvcompcommissionapprovalid' aggregate='count' alias='rowcount'/></entity></fetch>"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Build_JSON": {
+          "runAfter": {
+            "Count_Approval": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8d79b469-5723-484a-b2c9-f8ebf6492966"
+          },
+          "type": "Compose",
+          "inputs": {
+            "timestamp": "@{utcNow()}",
+            "tables": {
+              "Branch": "@{outputs('Count_Branch')?['body/value'][0]['rowcount']}",
+              "LoanOfficer": "@{outputs('Count_LO')?['body/value'][0]['rowcount']}",
+              "Period": "@{outputs('Count_Period')?['body/value'][0]['rowcount']}",
+              "Commission": "@{outputs('Count_Commission')?['body/value'][0]['rowcount']}",
+              "Contact": "@{outputs('Count_Contact')?['body/value'][0]['rowcount']}",
+              "Log": "@{outputs('Count_Log')?['body/value'][0]['rowcount']}",
+              "RBLO": "@{outputs('Count_RBLO')?['body/value'][0]['rowcount']}",
+              "EmailLog": "@{outputs('Count_EmailLog')?['body/value'][0]['rowcount']}",
+              "Approval": "@{outputs('Count_Approval')?['body/value'][0]['rowcount']}"
+            }
+          }
+        },
+        "HTTP": {
+          "runAfter": {
+            "Build_JSON": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d38fb364-0bfc-4c99-9d0f-44042ec38580"
+          },
+          "type": "Http",
+          "inputs": {
+            "method": "POST",
+            "uri": "https://lvcommportaldevteamutils.azurewebsites.net/api/IngestLogRow?code=Y5GO53V4jEUT6ZQ-OSDtaunRgvyjXO0cVApEjOAB4gkbAzFubxPqmg==",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "clientCode": "@{parameters('CompanyTwoChar (lv_CompanyTwoChar)')}",
+              "logId": "@{guid()}",
+              "name": "AllRowCount",
+              "kind": "AllRowCount",
+              "detail": "@{formatDateTime(utcNow(), 'yyyy-MM-dd HH:mm:ss')} UTC",
+              "memo": "@{outputs('Build_JSON')}",
+              "userFullName": "System",
+              "userId": "system",
+              "key1Name": "",
+              "key1Value": "",
+              "key2Name": "",
+              "key2Value": "",
+              "createdOn": "@{utcNow()}"
+            }
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

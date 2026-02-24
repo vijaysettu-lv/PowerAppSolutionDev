@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ImportExportXml version="9.2.26022.138" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.26022.138" OrganizationSchemaType="Full" CRMServerServiceabilityVersion="9.2.26023.00144">
+  <SolutionManifest>
+    <UniqueName>LVCommissionPortalAutomations</UniqueName>
+    <LocalizedNames>
+      <LocalizedName description="LV Commission Portal Automations" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions />
+    <Version>2.0.0.2</Version>
+    <Managed>0</Managed>
+    <Publisher>
+      <UniqueName>LoanVision</UniqueName>
+      <LocalizedNames>
+        <LocalizedName description="Loan Vision" languagecode="1033" />
+      </LocalizedNames>
+      <Descriptions />
+      <EMailAddress xsi:nil="true"></EMailAddress>
+      <SupportingWebsiteUrl xsi:nil="true"></SupportingWebsiteUrl>
+      <CustomizationPrefix>lv</CustomizationPrefix>
+      <CustomizationOptionValuePrefix>12442</CustomizationOptionValuePrefix>
+      <Addresses>
+        <Address>
+          <AddressNumber>1</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+        <Address>
+          <AddressNumber>2</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+      </Addresses>
+    </Publisher>
+    <RootComponents>
+      <RootComponent type="29" id="{4f5d161f-2f3f-f011-b4cb-6045bd078e56}" behavior="0" />
+      <RootComponent type="29" id="{7825f5fb-63c5-f011-bbd3-000d3a4f3847}" behavior="0" />
+      <RootComponent type="29" id="{848eeb90-a93d-f011-b4cb-7ced8d17950d}" behavior="0" />
+      <RootComponent type="29" id="{a1b2c3d4-e5f6-4011-9876-123456789abc}" behavior="0" />
+      <RootComponent type="29" id="{c4561194-d7c4-f011-bbd3-6045bd06a2c4}" behavior="0" />
+      <RootComponent type="29" id="{c8f7cdf7-6024-f011-8c4e-000d3a9e3598}" behavior="0" />
+      <RootComponent type="29" id="{db8667f0-21af-f011-bbd3-6045bd020921}" behavior="0" />
+      <RootComponent type="29" id="{dd736bbf-9bf0-f011-8407-7ced8d6f84f9}" behavior="0" />
+    </RootComponents>
+    <MissingDependencies>
+      <MissingDependency>
+        <Required type="1" schemaName="environmentvariabledefinition" displayName="Environment Variable Definition" solution="EnvironmentVariables (1.0.2406.4)">
+          <package appName="EnvironmentVariables" version="1.0.2406.4">EnvironmentVariablesSolutionAnchor (1.0.2406.4)</package>
+        </Required>
+        <Dependent type="29" displayName="LVCommPortal Data Integrity Check" id="{db8667f0-21af-f011-bbd3-6045bd020921}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="flowrun" displayName="Flow Run" solution="MicrosoftFlowExtensionsOnline (1.9.43.0)">
+          <package appName="MicrosoftFlowExtensionsCore" version="1.9.43.0">MicrosoftFlowExtensionsAnchor (1.9.43.0)</package>
+        </Required>
+        <Dependent type="29" displayName="ShipRunHistory" id="{a1b2c3d4-e5f6-4011-9876-123456789abc}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="lv_log" displayName="lvcLog" solution="Active" />
+        <Dependent type="29" displayName="Table Row Counts" id="{7825f5fb-63c5-f011-bbd3-000d3a4f3847}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="lv_log" displayName="lvcLog" solution="Active" />
+        <Dependent type="29" displayName="LVSync" id="{c4561194-d7c4-f011-bbd3-6045bd06a2c4}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="lv_lvcompbranch" displayName="lvcBranch" solution="Active" />
+        <Dependent type="29" displayName="Table Row Counts" id="{7825f5fb-63c5-f011-bbd3-000d3a4f3847}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="lv_lvcompcommission" displayName="lvcCommission" solution="Active" />
+        <Dependent type="29" displayName="Table Row Counts" id="{7825f5fb-63c5-f011-bbd3-000d3a4f3847}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="lv_lvcompcommission" displayName="lvcCommission" solution="Active" />
+        <Dependent type="29" displayName="LVCommPortal Data Integrity Check" id="{db8667f0-21af-f011-bbd3-6045bd020921}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="lv_lvcompcommissionapproval" displayName="lvcApproval" solution="Active" />
+        <Dependent type="29" displayName="Table Row Counts" id="{7825f5fb-63c5-f011-bbd3-000d3a4f3847}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="lv_lvcompcommissionapproval" displayName="lvcApproval" solution="Active" />
+        <Dependent type="29" displayName="Approvals To LV365" id="{c8f7cdf7-6024-f011-8c4e-000d3a9e3598}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="lv_lvcompcommperiodcalc" displayName="lvcPeriod" solution="Active" />
+        <Dependent type="29" displayName="Table Row Counts" id="{7825f5fb-63c5-f011-bbd3-000d3a4f3847}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="lv_lvcompemaillog" displayName="lvcEmailLog" solution="Active" />
+        <Dependent type="29" displayName="Table Row Counts" id="{7825f5fb-63c5-f011-bbd3-000d3a4f3847}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="lv_lvcomploanofficer" displayName="lvcLoanOfficer" solution="Active" />
+        <Dependent type="29" displayName="Table Row Counts" id="{7825f5fb-63c5-f011-bbd3-000d3a4f3847}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="lv_lvcomploanofficer" displayName="lvcLoanOfficer" solution="Active" />
+        <Dependent type="29" displayName="LVCommPortal Data Integrity Check" id="{db8667f0-21af-f011-bbd3-6045bd020921}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="lv_lvcompregionbranchloanofficer" displayName="lvcRegionBranchLoanOfficer" solution="Active" />
+        <Dependent type="29" displayName="Table Row Counts" id="{7825f5fb-63c5-f011-bbd3-000d3a4f3847}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="lv_lvcompregionbranchloanofficer" displayName="lvcRegionBranchLoanOfficer" solution="Active" />
+        <Dependent type="29" displayName="LVCommPortal Data Integrity Check" id="{db8667f0-21af-f011-bbd3-6045bd020921}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="powerpagecomponent" displayName="Site Component" solution="PowerPages_CoreBase (1.1.2510.0)">
+          <package appName="Power Pages Core Package" version="1.1.2510.212">PowerPages_Core (1.1.2510.212)</package>
+        </Required>
+        <Dependent type="29" displayName="Add Role Loan Officer Row When Contact Add or Edit" id="{4f5d161f-2f3f-f011-b4cb-6045bd078e56}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="powerpagecomponent" displayName="Site Component" solution="PowerPages_CoreBase (1.1.2510.0)">
+          <package appName="Power Pages Core Package" version="1.1.2510.212">PowerPages_Core (1.1.2510.212)</package>
+        </Required>
+        <Dependent type="29" displayName="LVCommPortal Data Integrity Check" id="{db8667f0-21af-f011-bbd3-6045bd020921}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="lv_CompanyTwoChar" solution="Active" id.schemaname="lv_CompanyTwoChar" />
+        <Dependent type="29" displayName="Table Row Counts" id="{7825f5fb-63c5-f011-bbd3-000d3a4f3847}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="lv_CompanyTwoChar" solution="Active" id.schemaname="lv_CompanyTwoChar" />
+        <Dependent type="29" displayName="ShipRunHistory" id="{a1b2c3d4-e5f6-4011-9876-123456789abc}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="lv_CompanyTwoChar" solution="Active" id.schemaname="lv_CompanyTwoChar" />
+        <Dependent type="29" displayName="LVSync" id="{c4561194-d7c4-f011-bbd3-6045bd06a2c4}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="EnvironmentVariableDefinition" displayName="lv_CompanyTwoChar" solution="Active" id.schemaname="lv_CompanyTwoChar" />
+        <Dependent type="29" displayName="LVCommPortal Data Integrity Check" id="{db8667f0-21af-f011-bbd3-6045bd020921}" />
+      </MissingDependency>
+    </MissingDependencies>
+  </SolutionManifest>
+</ImportExportXml>

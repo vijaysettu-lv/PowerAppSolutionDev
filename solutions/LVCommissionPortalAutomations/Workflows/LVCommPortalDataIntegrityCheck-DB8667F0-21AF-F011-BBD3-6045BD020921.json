@@ -1,0 +1,767 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "lv_sharedcommondataserviceforapps_f3ceb"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "CompanyTwoChar (lv_CompanyTwoChar)": {
+          "defaultValue": "AS",
+          "type": "String",
+          "metadata": {
+            "schemaName": "lv_CompanyTwoChar",
+            "description": "The two character code for this client, for example, \"LP\" for LoanPeople"
+          }
+        }
+      },
+      "triggers": {
+        "Recurrence": {
+          "recurrence": {
+            "frequency": "Minute",
+            "interval": 15,
+            "timeZone": "Eastern Standard Time",
+            "startTime": "2025-10-08T14:00:00Z"
+          },
+          "metadata": {
+            "operationMetadataId": "70473655-fb80-48af-bfa7-4fd3f1a34f4d"
+          },
+          "type": "Recurrence"
+        }
+      },
+      "actions": {
+        "Get_Company_Name_Variable": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "e1f2a3b4-c5d6-7890-efab-cd1234567890"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "entityName": "environmentvariabledefinitions",
+              "$select": "defaultvalue,schemaname",
+              "$filter": "schemaname eq 'lv_CompanyName'",
+              "$expand": "environmentvariabledefinition_environmentvariablevalue($select=value)"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "connectionName": "shared_commondataserviceforapps"
+            }
+          }
+        },
+        "Initialize_Company_Name": {
+          "runAfter": {
+            "Get_Company_Name_Variable": [
+              "Succeeded"
+            ],
+            "Get_MinCommissionCount_Variable": [
+              "Succeeded"
+            ],
+            "Get_MinLOBranchCount_Variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f2a3b4c5-d6e7-8901-fabc-de1234567890"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "CompanyName",
+                "type": "string",
+                "value": "Unknown"
+              }
+            ]
+          }
+        },
+        "Check_Company_Name_Variable_Exists": {
+          "actions": {
+            "Set_Company_Name_From_Environment_Variable": {
+              "metadata": {
+                "operationMetadataId": "a2b3c4d5-e6f7-8901-abc2-def345678901"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "CompanyName",
+                "value": "@coalesce(first(outputs('Get_Company_Name_Variable')?['body/value'])?['environmentvariabledefinition_environmentvariablevalue']?[0]?['value'], first(outputs('Get_Company_Name_Variable')?['body/value'])?['defaultvalue'], 'Unknown')"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_Business_Hours": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {}
+          },
+          "expression": {
+            "and": [
+              {
+                "greater": [
+                  "@length(outputs('Get_Company_Name_Variable')?['body/value'])",
+                  0
+                ]
+              }
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b3c4d5e6-f7a8-9012-bcd3-ef0456789012"
+          },
+          "type": "If"
+        },
+        "Count_LoanOfficers_With_Branch": {
+          "runAfter": {
+            "Check_Blank_Branch_Assignments": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "33333333-3333-3333-3333-333333333333"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "entityName": "lv_lvcomploanofficers",
+              "$select": "lv_lvcomploanofficerid",
+              "$filter": "_lv_branch_value ne null"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "connectionName": "shared_commondataserviceforapps"
+            }
+          }
+        },
+        "Check_LoanOfficer_Count": {
+          "actions": {},
+          "runAfter": {
+            "Count_LoanOfficers_With_Branch": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {}
+          },
+          "expression": {
+            "less": [
+              "@length(outputs('Count_LoanOfficers_With_Branch')?['body/value'])",
+              "@variables('MinLOBranchCount')"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "55555555-5555-5555-5555-555555555555"
+          },
+          "type": "If"
+        },
+        "Count_Rows_In_Commission": {
+          "runAfter": {
+            "Check_LoanOfficer_Count": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "66666666-6666-6666-6666-666666666666"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "entityName": "lv_lvcompcommissions",
+              "fetchXml": "<fetch aggregate='true'><entity name='lv_lvcompcommission'><attribute name='lv_lvcompcommissionid' aggregate='count' alias='totalcount'/></entity></fetch>"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "connectionName": "shared_commondataserviceforapps"
+            }
+          }
+        },
+        "Check_Commission_Count": {
+          "actions": {},
+          "runAfter": {
+            "Count_Rows_In_Commission": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {}
+          },
+          "expression": {
+            "less": [
+              "@int(first(outputs('Count_Rows_In_Commission')?['body/value'])?['totalcount'])",
+              20
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "88888888-8888-8888-8888-888888888888"
+          },
+          "type": "If"
+        },
+        "Count_LoanOfficers_Empty_Name": {
+          "runAfter": {
+            "Check_Commission_Count": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "aaaa1111-bbbb-2222-cccc-3333dddd4444"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "entityName": "lv_lvcomploanofficers",
+              "$select": "lv_lvcomploanofficerid,lv_name",
+              "$filter": "lv_name eq null or lv_name eq ''"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "connectionName": "shared_commondataserviceforapps"
+            }
+          }
+        },
+        "Check_LoanOfficers_Empty_Name": {
+          "actions": {},
+          "runAfter": {
+            "Count_LoanOfficers_Empty_Name": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {}
+          },
+          "expression": {
+            "greater": [
+              "@length(outputs('Count_LoanOfficers_Empty_Name')?['body/value'])",
+              0
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "bbbb2222-cccc-3333-dddd-4444eeee5555"
+          },
+          "type": "If"
+        },
+        "List_All_Branch_Managers": {
+          "runAfter": {
+            "Check_LoanOfficers_Empty_Name": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "cccc3333-dddd-4444-eeee-5555ffff6666"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "entityName": "lv_lvcompregionbranchloanofficers",
+              "$select": "_lv_contactbranchmanager_value",
+              "$filter": "_lv_contactbranchmanager_value ne null"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "connectionName": "shared_commondataserviceforapps"
+            }
+          }
+        },
+        "Initialize_MissingRoleCount": {
+          "runAfter": {
+            "List_All_Branch_Managers": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "eeee5555-ffff-6666-aaaa-7777bbbb8888"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "MissingRoleCount",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "Initialize_MissingRoleNames": {
+          "runAfter": {
+            "Initialize_MissingRoleCount": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "eeee6666-ffff-7777-aaaa-8888bbbb9999"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "MissingRoleNames",
+                "type": "string",
+                "value": ""
+              }
+            ]
+          }
+        },
+        "Check_Each_Branch_Manager": {
+          "foreach": "@outputs('List_All_Branch_Managers')?['body/value']",
+          "actions": {
+            "Check_Contact_Has_Role": {
+              "metadata": {
+                "operationMetadataId": "ffff6666-aaaa-7777-bbbb-8888cccc9999"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "entityName": "powerpagecomponents",
+                  "fetchXml": "<fetch top='1'><entity name='powerpagecomponent'><attribute name='powerpagecomponentid'/><filter><condition attribute='name' operator='eq' value='Branch Manager'/></filter><link-entity name='powerpagecomponent_mspp_webrole_contact' from='powerpagecomponentid' to='powerpagecomponentid' link-type='inner' intersect='true'><filter><condition attribute='contactid' operator='eq' value='@{items('Check_Each_Branch_Manager')?['_lv_contactbranchmanager_value']}'/></filter></link-entity></entity></fetch>"
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                  "operationId": "ListRecords",
+                  "connectionName": "shared_commondataserviceforapps"
+                }
+              }
+            },
+            "Increment_If_Missing": {
+              "actions": {
+                "Get_Contact_Name": {
+                  "metadata": {
+                    "operationMetadataId": "cccc8888-dddd-9999-eeee-ffff00001111"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "parameters": {
+                      "entityName": "contacts",
+                      "recordId": "@items('Check_Each_Branch_Manager')?['_lv_contactbranchmanager_value']",
+                      "$select": "fullname"
+                    },
+                    "host": {
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                      "operationId": "GetItem",
+                      "connectionName": "shared_commondataserviceforapps"
+                    }
+                  }
+                },
+                "Append_To_MissingRoleNames": {
+                  "runAfter": {
+                    "Get_Contact_Name": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "dddd9999-eeee-0000-ffff-11112222aaaa"
+                  },
+                  "type": "AppendToStringVariable",
+                  "inputs": {
+                    "name": "MissingRoleNames",
+                    "value": "@{outputs('Get_Contact_Name')?['body/fullname']}, "
+                  }
+                },
+                "Increment_MissingRoleCount": {
+                  "runAfter": {
+                    "Append_To_MissingRoleNames": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "bbbb8888-cccc-9999-dddd-eeeeffff0000"
+                  },
+                  "type": "IncrementVariable",
+                  "inputs": {
+                    "name": "MissingRoleCount",
+                    "value": 1
+                  }
+                }
+              },
+              "runAfter": {
+                "Check_Contact_Has_Role": [
+                  "Succeeded"
+                ]
+              },
+              "else": {
+                "actions": {}
+              },
+              "expression": {
+                "equals": [
+                  "@length(outputs('Check_Contact_Has_Role')?['body/value'])",
+                  0
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "aaaa7777-bbbb-8888-cccc-9999ddddeeee"
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "Initialize_MissingRoleNames": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "cccc9999-dddd-eeee-ffff-00001111aaaa"
+          },
+          "type": "Foreach"
+        },
+        "Check_BranchManagers_Without_Role": {
+          "actions": {},
+          "runAfter": {
+            "Check_Each_Branch_Manager": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {}
+          },
+          "expression": {
+            "greater": [
+              "@variables('MissingRoleCount')",
+              0
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "dddd4444-eeee-5555-ffff-6666aaaa7777"
+          },
+          "type": "If"
+        },
+        "Count_Blank_Branch_Assignments": {
+          "runAfter": {
+            "Check_Company_Name_Variable_Exists": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "25e7878b-c967-49a6-b741-c9e034d28af2"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "entityName": "lv_lvcompregionbranchloanofficers",
+              "$select": "lv_lvcompregionbranchloanofficerid,_lv_branch_value,_lv_loanofficer_value,_lv_contactbranchmanager_value,_lv_contactloanofficeroversight_value",
+              "$filter": "_lv_contactbranchmanager_value ne null and _lv_branch_value eq null"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "connectionName": "shared_commondataserviceforapps"
+            }
+          }
+        },
+        "Check_Blank_Branch_Assignments": {
+          "actions": {},
+          "runAfter": {
+            "Count_Blank_Branch_Assignments": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {}
+          },
+          "expression": {
+            "greater": [
+              "@length(outputs('Count_Blank_Branch_Assignments')?['body/value'])",
+              0
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5aeb66dc-2747-4d5c-a1f6-f0e7cacc612a"
+          },
+          "type": "If"
+        },
+        "Build_JSON_Results": {
+          "runAfter": {
+            "Check_BranchManagers_Without_Role": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "99999999-9999-9999-9999-999999999999"
+          },
+          "type": "Compose",
+          "inputs": {
+            "flowVersion": "2025-12-21 14:28",
+            "timestamp": "@{utcNow()}",
+            "checks": {
+              "BlankBranchAssignments": {
+                "count": "@{length(outputs('Count_Blank_Branch_Assignments')?['body/value'])}",
+                "threshold": 0,
+                "status": "@{if(greater(length(outputs('Count_Blank_Branch_Assignments')?['body/value']), 0), 'FAIL', 'PASS')}"
+              },
+              "LoanOfficersWithBranch": {
+                "count": "@{length(outputs('Count_LoanOfficers_With_Branch')?['body/value'])}",
+                "threshold": "@{variables('MinLOBranchCount')}",
+                "status": "@{if(less(length(outputs('Count_LoanOfficers_With_Branch')?['body/value']), variables('MinLOBranchCount')), 'FAIL', 'PASS')}"
+              },
+              "TotalCommissionRecords": {
+                "count": "@{first(outputs('Count_Rows_In_Commission')?['body/value'])?['totalcount']}",
+                "threshold": "@{variables('MinCommissionCount')}",
+                "status": "@{if(less(int(first(outputs('Count_Rows_In_Commission')?['body/value'])?['totalcount']), variables('MinCommissionCount')), 'FAIL', 'PASS')}"
+              },
+              "LoanOfficersEmptyName": {
+                "count": "@{length(outputs('Count_LoanOfficers_Empty_Name')?['body/value'])}",
+                "threshold": 0,
+                "status": "@{if(greater(length(outputs('Count_LoanOfficers_Empty_Name')?['body/value']), 0), 'FAIL', 'PASS')}"
+              },
+              "BranchManagersMissingRole": {
+                "count": "@{variables('MissingRoleCount')}",
+                "names": "@{if(equals(variables('MissingRoleNames'), ''), '', substring(variables('MissingRoleNames'), 0, sub(length(variables('MissingRoleNames')), 2)))}",
+                "threshold": 0,
+                "status": "@{if(greater(variables('MissingRoleCount'), 0), 'FAIL', 'PASS')}"
+              }
+            },
+            "overallStatus": "@{if(or(greater(length(outputs('Count_Blank_Branch_Assignments')?['body/value']), 0), less(length(outputs('Count_LoanOfficers_With_Branch')?['body/value']), variables('MinLOBranchCount')), less(int(first(outputs('Count_Rows_In_Commission')?['body/value'])?['totalcount']), variables('MinCommissionCount')), greater(length(outputs('Count_LoanOfficers_Empty_Name')?['body/value']), 0), greater(variables('MissingRoleCount'), 0)), 'FAIL', 'PASS')}"
+          }
+        },
+        "Ship_To_DevLog": {
+          "runAfter": {
+            "Build_JSON_Results": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+          },
+          "type": "Http",
+          "inputs": {
+            "uri": "https://lvcommportaldevteamutils.azurewebsites.net/api/IngestLogRow?code=Y5GO53V4jEUT6ZQ-OSDtaunRgvyjXO0cVApEjOAB4gkbAzFubxPqmg==",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": {
+              "clientCode": "@{parameters('CompanyTwoChar (lv_CompanyTwoChar)')}",
+              "logId": "@{guid()}",
+              "name": "IntegrityCheck",
+              "kind": "IntegrityCheck",
+              "detail": "@{formatDateTime(utcNow(), 'yyyy-MM-dd HH:mm:ss')} UTC - Status: @{outputs('Build_JSON_Results')['overallStatus']}",
+              "memo": "@{outputs('Build_JSON_Results')}",
+              "userFullName": "System",
+              "userId": "system",
+              "key1Name": "OverallStatus",
+              "key1Value": "@{outputs('Build_JSON_Results')['overallStatus']}",
+              "key2Name": "CompanyName",
+              "key2Value": "@{variables('CompanyName')}",
+              "createdOn": "@{utcNow()}"
+            }
+          }
+        },
+        "Get_MinCommissionCount_Variable": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "ffffffff-ffff-ffff-ffff-ffffffffffff"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "entityName": "environmentvariabledefinitions",
+              "$select": "defaultvalue,schemaname",
+              "$filter": "schemaname eq 'lv_minimumexpectedcommissionrowcount'",
+              "$expand": "environmentvariabledefinition_environmentvariablevalue($select=value)"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "connectionName": "shared_commondataserviceforapps"
+            }
+          }
+        },
+        "Get_MinLOBranchCount_Variable": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "11111111-1111-1111-1111-111111111111"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "parameters": {
+              "entityName": "environmentvariabledefinitions",
+              "$select": "defaultvalue,schemaname",
+              "$filter": "schemaname eq 'lv_minimumexpectedlobranchassignmentcount'",
+              "$expand": "environmentvariabledefinition_environmentvariablevalue($select=value)"
+            },
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "connectionName": "shared_commondataserviceforapps"
+            }
+          }
+        },
+        "Initialize_MinCommissionCount": {
+          "runAfter": {
+            "Initialize_Company_Name": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "22222222-2222-2222-2222-222222222222"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "MinCommissionCount",
+                "type": "integer",
+                "value": 20
+              }
+            ]
+          }
+        },
+        "Initialize_MinLOBranchCount": {
+          "runAfter": {
+            "Initialize_MinCommissionCount": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "33333333-3333-3333-3333-333333333333"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "MinLOBranchCount",
+                "type": "integer",
+                "value": 5
+              }
+            ]
+          }
+        },
+        "Check_MinCommissionCount_Variable_Exists": {
+          "actions": {
+            "Set_MinCommissionCount_From_EnvVar": {
+              "metadata": {
+                "operationMetadataId": "44444444-4444-4444-4444-444444444444"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "MinCommissionCount",
+                "value": "@int(coalesce(first(outputs('Get_MinCommissionCount_Variable')?['body/value'])?['environmentvariabledefinition_environmentvariablevalue']?[0]?['value'], first(outputs('Get_MinCommissionCount_Variable')?['body/value'])?['defaultvalue'], '20'))"
+              }
+            }
+          },
+          "runAfter": {
+            "Initialize_MinLOBranchCount": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {}
+          },
+          "expression": {
+            "and": [
+              {
+                "greater": [
+                  "@length(outputs('Get_MinCommissionCount_Variable')?['body/value'])",
+                  0
+                ]
+              }
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "55555555-5555-5555-5555-555555555555"
+          },
+          "type": "If"
+        },
+        "Check_MinLOBranchCount_Variable_Exists": {
+          "actions": {
+            "Set_MinLOBranchCount_From_EnvVar": {
+              "metadata": {
+                "operationMetadataId": "66666666-6666-6666-6666-666666666666"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "MinLOBranchCount",
+                "value": "@int(coalesce(first(outputs('Get_MinLOBranchCount_Variable')?['body/value'])?['environmentvariabledefinition_environmentvariablevalue']?[0]?['value'], first(outputs('Get_MinLOBranchCount_Variable')?['body/value'])?['defaultvalue'], '5'))"
+              }
+            }
+          },
+          "runAfter": {
+            "Initialize_MinLOBranchCount": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {}
+          },
+          "expression": {
+            "and": [
+              {
+                "greater": [
+                  "@length(outputs('Get_MinLOBranchCount_Variable')?['body/value'])",
+                  0
+                ]
+              }
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "77777777-7777-7777-7777-777777777777"
+          },
+          "type": "If"
+        },
+        "Check_Business_Hours": {
+          "actions": {
+            "Terminate_Outside_Hours": {
+              "metadata": {
+                "operationMetadataId": "dddddddd-eeee-ffff-0000-111111111111"
+              },
+              "type": "Terminate",
+              "inputs": {
+                "runStatus": "Succeeded"
+              }
+            }
+          },
+          "runAfter": {
+            "Initialize_MinLOBranchCount": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {}
+          },
+          "expression": {
+            "or": [
+              {
+                "less": [
+                  "@int(formatDateTime(convertFromUtc(utcNow(), 'Eastern Standard Time'), 'HH'))",
+                  6
+                ]
+              },
+              {
+                "greaterOrEquals": [
+                  "@int(formatDateTime(convertFromUtc(utcNow(), 'Eastern Standard Time'), 'HH'))",
+                  20
+                ]
+              }
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "cccccccc-dddd-eeee-ffff-000000000000"
+          },
+          "type": "If"
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}
