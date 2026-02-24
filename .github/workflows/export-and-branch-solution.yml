@@ -1,0 +1,45 @@
+name: Export Power Platform Solution
+
+on:
+  workflow_dispatch:   # Manual trigger
+  # OR enable auto export on push to main:
+  # push:
+  #   branches:
+  #     - main
+
+jobs:
+  export-and-branch-solution:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Power Platform CLI
+        uses: microsoft/powerplatform-actions/actions-install@v1
+
+      - name: Export Unmanaged Solution from Dev
+        uses: microsoft/powerplatform-actions/export-solution@v1
+        with:
+          environment-url: ${{ secrets.DEV_URL }}
+          app-id: ${{ secrets.CLIENT_ID }}
+          client-secret: ${{ secrets.CLIENT_SECRET }}
+          tenant-id: ${{ secrets.TENANT_ID }}
+          solution-name: LV Commission Portal   # 🔹 Change this
+          solution-output-file: solution.zip
+          managed: false
+
+      - name: Unpack Solution
+        uses: microsoft/powerplatform-actions/unpack-solution@v1
+        with:
+          solution-file: solution.zip
+          solution-folder: solutions/LV Commission Portal
+          solution-type: unmanaged
+
+      - name: Commit and Push Changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Auto-export solution from Dev"
+          git push
