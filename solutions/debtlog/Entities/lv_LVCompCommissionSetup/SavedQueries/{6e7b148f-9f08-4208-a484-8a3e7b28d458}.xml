@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{6e7b148f-9f08-4208-a484-8a3e7b28d458}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="lv_code" select="1" icon="1" preview="1">
+        <row name="result" id="lv_lvcompcommissionsetupid">
+          <cell name="lv_code" width="138" />
+          <cell name="createdon" width="125" />
+          <cell name="lv_accountingemail" width="150" />
+          <cell name="lv_approvaltype" width="144" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="lv_lvcompcommissionsetup">
+          <attribute name="lv_lvcompcommissionsetupid" />
+          <attribute name="lv_code" />
+          <attribute name="createdon" />
+          <order attribute="lv_code" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="lv_accountingemail" />
+          <attribute name="lv_approvaltype" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active LVCompCommissionSetups" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<EntityRelationships xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <EntityRelationship Name="business_unit_lv_debtlogvalueentry" />
+  <EntityRelationship Name="business_unit_lv_lvcompcommissionsetup" />
+  <EntityRelationship Name="lk_lv_debtlogvalueentry_createdby" />
+  <EntityRelationship Name="lk_lv_debtlogvalueentry_modifiedby" />
+  <EntityRelationship Name="lk_lv_lvcompcommissionsetup_createdby" />
+  <EntityRelationship Name="lk_lv_lvcompcommissionsetup_modifiedby" />
+  <EntityRelationship Name="owner_lv_debtlogvalueentry" />
+  <EntityRelationship Name="owner_lv_lvcompcommissionsetup" />
+  <EntityRelationship Name="team_lv_debtlogvalueentry" />
+  <EntityRelationship Name="team_lv_lvcompcommissionsetup" />
+  <EntityRelationship Name="user_lv_debtlogvalueentry" />
+  <EntityRelationship Name="user_lv_lvcompcommissionsetup" />
+</EntityRelationships>

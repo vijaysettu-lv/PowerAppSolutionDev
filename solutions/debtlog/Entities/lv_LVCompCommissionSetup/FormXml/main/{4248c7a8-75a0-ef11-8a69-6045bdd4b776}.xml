@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{4248c7a8-75a0-ef11-8a69-6045bdd4b776}</formid>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{ae1cba36-0ddc-4484-b85c-31aae8ee8a83}" IsUserDefined="1" labelid="{79bbfbea-442f-405a-9ce9-b1e5e05efbf2}">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{9a98bc50-f038-4f02-9209-0658dcebdd8b}" labelid="{ac006692-fadd-4a34-8504-729646aed8db}">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{4956c7f7-f847-4f53-8e25-5b563920327b}" labelid="{886d1db1-ca10-42a2-8434-eea5bd460ede}">
+                        <labels>
+                          <label description="Accounting Email" languagecode="1033" />
+                        </labels>
+                        <control id="lv_accountingemail" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="lv_accountingemail" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{bab1e7db-f3c5-450b-89e2-c943bf0f8254}" labelid="{293a9555-06d7-4b0d-8493-1e4b2abbcdeb}">
+                        <labels>
+                          <label description="Approval Type" languagecode="1033" />
+                        </labels>
+                        <control id="lv_approvaltype" classid="{3ef39988-22bb-4f0b-bbbe-64b5a3748aee}" datafieldname="lv_approvaltype" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{5f25608b-37cc-4f2a-955f-ecdf9936d37e}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{758c86ea-49e9-4537-bf0b-6803fa583866}" showlabel="false" labelid="{106978f6-fe86-428e-881e-02b514380e59}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{732afe8c-9e60-4282-9a70-245357e13eef}" showlabel="false" labelid="{b64d2a19-cbd8-4b6f-be08-4d8fa4f274da}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{8338b1a4-a4a9-488c-87b6-b48b46456030}" showlabel="false" labelid="{b88fc719-5d7b-407a-b003-a954099248d9}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{de9d4562-be44-4e74-8bed-26132a86ac29}" colspan="1" rowspan="1" labelid="{976cc9e7-dd83-4c28-bb86-2fece3b62e58}">
+              <labels>
+                <label description="Owner" languagecode="1033" />
+              </labels>
+              <control id="header_ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{5004e482-465d-46d2-a6cf-5d7a24f5df5c}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{f0378cea-1f94-4e8e-ba9c-ef244862f3ea}" showlabel="false" labelid="{a7f85203-f521-44fe-9915-0cd82dfdc426}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{4eccc0e6-8a23-4fdd-9b7c-bf9d440d661c}" showlabel="false" labelid="{178d375a-20be-4c20-bca4-3719339143c2}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{6a063a08-52df-4cc3-8bde-31012df47894}" showlabel="false" labelid="{89c51d97-e2c2-4767-a0dd-2c80bc42a72c}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <DisplayConditions Order="1" FallbackForm="true">
+        <Role Id="{627090ff-40a3-4053-8790-584edc5be201}" />
+        <Role Id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Web - Admin" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

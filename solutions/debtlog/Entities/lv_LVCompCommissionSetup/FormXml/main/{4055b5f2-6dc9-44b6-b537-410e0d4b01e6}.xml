@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{4055b5f2-6dc9-44b6-b537-410e0d4b01e6}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{ae1cba36-0ddc-4484-b85c-31aae8ee8a83}" IsUserDefined="1">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{9a98bc50-f038-4f02-9209-0658dcebdd8b}">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{b41d997a-f5c8-4d9e-abd0-beea727f1c9e}">
+                        <labels>
+                          <label description="Code" languagecode="1033" />
+                        </labels>
+                        <control id="lv_code" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="lv_code" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{de9d4562-be44-4e74-8bed-26132a86ac29}">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{4956c7f7-f847-4f53-8e25-5b563920327b}">
+                        <labels>
+                          <label description="Accounting Email" languagecode="1033" />
+                        </labels>
+                        <control id="lv_accountingemail" classid="{4273edbd-ac1d-40d3-9fb2-095c621b552d}" datafieldname="lv_accountingemail" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{bab1e7db-f3c5-450b-89e2-c943bf0f8254}">
+                        <labels>
+                          <label description="Approval Type" languagecode="1033" />
+                        </labels>
+                        <control id="lv_approvaltype" classid="{3ef39988-22bb-4f0b-bbbe-64b5a3748aee}" datafieldname="lv_approvaltype" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{ea1533c3-5dd4-457e-b505-782a23597e89}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{a8296097-7c03-407f-ac3b-0d6e2c0eedfa}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{66b611cf-9be0-4d67-851f-3a1304769add}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{63e1bdcc-42f8-43b0-ab17-d85170d091fc}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{4e54c058-6fe5-40e5-a484-10c062577afc}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{02911ac2-e1cd-4075-9dd1-be3179d2472c}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{50ccd530-35b2-492d-ab82-7c1b64df6ad4}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{4e3c4021-c3d5-490a-9f02-a6197ad35087}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Everyone />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>
