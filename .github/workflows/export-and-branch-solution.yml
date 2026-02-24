@@ -1,4 +1,4 @@
-name: Export the latest LV Solutions from Dev Environment
+name: Import LV-CP solution from Dev
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ permissions:
   contents: write
 
 jobs:
-  export-solutions:
+  export:
     runs-on: windows-latest
 
     strategy:
@@ -25,6 +25,11 @@ jobs:
 
       - name: Install Power Platform CLI
         uses: microsoft/powerplatform-actions/actions-install@v1
+
+      # Clean previous zip files (prevents collision error)
+      - name: Cleanup existing ZIP files
+        run: |
+          Get-ChildItem -Path . -Filter *.zip | Remove-Item -Force -ErrorAction SilentlyContinue
 
       - name: Export Unmanaged Solution
         uses: microsoft/powerplatform-actions/export-solution@v1
@@ -44,10 +49,11 @@ jobs:
           solution-folder: solutions/${{ matrix.solution }}
           solution-type: unmanaged
 
-      - name: Commit and Push Changes
+      - name: Commit and Push to Main
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add .
-          git commit -m "Auto-export solutions from Dev" || echo "No changes to commit"
-          git push
+          git commit -m "Auto-export solutions from DEV" || echo "No changes to commit"
+          git pull --rebase origin main
+          git push origin main
