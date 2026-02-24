@@ -1,4 +1,4 @@
-name: Export Multiple Power Platform Solutions
+name: Export the latest LV Solutions from Dev Environment
 
 on:
   workflow_dispatch:
