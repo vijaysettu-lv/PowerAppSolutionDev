@@ -1,0 +1,18 @@
+<powerpagecomponent powerpagecomponentid="8f256e67-78db-41ca-aec4-d2b5367dea12">
+  <content>{
+  "display_name": "Mobile Header",
+  "type": 756150001,
+  "value": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;a href=\"~/\" class=\"nav-logo\"&gt;\n\t{% if snippets['Logo URL'] %}\n\t\t&lt;img \n\t\t\tsrc=\"{{ snippets['Logo URL'] }}\" \n\t\t\talt=\"{{ snippets['Logo alt text'] }}\"\n\t\t\tstyle=\"width: auto; height: 72px;\"&gt;\n\t\t{% endif %}\n\n  \t{% if snippets['Site name'] %}\n\t\t&lt;h1 class=\"siteTitle custom-sitetitle\"&gt;\n\t\t\t{{ snippets['Site name'] }}\n\t\t&lt;/h1&gt;\n\t{% endif %}\n&lt;/a&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Mobile Header</name>
+  <powerpagecomponenttype>7</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

@@ -1,0 +1,1405 @@
+<powerpagecomponent powerpagecomponentid="ed7ee909-ef3d-24c8-1875-5caaef1ca8ee">
+  <content>{"copy":"&lt;!-- Last modified Fri Oct 24 4:07PM --&gt;\n&lt;!-- Last modified Mon Oct 06 3:20PM --&gt;\n&lt;!-- Last modified Thu Oct 02 12:20PM --&gt;\n&lt;!-- Last modified Thu Oct 02 12:15PM --&gt;\n&lt;!-- Last modified Wed Oct 01 4:00PM --&gt;\n&lt;!-- Last modified Wed Oct 01 3:16PM --&gt;\n&lt;!-- Last modified Tue Sep 02 11:20AM --&gt;\n&lt;!-- Last modified Tue Sep 02 10:36AM --&gt;\n&lt;!-- Last modified Sun Aug 31 5:00PM --&gt;\n&lt;!-- Last modified Sat Aug 30 12:12PM --&gt;\n\n&lt;!-- Loan Officer Page --&gt;\n\n{% comment %} ~LoanOfficerPage PERFORMANCE OPTIMIZATION: Check if loan officer is specified to suppress unnecessary queries {% endcomment %}\n{% assign hasLoanOfficerParam = false %}\n{% if request.params.officer and request.params.officer != \"\" and request.params.officer != \"all\" %}\n\t{% assign hasLoanOfficerParam = true %}\n{% endif %}\n\n{% include 'snippet' snippet_name:'FetchXML - SetupQuery' %}\n\n{%- comment -%} NOTE: Exclusions are now handled via userExclusionLOList from SetupQuery {%- endcomment -%}\n\n{% comment %} Run period filtering query if officer param exists OR if user is simple loan officer {% endcomment %}\n{% if hasLoanOfficerParam or is_OnlyLoanOfficer %}\n\t{% include 'snippet' snippet_name:'FetchXML - BranchQuery' %}\n\n\t{% comment %} PERIOD FILTERING: Get distinct periods where selected loan officer has commission data {% endcomment %}\n\t{% fetchxml periodsWithData %}\n\t\t&lt;fetch aggregate=\"true\"&gt;\n\t\t\t&lt;entity name=\"lv_lvcompcommission\"&gt;\n\t\t\t\t&lt;attribute name=\"lv_periodno\" alias=\"period_number\" groupby=\"true\" /&gt;\n\t\t\t\t&lt;filter type=\"and\"&gt;\n\t\t\t\t\t&lt;condition attribute=\"lv_xloanofficercode\" operator=\"eq\" value=\"{{sqRecLOBeingViewed.lv_code}}\" /&gt;\n\t\t\t\t&lt;/filter&gt;\n\t\t\t&lt;/entity&gt;\n\t\t&lt;/fetch&gt;\n\t{% endfetchxml %}\n\n\t\t{% comment %} DEBT BALANCE: Get debt log entries server-side, pass to JavaScript for math {% endcomment %}\n\t{%- fetchxml debtLogEntries -%}\n\t\t&lt;fetch&gt;\n\t\t\t&lt;entity name=\"lv_debtlogvalueentry\"&gt;\n\t\t\t\t&lt;attribute name=\"lv_identifiercode\" /&gt;\n\t\t\t\t&lt;attribute name=\"lv_entrydate\" /&gt;\n\t\t\t\t&lt;attribute name=\"lv_amount\" /&gt;\n\t\t\t\t&lt;attribute name=\"lv_description\" /&gt;\n\t\t\t\t&lt;filter type=\"and\"&gt;\n\t\t\t\t\t&lt;condition attribute=\"lv_loanofficercode\" operator=\"eq\" value=\"{{sqRecLOBeingViewed.lv_code}}\" /&gt;\n\t\t\t\t&lt;/filter&gt;\n\t\t\t\t&lt;order attribute=\"lv_entrydate\" descending=\"true\" /&gt;\n\t\t\t&lt;/entity&gt;\n\t\t&lt;/fetch&gt;\n\t{%- endfetchxml -%}\n{% endif %}\n\n{% comment %} Loan Officer page is accessible to ALL authenticated users {% endcomment %}\n{% comment %} Security is handled by what loan officers they can see, not page access {% endcomment %}\n\n{% if user %}\n\n&lt;div class=\"row sectionBlockLayout text-start\" style=\"display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;\"&gt;\n    &lt;div class=\"container\" style=\"display: flex; flex-wrap: wrap;\"&gt;\n        &lt;div class=\"col-lg-12 columnBlockLayout email-modal-container\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; word-break: break-word; padding: 16px; margin: 60px 0px;\"&gt;\n\n\n\t\t\t{% if is_OnlyLoanOfficer %}\n\t\t\t\t&lt;h1&gt;\n\t\t\t\t\t{{sqRecLOBeingViewed.lv_name}}\n\t\t\t\t\t&lt;span id=spanOfficerId class=\"d-none\"&gt;({{sqRecLOBeingViewed.lv_lvcomploanofficerid}})&lt;/span&gt;\n\t\t\t\t\t&lt;span id=\"spanPeriodCode\" class=\"d-none\"&gt;[{{sqRecUISelPeriod.lv_periodcode}}]\n\t\t\t\t&lt;/h1&gt;\n\n\t\t\t\t&lt;div class=\"admin-panel\"&gt;\n\t\t\t\t\t&lt;div style=\"display: flex; flex-direction: column; gap: 1rem;\"&gt;\n\t\t\t\t\t\t{% include 'snippet' snippet_name:'Current Period Selection' %}\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t{% else %}\n\t\t\t\t{% comment %}       include 'Loan Officer Dropdown', parmFoo: 'Asia', parmBar: 'Ursa'                        {% endcomment %} \n\n\t\t\t\t&lt;div class=\"admin-panel\"&gt;\n\t\t\t\t\t&lt;div style=\"display: flex; flex-direction: column; gap: 1rem;\"&gt;\n\n\t\t\t\t\t\t{% comment %} Pass current selection to dropdown {% endcomment %}\n\t\t\t\t\t\t{% comment %} CRITICAL: Only set dropdown value if officer was explicitly selected via parameter {% endcomment %}\n\t\t\t\t\t\t{% if hasLoanOfficerParam %}\n\t\t\t\t\t\t\t{% if sqLOViewMode == \"ALL_LOAN_OFFICERS\" %}\n\t\t\t\t\t\t\t\t{% assign dropdownCurrentValue = \"all\" %}\n\t\t\t\t\t\t\t{% elsif sqRecLOBeingViewed.lv_lvcomploanofficerid %}\n\t\t\t\t\t\t\t\t{% assign dropdownCurrentValue = sqRecLOBeingViewed.lv_lvcomploanofficerid %}\n\t\t\t\t\t\t\t{% else %}\n\t\t\t\t\t\t\t\t{% assign dropdownCurrentValue = \"\" %}\n\t\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t\t{% else %}\n\t\t\t\t\t\t\t{% assign dropdownCurrentValue = \"\" %}\n\t\t\t\t\t\t{% endif %}\n\n\n\n\n\n\t\t\t\t\t\t{%- unless is_OnlyLoanOfficer -%}\n\t\t\t\t\t\t\t{%- comment -%} PERFORMANCE FIX: Build dropdown list from userLoanOfficerList with exclusion filtering {%- endcomment -%}\n\n\t\t\t\t\t\t\t{%- comment -%} Build branchManagerOfficerCodes for dropdown population {%- endcomment -%}\n\t\t\t\t\t\t\t{%- assign branchManagerOfficerCodes = \"\" -%}\n\t\t\t\t\t\t\t{%- assign branchManagerOfficerNames = \"\" -%}\n\t\t\t\t\t\t\t{%- assign hasOfficers = false -%}\n\n\t\t\t\t\t\t\t{%- if is_admin -%}\n\t\t\t\t\t\t\t\t{%- comment -%} ADMIN: See ALL loan officers (no exclusions for admins) {%- endcomment -%}\n\t\t\t\t\t\t\t\t{%- if allLoanOfficers.results.entities -%}\n\t\t\t\t\t\t\t\t\t{%- for officer in allLoanOfficers.results.entities -%}\n\t\t\t\t\t\t\t\t\t\t{%- if officer.lv_code and officer.lv_code != blank -%}\n\t\t\t\t\t\t\t\t\t\t\t{%- if branchManagerOfficerCodes == \"\" -%}\n\t\t\t\t\t\t\t\t\t\t\t\t{%- assign branchManagerOfficerCodes = officer.lv_code -%}\n\t\t\t\t\t\t\t\t\t\t\t{%- else -%}\n\t\t\t\t\t\t\t\t\t\t\t\t{%- assign branchManagerOfficerCodes = branchManagerOfficerCodes | append: \"|\" | append: officer.lv_code -%}\n\t\t\t\t\t\t\t\t\t\t\t{%- endif -%}\n\t\t\t\t\t\t\t\t\t\t\t{%- assign hasOfficers = true -%}\n\t\t\t\t\t\t\t\t\t\t{%- endif -%}\n\t\t\t\t\t\t\t\t\t{%- endfor -%}\n\t\t\t\t\t\t\t\t{%- endif -%}\n\t\t\t\t\t\t\t{%- else -%}\n\t\t\t\t\t\t\t\t{%- comment -%} NON-ADMIN: Use userLoanOfficerList from SetupQuery with exclusion filtering {%- endcomment -%}\n\t\t\t\t\t\t\t\t{%- if userLoanOfficerList and userLoanOfficerList != \"\" and userLoanOfficerList != \"|\" -%}\n\t\t\t\t\t\t\t\t\t{%- comment -%} Extract codes from userLoanOfficerList (format: |name|code|name|code|) {%- endcomment -%}\n\t\t\t\t\t\t\t\t\t{%- assign parts = userLoanOfficerList | split: \"|\" -%}\n\t\t\t\t\t\t\t\t\t{%- assign partIndex = 0 -%}\n\t\t\t\t\t\t\t\t\t{%- for part in parts -%}\n\t\t\t\t\t\t\t\t\t\t{%- assign partIndex = partIndex | plus: 1 -%}\n\t\t\t\t\t\t\t\t\t\t{%- assign isEvenIndex = partIndex | modulo: 2 -%}\n\t\t\t\t\t\t\t\t\t\t{%- if isEvenIndex == 0 and part != \"\" -%}\n\t\t\t\t\t\t\t\t\t\t\t{%- comment -%} This is a loan officer code - check if excluded {%- endcomment -%}\n\t\t\t\t\t\t\t\t\t\t\t{%- assign loCode = part -%}\n\t\t\t\t\t\t\t\t\t\t\t{%- assign isExcluded = false -%}\n\n\t\t\t\t\t\t\t\t\t\t\t{%- comment -%} EXCLUSION CHECK: Only for branch managers using userExclusionLOList from SetupQuery {%- endcomment -%}\n\t\t\t\t\t\t\t\t\t\t\t{%- if is_BranchManager -%}\n\t\t\t\t\t\t\t\t\t\t\t\t{%- if userExclusionLOList != blank and userExclusionLOList != \"\" -%}\n\t\t\t\t\t\t\t\t\t\t\t\t\t{%- assign exclusionCheckString = \"|\" | append: loCode | append: \"|\" -%}\n\t\t\t\t\t\t\t\t\t\t\t\t\t{%- if userExclusionLOList contains exclusionCheckString -%}\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t{%- assign isExcluded = true -%}\n\t\t\t\t\t\t\t\t\t\t\t\t\t{%- endif -%}\n\t\t\t\t\t\t\t\t\t\t\t\t{%- endif -%}\n\t\t\t\t\t\t\t\t\t\t\t{%- endif -%}\n\n\t\t\t\t\t\t\t\t\t\t\t{%- unless isExcluded -%}\n\t\t\t\t\t\t\t\t\t\t\t\t{%- if branchManagerOfficerCodes == \"\" -%}\n\t\t\t\t\t\t\t\t\t\t\t\t\t{%- assign branchManagerOfficerCodes = loCode -%}\n\t\t\t\t\t\t\t\t\t\t\t\t{%- else -%}\n\t\t\t\t\t\t\t\t\t\t\t\t\t{%- assign branchManagerOfficerCodes = branchManagerOfficerCodes | append: \"|\" | append: loCode -%}\n\t\t\t\t\t\t\t\t\t\t\t\t{%- endif -%}\n\t\t\t\t\t\t\t\t\t\t\t\t{%- assign hasOfficers = true -%}\n\t\t\t\t\t\t\t\t\t\t\t{%- endunless -%}\n\t\t\t\t\t\t\t\t\t\t{%- endif -%}\n\t\t\t\t\t\t\t\t\t{%- endfor -%}\n\t\t\t\t\t\t\t\t{%- endif -%}\n\t\t\t\t\t\t\t{%- endif -%}\n\t\t\t\t\t\t{%- endunless -%}\n\n\t\t\t\t\t\t{% comment %} CORRECT ORDER: Loan Officer dropdown FIRST {% endcomment %}\n\t\t\t\t\t\t{% include 'Loan Officer Dropdown', parmCurrentValue: dropdownCurrentValue %}\n\n\t\t\t\t\t\t{% comment %} CORRECT ORDER: Period dropdown SECOND {% endcomment %}\n\t\t\t\t\t\t{% include 'snippet' snippet_name:'Current Period Selection' %}\n\n\n\n\n\n\n\t\t\t\t\t\t\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t{% endif %}\n\n\t\t\t{% if hasLoanOfficerParam or is_OnlyLoanOfficer %}\n\t\t\t\t{% include 'snippet' snippet_name:'Commission Filter' %}                               {% comment %} CENTRALIZED FILTERING: applies all permission and page-specific filters, sets cpCommCount, cpCommTotal, cpAdjuCount, cpAdjuTotal {% endcomment %}\n\t\t\t\t{% include 'snippet' snippet_name:'FetchXML - Current Period' %}\n\t\t\t{% else %}\n\t\t\t\t{% comment %} PERFORMANCE OPTIMIZATION: No loan officer selected - skip heavy data queries {% endcomment %}\n\t\t\t\t{% assign cpCommCount = 0 %}\n\t\t\t\t{% assign cpCommTotal = 0 %}\n\t\t\t\t{% assign cpAdjuCount = 0 %}\n\t\t\t\t{% assign cpAdjuTotal = 0 %}\n\t\t\t\t{% assign cpCommValueRowCount = 0 %}\n\t\t\t\t{% assign cpLoanCount = 0 %}\n\t\t\t\t{% assign cpLoanTotal = 0 %}\n\t\t\t{% endif %}\n\n            \n            {% if cpCommValueRowCount &gt; 0 %}                            {% comment %}     cpCommValueRowCount is set in FetchXml-Current-Period    {% endcomment %} \n\n\t\t\t\t&lt;!-- JavaScript-based arithmetic to avoid DotLiquid bug --&gt;\n\t\t\t\t{% assign rawSetting = settings['LV/NumApprovalPeriods'] %}\n\t\t\t\t{% if rawSetting == blank or rawSetting == empty or rawSetting == \"\" or rawSetting == nil %}\n\t\t\t\t\t{% assign rawSetting = \"0\" %}\n\t\t\t\t{% endif %}\n\t\t\t\t\n\t\t\t\t&lt;script&gt;\n\t\t\t\t\t// Calculate minPeriodAllowedForApprovals using JavaScript\n\t\t\t\t\tconst settingNum = parseInt(\"{{rawSetting}}\") || 0;\n\t\t\t\t\tconst sqNum = parseInt(\"{{sqAcctgPeriodNo}}\") || 0;\n\t\t\t\t\tconst minPeriodAllowedForApprovals = sqNum - settingNum;\n\t\t\t\t\t\n\t\t\t\t\t// Store in window for use in conditional logic\n\t\t\t\t\twindow.minPeriodAllowedForApprovals = minPeriodAllowedForApprovals;\n\t\t\t\t\t\n\t\t\t\t\t// Debug output\n\t\t\t\t\tconsole.log('JS Arithmetic:', {\n\t\t\t\t\t\trawSetting: \"{{rawSetting}}\",\n\t\t\t\t\t\tsettingNum: settingNum,\n\t\t\t\t\t\tsqAcctgPeriodNo: \"{{sqAcctgPeriodNo}}\",\n\t\t\t\t\t\tsqNum: sqNum,\n\t\t\t\t\t\tminPeriodAllowedForApprovals: minPeriodAllowedForApprovals\n\t\t\t\t\t});\n\t\t\t\t&lt;/script&gt;\n\t\t\t\t\n\t\t\t\t&lt;!-- Set Liquid variable from JavaScript calculation --&gt;\n\t\t\t\t{% assign minPeriodAllowedForApprovals = -999 %}\n\t\t\t\t{% comment %} This will be overridden by JavaScript {% endcomment %}\n\n\n\n\t\t\t\t\n\t\t\t\t&lt;script&gt;\n\t\t\t\t\t// JavaScript-controlled approval section display\n\t\t\t\t\tdocument.addEventListener('DOMContentLoaded', function() {\n\t\t\t\t\t\tconst sqUsingApprovals = {{sqUsingApprovals}};\n\t\t\t\t\t\tconst sqRecUISelPeriodNo = {{sqRecUISelPeriod.lv_periodno}};\n\t\t\t\t\t\tconst sqLOViewMode = \"{{sqLOViewMode}}\";\n\t\t\t\t\t\tconst minPeriodAllowedForApprovals = window.minPeriodAllowedForApprovals;\n\t\t\t\t\t\t\n\t\t\t\t\t\tconsole.log('Approval Check:', {\n\t\t\t\t\t\t\tsqUsingApprovals: sqUsingApprovals,\n\t\t\t\t\t\t\tsqRecUISelPeriodNo: sqRecUISelPeriodNo,\n\t\t\t\t\t\t\tsqLOViewMode: sqLOViewMode,\n\t\t\t\t\t\t\tminPeriodAllowedForApprovals: minPeriodAllowedForApprovals\n\t\t\t\t\t\t});\n\t\t\t\t\t\t\n\t\t\t\t\t\t// Show or hide approval section based on conditions\n\t\t\t\t\t\tconst approvalDiv = document.getElementById('approvalSectionWrapper');\n\t\t\t\t\t\tconst condition1 = sqUsingApprovals === true;\n\t\t\t\t\t\tconst condition2 = sqRecUISelPeriodNo &gt;= minPeriodAllowedForApprovals;\n\t\t\t\t\t\tconst condition3 = sqLOViewMode !== \"ALL_LOAN_OFFICERS\";\n\t\t\t\t\t\tconst allConditionsMet = condition1 &amp;&amp; condition2 &amp;&amp; condition3;\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\tif (allConditionsMet) {\n\t\t\t\t\t\t\t\t\t\tapprovalDiv.style.display = 'block';\n\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\t\t\tapprovalDiv.style.display = 'none';\n\t\t\t\t\t\t}\n\t\t\t\t\t});\n\t\t\t\t&lt;/script&gt;\n\t\t\t\t\n\t\t\t\t&lt;div id=\"approvalSectionWrapper\" style=\"display: none;\"&gt;\n\t\t\t\t{% comment %} This div will be shown/hidden by JavaScript {% endcomment %}\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t&lt;!-- Step 1: Check if user has direct LO assignment (yes we are using approvals) --&gt;\n\t\t\t\t\t{% assign userHasDirectLO = false %}\n\t\t\t\t\t{% if user.lv_loanofficer.id %}\n\t\t\t\t\t\t{% if user.lv_loanofficer.id != blank %}\n\t\t\t\t\t\t\t{% if user.lv_loanofficer.id != \"\" %}\n\t\t\t\t\t\t\t\t{% assign userHasDirectLO = true %}\n\t\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t{% endif %}\n\t\t\t\t\t\n\t\t\t\t\t&lt;!-- Step 2: Check if we have a selected LO --&gt;\n\t\t\t\t\t{% assign hasSelectedLO = false %}\n\t\t\t\t\t{% if sqRecLOBeingViewed.lv_lvcomploanofficerid %}\n\t\t\t\t\t\t{% if sqRecLOBeingViewed.lv_lvcomploanofficerid != blank %}\n\t\t\t\t\t\t\t{% if sqRecLOBeingViewed.lv_lvcomploanofficerid != \"\" %}\n\t\t\t\t\t\t\t\t{% assign hasSelectedLO = true %}\n\t\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t{% endif %}\n\t\t\t\t\t\n\t\t\t\t\t&lt;!-- Step 3: Check if LO IDs match --&gt;\n\t\t\t\t\t{% assign loanOfficerMatch = false %}\n\t\t\t\t\t{% if userHasDirectLO == true %}\n\t\t\t\t\t\t{% if hasSelectedLO == true %}\n\t\t\t\t\t\t\t{% if user.lv_loanofficer.id == sqRecLOBeingViewed.lv_lvcomploanofficerid %}\n\t\t\t\t\t\t\t\t{% assign loanOfficerMatch = true %}\n\t\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t{% endif %}\n\t\t\t\t\t\n\t\t\t\t\t&lt;!-- APPROVAL LOGIC --&gt;\n\t\t\t\t\t&lt;!-- Determine if we should show approval section and what type --&gt;\n\t\t\t\t\t{% assign showApprovalSection = false %}\n\t\t\t\t\t{% assign allowApprovalAction = false %}\n\t\t\t\t\t{% assign approvalViewMode = \"none\" %}\n\t\t\t\t\t\n\t\t\t\t\t&lt;!-- Step 4: Determine approval view mode based on configuration and user role --&gt;\n\t\t\t\t\t{% if sqApprovalType == \"\" or sqApprovalType == \"None\" %}\n\t\t\t\t\t\t{% assign approvalViewMode = \"none\" %}\n\t\t\t\t\t{% elsif sqApprovalType == \"LoanOfficer\" %}\n\t\t\t\t\t\t{% if loanOfficerMatch == true %}\n\t\t\t\t\t\t\t{% assign showApprovalSection = true %}\n\t\t\t\t\t\t\t{% assign allowApprovalAction = true %}\n\t\t\t\t\t\t\t{% assign approvalViewMode = \"loan_officer_own\" %}\n\t\t\t\t\t\t{% elsif canApproveCommissions == true %}\n\t\t\t\t\t\t\t{% assign showApprovalSection = true %}\n\t\t\t\t\t\t\t{% assign allowApprovalAction = false %}\n\t\t\t\t\t\t\t{% assign approvalViewMode = \"branch_manager_view_only\" %}\n\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t{% elsif sqApprovalType == \"BranchManager\" %}\n\t\t\t\t\t\t{% if loanOfficerMatch == true %}\n\t\t\t\t\t\t\t{% assign showApprovalSection = true %}\n\t\t\t\t\t\t\t{% assign allowApprovalAction = false %}\n\t\t\t\t\t\t\t{% assign approvalViewMode = \"loan_officer_view_only\" %}\n\t\t\t\t\t\t{% elsif canApproveCommissions == true %}\n\t\t\t\t\t\t\t{% assign showApprovalSection = true %}\n\t\t\t\t\t\t\t{% assign allowApprovalAction = true %}\n\t\t\t\t\t\t\t{% assign approvalViewMode = \"branch_manager_can_approve\" %}\n\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t{% elsif sqApprovalType == \"BothRequired\" %}\n\t\t\t\t\t\t{% if loanOfficerMatch == true %}\n\t\t\t\t\t\t\t{% assign showApprovalSection = true %}\n\t\t\t\t\t\t\t{% assign allowApprovalAction = true %}\n\t\t\t\t\t\t\t{% assign approvalViewMode = \"loan_officer_own_both_required\" %}\n\t\t\t\t\t\t{% elsif canApproveCommissions == true %}\n\t\t\t\t\t\t\t{% assign showApprovalSection = true %}\n\t\t\t\t\t\t\t{% assign allowApprovalAction = false %}\n\t\t\t\t\t\t\t{% assign approvalViewMode = \"branch_manager_view_only\" %}\n\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t{% elsif sqApprovalType == \"EitherOr\" %}\n\t\t\t\t\t\t{% if loanOfficerMatch == true %}\n\t\t\t\t\t\t\t{% assign showApprovalSection = true %}\n\t\t\t\t\t\t\t{% assign allowApprovalAction = true %}\n\t\t\t\t\t\t\t{% assign approvalViewMode = \"loan_officer_own_either\" %}\n\t\t\t\t\t\t{% elsif canApproveCommissions == true %}\n\t\t\t\t\t\t\t{% assign showApprovalSection = true %}\n\t\t\t\t\t\t\t{% assign allowApprovalAction = true %}\n\t\t\t\t\t\t\t{% assign approvalViewMode = \"branch_manager_can_approve_either\" %}\n\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t{% endif %}\n\t\t\t\t\t\n\t\t\t\t\t&lt;!-- Set canApprove for compatibility --&gt;\n\t\t\t\t\t{% assign canApprove = showApprovalSection %}\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t&lt;!-- lodd:appr00 --&gt;\n\t\t\t\t\t{% if canApprove == true %}\n\t\t\t\t\t\t&lt;!-- lodd:appr00.a --&gt;\n\t\t\t\t\t\t&lt;div id=\"divApproval\" class=\"approval-section\" style=\"margin: 20px 0;\"&gt;\n\t\t\t\t\t\t\t&lt;div id=\"approvalLoading\"&gt;\n\t\t\t\t\t\t\t\t&lt;div style=\"display: flex; align-items: center;\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;span style=\"margin-right: 10px;\"&gt;Checking approval status...&lt;/span&gt;\n\t\t\t\t\t\t\t\t\t&lt;div class=\"spinner-border spinner-border-sm\" role=\"status\"&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;span class=\"sr-only\"&gt;Loading...&lt;/span&gt;\n\t\t\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t&lt;!-- Hidden data for JavaScript --&gt;\n\t\t\t\t\t\t\t&lt;script type=\"text/javascript\"&gt;\n\t\t\t\t\t\t\t\twindow.APPROVAL_VIEW_MODE = \"{{approvalViewMode}}\";\n\t\t\t\t\t\t\t\twindow.ALLOW_APPROVAL_ACTION = {{allowApprovalAction}};\n\t\t\t\t\t\t\t\twindow.LOAN_OFFICER_NAME = \"{{sqRecLOBeingViewed.lv_name}}\";\n\t\t\t\t\t\t\t\twindow.IS_BRANCH_MANAGER = {{is_BranchManager}};\n\t\t\t\t\t\t\t\twindow.CAN_APPROVE_COMMISSIONS = {{canApproveCommissions}};\n\t\t\t\t\t\t\t\twindow.IS_OWN_COMMISSIONS = {% if user.lv_loanofficer.id == sqRecLOBeingViewed.lv_lvcomploanofficerid %}true{% else %}false{% endif %};\n\t\t\t\t\t\t\t&lt;/script&gt;\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t{% comment %}  Approved state (hidden initially)   {% endcomment %} \n\t\t\t\t\t\t\t&lt;div id=\"approvalComplete\" style=\"display: none;\"&gt;\n\t\t\t\t\t\t\t\t&lt;div id=\"approvalStatusMessage\" style=\"color: green; font-weight: bold; margin-bottom: 10px;\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;!-- Status message will be populated by JavaScript --&gt;\n\t\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t\t{% comment %}   Not yet approved state (hidden initially)   {% endcomment %} \n\t\t\t\t\t\t\t&lt;div id=\"approvalRequired\" style=\"display: none;\"&gt;\n\t\t\t\t\t\t\t\t&lt;div style=\"display: flex; align-items: center;\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;span id=\"spanApprove\" style=\"margin-left: 20px; margin-right: 10px; background-color: transparent;\"&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;!-- Message will be populated by JavaScript based on approval mode --&gt;\n\t\t\t\t\t\t\t\t\t&lt;/span&gt;\n\t\t\t\t\t\t\t\t\t&lt;input id=\"btnApprove\" type=\"button\" value=\"Approve\" \n\t\t\t\t\t\t\t\t\t\tonclick=\"return btnApproveClick();\" class=\"btn\" \n\t\t\t\t\t\t\t\t\t\tstyle=\"background-color: var(--portalThemeColor10); color: var(--portalThemeColor5); border: none; border-radius: 8px; padding: 10px 15px; display: none;\" /&gt;\n\t\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t{% comment %}   View-only state for Branch Managers   {% endcomment %} \n\t\t\t\t\t\t\t&lt;div id=\"approvalViewOnly\" style=\"display: none;\"&gt;\n\t\t\t\t\t\t\t\t&lt;div id=\"viewOnlyStatusMessage\" style=\"color: #666; margin-bottom: 10px;\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;!-- View-only status message will be populated by JavaScript --&gt;\n\t\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t{% else %}\n\t\t\t\t\t\t&lt;!-- lodd:appr00.b --&gt;\n\t\t\t\t\t{% endif %}\n\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;!-- End of JavaScript-controlled approval section --&gt;\n\t\t\t\t\n\t\t\t\t&lt;!-- Bulk approval functionality has been moved to the /Branch page --&gt;\n\t\t\t\t\n\t\t\t\t&lt;div id=\"approvalSectionElse\" style=\"display: none;\"&gt;\n\t\t\t\t\t&lt;!-- lodd:appr00.else Either we are NOT using approvals at all, or, the current period '{{sqRecUISelPeriod.lv_periodno}}' is not the open periodno '{{ sqAcctgPeriodNo }}' --&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t\t\n\t\t\t\t&lt;script&gt;\n\t\t\t\t\t// Also handle the \"else\" case for approval section\n\t\t\t\t\tdocument.addEventListener('DOMContentLoaded', function() {\n\t\t\t\t\t\tconst sqUsingApprovals = {{sqUsingApprovals}};\n\t\t\t\t\t\tconst sqRecUISelPeriodNo = {{sqRecUISelPeriod.lv_periodno}};\n\t\t\t\t\t\tconst sqLOViewMode = \"{{sqLOViewMode}}\";\n\t\t\t\t\t\tconst minPeriodAllowedForApprovals = window.minPeriodAllowedForApprovals;\n\t\t\t\t\t\t\n\t\t\t\t\t\tconst approvalElseDiv = document.getElementById('approvalSectionElse');\n\t\t\t\t\t\t\n\t\t\t\t\t\t// Show else section if conditions are NOT met\n\t\t\t\t\t\tif (!(sqUsingApprovals === true &amp;&amp; \n\t\t\t\t\t\t\t  sqRecUISelPeriodNo &gt;= minPeriodAllowedForApprovals &amp;&amp; \n\t\t\t\t\t\t\t  sqLOViewMode !== \"ALL_LOAN_OFFICERS\")) {\n\t\t\t\t\t\t\tapprovalElseDiv.style.display = 'block';\n\t\t\t\t\t\t}\n\t\t\t\t\t});\n\t\t\t\t&lt;/script&gt;\n\t\t\t\t\n\t\t\t\t&lt;!-- Bulk approval JavaScript has been moved to the /Branch page --&gt;\n\n                &lt;div class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 15px;\"&gt;&lt;/div&gt;\n                \n                {% comment %} PERFORMANCE OPTIMIZATION: Only load heavy components when commission data exists {% endcomment %}\n                {% if cpCommValueRowCount &gt; 0 %}\n                    {% include 'snippet' snippet_name:'Dashboard Details' %}\n\n\t\t\t\t\t                    {% comment %} DEBT BALANCE - Server-side data passed to JavaScript for math {% endcomment %}\n                    &lt;!-- DEBUG:DEBTLOG: sqRecLOBeingViewed.lv_code=\"{{sqRecLOBeingViewed.lv_code}}\" --&gt;\n                    &lt;!-- DEBUG:DEBTLOG: debtLogEntries.results.entities.size={{debtLogEntries.results.entities.size}} --&gt;\n                    &lt;!-- DEBUG:DEBTLOG: hasLoanOfficerParam={{hasLoanOfficerParam}} is_OnlyLoanOfficer={{is_OnlyLoanOfficer}} --&gt;\n                    &lt;script&gt;\n                        // Server-rendered debt log entries (FetchXML query, no AJAX needed)\n                        // Math (summing) is done in JavaScript to avoid Liquid arithmetic issues\n                        // DEBUG: LO Code = \"{{sqRecLOBeingViewed.lv_code}}\", Entry count = {{debtLogEntries.results.entities.size | default: 0}}\n                        window.DEBT_LOG_ENTRIES = [\n                            {%- for entry in debtLogEntries.results.entities -%}\n                            {\n                                identifierCode: \"{{ entry.lv_identifiercode }}\",\n                                date: \"{{ entry.lv_entrydate | date: 'yyyy-MM-dd' }}\",\n                                amount: {{ entry.lv_amount | default: 0 }},\n                                description: \"{{ entry.lv_description | replace: '\"', '\\\\\"' | replace: '\\n', ' ' | replace: '\\r', '' }}\"\n                            }{%- unless forloop.last -%},{%- endunless -%}\n                            {%- endfor -%}\n                        ];\n                        console.log('DEBT BALANCE: Server-rendered', window.DEBT_LOG_ENTRIES.length, 'entries');\n\n                        /**\n                         * GetDebtLogEntries - Returns server-rendered debt log entries (no AJAX)\n                         * Data is fetched server-side via FetchXML query\n                         * @returns {Array} Array of debt log entry objects\n                         */\n                        function GetDebtLogEntries() {\n                            return window.DEBT_LOG_ENTRIES || [];\n                        }\n\n                        /**\n                         * Calculate total from debt log entries\n                         */\n                        function calculateDebtBalanceTotal(entries) {\n                            return entries.reduce((sum, entry) =&gt; sum + entry.amount, 0);\n                        }\n\n                        /**\n                         * Format currency value\n                         */\n                        function formatDebtCurrency(amount) {\n                            const formatted = new Intl.NumberFormat('en-US', {\n                                style: 'currency',\n                                currency: 'USD'\n                            }).format(Math.abs(amount));\n\n                            return amount &lt; 0 ? '-' + formatted : formatted;\n                        }\n\n                        /**\n                         * Format date for display\n                         */\n                        function formatDebtDate(dateStr) {\n                            if (!dateStr) return '';\n                            const date = new Date(dateStr + 'T00:00:00');\n                            return date.toLocaleDateString('en-US', {\n                                month: '2-digit',\n                                day: '2-digit',\n                                year: '2-digit'\n                            });\n                        }\n\n                        /**\n                         * Toggle detail panel visibility (card stays in grid)\n                         */\n                        function toggleDebtBalanceDetail() {\n                            const detail = document.getElementById('debtBalanceDetail');\n\n                            if (detail.style.display === 'none' || detail.style.display === '') {\n                                detail.style.display = 'block';\n                            } else {\n                                detail.style.display = 'none';\n                            }\n                        }\n\n                        /**\n                         * Render debt balance card and detail table\n                         * Uses server-rendered data (no AJAX), JavaScript does the math\n                         */\n                        function renderDebtBalance() {\n                            const amountEl = document.getElementById('debtBalanceAmount');\n                            const hintEl = document.getElementById('debtBalanceHint');\n\n                            try {\n                                const entries = GetDebtLogEntries();  // Sync - data is pre-loaded\n                                const total = calculateDebtBalanceTotal(entries);  // JavaScript does the math\n\n                                // Update card amount\n                                amountEl.textContent = formatDebtCurrency(total);\n                                if (total &lt; 0) {\n                                    amountEl.classList.add('negative');\n                                } else {\n                                    amountEl.classList.remove('negative');\n                                }\n\n                                // Update detail table\n                                const tbody = document.getElementById('debtBalanceTableBody');\n                                if (entries.length === 0) {\n                                    tbody.innerHTML = '&lt;tr&gt;&lt;td colspan=\"4\" style=\"text-align: center; color: #888;\"&gt;No debt log entries found&lt;/td&gt;&lt;/tr&gt;';\n                                    hintEl.style.display = 'none';\n                                } else {\n                                    tbody.innerHTML = entries.map(entry =&gt; {\n                                        const amountClass = entry.amount &gt;= 0 ? 'amount-positive' : 'amount-negative';\n                                        return `\n                                            &lt;tr&gt;\n                                                &lt;td&gt;${entry.identifierCode}&lt;/td&gt;\n                                                &lt;td&gt;${formatDebtDate(entry.date)}&lt;/td&gt;\n                                                &lt;td style=\"text-align: right;\" class=\"${amountClass}\"&gt;${formatDebtCurrency(entry.amount)}&lt;/td&gt;\n                                                &lt;td&gt;${entry.description}&lt;/td&gt;\n                                            &lt;/tr&gt;\n                                        `;\n                                    }).join('');\n                                }\n\n                                // Update detail total\n                                const totalEl = document.getElementById('debtBalanceTotalDetail');\n                                totalEl.textContent = formatDebtCurrency(total);\n                                if (total &lt; 0) {\n                                    totalEl.classList.add('negative');\n                                } else {\n                                    totalEl.classList.remove('negative');\n                                }\n\n                            } catch (error) {\n                                console.error('DEBT BALANCE: Error rendering:', error);\n                                amountEl.textContent = 'Error';\n                                amountEl.style.color = '#c0392b';\n                            }\n                        }\n\n                        // Initialize debt balance on page load\n                        // Data is already server-rendered, just need to calculate totals and render\n                        document.addEventListener('DOMContentLoaded', function() {\n                            renderDebtBalance();\n                        });\n                    &lt;/script&gt;\n\n\n                    {% comment %} Parse pageSize parameter with default of 10 for table pagination {% endcomment %}\n                    {% assign cfPageSize = 10 %}\n                    {% if request.params.pageSize and request.params.pageSize != \"\" %}\n                        {% assign cfPageSize = request.params.pageSize | times: 1 %}\n                        {% if cfPageSize &lt; 1 %}\n                            {% assign cfPageSize = 10 %}\n                        {% endif %}\n                    {% endif %}\n\n                    &lt;div class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 25px;\"&gt;&lt;/div&gt;\n                    \n                    &lt;div class=\"ppFlexContainer\" style=\"display: flex; align-items: center; padding: 8px 0 8px 0;\"&gt; &lt;!-- Buttons: Print, Email, Profile --&gt;\n\n                        {% if cfgPrintEnabled %}                  {% comment %}      TODO8: this logic is duplicated across /web-pages/Accounting|Region|Branch|LoanOfficer                tag=2504021442              {% endcomment %} \n                            &lt;div onclick=\"printpage()\" data-component-theme=\"portalThemeColor10\" class=\"ppFlexContainer\" style=\"display: flex; border-radius: 8px 8px 8px 8px; padding: 4px 14px 4px 14px; align-items: center; justify-content: space-between; max-width: auto; width: auto; height: 45px; flex-grow: 0; flex-shrink: 0; flex-basis: 135px; flex-direction: row;cursor: pointer;\"&gt;\n                                &lt;p style=\"text-align: left; color: var(--portalThemeColor5); font-size: 18px;\"&gt;​\n                                    &lt;b aria-label=\"Text Commission Profile\" style=\"position: relative;\"&gt;\n                                        Print\n                                    &lt;/b&gt;\n                                &lt;/p&gt;\n                                &lt;img src=\"/icon-print.png\" alt=\"icon-print\" name=\"icon-print.png\" style=\"width: 28.67%; height: 28px; max-width: 100%;\"&gt;\n                            &lt;/div&gt;\n                        {% endif %}\n                        \n                        &lt;div id=\"email_btn\" data-component-theme=\"portalThemeColor10\" class=\"ppFlexContainer email-modal-open\" style=\"display: flex; cursor: pointer; border-radius: 8px 8px 8px 8px; padding: 4px 14px 4px 14px; align-items: center; justify-content: space-between; max-width: auto; width: auto; height: 45px; flex-grow: 0; flex-shrink: 0; flex-basis: 135px; flex-direction: row;\"&gt;\n                            &lt;p style=\"text-align: left; color: var(--portalThemeColor5); font-size: 18px;\"&gt;\n                                ​&lt;b aria-label=\"Text Print\" style=\"position: relative;\"&gt;\n                                    Email\n                                &lt;/b&gt;\n                            &lt;/p&gt;\n                            &lt;img src=\"/icon-email.png\" alt=\"icon-email\" name=\"icon-email.png\" style=\"width: 28.67%; height: 28px; max-width: 100%;\"&gt;\n                        &lt;/div&gt;\n                    &lt;/div&gt;\n                    \n                    &lt;div id=\"divPrimaryCommissionsTable\" class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 25px;\"&gt;&lt;/div&gt;\n                    {% include 'Primary Commissions Table' %}\n\n                    &lt;div id=\"divPrimaryAdjustmentsTable\" class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 25px;\"&gt;&lt;/div&gt;\n                    {% include 'Primary Adjustments Table' %}\n\n                    {% include 'snippet' snippet_name:'Email Dialog' %}\n\n                    {% include 'Email Modal' %}\n                {% endif %}\n\n\t\t\t{% else %}                {% comment %}                         cpCommValueRowCount is 0                               {% endcomment %}\n\n\n\t\t\t\t{% comment %} ADMIN OVERRIDE: Administrators can access all data {% endcomment %}\n\t\t\t\t{% comment %} CRITICAL: Check is_admin FIRST before any permission restrictions {% endcomment %}\n\t\t\t\t{% if is_admin %}\n\t\t\t\t\t{% comment %} Admin users always have access - show appropriate message {% endcomment %}\n\t\t\t\t\t{% if is_OnlyLoanOfficer %}\n\t\t\t\t\t\t{% if sqRecLOBeingViewed and sqRecLOBeingViewed.lv_name and sqRecLOBeingViewed.lv_name != \"\" %}\n\t\t\t\t\t\t\t&lt;div class=\"grid-container\"&gt;\n\t\t\t\t\t\t\t\t&lt;h3&gt;&lt;span style=\"color: blue\"&gt;{{sqRecLOBeingViewed.lv_name}}&lt;/span&gt; has no commission values for period &lt;span style=\"color: blue;\"&gt;{{sqRecUISelPeriod.lv_name}}&lt;/span&gt;&lt;/h3&gt;\n\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t{% else %}\n\t\t\t\t\t\t\t&lt;div class=\"grid-container\"&gt;\n\t\t\t\t\t\t\t\t&lt;h3&gt;No loan officer selected&lt;/h3&gt;\n\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t{% else %}\n\t\t\t\t\t\t&lt;div class=\"grid-container\"&gt;\n\t\t\t\t\t\t\t{% if sqRecLOBeingViewed and sqRecLOBeingViewed.lv_name and sqRecLOBeingViewed.lv_name != \"\" %}\n\t\t\t\t\t\t\t\t&lt;h3&gt;&lt;span style=\"color: blue\"&gt;{{sqRecLOBeingViewed.lv_name}}&lt;/span&gt; has no commission values for period &lt;span style=\"color: blue;\"&gt;{{sqRecUISelPeriod.lv_name}}&lt;/span&gt;&lt;/h3&gt;\n\t\t\t\t\t\t\t{% else %}\n\t\t\t\t\t\t\t\t&lt;h3&gt;Please select a loan officer from the dropdown above to view commission data&lt;/h3&gt;\n\t\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t{% endif %}\n\t\t\t\t{% elsif is_BranchManager %}\n\t\t\t\t\t{% comment %} Branch managers always have access - show selection message {% endcomment %}\n\t\t\t\t\t&lt;div class=\"grid-container\"&gt;\n\t\t\t\t\t\t{% if hasLoanOfficerParam and sqRecLOBeingViewed and sqRecLOBeingViewed.lv_name and sqRecLOBeingViewed.lv_name != \"\" %}\n\t\t\t\t\t\t\t&lt;h3&gt;&lt;span style=\"color: blue\"&gt;{{sqRecLOBeingViewed.lv_name}}&lt;/span&gt; has no commission values for period &lt;span style=\"color: blue;\"&gt;{{sqRecUISelPeriod.lv_name}}&lt;/span&gt;&lt;/h3&gt;\n\t\t\t\t\t\t{% else %}\n\t\t\t\t\t\t\t&lt;h3 style=\"text-align: center; color: #666; padding: 40px;\"&gt;\n\t\t\t\t\t\t\t\t&lt;i class=\"fas fa-user-tie\" style=\"margin-right: 10px;\"&gt;&lt;/i&gt;\n\t\t\t\t\t\t\t\tPlease select a loan officer from the dropdown above to view commission data.\n\t\t\t\t\t\t\t&lt;/h3&gt;\n\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t{% elsif userLoanOfficerList != \"\" and userLoanOfficerList != \"|\" %}\n\t\t\t\t\t{% comment %} User has loan officer assignments - show appropriate content based on selection {% endcomment %}\n\t\t\t\t\t{% if is_OnlyLoanOfficer %}\n\t\t\t\t\t\t{% if sqRecLOBeingViewed and sqRecLOBeingViewed.lv_name and sqRecLOBeingViewed.lv_name != \"\" %}\n\t\t\t\t\t\t\t&lt;div class=\"grid-container\"&gt;\n\t\t\t\t\t\t\t\t&lt;h3&gt;&lt;span style=\"color: blue\"&gt;{{sqRecLOBeingViewed.lv_name}}&lt;/span&gt; has no commission values for period &lt;span style=\"color: blue;\"&gt;{{sqRecUISelPeriod.lv_name}}&lt;/span&gt;&lt;/h3&gt;\n\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t{% else %}\n\t\t\t\t\t\t\t&lt;div class=\"grid-container\"&gt;\n\t\t\t\t\t\t\t\t&lt;h3&gt;No loan officer selected&lt;/h3&gt;\n\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t{% else %}\n\t\t\t\t\t\t&lt;div class=\"grid-container\"&gt;\n\t\t\t\t\t\t\t{% comment %} FIXED: Only show \"no commission values\" message when officer was explicitly selected via URL parameter {% endcomment %}\n\t\t\t\t\t\t\t{% if hasLoanOfficerParam and sqRecLOBeingViewed and sqRecLOBeingViewed.lv_name and sqRecLOBeingViewed.lv_name != \"\" %}\n\t\t\t\t\t\t\t\t&lt;h3&gt;&lt;span style=\"color: blue\"&gt;{{sqRecLOBeingViewed.lv_name}}&lt;/span&gt; has no commission values for period &lt;span style=\"color: blue;\"&gt;{{sqRecUISelPeriod.lv_name}}&lt;/span&gt;&lt;/h3&gt;\n\t\t\t\t\t\t\t{% else %}\n\t\t\t\t\t\t\t\t&lt;h3 style=\"text-align: center; color: #666; padding: 40px;\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;i class=\"fas fa-user-tie\" style=\"margin-right: 10px;\"&gt;&lt;/i&gt;\n\t\t\t\t\t\t\t\t\tPlease select a loan officer from the dropdown above to view commission data.\n\t\t\t\t\t\t\t\t&lt;/h3&gt;\n\t\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t{% endif %}\n\t\t\t\t{% else %}\n\t\t\t\t\t{% comment %} User has NO access - show error message {% endcomment %}\n\t\t\t\t\t&lt;div class=\"grid-container\"&gt;\n\t\t\t\t\t\t&lt;h3&gt;No Loan Officer Access&lt;/h3&gt;\n\t\t\t\t\t\t&lt;p&gt;You do not have access to view any loan officer commission data.&lt;/p&gt;\n\t\t\t\t\t\t&lt;p&gt;To gain access, contact your system administrator to request:&lt;/p&gt;\n\t\t\t\t\t\t&lt;ul&gt;\n\t\t\t\t\t\t\t&lt;li&gt;A direct loan officer assignment, OR&lt;/li&gt;\n\t\t\t\t\t\t\t&lt;li&gt;Loan officer oversight assignments, OR&lt;/li&gt;\n\t\t\t\t\t\t\t&lt;li&gt;Branch manager assignments&lt;/li&gt;\n\t\t\t\t\t\t&lt;/ul&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t{% endif %}\n            {% endif %}\n        &lt;/div&gt;\n    &lt;/div&gt;\n&lt;/div&gt;\n\n{% else %}\n\t{% comment %} Auto-redirect unauthenticated users to sign-in page {% endcomment %}\n\t&lt;script&gt;\n\t\t// Clear any query parameters and redirect to sign-in\n\t\twindow.location.href = '/Account/Login/';\n\t&lt;/script&gt;\n\t&lt;div class=\"container\"&gt;\n\t\t&lt;h1&gt;Redirecting to Sign In...&lt;/h1&gt;\n\t\t&lt;p&gt;Please wait while we redirect you to the sign-in page.&lt;/p&gt;\n\t&lt;/div&gt;\n{% endif %}\n\n&lt;script&gt;\n\nfunction btnCommProfile_Click() {\n\twriteToLogTable(\"Click\", \"btnCommProfile\");\n}\n\n{% if sqUsingApprovals == true %}\n\t// todo8: using approvals: YES\n\t\n\t// BULK APPROVAL HELPER FUNCTIONS\n\t\n\t// Parse userLoanOfficerList into array of officer objects\n\tfunction parseUserLoanOfficerList() {\n\t\tconst userPermissionList = \"{{userLoanOfficerList}}\";\n\t\t\t\n\t\t\n\t\tif (!userPermissionList || userPermissionList.trim() === '' || userPermissionList === '|') {\n\t\t\treturn [];\n\t\t}\n\t\t\n\t\tconst officers = [];\n\t\t// Format is \"|name|code|name|code|\" - split and group pairs\n\t\tconst parts = userPermissionList.split('|').filter(part =&gt; part.trim() !== '');\n\t\t\n\t\tfor (let i = 0; i &lt; parts.length; i += 2) {\n\t\t\tif (i + 1 &lt; parts.length) {\n\t\t\t\tconst name = parts[i];\n\t\t\t\tconst code = parts[i + 1];\n\t\t\t\t\n\t\t\t\tofficers.push({\n\t\t\t\t\tname: name,\n\t\t\t\t\tcode: code\n\t\t\t\t});\n\t\t\t}\n\t\t}\n\t\t\n\t\t\treturn officers;\n\t}\n\t\n\t// Get commission total for a specific officer using pre-calculated server-side data\n\tfunction getOfficerCommissionTotal(officerCode) {\n\t\t\t\n\t\t// Use the pre-calculated data from server\n\t\tif (window.bulkApprovalOfficerData) {\n\t\t\tconst officerData = window.bulkApprovalOfficerData.find(officer =&gt; officer.code === officerCode);\n\t\t\tif (officerData) {\n\t\t\t\tconst formattedTotal = new Intl.NumberFormat('en-US', {\n\t\t\t\t\tstyle: 'currency',\n\t\t\t\t\tcurrency: 'USD'\n\t\t\t\t}).format(officerData.total);\n\t\t\t\t\n\t\t\t\t\t\n\t\t\t\treturn {\n\t\t\t\t\ttotal: officerData.total,\n\t\t\t\t\tformattedTotal: formattedTotal,\n\t\t\t\t\trecordCount: officerData.count\n\t\t\t\t};\n\t\t\t}\n\t\t}\n\t\t\n\t\t\treturn {\n\t\t\ttotal: 0,\n\t\t\tformattedTotal: '$0.00',\n\t\t\trecordCount: 0\n\t\t};\n\t}\n\t\n\t// APPROVAL CHECKING\n\tasync function checkSophisticatedApprovalStatus(officerIdentifier, periodNo, useOfficerCode = true) {\n\t\ttry {\n\t\t\tconst approvalType = \"{{sqApprovalType}}\";\n\t\t\tconst viewMode = window.APPROVAL_VIEW_MODE;\n\t\t\tconst allowAction = window.ALLOW_APPROVAL_ACTION;\n\t\t\tconst loanOfficerName = window.LOAN_OFFICER_NAME;\n\t\t\tconst isBranchManager = window.IS_BRANCH_MANAGER;\n\t\t\tconst isOwnCommissions = window.IS_OWN_COMMISSIONS;\n\n\t\t\t// Build filter expression based on whether we have code or ID\n\t\t\tlet filterExpr;\n\t\t\tif (useOfficerCode) {\n\t\t\t\tfilterExpr = `$filter=lv_loanofficercode eq '${officerIdentifier}' and lv_periodno eq ${periodNo}`;\n\t\t\t} else {\n\t\t\t\tfilterExpr = `$filter=lv_loanofficer eq '${officerIdentifier}' and lv_periodno eq ${periodNo}`;\n\t\t\t}\n\n\t\t\tconst approvalRecords = await apiGetRecords(\"lv_lvcompcommissionapprovals\", filterExpr);\n\n\t\t\tif (!approvalRecords || !Array.isArray(approvalRecords)) {\n\t\t\t\tconsole.log('APPROVAL: No records found');\n\t\t\t\treturn {\n\t\t\t\t\tshowApprovalComplete: false,\n\t\t\t\t\tshowApprovalRequired: false,\n\t\t\t\t\tshowViewOnly: false,\n\t\t\t\t\tmessage: 'Error loading approval status'\n\t\t\t\t};\n\t\t\t}\n\n\t\t\t// Separate approval records by role\n\t\t\tconst bmApprovals = approvalRecords.filter(rec =&gt; rec.lv_webrole === 'Branch Manager');\n\t\t\tconst loApprovals = approvalRecords.filter(rec =&gt; rec.lv_webrole === 'Loan Officer');\n\t\t\t\n\t\t\t// Apply sophisticated logic based on view mode\n\t\t\tswitch (viewMode) {\n\t\t\t\tcase \"none\":\n\t\t\t\t\treturn { showApprovalComplete: false, showApprovalRequired: false, showViewOnly: false };\n\t\t\t\t\t\n\t\t\t\tcase \"loan_officer_own\":\n\t\t\t\t\t// \"LoanOfficer\" config - LO viewing their own\n\t\t\t\t\tif (loApprovals.length &gt; 0) {\n\t\t\t\t\t\tconst personalizedMessage = formatPersonalizedApprovalMessage(\n\t\t\t\t\t\t\tloApprovals[0].lv_fullname,\n\t\t\t\t\t\t\tloApprovals[0].lv_emailaddress,\n\t\t\t\t\t\t\twindow.PAGE_USEREMAIL,\n\t\t\t\t\t\t\tloApprovals[0].createdon\n\t\t\t\t\t\t);\n\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\tshowApprovalComplete: true,\n\t\t\t\t\t\t\tmessage: personalizedMessage\n\t\t\t\t\t\t};\n\t\t\t\t\t} else {\n\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\tshowApprovalRequired: true,\n\t\t\t\t\t\t\tshowApprovalButton: true,\n\t\t\t\t\t\t\tmessage: \"If you are satisfied with this commission report, click here to finalize and approve\",\n\t\t\t\t\t\t\tbuttonText: \"Approve My Commissions\"\n\t\t\t\t\t\t};\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\tcase \"branch_manager_view_only\":\n\t\t\t\t\t// \"LoanOfficer\" or \"BothRequired\" - BM viewing (view only)\n\t\t\t\t\tif (loApprovals.length &gt; 0) {\n\t\t\t\t\t\tconst personalizedMessage = formatPersonalizedApprovalMessage(\n\t\t\t\t\t\t\tloApprovals[0].lv_fullname,\n\t\t\t\t\t\t\tloApprovals[0].lv_emailaddress,\n\t\t\t\t\t\t\twindow.PAGE_USEREMAIL,\n\t\t\t\t\t\t\tloApprovals[0].createdon\n\t\t\t\t\t\t);\n\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\tshowViewOnly: true,\n\t\t\t\t\t\t\tmessage: personalizedMessage\n\t\t\t\t\t\t};\n\t\t\t\t\t} else {\n\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\tshowViewOnly: true,\n\t\t\t\t\t\t\tmessage: `Awaiting approval by ${loanOfficerName}`\n\t\t\t\t\t\t};\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\tcase \"loan_officer_view_only\":\n\t\t\t\t\t// \"BranchManager\" config - LO viewing (view only)\n\t\t\t\t\tif (bmApprovals.length &gt; 0) {\n\t\t\t\t\t\tconst personalizedMessage = formatPersonalizedApprovalMessage(\n\t\t\t\t\t\t\tbmApprovals[0].lv_fullname,\n\t\t\t\t\t\t\tbmApprovals[0].lv_emailaddress,\n\t\t\t\t\t\t\twindow.PAGE_USEREMAIL,\n\t\t\t\t\t\t\tbmApprovals[0].createdon\n\t\t\t\t\t\t);\n\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\tshowViewOnly: true,\n\t\t\t\t\t\t\tmessage: personalizedMessage\n\t\t\t\t\t\t};\n\t\t\t\t\t} else {\n\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\tshowViewOnly: true,\n\t\t\t\t\t\t\tmessage: \"Awaiting branch manager approval\"\n\t\t\t\t\t\t};\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\tcase \"branch_manager_can_approve\":\n\t\t\t\t\t// \"BranchManager\" config - BM can approve\n\t\t\t\t\tif (bmApprovals.length &gt; 0) {\n\t\t\t\t\t\tconst personalizedMessage = formatPersonalizedApprovalMessage(\n\t\t\t\t\t\t\tbmApprovals[0].lv_fullname,\n\t\t\t\t\t\t\tbmApprovals[0].lv_emailaddress,\n\t\t\t\t\t\t\twindow.PAGE_USEREMAIL,\n\t\t\t\t\t\t\tbmApprovals[0].createdon\n\t\t\t\t\t\t);\n\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\tshowApprovalComplete: true,\n\t\t\t\t\t\t\tmessage: personalizedMessage\n\t\t\t\t\t\t};\n\t\t\t\t\t} else {\n\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\tshowApprovalRequired: true,\n\t\t\t\t\t\t\tshowApprovalButton: true,\n\t\t\t\t\t\t\tmessage: `As Branch Manager, you are authorized to approve these commissions for ${loanOfficerName}`,\n\t\t\t\t\t\t\tbuttonText: \"Approve Commissions\"\n\t\t\t\t\t\t};\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\tcase \"loan_officer_own_both_required\":\n\t\t\t\t\t// \"BothRequired\" config - LO viewing their own\n\t\t\t\t\tif (loApprovals.length &gt; 0 &amp;&amp; bmApprovals.length &gt; 0) {\n\t\t\t\t\t\tconst bmDate = formatApprovalDate(bmApprovals[0].createdon);\n\t\t\t\t\t\tconst loDate = formatApprovalDate(loApprovals[0].createdon);\n\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\tshowApprovalComplete: true,\n\t\t\t\t\t\t\tmessage: `Fully approved - Branch manager: ${bmApprovals[0].lv_fullname} on ${bmDate}, You: ${loDate}`\n\t\t\t\t\t\t};\n\t\t\t\t\t} else if (loApprovals.length &gt; 0) {\n\t\t\t\t\t\tconst loDate = formatApprovalDate(loApprovals[0].createdon);\n\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\tshowViewOnly: true,\n\t\t\t\t\t\t\tmessage: `You approved these commissions on ${loDate}. Awaiting branch manager approval.`\n\t\t\t\t\t\t};\n\t\t\t\t\t} else if (bmApprovals.length &gt; 0) {\n\t\t\t\t\t\tconst bmDate = formatApprovalDate(bmApprovals[0].createdon);\n\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\tshowApprovalRequired: true,\n\t\t\t\t\t\t\tshowApprovalButton: true,\n\t\t\t\t\t\t\tmessage: `Branch manager approved on ${bmDate}. You can now provide your approval.`,\n\t\t\t\t\t\t\tbuttonText: \"Approve My Commissions\"\n\t\t\t\t\t\t};\n\t\t\t\t\t} else {\n\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\tshowApprovalRequired: true,\n\t\t\t\t\t\t\tshowApprovalButton: true,\n\t\t\t\t\t\t\tmessage: \"If you are satisfied with this commission report, click here to finalize and approve\",\n\t\t\t\t\t\t\tbuttonText: \"Approve My Commissions\"\n\t\t\t\t\t\t};\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\tcase \"loan_officer_own_either\":\n\t\t\t\t\t// \"EitherOr\" config - LO viewing their own\n\t\t\t\t\tif (bmApprovals.length &gt; 0) {\n\t\t\t\t\t\tconst personalizedMessage = formatPersonalizedApprovalMessage(\n\t\t\t\t\t\t\tbmApprovals[0].lv_fullname,\n\t\t\t\t\t\t\tbmApprovals[0].lv_emailaddress,\n\t\t\t\t\t\t\twindow.PAGE_USEREMAIL,\n\t\t\t\t\t\t\tbmApprovals[0].createdon\n\t\t\t\t\t\t);\n\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\tshowApprovalComplete: true,\n\t\t\t\t\t\t\tmessage: personalizedMessage\n\t\t\t\t\t\t};\n\t\t\t\t\t} else if (loApprovals.length &gt; 0) {\n\t\t\t\t\t\tconst personalizedMessage = formatPersonalizedApprovalMessage(\n\t\t\t\t\t\t\tloApprovals[0].lv_fullname,\n\t\t\t\t\t\t\tloApprovals[0].lv_emailaddress,\n\t\t\t\t\t\t\twindow.PAGE_USEREMAIL,\n\t\t\t\t\t\t\tloApprovals[0].createdon\n\t\t\t\t\t\t);\n\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\tshowApprovalComplete: true,\n\t\t\t\t\t\t\tmessage: personalizedMessage\n\t\t\t\t\t\t};\n\t\t\t\t\t} else {\n\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\tshowApprovalRequired: true,\n\t\t\t\t\t\t\tshowApprovalButton: true,\n\t\t\t\t\t\t\tmessage: \"Either you or your branch manager can approve these commissions.\",\n\t\t\t\t\t\t\tbuttonText: \"Approve My Commissions\"\n\t\t\t\t\t\t};\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\tcase \"branch_manager_can_approve_either\":\n\t\t\t\t\t// \"EitherOr\" config - BM viewing (can approve)\n\t\t\t\t\tif (bmApprovals.length &gt; 0) {\n\t\t\t\t\t\tconst personalizedMessage = formatPersonalizedApprovalMessage(\n\t\t\t\t\t\t\tbmApprovals[0].lv_fullname,\n\t\t\t\t\t\t\tbmApprovals[0].lv_emailaddress,\n\t\t\t\t\t\t\twindow.PAGE_USEREMAIL,\n\t\t\t\t\t\t\tbmApprovals[0].createdon\n\t\t\t\t\t\t);\n\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\tshowApprovalComplete: true,\n\t\t\t\t\t\t\tmessage: personalizedMessage\n\t\t\t\t\t\t};\n\t\t\t\t\t} else if (loApprovals.length &gt; 0) {\n\t\t\t\t\t\tconst personalizedMessage = formatPersonalizedApprovalMessage(\n\t\t\t\t\t\t\tloApprovals[0].lv_fullname,\n\t\t\t\t\t\t\tloApprovals[0].lv_emailaddress,\n\t\t\t\t\t\t\twindow.PAGE_USEREMAIL,\n\t\t\t\t\t\t\tloApprovals[0].createdon\n\t\t\t\t\t\t);\n\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\tshowApprovalComplete: true,\n\t\t\t\t\t\t\tmessage: personalizedMessage\n\t\t\t\t\t\t};\n\t\t\t\t\t} else {\n\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\tshowApprovalRequired: true,\n\t\t\t\t\t\t\tshowApprovalButton: true,\n\t\t\t\t\t\t\tmessage: `As Branch Manager, you are authorized to approve these commissions for ${loanOfficerName}`,\n\t\t\t\t\t\t\tbuttonText: \"Approve Commissions\"\n\t\t\t\t\t\t};\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\tdefault:\n\t\t\t\t\tconsole.warn('APPROVAL: Unknown view mode:', viewMode);\n\t\t\t\t\treturn {\n\t\t\t\t\t\tshowViewOnly: true,\n\t\t\t\t\t\tmessage: 'Unknown approval configuration'\n\t\t\t\t\t};\n\t\t\t}\n\n\t\t} catch (error) {\n\t\t\tconsole.error('APPROVAL: Error checking approval status:', error);\n\t\t\treturn {\n\t\t\t\tshowViewOnly: true,\n\t\t\t\tmessage: 'Error checking approval status'\n\t\t\t};\n\t\t}\n\t}\n\t\n\t// Simple loan officer approval check - just checks if THIS loan officer has approved\n\tasync function checkLoanOfficerApproval(officerCode, periodNo) {\n\t\ttry {\n\t\t\t\t\n\t\t\t// Get all approval records for this officer and period\n\t\t\tconst filterExpr = `$filter=lv_loanofficercode eq '${officerCode}' and lv_periodno eq ${periodNo}`;\n\t\t\tconst approvalRecords = await apiGetRecords(\"lv_lvcompcommissionapprovals\", filterExpr);\n\t\t\t\n\t\t\tif (!approvalRecords || !Array.isArray(approvalRecords) || approvalRecords.length === 0) {\n\t\t\t\treturn { hasApproved: false, message: 'These commissions are awaiting your approval.' };\n\t\t\t}\n\t\t\t\n\t\t\t// Check if there's a loan officer approval\n\t\t\tconst loApprovals = approvalRecords.filter(rec =&gt; rec.lv_webrole === 'Loan Officer');\n\t\t\t\n\t\t\tif (loApprovals.length &gt; 0) {\n\t\t\t\tconst approvalDate = formatApprovalDate(loApprovals[0].createdon);\n\t\t\t\treturn { \n\t\t\t\t\thasApproved: true, \n\t\t\t\t\tmessage: `You approved these commissions on ${approvalDate}.` \n\t\t\t\t};\n\t\t\t} else {\n\t\t\t\treturn { hasApproved: false, message: 'These commissions are awaiting your approval.' };\n\t\t\t}\n\t\t\t\n\t\t} catch (error) {\n\t\t\treturn { hasApproved: false, message: 'These commissions are awaiting your approval.' };\n\t\t}\n\t}\n\t\n\t// Bulk approval functions have been moved to the /Branch page\n\t\n\tasync function btnApproveClick() {\n\t\t\n\t\taddLoanOfficerToolTip(\" (v3181502)\")\n\n\t\tconst cardCommTotalAsFormattedString = $(\"#cardCommTotal\").text(); // the value from the 'Total' card\n\n\t\tconst qText = \n\t\t\t\"&lt;div&gt;\" + \n\t\t\t\t\"&lt;div style='margin-bottom: 15px;'&gt;On pressing 'Confirm', your approval of these commissions will be logged:&lt;/div&gt;\" + \n\n\t\t\t\t\"&lt;div style='margin-left: 20px; margin-bottom: 10px;'&gt;\" + \n\t\t\t\t\t\"&lt;table class='table-responsive'&gt;\" + \n\t\t\t\t\t\t\"&lt;tr&gt;&lt;td class='p-3'&gt;Amount:&lt;/td&gt;&lt;td class='p-1'&gt;&lt;b&gt;\" + cardCommTotalAsFormattedString + \"&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;\" +\n\t\t\t\t\t\t\"&lt;tr&gt;&lt;td class='p-3'&gt;Period:&lt;/td&gt;&lt;td class='p-1'&gt;&lt;b&gt;\" + window.PAGE_UISelPeriodCode + \"&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;\" +\n\t\t\t\t\t\"&lt;/table&gt;\" + \n\t\t\t\t\"&lt;/div&gt;\" + \n\n\t\t\t\t\"&lt;div style='margin-bottom: 10px;'&gt;An email confirmation will be sent to &lt;b&gt;\" + window.PAGE_USEREMAIL + \"&lt;/b&gt;&lt;/div&gt;\" + \n\n\t\t\t\t\"&lt;div style='margin-bottom: 30px;'&gt;Are you sure you are ready to approve your commissions?&lt;/div&gt;\" + \n\n\t\t\t\t\"&lt;div&gt;Press the 'Confirm' button to proceed&lt;/div&gt;\" + \n\t\t\t\"&lt;/div&gt;\";\n\n\t\tvar userChoice =  await askQuestion(qText, btn1Text = \"Confirm\", btn2Text = \"Cancel\");\n\n\t\tif (userChoice != \"Confirm\") {\n\t\t\treturn;\n\t\t}\n\n\t\t$('#btnApprove').hide();\n\n\t\tconst $spn = $('#spanApprove');\n\n\t\t$spn.html('Please wait, recording your appproval... &lt;span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"&gt;&lt;/span&gt;');\n\n\t\tconst subject = \"Commissions approved: Period \" + window.PAGE_UISelPeriodCode;\n\t\tconst body = \"This email is to confirm that you approved commissions in the amount \" + cardCommTotalAsFormattedString + \" for period: \" + window.PAGE_UISelPeriodCode;\n\n\t\tawait sendEmail(\"Commission Approve\", subject, body, window.PAGE_USEREMAIL, window.PAGE_LOCODE_BEINGVIEWED, window.PAGE_UISelPeriodCode, \"\", false, window.PAGE_UISelPeriodNo);\n\n\t\t{% comment %} Enhanced approval record creation for sophisticated approval system {% endcomment %} \n\t\t// Determine approval role based on user permissions and viewing context\n\t\tconst isBranchManager = {% if is_BranchManager %}true{% else %}false{% endif %};\n\t\tconst canApproveCommissions = {% if canApproveCommissions %}true{% else %}false{% endif %};\n\t\tconst isMyOwnCommissions = \"{{user.lv_loanofficer.id}}\" === \"{{sqRecLOBeingViewed.lv_lvcomploanofficerid}}\";\n\t\t\n\t\tlet approvalRole = \"Unknown\";\n\t\tlet branchCode = \"{{sqRecLOBeingViewed.lv_branch.lv_code}}\"; // Use branch code from loan officer record\n\t\t\n\t\tif (canApproveCommissions &amp;&amp; !isMyOwnCommissions) {\n\t\t\t// Branch manager approving someone else's commissions\n\t\t\tapprovalRole = \"Branch Manager\";\n\t\t} else if (isMyOwnCommissions) {\n\t\t\t// Loan officer approving their own commissions\n\t\t\tapprovalRole = \"Loan Officer\";\n\t\t} else {\n\t\t\tconsole.warn('Unclear approval context - user cannot approve commissions and not approving own commissions');\n\t\t\tapprovalRole = \"Loan Officer\"; // Default fallback\n\t\t}\n\t\t\n\t\tconsole.log('DEBUG APPROVAL: Role determination:', {\n\t\t\tisBranchManager: isBranchManager,\n\t\t\tcanApproveCommissions: canApproveCommissions,\n\t\t\tisMyOwnCommissions: isMyOwnCommissions,\n\t\t\tapprovalRole: approvalRole,\n\t\t\tbranchCode: branchCode\n\t\t});\n\t\t\n\t\tconst oPostAppr = {\n\t\t\t\"lv_amount\": safeStringToNumeric(cardCommTotalAsFormattedString),\n\t\t\t\"lv_amountdisplayedtouser\": cardCommTotalAsFormattedString,\n\t\t\t\"lv_branchcode\": \"\", // Leave blank for loan officer approvals\n\t\t\t\"lv_emailaddress\": window.PAGE_USEREMAIL,\n\t\t\t\"lv_fullname\" : window.PAGE_USERNAME,\n\t\t\t\"lv_loanofficercode\": window.PAGE_LOCODE_BEINGVIEWED,\n\t\t\t\"lv_periodcode\": window.PAGE_UISelPeriodCode,\n\t\t\t\"lv_webrole\": approvalRole,\n\t\t\t\"lv_periodno\": window.PAGE_UISelPeriodNo\n\t\t};\n\n\t\ttry {\n\t\t\tconst apiResponse = await apiCall(\"/_api/lv_lvcompcommissionapprovals\", \"POST\", oPostAppr, true);\n\t\t} catch (error) {\n\t\t\tconsole.error('API call failed::', error);\n\t\t\t$spn.html(\"Error: Failed to record approval. Please try again or contact support.\");\n\t\t\t$('#btnApprove').show();\n\t\t\treturn;\n\t\t}\n\n\t\tawait delay(2);\n\n\t\twriteToLogTable(\"ApproveEnd\", \"By: {{user.fullname}}\", \"PeriodNo\", window.PAGE_UISelPeriodNo, \"LoanOfficerCode\", window.PAGE_LOCODE_BEINGVIEWED);\n\n\t\t$spn.html(\"Your approval has been recorded successfully\");\n\t}\n\n\t// Helper function to update approval button for partial approval states\n\tfunction updateApprovalButtonForPartialStatus(statusDetails) {\n\t\tconst approvalType = \"{{sqApprovalType}}\";\n\t\tconst isUserDirectLO = \"{{user.lv_loanofficer.id}}\" === \"{{sqRecLOBeingViewed.lv_lvcomploanofficerid}}\";\n\t\tconst isBranchManager = {{is_BranchManager}};\n\t\tconst canApproveCommissions = {{canApproveCommissions}};\n\t\tconst currentUser = \"{{user.fullname}}\";\n\t\tconst officerName = \"{{sqRecLOBeingViewed.lv_name}}\";\n\t\t\n\t\tconsole.log('DEBUG: updateApprovalButtonForPartialStatus called with:', statusDetails);\n\t\tconsole.log('DEBUG: approvalType:', approvalType, 'isUserDirectLO:', isUserDirectLO, 'isBranchManager:', isBranchManager, 'canApproveCommissions:', canApproveCommissions);\n\t\t\n\t\tlet buttonText = \"Approve\";\n\t\tlet messageText = \"\";\n\t\t\n\t\tif (approvalType === \"BothRequired\") {\n\t\t\t// Parse which approval exists based on the exact messages from checkExistingApproval function\n\t\t\t// Format: \"Partial approval - [Name] approved on [date]. Loan officer approval still required.\"\n\t\t\t// Format: \"Partial approval - Loan officer approved on [date]. Branch manager approval still required.\"\n\t\t\tconst bmApprovalExists = statusDetails.includes('Partial approval -') &amp;&amp; statusDetails.includes('Loan officer approval still required');\n\t\t\tconst loApprovalExists = statusDetails.includes('Partial approval - Loan officer approved on') &amp;&amp; statusDetails.includes('Branch manager approval still required');\n\t\t\t\n\t\t\tconsole.log('DEBUG: BothRequired mode - bmApprovalExists:', bmApprovalExists, 'loApprovalExists:', loApprovalExists);\n\t\t\tconsole.log('DEBUG: Full status details:', statusDetails);\n\t\t\t\n\t\t\tif (bmApprovalExists &amp;&amp; !loApprovalExists) {\n\t\t\t\t// Branch manager has approved, need loan officer approval\n\t\t\t\tif (isUserDirectLO) {\n\t\t\t\t\tmessageText = `Branch manager approval completed. As the loan officer, you can now provide your approval.`;\n\t\t\t\t\tbuttonText = \"Approve My Commissions\";\n\t\t\t\t} else {\n\t\t\t\t\tmessageText = `Branch manager approval completed. Loan officer approval for ${officerName} is still required.`;\n\t\t\t\t\tbuttonText = \"Cannot Approve (Loan Officer Required)\";\n\t\t\t\t\t$('#btnApprove').prop('disabled', true);\n\t\t\t\t}\n\t\t\t} else if (loApprovalExists &amp;&amp; !bmApprovalExists) {\n\t\t\t\t// Loan officer has approved, need branch manager approval\n\t\t\t\tif (canApproveCommissions) {\n\t\t\t\t\tmessageText = `Loan officer approval completed. As branch manager, you can now provide your approval for ${officerName}.`;\n\t\t\t\t\tbuttonText = \"Approve as Branch Manager\";\n\t\t\t\t} else {\n\t\t\t\t\tmessageText = `Loan officer approval completed. Branch manager approval for ${officerName} is still required.`;\n\t\t\t\t\tbuttonText = \"Cannot Approve (Branch Manager Required)\";\n\t\t\t\t\t$('#btnApprove').prop('disabled', true);\n\t\t\t\t}\n\t\t\t}\n\t\t} else {\n\t\t\t// For other approval types with partial states, use appropriate messaging\n\t\t\tif (isUserDirectLO) {\n\t\t\t\tmessageText = \"You can approve your own commissions.\";\n\t\t\t\tbuttonText = \"Approve My Commissions\";\n\t\t\t} else if (canApproveCommissions) {\n\t\t\t\tmessageText = `As manager, you can approve these commissions for ${officerName}.`;\n\t\t\t\tbuttonText = \"Approve Commissions\";\n\t\t\t}\n\t\t}\n\t\t\n\t\tconsole.log('DEBUG: Setting messageText:', messageText, 'buttonText:', buttonText);\n\t\t\n\t\t// Update the UI elements\n\t\t$('#spanApprove').html(messageText);\n\t\t$('#btnApprove').val(buttonText);\n\t}\n\t\n\t// Helper function to reset approval button to default state\n\tfunction resetApprovalButtonToDefault() {\n\t\tconst isUserDirectLO = \"{{user.lv_loanofficer.id}}\" === \"{{sqRecLOBeingViewed.lv_lvcomploanofficerid}}\";\n\t\tconst officerName = \"{{sqRecLOBeingViewed.lv_name}}\";\n\t\t\n\t\tconsole.log('DEBUG: resetApprovalButtonToDefault called');\n\t\t\n\t\t// Simple approval messaging - no branch manager status info\n\t\tif (isUserDirectLO) {\n\t\t\t$('#spanApprove').html(\"If you are satisfied with this commission report, click here to approve\");\n\t\t\t$('#btnApprove').val(\"Approve My Commissions\");\n\t\t} else {\n\t\t\t$('#spanApprove').html(`As manager, you can approve these commissions for ${officerName}`);\n\t\t\t$('#btnApprove').val(\"Approve Commissions\");\n\t\t}\n\t\t\n\t\t// Re-enable button in case it was disabled\n\t\t$('#btnApprove').prop('disabled', false);\n\t}\n\n\tasync function onPageLoad() {\n\t\ttry {\n\t\t\t// SKIP approval check for Administrators - they never approve commissions\n\t\t\tconst isAdmin = window.PAGE_Roles?.isAdmin || false;\n\t\t\tif (isAdmin) {\n\t\t\t\tconsole.log('APPROVAL: Skipping approval check - user is Administrator');\n\t\t\t\t$('#approvalLoading').hide();\n\t\t\t\t$('#approvalComplete').hide();\n\t\t\t\t$('#approvalRequired').hide();\n\t\t\t\t$('#approvalViewOnly').hide();\n\t\t\t\treturn;\n\t\t\t}\n\n\t\t\t// SKIP approval check if no loan officer selected yet (on initial page load)\n\t\t\tlet officerIdentifier = window.PAGE_LOCODE_BEINGVIEWED;\n\t\t\tlet useOfficerCode = true;\n\n\t\t\tif (!officerIdentifier || officerIdentifier === '') {\n\t\t\t\t// Try fallback to ID\n\t\t\t\tofficerIdentifier = window.PAGE_LOID_BEINGVIEWED;\n\t\t\t\tuseOfficerCode = false;\n\n\t\t\t\t// If still empty, no loan officer selected yet - skip approval check silently\n\t\t\t\tif (!officerIdentifier || officerIdentifier === '') {\n\t\t\t\t\tconsole.log('APPROVAL: Skipping approval check - no loan officer selected yet');\n\t\t\t\t\t$('#approvalLoading').hide();\n\t\t\t\t\t$('#approvalComplete').hide();\n\t\t\t\t\t$('#approvalRequired').hide();\n\t\t\t\t\t$('#approvalViewOnly').hide();\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t}\n\n\t\t\tconsole.log('APPROVAL: Checking approval status for', useOfficerCode ? 'officer code' : 'officer ID', ':', officerIdentifier);\n\n\t\t\t// Show loading state\n\t\t\t$('#approvalLoading').show();\n\t\t\t$('#approvalComplete').hide();\n\t\t\t$('#approvalRequired').hide();\n\t\t\t$('#approvalViewOnly').hide();\n\n\t\t\t// Use new sophisticated approval checking\n\t\t\tconst approvalStatus = await checkSophisticatedApprovalStatus(\n\t\t\t\tofficerIdentifier,\n\t\t\t\twindow.PAGE_UISelPeriodNo,\n\t\t\t\tuseOfficerCode\n\t\t\t);\n\n\t\t\tconsole.log('APPROVAL: Result:', approvalStatus);\n\n\t\t\t// Hide loading\n\t\t\t$('#approvalLoading').hide();\n\n\t\t\t// Display appropriate section based on result\n\t\t\tif (approvalStatus.showApprovalComplete) {\n\t\t\t\t$('#approvalStatusMessage').html(approvalStatus.message);\n\t\t\t\t$('#approvalComplete').show();\n\t\t\t} else if (approvalStatus.showApprovalRequired) {\n\t\t\t\t$('#spanApprove').html(approvalStatus.message);\n\t\t\t\tif (approvalStatus.showApprovalButton) {\n\t\t\t\t\t$('#btnApprove').val(approvalStatus.buttonText || 'Approve');\n\t\t\t\t\t$('#btnApprove').show();\n\t\t\t\t} else {\n\t\t\t\t\t$('#btnApprove').hide();\n\t\t\t\t}\n\t\t\t\t$('#approvalRequired').show();\n\t\t\t} else if (approvalStatus.showViewOnly) {\n\t\t\t\t$('#viewOnlyStatusMessage').html(approvalStatus.message);\n\t\t\t\t$('#approvalViewOnly').show();\n\t\t\t}\n\n\t\t} catch (error) {\n\t\t\tconsole.error(\"APPROVAL: Error checking approval status:\", error);\n\t\t\t$('#approvalLoading').hide();\n\t\t\t$('#approvalViewOnly').show();\n\t\t\t$('#viewOnlyStatusMessage').html('Error loading approval status. Please refresh the page.');\n\t\t}\n\t}\n\n\tdocument.addEventListener(\"LVGlobalDOCReady\", onPageLoad);\n\t\n\t// DEBUG FUNCTION: Manual approval record verification\n\twindow.debugCheckApprovalRecords = async function() {\n\t\ttry {\n\t\t\tconsole.log('=== MANUAL APPROVAL CHECK DEBUG ===');\n\t\t\tconsole.log('Current officer code:', window.PAGE_LOCODE_BEINGVIEWED);\n\t\t\tconsole.log('Current period:', window.PAGE_UISelPeriodNo);\n\t\t\t\n\t\t\t// Check with exact same query as individual check\n\t\t\tconst individualQuery = `$filter=lv_loanofficercode eq '${window.PAGE_LOCODE_BEINGVIEWED}' and lv_periodno eq ${window.PAGE_UISelPeriodNo}`;\n\t\t\tconsole.log('Individual query:', individualQuery);\n\t\t\tconst individualResult = await apiGetRecord(\"lv_lvcompcommissionapprovals\", individualQuery);\n\t\t\tconsole.log('Individual query result:', individualResult);\n\t\t\t\n\t\t\t// FALLBACK: Try using loan officer ID if code is empty (debug the data mismatch)\n\t\t\tif (!window.PAGE_LOCODE_BEINGVIEWED || window.PAGE_LOCODE_BEINGVIEWED === '') {\n\t\t\t\tconsole.log('🔍 FALLBACK: Officer code is empty, trying ID-based query');\n\t\t\t\tconst idQuery = `$filter=lv_loanofficerid eq '${window.PAGE_LOID_BEINGVIEWED}' and lv_periodno eq ${window.PAGE_UISelPeriodNo}`;\n\t\t\t\tconsole.log('ID-based query:', idQuery);\n\t\t\t\tconst idResult = await apiGetRecord(\"lv_lvcompcommissionapprovals\", idQuery);\n\t\t\t\tconsole.log('ID-based query result:', idResult);\n\t\t\t}\n\t\t\t\n\t\t\t// Check with same query as bulk check\n\t\t\tconst bulkQuery = `$filter=lv_loanofficercode eq '${window.PAGE_LOCODE_BEINGVIEWED}' and lv_periodno eq ${window.PAGE_UISelPeriodNo}`;\n\t\t\tconsole.log('Bulk query:', bulkQuery);\n\t\t\tconst bulkResult = await apiGetRecord(\"lv_lvcompcommissionapprovals\", bulkQuery);\n\t\t\tconsole.log('Bulk query result:', bulkResult);\n\t\t\t\n\t\t\t// Get ALL records for this period to see what exists\n\t\t\tconst allQuery = `$filter=lv_periodno eq ${window.PAGE_UISelPeriodNo}`;\n\t\t\tconsole.log('All records query:', allQuery);\n\t\t\tconst allResults = await apiGetRecords(\"lv_lvcompcommissionapprovals\", allQuery);\n\t\t\tconsole.log('All approval records for period:', allResults);\n\t\t\t\n\t\t} catch (error) {\n\t\t\tconsole.error('Debug check failed:', error);\n\t\t}\n\t};\n\t\n\tconsole.log('DEBUG: Added window.debugCheckApprovalRecords() function. Call it from console to test.');\n{% else %}\n\t// Not using approvals\n{% endif %}\n\n{% comment %} Clear unwanted query parameters for simple loan officers while preserving safe ones {% endcomment %}\n{% if is_OnlyLoanOfficer == true %}\n// Clear query parameters for simple loan officers but preserve period and debug parameters\nif (window.location.search) {\n\tconst currentParams = new URLSearchParams(window.location.search);\n\tconst newParams = new URLSearchParams();\n\t\n\t// Preserve safe parameters\n\tconst safeParams = ['period', 'dbg'];\n\tsafeParams.forEach(param =&gt; {\n\t\tif (currentParams.has(param)) {\n\t\t\tnewParams.set(param, currentParams.get(param));\n\t\t}\n\t});\n\t\n\tconst newUrl = window.location.origin + window.location.pathname + \n\t\t(newParams.toString() ? '?' + newParams.toString() : '');\n\twindow.history.replaceState({}, document.title, newUrl);\n\t\n\tconsole.log('Cleaned URL for simple LO, preserved: ' + newParams.toString());\n}\n{% endif %}\n\n&lt;/script&gt;\n\n&lt;!-- Loan Officer Page --&gt;\n\n\n&lt;!-- Last modified Sat Aug 30 12:12PM --&gt;\n&lt;!-- Last modified Sun Aug 31 5:00PM --&gt;\n&lt;!-- Last modified Tue Sep 02 10:36AM --&gt;\n&lt;!-- Last modified Tue Sep 02 11:20AM --&gt;\n&lt;!-- Last modified Wed Oct 01 3:16PM --&gt;\n&lt;!-- Last modified Wed Oct 01 4:00PM --&gt;\n&lt;!-- Last modified Thu Oct 02 12:15PM --&gt;\n&lt;!-- Last modified Thu Oct 02 12:20PM --&gt;\n&lt;!-- Last modified Mon Oct 06 3:20PM --&gt;\n&lt;!-- Last modified Fri Oct 24 4:07PM --&gt;","customcss":"/* Optional custom styling */\n.select2-container--default .select2-selection--single {\n\theight: 34px;\n\tpadding: 2px 12px;\n\t/* border: 1px solid #ccc; */\n\tborder: 6px solid red;\n\tborder-radius: 4px;\n  }\n  \n  .select2-container--default .select2-selection--single .select2-selection__arrow {\n\theight: 32px;\n  }\n  \n  .select2-container--default .select2-selection--single .select2-selection__rendered {\n\tline-height: 30px;\n  }\n  \n  .loan-officer-option {\n\tpadding: 4px;\n  }\n  \n  .officer-name {\n\tfont-weight: bold;\n  }","customjavascript":"\n","displayorder":6,"enablerating":false,"enabletracking":false,"excludefromsearch":false,"hiddenfromsitemap":true,"isroot":false,"pagetemplateid":"cd587cbe-a61f-4c11-a750-6d0235a784ef","parentpageid":"362995e0-7dc5-4bbf-9595-062f468d2d44","partialurl":"Loan-Officer","publishingstateid":"2177b470-e9b1-4c6b-8f73-91dc8f4d21e9","rootwebpageid":"6249e2f5-2a59-722d-a8fb-447db5b6beca","sharedpageconfiguration":false,"summary":"&lt;p&gt;This is a sample landing page designed to be a starting point for your website&lt;/p&gt;\n","title":"Loan Officer"}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Loan Officer</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <searchcontent>Loan Officer&lt;!-- Last modified Fri Oct 24 4:07PM --&gt;
+&lt;!-- Last modified Mon Oct 06 3:20PM --&gt;
+&lt;!-- Last modified Thu Oct 02 12:20PM --&gt;
+&lt;!-- Last modified Thu Oct 02 12:15PM --&gt;
+&lt;!-- Last modified Wed Oct 01 4:00PM --&gt;
+&lt;!-- Last modified Wed Oct 01 3:16PM --&gt;
+&lt;!-- Last modified Tue Sep 02 11:20AM --&gt;
+&lt;!-- Last modified Tue Sep 02 10:36AM --&gt;
+&lt;!-- Last modified Sun Aug 31 5:00PM --&gt;
+&lt;!-- Last modified Sat Aug 30 12:12PM --&gt;
+
+&lt;!-- Loan Officer Page --&gt;
+
+{% comment %} ~LoanOfficerPage PERFORMANCE OPTIMIZATION: Check if loan officer is specified to suppress unnecessary queries {% endcomment %}
+{% assign hasLoanOfficerParam = false %}
+{% if request.params.officer and request.params.officer != "" and request.params.officer != "all" %}
+	{% assign hasLoanOfficerParam = true %}
+{% endif %}
+
+{% include 'snippet' snippet_name:'FetchXML - SetupQuery' %}
+
+{%- comment -%} NOTE: Exclusions are now handled via userExclusionLOList from SetupQuery {%- endcomment -%}
+
+{% comment %} Run period filtering query if officer param exists OR if user is simple loan officer {% endcomment %}
+{% if hasLoanOfficerParam or is_OnlyLoanOfficer %}
+	{% include 'snippet' snippet_name:'FetchXML - BranchQuery' %}
+
+	{% comment %} PERIOD FILTERING: Get distinct periods where selected loan officer has commission data {% endcomment %}
+	{% fetchxml periodsWithData %}
+		&lt;fetch aggregate="true"&gt;
+			&lt;entity name="lv_lvcompcommission"&gt;
+				&lt;attribute name="lv_periodno" alias="period_number" groupby="true" /&gt;
+				&lt;filter type="and"&gt;
+					&lt;condition attribute="lv_xloanofficercode" operator="eq" value="{{sqRecLOBeingViewed.lv_code}}" /&gt;
+				&lt;/filter&gt;
+			&lt;/entity&gt;
+		&lt;/fetch&gt;
+	{% endfetchxml %}
+
+		{% comment %} DEBT BALANCE: Get debt log entries server-side, pass to JavaScript for math {% endcomment %}
+	{%- fetchxml debtLogEntries -%}
+		&lt;fetch&gt;
+			&lt;entity name="lv_debtlogvalueentry"&gt;
+				&lt;attribute name="lv_identifiercode" /&gt;
+				&lt;attribute name="lv_entrydate" /&gt;
+				&lt;attribute name="lv_amount" /&gt;
+				&lt;attribute name="lv_description" /&gt;
+				&lt;filter type="and"&gt;
+					&lt;condition attribute="lv_loanofficercode" operator="eq" value="{{sqRecLOBeingViewed.lv_code}}" /&gt;
+				&lt;/filter&gt;
+				&lt;order attribute="lv_entrydate" descending="true" /&gt;
+			&lt;/entity&gt;
+		&lt;/fetch&gt;
+	{%- endfetchxml -%}
+{% endif %}
+
+{% comment %} Loan Officer page is accessible to ALL authenticated users {% endcomment %}
+{% comment %} Security is handled by what loan officers they can see, not page access {% endcomment %}
+
+{% if user %}
+
+&lt;div class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;"&gt;
+    &lt;div class="container" style="display: flex; flex-wrap: wrap;"&gt;
+        &lt;div class="col-lg-12 columnBlockLayout email-modal-container" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; word-break: break-word; padding: 16px; margin: 60px 0px;"&gt;
+
+
+			{% if is_OnlyLoanOfficer %}
+				&lt;h1&gt;
+					{{sqRecLOBeingViewed.lv_name}}
+					&lt;span id=spanOfficerId class="d-none"&gt;({{sqRecLOBeingViewed.lv_lvcomploanofficerid}})&lt;/span&gt;
+					&lt;span id="spanPeriodCode" class="d-none"&gt;[{{sqRecUISelPeriod.lv_periodcode}}]
+				&lt;/h1&gt;
+
+				&lt;div class="admin-panel"&gt;
+					&lt;div style="display: flex; flex-direction: column; gap: 1rem;"&gt;
+						{% include 'snippet' snippet_name:'Current Period Selection' %}
+					&lt;/div&gt;
+				&lt;/div&gt;
+			{% else %}
+				{% comment %}       include 'Loan Officer Dropdown', parmFoo: 'Asia', parmBar: 'Ursa'                        {% endcomment %} 
+
+				&lt;div class="admin-panel"&gt;
+					&lt;div style="display: flex; flex-direction: column; gap: 1rem;"&gt;
+
+						{% comment %} Pass current selection to dropdown {% endcomment %}
+						{% comment %} CRITICAL: Only set dropdown value if officer was explicitly selected via parameter {% endcomment %}
+						{% if hasLoanOfficerParam %}
+							{% if sqLOViewMode == "ALL_LOAN_OFFICERS" %}
+								{% assign dropdownCurrentValue = "all" %}
+							{% elsif sqRecLOBeingViewed.lv_lvcomploanofficerid %}
+								{% assign dropdownCurrentValue = sqRecLOBeingViewed.lv_lvcomploanofficerid %}
+							{% else %}
+								{% assign dropdownCurrentValue = "" %}
+							{% endif %}
+						{% else %}
+							{% assign dropdownCurrentValue = "" %}
+						{% endif %}
+
+
+
+
+
+						{%- unless is_OnlyLoanOfficer -%}
+							{%- comment -%} PERFORMANCE FIX: Build dropdown list from userLoanOfficerList with exclusion filtering {%- endcomment -%}
+
+							{%- comment -%} Build branchManagerOfficerCodes for dropdown population {%- endcomment -%}
+							{%- assign branchManagerOfficerCodes = "" -%}
+							{%- assign branchManagerOfficerNames = "" -%}
+							{%- assign hasOfficers = false -%}
+
+							{%- if is_admin -%}
+								{%- comment -%} ADMIN: See ALL loan officers (no exclusions for admins) {%- endcomment -%}
+								{%- if allLoanOfficers.results.entities -%}
+									{%- for officer in allLoanOfficers.results.entities -%}
+										{%- if officer.lv_code and officer.lv_code != blank -%}
+											{%- if branchManagerOfficerCodes == "" -%}
+												{%- assign branchManagerOfficerCodes = officer.lv_code -%}
+											{%- else -%}
+												{%- assign branchManagerOfficerCodes = branchManagerOfficerCodes | append: "|" | append: officer.lv_code -%}
+											{%- endif -%}
+											{%- assign hasOfficers = true -%}
+										{%- endif -%}
+									{%- endfor -%}
+								{%- endif -%}
+							{%- else -%}
+								{%- comment -%} NON-ADMIN: Use userLoanOfficerList from SetupQuery with exclusion filtering {%- endcomment -%}
+								{%- if userLoanOfficerList and userLoanOfficerList != "" and userLoanOfficerList != "|" -%}
+									{%- comment -%} Extract codes from userLoanOfficerList (format: |name|code|name|code|) {%- endcomment -%}
+									{%- assign parts = userLoanOfficerList | split: "|" -%}
+									{%- assign partIndex = 0 -%}
+									{%- for part in parts -%}
+										{%- assign partIndex = partIndex | plus: 1 -%}
+										{%- assign isEvenIndex = partIndex | modulo: 2 -%}
+										{%- if isEvenIndex == 0 and part != "" -%}
+											{%- comment -%} This is a loan officer code - check if excluded {%- endcomment -%}
+											{%- assign loCode = part -%}
+											{%- assign isExcluded = false -%}
+
+											{%- comment -%} EXCLUSION CHECK: Only for branch managers using userExclusionLOList from SetupQuery {%- endcomment -%}
+											{%- if is_BranchManager -%}
+												{%- if userExclusionLOList != blank and userExclusionLOList != "" -%}
+													{%- assign exclusionCheckString = "|" | append: loCode | append: "|" -%}
+													{%- if userExclusionLOList contains exclusionCheckString -%}
+														{%- assign isExcluded = true -%}
+													{%- endif -%}
+												{%- endif -%}
+											{%- endif -%}
+
+											{%- unless isExcluded -%}
+												{%- if branchManagerOfficerCodes == "" -%}
+													{%- assign branchManagerOfficerCodes = loCode -%}
+												{%- else -%}
+													{%- assign branchManagerOfficerCodes = branchManagerOfficerCodes | append: "|" | append: loCode -%}
+												{%- endif -%}
+												{%- assign hasOfficers = true -%}
+											{%- endunless -%}
+										{%- endif -%}
+									{%- endfor -%}
+								{%- endif -%}
+							{%- endif -%}
+						{%- endunless -%}
+
+						{% comment %} CORRECT ORDER: Loan Officer dropdown FIRST {% endcomment %}
+						{% include 'Loan Officer Dropdown', parmCurrentValue: dropdownCurrentValue %}
+
+						{% comment %} CORRECT ORDER: Period dropdown SECOND {% endcomment %}
+						{% include 'snippet' snippet_name:'Current Period Selection' %}
+
+
+
+
+
+
+						
+					&lt;/div&gt;
+				&lt;/div&gt;
+			{% endif %}
+
+			{% if hasLoanOfficerParam or is_OnlyLoanOfficer %}
+				{% include 'snippet' snippet_name:'Commission Filter' %}                               {% comment %} CENTRALIZED FILTERING: applies all permission and page-specific filters, sets cpCommCount, cpCommTotal, cpAdjuCount, cpAdjuTotal {% endcomment %}
+				{% include 'snippet' snippet_name:'FetchXML - Current Period' %}
+			{% else %}
+				{% comment %} PERFORMANCE OPTIMIZATION: No loan officer selected - skip heavy data queries {% endcomment %}
+				{% assign cpCommCount = 0 %}
+				{% assign cpCommTotal = 0 %}
+				{% assign cpAdjuCount = 0 %}
+				{% assign cpAdjuTotal = 0 %}
+				{% assign cpCommValueRowCount = 0 %}
+				{% assign cpLoanCount = 0 %}
+				{% assign cpLoanTotal = 0 %}
+			{% endif %}
+
+            
+            {% if cpCommValueRowCount &gt; 0 %}                            {% comment %}     cpCommValueRowCount is set in FetchXml-Current-Period    {% endcomment %} 
+
+				&lt;!-- JavaScript-based arithmetic to avoid DotLiquid bug --&gt;
+				{% assign rawSetting = settings['LV/NumApprovalPeriods'] %}
+				{% if rawSetting == blank or rawSetting == empty or rawSetting == "" or rawSetting == nil %}
+					{% assign rawSetting = "0" %}
+				{% endif %}
+				
+				&lt;script&gt;
+					// Calculate minPeriodAllowedForApprovals using JavaScript
+					const settingNum = parseInt("{{rawSetting}}") || 0;
+					const sqNum = parseInt("{{sqAcctgPeriodNo}}") || 0;
+					const minPeriodAllowedForApprovals = sqNum - settingNum;
+					
+					// Store in window for use in conditional logic
+					window.minPeriodAllowedForApprovals = minPeriodAllowedForApprovals;
+					
+					// Debug output
+					console.log('JS Arithmetic:', {
+						rawSetting: "{{rawSetting}}",
+						settingNum: settingNum,
+						sqAcctgPeriodNo: "{{sqAcctgPeriodNo}}",
+						sqNum: sqNum,
+						minPeriodAllowedForApprovals: minPeriodAllowedForApprovals
+					});
+				&lt;/script&gt;
+				
+				&lt;!-- Set Liquid variable from JavaScript calculation --&gt;
+				{% assign minPeriodAllowedForApprovals = -999 %}
+				{% comment %} This will be overridden by JavaScript {% endcomment %}
+
+
+
+				
+				&lt;script&gt;
+					// JavaScript-controlled approval section display
+					document.addEventListener('DOMContentLoaded', function() {
+						const sqUsingApprovals = {{sqUsingApprovals}};
+						const sqRecUISelPeriodNo = {{sqRecUISelPeriod.lv_periodno}};
+						const sqLOViewMode = "{{sqLOViewMode}}";
+						const minPeriodAllowedForApprovals = window.minPeriodAllowedForApprovals;
+						
+						console.log('Approval Check:', {
+							sqUsingApprovals: sqUsingApprovals,
+							sqRecUISelPeriodNo: sqRecUISelPeriodNo,
+							sqLOViewMode: sqLOViewMode,
+							minPeriodAllowedForApprovals: minPeriodAllowedForApprovals
+						});
+						
+						// Show or hide approval section based on conditions
+						const approvalDiv = document.getElementById('approvalSectionWrapper');
+						const condition1 = sqUsingApprovals === true;
+						const condition2 = sqRecUISelPeriodNo &gt;= minPeriodAllowedForApprovals;
+						const condition3 = sqLOViewMode !== "ALL_LOAN_OFFICERS";
+						const allConditionsMet = condition1 &amp;&amp; condition2 &amp;&amp; condition3;
+						
+						
+						if (allConditionsMet) {
+										approvalDiv.style.display = 'block';
+						} else {
+										approvalDiv.style.display = 'none';
+						}
+					});
+				&lt;/script&gt;
+				
+				&lt;div id="approvalSectionWrapper" style="display: none;"&gt;
+				{% comment %} This div will be shown/hidden by JavaScript {% endcomment %}
+					
+					
+					&lt;!-- Step 1: Check if user has direct LO assignment (yes we are using approvals) --&gt;
+					{% assign userHasDirectLO = false %}
+					{% if user.lv_loanofficer.id %}
+						{% if user.lv_loanofficer.id != blank %}
+							{% if user.lv_loanofficer.id != "" %}
+								{% assign userHasDirectLO = true %}
+							{% endif %}
+						{% endif %}
+					{% endif %}
+					
+					&lt;!-- Step 2: Check if we have a selected LO --&gt;
+					{% assign hasSelectedLO = false %}
+					{% if sqRecLOBeingViewed.lv_lvcomploanofficerid %}
+						{% if sqRecLOBeingViewed.lv_lvcomploanofficerid != blank %}
+							{% if sqRecLOBeingViewed.lv_lvcomploanofficerid != "" %}
+								{% assign hasSelectedLO = true %}
+							{% endif %}
+						{% endif %}
+					{% endif %}
+					
+					&lt;!-- Step 3: Check if LO IDs match --&gt;
+					{% assign loanOfficerMatch = false %}
+					{% if userHasDirectLO == true %}
+						{% if hasSelectedLO == true %}
+							{% if user.lv_loanofficer.id == sqRecLOBeingViewed.lv_lvcomploanofficerid %}
+								{% assign loanOfficerMatch = true %}
+							{% endif %}
+						{% endif %}
+					{% endif %}
+					
+					&lt;!-- APPROVAL LOGIC --&gt;
+					&lt;!-- Determine if we should show approval section and what type --&gt;
+					{% assign showApprovalSection = false %}
+					{% assign allowApprovalAction = false %}
+					{% assign approvalViewMode = "none" %}
+					
+					&lt;!-- Step 4: Determine approval view mode based on configuration and user role --&gt;
+					{% if sqApprovalType == "" or sqApprovalType == "None" %}
+						{% assign approvalViewMode = "none" %}
+					{% elsif sqApprovalType == "LoanOfficer" %}
+						{% if loanOfficerMatch == true %}
+							{% assign showApprovalSection = true %}
+							{% assign allowApprovalAction = true %}
+							{% assign approvalViewMode = "loan_officer_own" %}
+						{% elsif canApproveCommissions == true %}
+							{% assign showApprovalSection = true %}
+							{% assign allowApprovalAction = false %}
+							{% assign approvalViewMode = "branch_manager_view_only" %}
+						{% endif %}
+					{% elsif sqApprovalType == "BranchManager" %}
+						{% if loanOfficerMatch == true %}
+							{% assign showApprovalSection = true %}
+							{% assign allowApprovalAction = false %}
+							{% assign approvalViewMode = "loan_officer_view_only" %}
+						{% elsif canApproveCommissions == true %}
+							{% assign showApprovalSection = true %}
+							{% assign allowApprovalAction = true %}
+							{% assign approvalViewMode = "branch_manager_can_approve" %}
+						{% endif %}
+					{% elsif sqApprovalType == "BothRequired" %}
+						{% if loanOfficerMatch == true %}
+							{% assign showApprovalSection = true %}
+							{% assign allowApprovalAction = true %}
+							{% assign approvalViewMode = "loan_officer_own_both_required" %}
+						{% elsif canApproveCommissions == true %}
+							{% assign showApprovalSection = true %}
+							{% assign allowApprovalAction = false %}
+							{% assign approvalViewMode = "branch_manager_view_only" %}
+						{% endif %}
+					{% elsif sqApprovalType == "EitherOr" %}
+						{% if loanOfficerMatch == true %}
+							{% assign showApprovalSection = true %}
+							{% assign allowApprovalAction = true %}
+							{% assign approvalViewMode = "loan_officer_own_either" %}
+						{% elsif canApproveCommissions == true %}
+							{% assign showApprovalSection = true %}
+							{% assign allowApprovalAction = true %}
+							{% assign approvalViewMode = "branch_manager_can_approve_either" %}
+						{% endif %}
+					{% endif %}
+					
+					&lt;!-- Set canApprove for compatibility --&gt;
+					{% assign canApprove = showApprovalSection %}
+					
+					
+					&lt;!-- lodd:appr00 --&gt;
+					{% if canApprove == true %}
+						&lt;!-- lodd:appr00.a --&gt;
+						&lt;div id="divApproval" class="approval-section" style="margin: 20px 0;"&gt;
+							&lt;div id="approvalLoading"&gt;
+								&lt;div style="display: flex; align-items: center;"&gt;
+									&lt;span style="margin-right: 10px;"&gt;Checking approval status...&lt;/span&gt;
+									&lt;div class="spinner-border spinner-border-sm" role="status"&gt;
+										&lt;span class="sr-only"&gt;Loading...&lt;/span&gt;
+									&lt;/div&gt;
+								&lt;/div&gt;
+							&lt;/div&gt;
+							
+							&lt;!-- Hidden data for JavaScript --&gt;
+							&lt;script type="text/javascript"&gt;
+								window.APPROVAL_VIEW_MODE = "{{approvalViewMode}}";
+								window.ALLOW_APPROVAL_ACTION = {{allowApprovalAction}};
+								window.LOAN_OFFICER_NAME = "{{sqRecLOBeingViewed.lv_name}}";
+								window.IS_BRANCH_MANAGER = {{is_BranchManager}};
+								window.CAN_APPROVE_COMMISSIONS = {{canApproveCommissions}};
+								window.IS_OWN_COMMISSIONS = {% if user.lv_loanofficer.id == sqRecLOBeingViewed.lv_lvcomploanofficerid %}true{% else %}false{% endif %};
+							&lt;/script&gt;
+							
+							{% comment %}  Approved state (hidden initially)   {% endcomment %} 
+							&lt;div id="approvalComplete" style="display: none;"&gt;
+								&lt;div id="approvalStatusMessage" style="color: green; font-weight: bold; margin-bottom: 10px;"&gt;
+									&lt;!-- Status message will be populated by JavaScript --&gt;
+								&lt;/div&gt;
+							&lt;/div&gt;
+
+							{% comment %}   Not yet approved state (hidden initially)   {% endcomment %} 
+							&lt;div id="approvalRequired" style="display: none;"&gt;
+								&lt;div style="display: flex; align-items: center;"&gt;
+									&lt;span id="spanApprove" style="margin-left: 20px; margin-right: 10px; background-color: transparent;"&gt;
+										&lt;!-- Message will be populated by JavaScript based on approval mode --&gt;
+									&lt;/span&gt;
+									&lt;input id="btnApprove" type="button" value="Approve" 
+										onclick="return btnApproveClick();" class="btn" 
+										style="background-color: var(--portalThemeColor10); color: var(--portalThemeColor5); border: none; border-radius: 8px; padding: 10px 15px; display: none;" /&gt;
+								&lt;/div&gt;
+							&lt;/div&gt;
+							
+							{% comment %}   View-only state for Branch Managers   {% endcomment %} 
+							&lt;div id="approvalViewOnly" style="display: none;"&gt;
+								&lt;div id="viewOnlyStatusMessage" style="color: #666; margin-bottom: 10px;"&gt;
+									&lt;!-- View-only status message will be populated by JavaScript --&gt;
+								&lt;/div&gt;
+							&lt;/div&gt;
+						&lt;/div&gt;
+					{% else %}
+						&lt;!-- lodd:appr00.b --&gt;
+					{% endif %}
+				&lt;/div&gt;
+				&lt;!-- End of JavaScript-controlled approval section --&gt;
+				
+				&lt;!-- Bulk approval functionality has been moved to the /Branch page --&gt;
+				
+				&lt;div id="approvalSectionElse" style="display: none;"&gt;
+					&lt;!-- lodd:appr00.else Either we are NOT using approvals at all, or, the current period '{{sqRecUISelPeriod.lv_periodno}}' is not the open periodno '{{ sqAcctgPeriodNo }}' --&gt;
+				&lt;/div&gt;
+				
+				&lt;script&gt;
+					// Also handle the "else" case for approval section
+					document.addEventListener('DOMContentLoaded', function() {
+						const sqUsingApprovals = {{sqUsingApprovals}};
+						const sqRecUISelPeriodNo = {{sqRecUISelPeriod.lv_periodno}};
+						const sqLOViewMode = "{{sqLOViewMode}}";
+						const minPeriodAllowedForApprovals = window.minPeriodAllowedForApprovals;
+						
+						const approvalElseDiv = document.getElementById('approvalSectionElse');
+						
+						// Show else section if conditions are NOT met
+						if (!(sqUsingApprovals === true &amp;&amp; 
+							  sqRecUISelPeriodNo &gt;= minPeriodAllowedForApprovals &amp;&amp; 
+							  sqLOViewMode !== "ALL_LOAN_OFFICERS")) {
+							approvalElseDiv.style.display = 'block';
+						}
+					});
+				&lt;/script&gt;
+				
+				&lt;!-- Bulk approval JavaScript has been moved to the /Branch page --&gt;
+
+                &lt;div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 15px;"&gt;&lt;/div&gt;
+                
+                {% comment %} PERFORMANCE OPTIMIZATION: Only load heavy components when commission data exists {% endcomment %}
+                {% if cpCommValueRowCount &gt; 0 %}
+                    {% include 'snippet' snippet_name:'Dashboard Details' %}
+
+					                    {% comment %} DEBT BALANCE - Server-side data passed to JavaScript for math {% endcomment %}
+                    &lt;!-- DEBUG:DEBTLOG: sqRecLOBeingViewed.lv_code="{{sqRecLOBeingViewed.lv_code}}" --&gt;
+                    &lt;!-- DEBUG:DEBTLOG: debtLogEntries.results.entities.size={{debtLogEntries.results.entities.size}} --&gt;
+                    &lt;!-- DEBUG:DEBTLOG: hasLoanOfficerParam={{hasLoanOfficerParam}} is_OnlyLoanOfficer={{is_OnlyLoanOfficer}} --&gt;
+                    &lt;script&gt;
+                        // Server-rendered debt log entries (FetchXML query, no AJAX needed)
+                        // Math (summing) is done in JavaScript to avoid Liquid arithmetic issues
+                        // DEBUG: LO Code = "{{sqRecLOBeingViewed.lv_code}}", Entry count = {{debtLogEntries.results.entities.size | default: 0}}
+                        window.DEBT_LOG_ENTRIES = [
+                            {%- for entry in debtLogEntries.results.entities -%}
+                            {
+                                identifierCode: "{{ entry.lv_identifiercode }}",
+                                date: "{{ entry.lv_entrydate | date: 'yyyy-MM-dd' }}",
+                                amount: {{ entry.lv_amount | default: 0 }},
+                                description: "{{ entry.lv_description | replace: '"', '\\"' | replace: '\n', ' ' | replace: '\r', '' }}"
+                            }{%- unless forloop.last -%},{%- endunless -%}
+                            {%- endfor -%}
+                        ];
+                        console.log('DEBT BALANCE: Server-rendered', window.DEBT_LOG_ENTRIES.length, 'entries');
+
+                        /**
+                         * GetDebtLogEntries - Returns server-rendered debt log entries (no AJAX)
+                         * Data is fetched server-side via FetchXML query
+                         * @returns {Array} Array of debt log entry objects
+                         */
+                        function GetDebtLogEntries() {
+                            return window.DEBT_LOG_ENTRIES || [];
+                        }
+
+                        /**
+                         * Calculate total from debt log entries
+                         */
+                        function calculateDebtBalanceTotal(entries) {
+                            return entries.reduce((sum, entry) =&gt; sum + entry.amount, 0);
+                        }
+
+                        /**
+                         * Format currency value
+                         */
+                        function formatDebtCurrency(amount) {
+                            const formatted = new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: 'USD'
+                            }).format(Math.abs(amount));
+
+                            return amount &lt; 0 ? '-' + formatted : formatted;
+                        }
+
+                        /**
+                         * Format date for display
+                         */
+                        function formatDebtDate(dateStr) {
+                            if (!dateStr) return '';
+                            const date = new Date(dateStr + 'T00:00:00');
+                            return date.toLocaleDateString('en-US', {
+                                month: '2-digit',
+                                day: '2-digit',
+                                year: '2-digit'
+                            });
+                        }
+
+                        /**
+                         * Toggle detail panel visibility (card stays in grid)
+                         */
+                        function toggleDebtBalanceDetail() {
+                            const detail = document.getElementById('debtBalanceDetail');
+
+                            if (detail.style.display === 'none' || detail.style.display === '') {
+                                detail.style.display = 'block';
+                            } else {
+                                detail.style.display = 'none';
+                            }
+                        }
+
+                        /**
+                         * Render debt balance card and detail table
+                         * Uses server-rendered data (no AJAX), JavaScript does the math
+                         */
+                        function renderDebtBalance() {
+                            const amountEl = document.getElementById('debtBalanceAmount');
+                            const hintEl = document.getElementById('debtBalanceHint');
+
+                            try {
+                                const entries = GetDebtLogEntries();  // Sync - data is pre-loaded
+                                const total = calculateDebtBalanceTotal(entries);  // JavaScript does the math
+
+                                // Update card amount
+                                amountEl.textContent = formatDebtCurrency(total);
+                                if (total &lt; 0) {
+                                    amountEl.classList.add('negative');
+                                } else {
+                                    amountEl.classList.remove('negative');
+                                }
+
+                                // Update detail table
+                                const tbody = document.getElementById('debtBalanceTableBody');
+                                if (entries.length === 0) {
+                                    tbody.innerHTML = '&lt;tr&gt;&lt;td colspan="4" style="text-align: center; color: #888;"&gt;No debt log entries found&lt;/td&gt;&lt;/tr&gt;';
+                                    hintEl.style.display = 'none';
+                                } else {
+                                    tbody.innerHTML = entries.map(entry =&gt; {
+                                        const amountClass = entry.amount &gt;= 0 ? 'amount-positive' : 'amount-negative';
+                                        return `
+                                            &lt;tr&gt;
+                                                &lt;td&gt;${entry.identifierCode}&lt;/td&gt;
+                                                &lt;td&gt;${formatDebtDate(entry.date)}&lt;/td&gt;
+                                                &lt;td style="text-align: right;" class="${amountClass}"&gt;${formatDebtCurrency(entry.amount)}&lt;/td&gt;
+                                                &lt;td&gt;${entry.description}&lt;/td&gt;
+                                            &lt;/tr&gt;
+                                        `;
+                                    }).join('');
+                                }
+
+                                // Update detail total
+                                const totalEl = document.getElementById('debtBalanceTotalDetail');
+                                totalEl.textContent = formatDebtCurrency(total);
+                                if (total &lt; 0) {
+                                    totalEl.classList.add('negative');
+                                } else {
+                                    totalEl.classList.remove('negative');
+                                }
+
+                            } catch (error) {
+                                console.error('DEBT BALANCE: Error rendering:', error);
+                                amountEl.textContent = 'Error';
+                                amountEl.style.color = '#c0392b';
+                            }
+                        }
+
+                        // Initialize debt balance on page load
+                        // Data is already server-rendered, just need to calculate totals and render
+                        document.addEventListener('DOMContentLoaded', function() {
+                            renderDebtBalance();
+                        });
+                    &lt;/script&gt;
+
+
+                    {% comment %} Parse pageSize parameter with default of 10 for table pagination {% endcomment %}
+                    {% assign cfPageSize = 10 %}
+                    {% if request.params.pageSize and request.params.pageSize != "" %}
+                        {% assign cfPageSize = request.params.pageSize | times: 1 %}
+                        {% if cfPageSize &lt; 1 %}
+                            {% assign cfPageSize = 10 %}
+                        {% endif %}
+                    {% endif %}
+
+                    &lt;div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 25px;"&gt;&lt;/div&gt;
+                    
+                    &lt;div class="ppFlexContainer" style="display: flex; align-items: center; padding: 8px 0 8px 0;"&gt; &lt;!-- Buttons: Print, Email, Profile --&gt;
+
+                        {% if cfgPrintEnabled %}                  {% comment %}      TODO8: this logic is duplicated across /web-pages/Accounting|Region|Branch|LoanOfficer                tag=2504021442              {% endcomment %} 
+                            &lt;div onclick="printpage()" data-component-theme="portalThemeColor10" class="ppFlexContainer" style="display: flex; border-radius: 8px 8px 8px 8px; padding: 4px 14px 4px 14px; align-items: center; justify-content: space-between; max-width: auto; width: auto; height: 45px; flex-grow: 0; flex-shrink: 0; flex-basis: 135px; flex-direction: row;cursor: pointer;"&gt;
+                                &lt;p style="text-align: left; color: var(--portalThemeColor5); font-size: 18px;"&gt;​
+                                    &lt;b aria-label="Text Commission Profile" style="position: relative;"&gt;
+                                        Print
+                                    &lt;/b&gt;
+                                &lt;/p&gt;
+                                &lt;img src="/icon-print.png" alt="icon-print" name="icon-print.png" style="width: 28.67%; height: 28px; max-width: 100%;"&gt;
+                            &lt;/div&gt;
+                        {% endif %}
+                        
+                        &lt;div id="email_btn" data-component-theme="portalThemeColor10" class="ppFlexContainer email-modal-open" style="display: flex; cursor: pointer; border-radius: 8px 8px 8px 8px; padding: 4px 14px 4px 14px; align-items: center; justify-content: space-between; max-width: auto; width: auto; height: 45px; flex-grow: 0; flex-shrink: 0; flex-basis: 135px; flex-direction: row;"&gt;
+                            &lt;p style="text-align: left; color: var(--portalThemeColor5); font-size: 18px;"&gt;
+                                ​&lt;b aria-label="Text Print" style="position: relative;"&gt;
+                                    Email
+                                &lt;/b&gt;
+                            &lt;/p&gt;
+                            &lt;img src="/icon-email.png" alt="icon-email" name="icon-email.png" style="width: 28.67%; height: 28px; max-width: 100%;"&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;div id="divPrimaryCommissionsTable" class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 25px;"&gt;&lt;/div&gt;
+                    {% include 'Primary Commissions Table' %}
+
+                    &lt;div id="divPrimaryAdjustmentsTable" class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 25px;"&gt;&lt;/div&gt;
+                    {% include 'Primary Adjustments Table' %}
+
+                    {% include 'snippet' snippet_name:'Email Dialog' %}
+
+                    {% include 'Email Modal' %}
+                {% endif %}
+
+			{% else %}                {% comment %}                         cpCommValueRowCount is 0                               {% endcomment %}
+
+
+				{% comment %} ADMIN OVERRIDE: Administrators can access all data {% endcomment %}
+				{% comment %} CRITICAL: Check is_admin FIRST before any permission restrictions {% endcomment %}
+				{% if is_admin %}
+					{% comment %} Admin users always have access - show appropriate message {% endcomment %}
+					{% if is_OnlyLoanOfficer %}
+						{% if sqRecLOBeingViewed and sqRecLOBeingViewed.lv_name and sqRecLOBeingViewed.lv_name != "" %}
+							&lt;div class="grid-container"&gt;
+								&lt;h3&gt;&lt;span style="color: blue"&gt;{{sqRecLOBeingViewed.lv_name}}&lt;/span&gt; has no commission values for period &lt;span style="color: blue;"&gt;{{sqRecUISelPeriod.lv_name}}&lt;/span&gt;&lt;/h3&gt;
+							&lt;/div&gt;
+						{% else %}
+							&lt;div class="grid-container"&gt;
+								&lt;h3&gt;No loan officer selected&lt;/h3&gt;
+							&lt;/div&gt;
+						{% endif %}
+					{% else %}
+						&lt;div class="grid-container"&gt;
+							{% if sqRecLOBeingViewed and sqRecLOBeingViewed.lv_name and sqRecLOBeingViewed.lv_name != "" %}
+								&lt;h3&gt;&lt;span style="color: blue"&gt;{{sqRecLOBeingViewed.lv_name}}&lt;/span&gt; has no commission values for period &lt;span style="color: blue;"&gt;{{sqRecUISelPeriod.lv_name}}&lt;/span&gt;&lt;/h3&gt;
+							{% else %}
+								&lt;h3&gt;Please select a loan officer from the dropdown above to view commission data&lt;/h3&gt;
+							{% endif %}
+						&lt;/div&gt;
+					{% endif %}
+				{% elsif is_BranchManager %}
+					{% comment %} Branch managers always have access - show selection message {% endcomment %}
+					&lt;div class="grid-container"&gt;
+						{% if hasLoanOfficerParam and sqRecLOBeingViewed and sqRecLOBeingViewed.lv_name and sqRecLOBeingViewed.lv_name != "" %}
+							&lt;h3&gt;&lt;span style="color: blue"&gt;{{sqRecLOBeingViewed.lv_name}}&lt;/span&gt; has no commission values for period &lt;span style="color: blue;"&gt;{{sqRecUISelPeriod.lv_name}}&lt;/span&gt;&lt;/h3&gt;
+						{% else %}
+							&lt;h3 style="text-align: center; color: #666; padding: 40px;"&gt;
+								&lt;i class="fas fa-user-tie" style="margin-right: 10px;"&gt;&lt;/i&gt;
+								Please select a loan officer from the dropdown above to view commission data.
+							&lt;/h3&gt;
+						{% endif %}
+					&lt;/div&gt;
+				{% elsif userLoanOfficerList != "" and userLoanOfficerList != "|" %}
+					{% comment %} User has loan officer assignments - show appropriate content based on selection {% endcomment %}
+					{% if is_OnlyLoanOfficer %}
+						{% if sqRecLOBeingViewed and sqRecLOBeingViewed.lv_name and sqRecLOBeingViewed.lv_name != "" %}
+							&lt;div class="grid-container"&gt;
+								&lt;h3&gt;&lt;span style="color: blue"&gt;{{sqRecLOBeingViewed.lv_name}}&lt;/span&gt; has no commission values for period &lt;span style="color: blue;"&gt;{{sqRecUISelPeriod.lv_name}}&lt;/span&gt;&lt;/h3&gt;
+							&lt;/div&gt;
+						{% else %}
+							&lt;div class="grid-container"&gt;
+								&lt;h3&gt;No loan officer selected&lt;/h3&gt;
+							&lt;/div&gt;
+						{% endif %}
+					{% else %}
+						&lt;div class="grid-container"&gt;
+							{% comment %} FIXED: Only show "no commission values" message when officer was explicitly selected via URL parameter {% endcomment %}
+							{% if hasLoanOfficerParam and sqRecLOBeingViewed and sqRecLOBeingViewed.lv_name and sqRecLOBeingViewed.lv_name != "" %}
+								&lt;h3&gt;&lt;span style="color: blue"&gt;{{sqRecLOBeingViewed.lv_name}}&lt;/span&gt; has no commission values for period &lt;span style="color: blue;"&gt;{{sqRecUISelPeriod.lv_name}}&lt;/span&gt;&lt;/h3&gt;
+							{% else %}
+								&lt;h3 style="text-align: center; color: #666; padding: 40px;"&gt;
+									&lt;i class="fas fa-user-tie" style="margin-right: 10px;"&gt;&lt;/i&gt;
+									Please select a loan officer from the dropdown above to view commission data.
+								&lt;/h3&gt;
+							{% endif %}
+						&lt;/div&gt;
+					{% endif %}
+				{% else %}
+					{% comment %} User has NO access - show error message {% endcomment %}
+					&lt;div class="grid-container"&gt;
+						&lt;h3&gt;No Loan Officer Access&lt;/h3&gt;
+						&lt;p&gt;You do not have access to view any loan officer commission data.&lt;/p&gt;
+						&lt;p&gt;To gain access, contact your system administrator to request:&lt;/p&gt;
+						&lt;ul&gt;
+							&lt;li&gt;A direct loan officer assignment, OR&lt;/li&gt;
+							&lt;li&gt;Loan officer oversight assignments, OR&lt;/li&gt;
+							&lt;li&gt;Branch manager assignments&lt;/li&gt;
+						&lt;/ul&gt;
+					&lt;/div&gt;
+				{% endif %}
+            {% endif %}
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+{% else %}
+	{% comment %} Auto-redirect unauthenticated users to sign-in page {% endcomment %}
+	&lt;script&gt;
+		// Clear any query parameters and redirect to sign-in
+		window.location.href = '/Account/Login/';
+	&lt;/script&gt;
+	&lt;div class="container"&gt;
+		&lt;h1&gt;Redirecting to Sign In...&lt;/h1&gt;
+		&lt;p&gt;Please wait while we redirect you to the sign-in page.&lt;/p&gt;
+	&lt;/div&gt;
+{% endif %}
+
+&lt;script&gt;
+
+function btnCommProfile_Click() {
+	writeToLogTable("Click", "btnCommProfile");
+}
+
+{% if sqUsingApprovals == true %}
+	// todo8: using approvals: YES
+	
+	// BULK APPROVAL HELPER FUNCTIONS
+	
+	// Parse userLoanOfficerList into array of officer objects
+	function parseUserLoanOfficerList() {
+		const userPermissionList = "{{userLoanOfficerList}}";
+			
+		
+		if (!userPermissionList || userPermissionList.trim() === '' || userPermissionList === '|') {
+			return [];
+		}
+		
+		const officers = [];
+		// Format is "|name|code|name|code|" - split and group pairs
+		const parts = userPermissionList.split('|').filter(part =&gt; part.trim() !== '');
+		
+		for (let i = 0; i &lt; parts.length; i += 2) {
+			if (i + 1 &lt; parts.length) {
+				const name = parts[i];
+				const code = parts[i + 1];
+				
+				officers.push({
+					name: name,
+					code: code
+				});
+			}
+		}
+		
+			return officers;
+	}
+	
+	// Get commission total for a specific officer using pre-calculated server-side data
+	function getOfficerCommissionTotal(officerCode) {
+			
+		// Use the pre-calculated data from server
+		if (window.bulkApprovalOfficerData) {
+			const officerData = window.bulkApprovalOfficerData.find(officer =&gt; officer.code === officerCode);
+			if (officerData) {
+				const formattedTotal = new Intl.NumberFormat('en-US', {
+					style: 'currency',
+					currency: 'USD'
+				}).format(officerData.total);
+				
+					
+				return {
+					total: officerData.total,
+					formattedTotal: formattedTotal,
+					recordCount: officerData.count
+				};
+			}
+		}
+		
+			return {
+			total: 0,
+			formattedTotal: '$0.00',
+			recordCount: 0
+		};
+	}
+	
+	// APPROVAL CHECKING
+	async function checkSophisticatedApprovalStatus(officerIdentifier, periodNo, useOfficerCode = true) {
+		try {
+			const approvalType = "{{sqApprovalType}}";
+			const viewMode = window.APPROVAL_VIEW_MODE;
+			const allowAction = window.ALLOW_APPROVAL_ACTION;
+			const loanOfficerName = window.LOAN_OFFICER_NAME;
+			const isBranchManager = window.IS_BRANCH_MANAGER;
+			const isOwnCommissions = window.IS_OWN_COMMISSIONS;
+
+			// Build filter expression based on whether we have code or ID
+			let filterExpr;
+			if (useOfficerCode) {
+				filterExpr = `$filter=lv_loanofficercode eq '${officerIdentifier}' and lv_periodno eq ${periodNo}`;
+			} else {
+				filterExpr = `$filter=lv_loanofficer eq '${officerIdentifier}' and lv_periodno eq ${periodNo}`;
+			}
+
+			const approvalRecords = await apiGetRecords("lv_lvcompcommissionapprovals", filterExpr);
+
+			if (!approvalRecords || !Array.isArray(approvalRecords)) {
+				console.log('APPROVAL: No records found');
+				return {
+					showApprovalComplete: false,
+					showApprovalRequired: false,
+					showViewOnly: false,
+					message: 'Error loading approval status'
+				};
+			}
+
+			// Separate approval records by role
+			const bmApprovals = approvalRecords.filter(rec =&gt; rec.lv_webrole === 'Branch Manager');
+			const loApprovals = approvalRecords.filter(rec =&gt; rec.lv_webrole === 'Loan Officer');
+			
+			// Apply sophisticated logic based on view mode
+			switch (viewMode) {
+				case "none":
+					return { showApprovalComplete: false, showApprovalRequired: false, showViewOnly: false };
+					
+				case "loan_officer_own":
+					// "LoanOfficer" config - LO viewing their own
+					if (loApprovals.length &gt; 0) {
+						const personalizedMessage = formatPersonalizedApprovalMessage(
+							loApprovals[0].lv_fullname,
+							loApprovals[0].lv_emailaddress,
+							window.PAGE_USEREMAIL,
+							loApprovals[0].createdon
+						);
+						return {
+							showApprovalComplete: true,
+							message: personalizedMessage
+						};
+					} else {
+						return {
+							showApprovalRequired: true,
+							showApprovalButton: true,
+							message: "If you are satisfied with this commission report, click here to finalize and approve",
+							buttonText: "Approve My Commissions"
+						};
+					}
+					
+				case "branch_manager_view_only":
+					// "LoanOfficer" or "BothRequired" - BM viewing (view only)
+					if (loApprovals.length &gt; 0) {
+						const personalizedMessage = formatPersonalizedApprovalMessage(
+							loApprovals[0].lv_fullname,
+							loApprovals[0].lv_emailaddress,
+							window.PAGE_USEREMAIL,
+							loApprovals[0].createdon
+						);
+						return {
+							showViewOnly: true,
+							message: personalizedMessage
+						};
+					} else {
+						return {
+							showViewOnly: true,
+							message: `Awaiting approval by ${loanOfficerName}`
+						};
+					}
+					
+				case "loan_officer_view_only":
+					// "BranchManager" config - LO viewing (view only)
+					if (bmApprovals.length &gt; 0) {
+						const personalizedMessage = formatPersonalizedApprovalMessage(
+							bmApprovals[0].lv_fullname,
+							bmApprovals[0].lv_emailaddress,
+							window.PAGE_USEREMAIL,
+							bmApprovals[0].createdon
+						);
+						return {
+							showViewOnly: true,
+							message: personalizedMessage
+						};
+					} else {
+						return {
+							showViewOnly: true,
+							message: "Awaiting branch manager approval"
+						};
+					}
+					
+				case "branch_manager_can_approve":
+					// "BranchManager" config - BM can approve
+					if (bmApprovals.length &gt; 0) {
+						const personalizedMessage = formatPersonalizedApprovalMessage(
+							bmApprovals[0].lv_fullname,
+							bmApprovals[0].lv_emailaddress,
+							window.PAGE_USEREMAIL,
+							bmApprovals[0].createdon
+						);
+						return {
+							showApprovalComplete: true,
+							message: personalizedMessage
+						};
+					} else {
+						return {
+							showApprovalRequired: true,
+							showApprovalButton: true,
+							message: `As Branch Manager, you are authorized to approve these commissions for ${loanOfficerName}`,
+							buttonText: "Approve Commissions"
+						};
+					}
+					
+				case "loan_officer_own_both_required":
+					// "BothRequired" config - LO viewing their own
+					if (loApprovals.length &gt; 0 &amp;&amp; bmApprovals.length &gt; 0) {
+						const bmDate = formatApprovalDate(bmApprovals[0].createdon);
+						const loDate = formatApprovalDate(loApprovals[0].createdon);
+						return {
+							showApprovalComplete: true,
+							message: `Fully approved - Branch manager: ${bmApprovals[0].lv_fullname} on ${bmDate}, You: ${loDate}`
+						};
+					} else if (loApprovals.length &gt; 0) {
+						const loDate = formatApprovalDate(loApprovals[0].createdon);
+						return {
+							showViewOnly: true,
+							message: `You approved these commissions on ${loDate}. Awaiting branch manager approval.`
+						};
+					} else if (bmApprovals.length &gt; 0) {
+						const bmDate = formatApprovalDate(bmApprovals[0].createdon);
+						return {
+							showApprovalRequired: true,
+							showApprovalButton: true,
+							message: `Branch manager approved on ${bmDate}. You can now provide your approval.`,
+							buttonText: "Approve My Commissions"
+						};
+					} else {
+						return {
+							showApprovalRequired: true,
+							showApprovalButton: true,
+							message: "If you are satisfied with this commission report, click here to finalize and approve",
+							buttonText: "Approve My Commissions"
+						};
+					}
+					
+				case "loan_officer_own_either":
+					// "EitherOr" config - LO viewing their own
+					if (bmApprovals.length &gt; 0) {
+						const personalizedMessage = formatPersonalizedApprovalMessage(
+							bmApprovals[0].lv_fullname,
+							bmApprovals[0].lv_emailaddress,
+							window.PAGE_USEREMAIL,
+							bmApprovals[0].createdon
+						);
+						return {
+							showApprovalComplete: true,
+							message: personalizedMessage
+						};
+					} else if (loApprovals.length &gt; 0) {
+						const personalizedMessage = formatPersonalizedApprovalMessage(
+							loApprovals[0].lv_fullname,
+							loApprovals[0].lv_emailaddress,
+							window.PAGE_USEREMAIL,
+							loApprovals[0].createdon
+						);
+						return {
+							showApprovalComplete: true,
+							message: personalizedMessage
+						};
+					} else {
+						return {
+							showApprovalRequired: true,
+							showApprovalButton: true,
+							message: "Either you or your branch manager can approve these commissions.",
+							buttonText: "Approve My Commissions"
+						};
+					}
+					
+				case "branch_manager_can_approve_either":
+					// "EitherOr" config - BM viewing (can approve)
+					if (bmApprovals.length &gt; 0) {
+						const personalizedMessage = formatPersonalizedApprovalMessage(
+							bmApprovals[0].lv_fullname,
+							bmApprovals[0].lv_emailaddress,
+							window.PAGE_USEREMAIL,
+							bmApprovals[0].createdon
+						);
+						return {
+							showApprovalComplete: true,
+							message: personalizedMessage
+						};
+					} else if (loApprovals.length &gt; 0) {
+						const personalizedMessage = formatPersonalizedApprovalMessage(
+							loApprovals[0].lv_fullname,
+							loApprovals[0].lv_emailaddress,
+							window.PAGE_USEREMAIL,
+							loApprovals[0].createdon
+						);
+						return {
+							showApprovalComplete: true,
+							message: personalizedMessage
+						};
+					} else {
+						return {
+							showApprovalRequired: true,
+							showApprovalButton: true,
+							message: `As Branch Manager, you are authorized to approve these commissions for ${loanOfficerName}`,
+							buttonText: "Approve Commissions"
+						};
+					}
+					
+				default:
+					console.warn('APPROVAL: Unknown view mode:', viewMode);
+					return {
+						showViewOnly: true,
+						message: 'Unknown approval configuration'
+					};
+			}
+
+		} catch (error) {
+			console.error('APPROVAL: Error checking approval status:', error);
+			return {
+				showViewOnly: true,
+				message: 'Error checking approval status'
+			};
+		}
+	}
+	
+	// Simple loan officer approval check - just checks if THIS loan officer has approved
+	async function checkLoanOfficerApproval(officerCode, periodNo) {
+		try {
+				
+			// Get all approval records for this officer and period
+			const filterExpr = `$filter=lv_loanofficercode eq '${officerCode}' and lv_periodno eq ${periodNo}`;
+			const approvalRecords = await apiGetRecords("lv_lvcompcommissionapprovals", filterExpr);
+			
+			if (!approvalRecords || !Array.isArray(approvalRecords) || approvalRecords.length === 0) {
+				return { hasApproved: false, message: 'These commissions are awaiting your approval.' };
+			}
+			
+			// Check if there's a loan officer approval
+			const loApprovals = approvalRecords.filter(rec =&gt; rec.lv_webrole === 'Loan Officer');
+			
+			if (loApprovals.length &gt; 0) {
+				const approvalDate = formatApprovalDate(loApprovals[0].createdon);
+				return { 
+					hasApproved: true, 
+					message: `You approved these commissions on ${approvalDate}.` 
+				};
+			} else {
+				return { hasApproved: false, message: 'These commissions are awaiting your approval.' };
+			}
+			
+		} catch (error) {
+			return { hasApproved: false, message: 'These commissions are awaiting your approval.' };
+		}
+	}
+	
+	// Bulk approval functions have been moved to the /Branch page
+	
+	async function btnApproveClick() {
+		
+		addLoanOfficerToolTip(" (v3181502)")
+
+		const cardCommTotalAsFormattedString = $("#cardCommTotal").text(); // the value from the 'Total' card
+
+		const qText = 
+			"&lt;div&gt;" + 
+				"&lt;div style='margin-bottom: 15px;'&gt;On pressing 'Confirm', your approval of these commissions will be logged:&lt;/div&gt;" + 
+
+				"&lt;div style='margin-left: 20px; margin-bottom: 10px;'&gt;" + 
+					"&lt;table class='table-responsive'&gt;" + 
+						"&lt;tr&gt;&lt;td class='p-3'&gt;Amount:&lt;/td&gt;&lt;td class='p-1'&gt;&lt;b&gt;" + cardCommTotalAsFormattedString + "&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;" +
+						"&lt;tr&gt;&lt;td class='p-3'&gt;Period:&lt;/td&gt;&lt;td class='p-1'&gt;&lt;b&gt;" + window.PAGE_UISelPeriodCode + "&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;" +
+					"&lt;/table&gt;" + 
+				"&lt;/div&gt;" + 
+
+				"&lt;div style='margin-bottom: 10px;'&gt;An email confirmation will be sent to &lt;b&gt;" + window.PAGE_USEREMAIL + "&lt;/b&gt;&lt;/div&gt;" + 
+
+				"&lt;div style='margin-bottom: 30px;'&gt;Are you sure you are ready to approve your commissions?&lt;/div&gt;" + 
+
+				"&lt;div&gt;Press the 'Confirm' button to proceed&lt;/div&gt;" + 
+			"&lt;/div&gt;";
+
+		var userChoice =  await askQuestion(qText, btn1Text = "Confirm", btn2Text = "Cancel");
+
+		if (userChoice != "Confirm") {
+			return;
+		}
+
+		$('#btnApprove').hide();
+
+		const $spn = $('#spanApprove');
+
+		$spn.html('Please wait, recording your appproval... &lt;span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"&gt;&lt;/span&gt;');
+
+		const subject = "Commissions approved: Period " + window.PAGE_UISelPeriodCode;
+		const body = "This email is to confirm that you approved commissions in the amount " + cardCommTotalAsFormattedString + " for period: " + window.PAGE_UISelPeriodCode;
+
+		await sendEmail("Commission Approve", subject, body, window.PAGE_USEREMAIL, window.PAGE_LOCODE_BEINGVIEWED, window.PAGE_UISelPeriodCode, "", false, window.PAGE_UISelPeriodNo);
+
+		{% comment %} Enhanced approval record creation for sophisticated approval system {% endcomment %} 
+		// Determine approval role based on user permissions and viewing context
+		const isBranchManager = {% if is_BranchManager %}true{% else %}false{% endif %};
+		const canApproveCommissions = {% if canApproveCommissions %}true{% else %}false{% endif %};
+		const isMyOwnCommissions = "{{user.lv_loanofficer.id}}" === "{{sqRecLOBeingViewed.lv_lvcomploanofficerid}}";
+		
+		let approvalRole = "Unknown";
+		let branchCode = "{{sqRecLOBeingViewed.lv_branch.lv_code}}"; // Use branch code from loan officer record
+		
+		if (canApproveCommissions &amp;&amp; !isMyOwnCommissions) {
+			// Branch manager approving someone else's commissions
+			approvalRole = "Branch Manager";
+		} else if (isMyOwnCommissions) {
+			// Loan officer approving their own commissions
+			approvalRole = "Loan Officer";
+		} else {
+			console.warn('Unclear approval context - user cannot approve commissions and not approving own commissions');
+			approvalRole = "Loan Officer"; // Default fallback
+		}
+		
+		console.log('DEBUG APPROVAL: Role determination:', {
+			isBranchManager: isBranchManager,
+			canApproveCommissions: canApproveCommissions,
+			isMyOwnCommissions: isMyOwnCommissions,
+			approvalRole: approvalRole,
+			branchCode: branchCode
+		});
+		
+		const oPostAppr = {
+			"lv_amount": safeStringToNumeric(cardCommTotalAsFormattedString),
+			"lv_amountdisplayedtouser": cardCommTotalAsFormattedString,
+			"lv_branchcode": "", // Leave blank for loan officer approvals
+			"lv_emailaddress": window.PAGE_USEREMAIL,
+			"lv_fullname" : window.PAGE_USERNAME,
+			"lv_loanofficercode": window.PAGE_LOCODE_BEINGVIEWED,
+			"lv_periodcode": window.PAGE_UISelPeriodCode,
+			"lv_webrole": approvalRole,
+			"lv_periodno": window.PAGE_UISelPeriodNo
+		};
+
+		try {
+			const apiResponse = await apiCall("/_api/lv_lvcompcommissionapprovals", "POST", oPostAppr, true);
+		} catch (error) {
+			console.error('API call failed::', error);
+			$spn.html("Error: Failed to record approval. Please try again or contact support.");
+			$('#btnApprove').show();
+			return;
+		}
+
+		await delay(2);
+
+		writeToLogTable("ApproveEnd", "By: {{user.fullname}}", "PeriodNo", window.PAGE_UISelPeriodNo, "LoanOfficerCode", window.PAGE_LOCODE_BEINGVIEWED);
+
+		$spn.html("Your approval has been recorded successfully");
+	}
+
+	// Helper function to update approval button for partial approval states
+	function updateApprovalButtonForPartialStatus(statusDetails) {
+		const approvalType = "{{sqApprovalType}}";
+		const isUserDirectLO = "{{user.lv_loanofficer.id}}" === "{{sqRecLOBeingViewed.lv_lvcomploanofficerid}}";
+		const isBranchManager = {{is_BranchManager}};
+		const canApproveCommissions = {{canApproveCommissions}};
+		const currentUser = "{{user.fullname}}";
+		const officerName = "{{sqRecLOBeingViewed.lv_name}}";
+		
+		console.log('DEBUG: updateApprovalButtonForPartialStatus called with:', statusDetails);
+		console.log('DEBUG: approvalType:', approvalType, 'isUserDirectLO:', isUserDirectLO, 'isBranchManager:', isBranchManager, 'canApproveCommissions:', canApproveCommissions);
+		
+		let buttonText = "Approve";
+		let messageText = "";
+		
+		if (approvalType === "BothRequired") {
+			// Parse which approval exists based on the exact messages from checkExistingApproval function
+			// Format: "Partial approval - [Name] approved on [date]. Loan officer approval still required."
+			// Format: "Partial approval - Loan officer approved on [date]. Branch manager approval still required."
+			const bmApprovalExists = statusDetails.includes('Partial approval -') &amp;&amp; statusDetails.includes('Loan officer approval still required');
+			const loApprovalExists = statusDetails.includes('Partial approval - Loan officer approved on') &amp;&amp; statusDetails.includes('Branch manager approval still required');
+			
+			console.log('DEBUG: BothRequired mode - bmApprovalExists:', bmApprovalExists, 'loApprovalExists:', loApprovalExists);
+			console.log('DEBUG: Full status details:', statusDetails);
+			
+			if (bmApprovalExists &amp;&amp; !loApprovalExists) {
+				// Branch manager has approved, need loan officer approval
+				if (isUserDirectLO) {
+					messageText = `Branch manager approval completed. As the loan officer, you can now provide your approval.`;
+					buttonText = "Approve My Commissions";
+				} else {
+					messageText = `Branch manager approval completed. Loan officer approval for ${officerName} is still required.`;
+					buttonText = "Cannot Approve (Loan Officer Required)";
+					$('#btnApprove').prop('disabled', true);
+				}
+			} else if (loApprovalExists &amp;&amp; !bmApprovalExists) {
+				// Loan officer has approved, need branch manager approval
+				if (canApproveCommissions) {
+					messageText = `Loan officer approval completed. As branch manager, you can now provide your approval for ${officerName}.`;
+					buttonText = "Approve as Branch Manager";
+				} else {
+					messageText = `Loan officer approval completed. Branch manager approval for ${officerName} is still required.`;
+					buttonText = "Cannot Approve (Branch Manager Required)";
+					$('#btnApprove').prop('disabled', true);
+				}
+			}
+		} else {
+			// For other approval types with partial states, use appropriate messaging
+			if (isUserDirectLO) {
+				messageText = "You can approve your own commissions.";
+				buttonText = "Approve My Commissions";
+			} else if (canApproveCommissions) {
+				messageText = `As manager, you can approve these commissions for ${officerName}.`;
+				buttonText = "Approve Commissions";
+			}
+		}
+		
+		console.log('DEBUG: Setting messageText:', messageText, 'buttonText:', buttonText);
+		
+		// Update the UI elements
+		$('#spanApprove').html(messageText);
+		$('#btnApprove').val(buttonText);
+	}
+	
+	// Helper function to reset approval button to default state
+	function resetApprovalButtonToDefault() {
+		const isUserDirectLO = "{{user.lv_loanofficer.id}}" === "{{sqRecLOBeingViewed.lv_lvcomploanofficerid}}";
+		const officerName = "{{sqRecLOBeingViewed.lv_name}}";
+		
+		console.log('DEBUG: resetApprovalButtonToDefault called');
+		
+		// Simple approval messaging - no branch manager status info
+		if (isUserDirectLO) {
+			$('#spanApprove').html("If you are satisfied with this commission report, click here to approve");
+			$('#btnApprove').val("Approve My Commissions");
+		} else {
+			$('#spanApprove').html(`As manager, you can approve these commissions for ${officerName}`);
+			$('#btnApprove').val("Approve Commissions");
+		}
+		
+		// Re-enable button in case it was disabled
+		$('#btnApprove').prop('disabled', false);
+	}
+
+	async function onPageLoad() {
+		try {
+			// SKIP approval check for Administrators - they never approve commissions
+			const isAdmin = window.PAGE_Roles?.isAdmin || false;
+			if (isAdmin) {
+				console.log('APPROVAL: Skipping approval check - user is Administrator');
+				$('#approvalLoading').hide();
+				$('#approvalComplete').hide();
+				$('#approvalRequired').hide();
+				$('#approvalViewOnly').hide();
+				return;
+			}
+
+			// SKIP approval check if no loan officer selected yet (on initial page load)
+			let officerIdentifier = window.PAGE_LOCODE_BEINGVIEWED;
+			let useOfficerCode = true;
+
+			if (!officerIdentifier || officerIdentifier === '') {
+				// Try fallback to ID
+				officerIdentifier = window.PAGE_LOID_BEINGVIEWED;
+				useOfficerCode = false;
+
+				// If still empty, no loan officer selected yet - skip approval check silently
+				if (!officerIdentifier || officerIdentifier === '') {
+					console.log('APPROVAL: Skipping approval check - no loan officer selected yet');
+					$('#approvalLoading').hide();
+					$('#approvalComplete').hide();
+					$('#approvalRequired').hide();
+					$('#approvalViewOnly').hide();
+					return;
+				}
+			}
+
+			console.log('APPROVAL: Checking approval status for', useOfficerCode ? 'officer code' : 'officer ID', ':', officerIdentifier);
+
+			// Show loading state
+			$('#approvalLoading').show();
+			$('#approvalComplete').hide();
+			$('#approvalRequired').hide();
+			$('#approvalViewOnly').hide();
+
+			// Use new sophisticated approval checking
+			const approvalStatus = await checkSophisticatedApprovalStatus(
+				officerIdentifier,
+				window.PAGE_UISelPeriodNo,
+				useOfficerCode
+			);
+
+			console.log('APPROVAL: Result:', approvalStatus);
+
+			// Hide loading
+			$('#approvalLoading').hide();
+
+			// Display appropriate section based on result
+			if (approvalStatus.showApprovalComplete) {
+				$('#approvalStatusMessage').html(approvalStatus.message);
+				$('#approvalComplete').show();
+			} else if (approvalStatus.showApprovalRequired) {
+				$('#spanApprove').html(approvalStatus.message);
+				if (approvalStatus.showApprovalButton) {
+					$('#btnApprove').val(approvalStatus.buttonText || 'Approve');
+					$('#btnApprove').show();
+				} else {
+					$('#btnApprove').hide();
+				}
+				$('#approvalRequired').show();
+			} else if (approvalStatus.showViewOnly) {
+				$('#viewOnlyStatusMessage').html(approvalStatus.message);
+				$('#approvalViewOnly').show();
+			}
+
+		} catch (error) {
+			console.error("APPROVAL: Error checking approval status:", error);
+			$('#approvalLoading').hide();
+			$('#approvalViewOnly').show();
+			$('#viewOnlyStatusMessage').html('Error loading approval status. Please refresh the page.');
+		}
+	}
+
+	document.addEventListener("LVGlobalDOCReady", onPageLoad);
+	
+	// DEBUG FUNCTION: Manual approval record verification
+	window.debugCheckApprovalRecords = async function() {
+		try {
+			console.log('=== MANUAL APPROVAL CHECK DEBUG ===');
+			console.log('Current officer code:', window.PAGE_LOCODE_BEINGVIEWED);
+			console.log('Current period:', window.PAGE_UISelPeriodNo);
+			
+			// Check with exact same query as individual check
+			const individualQuery = `$filter=lv_loanofficercode eq '${window.PAGE_LOCODE_BEINGVIEWED}' and lv_periodno eq ${window.PAGE_UISelPeriodNo}`;
+			console.log('Individual query:', individualQuery);
+			const individualResult = await apiGetRecord("lv_lvcompcommissionapprovals", individualQuery);
+			console.log('Individual query result:', individualResult);
+			
+			// FALLBACK: Try using loan officer ID if code is empty (debug the data mismatch)
+			if (!window.PAGE_LOCODE_BEINGVIEWED || window.PAGE_LOCODE_BEINGVIEWED === '') {
+				console.log('🔍 FALLBACK: Officer code is empty, trying ID-based query');
+				const idQuery = `$filter=lv_loanofficerid eq '${window.PAGE_LOID_BEINGVIEWED}' and lv_periodno eq ${window.PAGE_UISelPeriodNo}`;
+				console.log('ID-based query:', idQuery);
+				const idResult = await apiGetRecord("lv_lvcompcommissionapprovals", idQuery);
+				console.log('ID-based query result:', idResult);
+			}
+			
+			// Check with same query as bulk check
+			const bulkQuery = `$filter=lv_loanofficercode eq '${window.PAGE_LOCODE_BEINGVIEWED}' and lv_periodno eq ${window.PAGE_UISelPeriodNo}`;
+			console.log('Bulk query:', bulkQuery);
+			const bulkResult = await apiGetRecord("lv_lvcompcommissionapprovals", bulkQuery);
+			console.log('Bulk query result:', bulkResult);
+			
+			// Get ALL records for this period to see what exists
+			const allQuery = `$filter=lv_periodno eq ${window.PAGE_UISelPeriodNo}`;
+			console.log('All records query:', allQuery);
+			const allResults = await apiGetRecords("lv_lvcompcommissionapprovals", allQuery);
+			console.log('All approval records for period:', allResults);
+			
+		} catch (error) {
+			console.error('Debug check failed:', error);
+		}
+	};
+	
+	console.log('DEBUG: Added window.debugCheckApprovalRecords() function. Call it from console to test.');
+{% else %}
+	// Not using approvals
+{% endif %}
+
+{% comment %} Clear unwanted query parameters for simple loan officers while preserving safe ones {% endcomment %}
+{% if is_OnlyLoanOfficer == true %}
+// Clear query parameters for simple loan officers but preserve period and debug parameters
+if (window.location.search) {
+	const currentParams = new URLSearchParams(window.location.search);
+	const newParams = new URLSearchParams();
+	
+	// Preserve safe parameters
+	const safeParams = ['period', 'dbg'];
+	safeParams.forEach(param =&gt; {
+		if (currentParams.has(param)) {
+			newParams.set(param, currentParams.get(param));
+		}
+	});
+	
+	const newUrl = window.location.origin + window.location.pathname + 
+		(newParams.toString() ? '?' + newParams.toString() : '');
+	window.history.replaceState({}, document.title, newUrl);
+	
+	console.log('Cleaned URL for simple LO, preserved: ' + newParams.toString());
+}
+{% endif %}
+
+&lt;/script&gt;
+
+&lt;!-- Loan Officer Page --&gt;
+
+
+&lt;!-- Last modified Sat Aug 30 12:12PM --&gt;
+&lt;!-- Last modified Sun Aug 31 5:00PM --&gt;
+&lt;!-- Last modified Tue Sep 02 10:36AM --&gt;
+&lt;!-- Last modified Tue Sep 02 11:20AM --&gt;
+&lt;!-- Last modified Wed Oct 01 3:16PM --&gt;
+&lt;!-- Last modified Wed Oct 01 4:00PM --&gt;
+&lt;!-- Last modified Thu Oct 02 12:15PM --&gt;
+&lt;!-- Last modified Thu Oct 02 12:20PM --&gt;
+&lt;!-- Last modified Mon Oct 06 3:20PM --&gt;
+&lt;!-- Last modified Fri Oct 24 4:07PM --&gt;Loan Officer</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

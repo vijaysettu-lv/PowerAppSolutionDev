@@ -1,0 +1,17 @@
+<powerpagecomponent powerpagecomponentid="c7f075ba-03b0-48c5-951e-82065fc6c0cf">
+  <content>{
+  "componentid": "c7f075ba-03b0-48c5-951e-82065fc6c0cf",
+  "componenttype": 34,
+  "params": "{\n  \"separator\": \"&gt;\",\n  \"home_as\": \"hidden\",\n  \"tag\": \"p\"\n}",
+  "uxcomponentid": "c7f075ba-03b0-48c5-951e-82065fc6c0cf",
+  "uxcomponenttype": "Breadcrumb"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>pages_config_breadcrumb</name>
+  <powerpagecomponenttype>34</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

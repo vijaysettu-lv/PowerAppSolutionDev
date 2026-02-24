@@ -1,0 +1,15 @@
+<powerpagecomponent powerpagecomponentid="bb6d7616-f54c-f011-877a-6045bd078e56">
+  <content>{
+  "description": "Any email address in this list automatically gets privileges the same as web role \"Administrators\"",
+  "source": 0,
+  "value": "Robert.Martin@LoanVision.com ; Jenna.Nelson@LoanVision.com ;  Ben.Saunders@LoanVision.com ;  Brandy.Buschel@LoanVision.com ;  Jaimie.Johnston@LoanVision.com ;  Richard.Nester@LoanVision.com ;  Amanda.Blake@LoanVision.com ;  Michael.LeBuhn@LoanVision.com ;  Gina.Johnson@LoanVision.com ;  @LoanVision.com ;"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>LV/Administrators</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

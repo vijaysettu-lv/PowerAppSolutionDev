@@ -1,0 +1,494 @@
+<powerpagecomponent powerpagecomponentid="a7403f15-05b6-d00e-ea6e-55425d825220">
+  <content>{
+  "copy": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified thu aug 14 8:08pm --&gt;\n{% comment %} Data Change Detection System {% endcomment %}\n\n&lt;div class=\"row sectionBlockLayout text-start\" style=\"display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;\"&gt;\n  &lt;div class=\"container\" style=\"display: flex; flex-wrap: wrap;\"&gt;\n    &lt;div class=\"col-lg-12 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; padding: 16px; margin: 60px 0px;\"&gt;\n      \n      &lt;h1&gt;Data Change Detection System&lt;/h1&gt;\n      &lt;p&gt;Monitor data changes across multiple tables using hash comparison&lt;/p&gt;\n      \n      &lt;div class=\"card\" style=\"margin-bottom: 20px;\"&gt;\n        &lt;div class=\"card-header\"&gt;\n          &lt;h3&gt;Table Selection&lt;/h3&gt;\n        &lt;/div&gt;\n        &lt;div class=\"card-body\"&gt;\n          &lt;div class=\"form-check\" style=\"margin-bottom: 10px;\"&gt;\n            &lt;input class=\"form-check-input\" type=\"checkbox\" id=\"table-lv_lvcompbranch\" checked&gt;\n            &lt;label class=\"form-check-label\" for=\"table-lv_lvcompbranch\"&gt;\n              &lt;strong&gt;lv_lvcompbranch&lt;/strong&gt; (Branch data: lv_code, lv_name)\n            &lt;/label&gt;\n          &lt;/div&gt;\n          &lt;div class=\"form-check\" style=\"margin-bottom: 10px;\"&gt;\n            &lt;input class=\"form-check-input\" type=\"checkbox\" id=\"table-lv_lvcompperiod\" checked&gt;\n            &lt;label class=\"form-check-label\" for=\"table-lv_lvcompperiod\"&gt;\n              &lt;strong&gt;lv_lvcompperiod&lt;/strong&gt; (Period data: lv_periodno, lv_name, lv_visibleonweb)\n            &lt;/label&gt;\n          &lt;/div&gt;\n        &lt;/div&gt;\n      &lt;/div&gt;\n      \n      &lt;div class=\"card\" style=\"margin-bottom: 20px;\"&gt;\n        &lt;div class=\"card-header\"&gt;\n          &lt;h3&gt;Hash Calculation&lt;/h3&gt;\n        &lt;/div&gt;\n        &lt;div class=\"card-body\"&gt;\n          &lt;button id=\"calculateHashes\" class=\"btn btn-primary\" style=\"margin-right: 10px;\"&gt;Calculate Hashes&lt;/button&gt;\n          &lt;button id=\"compareHashes\" class=\"btn btn-secondary\" style=\"margin-right: 10px;\"&gt;Compare with Previous&lt;/button&gt;\n          &lt;button id=\"clearStoredHashes\" class=\"btn btn-warning\"&gt;Clear Stored Hashes&lt;/button&gt;\n        &lt;/div&gt;\n      &lt;/div&gt;\n      \n      &lt;div id=\"hashResults\" class=\"card\" style=\"display: none;\"&gt;\n        &lt;div class=\"card-header\"&gt;\n          &lt;h3&gt;Hash Results&lt;/h3&gt;\n        &lt;/div&gt;\n        &lt;div class=\"card-body\"&gt;\n          &lt;div id=\"hashOutput\"&gt;&lt;/div&gt;\n        &lt;/div&gt;\n      &lt;/div&gt;\n      \n      &lt;div id=\"changeDetection\" class=\"card\" style=\"display: none;\"&gt;\n        &lt;div class=\"card-header\"&gt;\n          &lt;h3&gt;Change Detection Results&lt;/h3&gt;\n        &lt;/div&gt;\n        &lt;div class=\"card-body\"&gt;\n          &lt;div id=\"changeOutput\"&gt;&lt;/div&gt;\n        &lt;/div&gt;\n      &lt;/div&gt;\n      \n    &lt;/div&gt;\n  &lt;/div&gt;\n&lt;/div&gt;\n\n{% comment %} Fetch data for lv_lvcompbranch table {% endcomment %}\n{% fetchxml branchHashQuery %}\n    &lt;fetch&gt;\n        &lt;entity name=\"lv_lvcompbranch\"&gt;\n            &lt;attribute name=\"lv_code\" /&gt;\n            &lt;attribute name=\"lv_name\" /&gt;\n            &lt;order attribute=\"lv_code\" /&gt;\n        &lt;/entity&gt;\n    &lt;/fetch&gt;\n{% endfetchxml %}\n\n{% comment %} Fetch data for lv_lvcompperiod table {% endcomment %}\n{% fetchxml periodHashQuery %}\n    &lt;fetch&gt;\n        &lt;entity name=\"lv_lvcompperiod\"&gt;\n            &lt;attribute name=\"lv_periodno\" /&gt;\n            &lt;attribute name=\"lv_name\" /&gt;\n            &lt;attribute name=\"lv_visibleonweb\" /&gt;\n            &lt;order attribute=\"lv_periodno\" /&gt;\n        &lt;/entity&gt;\n    &lt;/fetch&gt;\n{% endfetchxml %}\n\n{% comment %} Calculate hash for lv_lvcompbranch {% endcomment %}\n{% assign branchRecordCount = branchHashQuery.results.entities.size %}\n{% assign branchRecordCountStr = branchRecordCount | append: \"\" %}\n{% assign branchHashInput = branchRecordCountStr | append: \":::\" %}\n{% for branch in branchHashQuery.results.entities %}\n    {% assign code = branch.lv_code | default: \"NULL\" %}\n    {% assign name = branch.lv_name | default: \"NULL\" %}\n    {% assign branchString = code | append: \"~~~\" | append: name | append: \"|||\" %}\n    {% assign branchHashInput = branchHashInput | append: branchString %}\n{% endfor %}\n{% assign branchDataHash = branchHashInput | sha256 %}\n\n{% comment %} Calculate hash for lv_lvcompperiod {% endcomment %}\n{% assign periodRecordCount = periodHashQuery.results.entities.size %}\n{% assign periodRecordCountStr = periodRecordCount | append: \"\" %}\n{% assign periodHashInput = periodRecordCountStr | append: \":::\" %}\n{% for period in periodHashQuery.results.entities %}\n    {% assign periodno = period.lv_periodno | default: \"NULL\" %}\n    {% assign name = period.lv_name | default: \"NULL\" %}\n    {% assign visibleonweb = period.lv_visibleonweb | default: \"NULL\" %}\n    {% assign periodString = periodno | append: \"~~~\" | append: name | append: \"~~~\" | append: visibleonweb | append: \"|||\" %}\n    {% assign periodHashInput = periodHashInput | append: periodString %}\n{% endfor %}\n{% assign periodDataHash = periodHashInput | sha256 %}\n\n&lt;script&gt;\n// Store calculated hashes as JavaScript variables\nwindow.DataHashes = {\n    'lv_lvcompbranch': {\n        hash: '{{ branchDataHash }}',\n        recordCount: {{ branchRecordCountStr }},\n        columns: ['lv_code', 'lv_name'],\n        rawInput: '{{ branchHashInput | escape }}',\n        timestamp: new Date().toISOString()\n    },\n    'lv_lvcompperiod': {\n        hash: '{{ periodDataHash }}',\n        recordCount: {{ periodRecordCountStr }},\n        columns: ['lv_periodno', 'lv_name', 'lv_visibleonweb'],\n        rawInput: '{{ periodHashInput | escape }}',\n        timestamp: new Date().toISOString()\n    }\n};\n\nconsole.log('Data Hashes calculated:', window.DataHashes);\n\ndocument.addEventListener('DOMContentLoaded', function() {\n    \n    // Calculate Hashes button click handler\n    document.getElementById('calculateHashes').addEventListener('click', function() {\n        displayCurrentHashes();\n    });\n    \n    // Compare Hashes button click handler\n    document.getElementById('compareHashes').addEventListener('click', function() {\n        compareWithStoredHashes();\n    });\n    \n    // Clear Stored Hashes button click handler\n    document.getElementById('clearStoredHashes').addEventListener('click', function() {\n        clearStoredHashes();\n    });\n    \n    // Auto-calculate on page load\n    displayCurrentHashes();\n});\n\nfunction displayCurrentHashes() {\n    let output = '&lt;h4&gt;Current Hash Values&lt;/h4&gt;';\n    \n    // Check which tables are selected\n    const selectedTables = [];\n    if (document.getElementById('table-lv_lvcompbranch').checked) {\n        selectedTables.push('lv_lvcompbranch');\n    }\n    if (document.getElementById('table-lv_lvcompperiod').checked) {\n        selectedTables.push('lv_lvcompperiod');\n    }\n    \n    if (selectedTables.length === 0) {\n        output += '&lt;p class=\"text-warning\"&gt;No tables selected for hash calculation.&lt;/p&gt;';\n    } else {\n        output += '&lt;div class=\"table-responsive\"&gt;';\n        output += '&lt;table class=\"table table-striped\"&gt;';\n        output += '&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Table&lt;/th&gt;&lt;th&gt;Record Count&lt;/th&gt;&lt;th&gt;Columns&lt;/th&gt;&lt;th&gt;Hash (SHA-256)&lt;/th&gt;&lt;th&gt;Timestamp&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;';\n        \n        selectedTables.forEach(tableName =&gt; {\n            const tableData = window.DataHashes[tableName];\n            if (tableData) {\n                output += `&lt;tr&gt;\n                    &lt;td&gt;&lt;strong&gt;${tableName}&lt;/strong&gt;&lt;/td&gt;\n                    &lt;td&gt;${tableData.recordCount}&lt;/td&gt;\n                    &lt;td&gt;${tableData.columns.join(', ')}&lt;/td&gt;\n                    &lt;td&gt;&lt;code style=\"font-size: 10px; word-break: break-all;\"&gt;${tableData.hash}&lt;/code&gt;&lt;/td&gt;\n                    &lt;td&gt;${tableData.timestamp}&lt;/td&gt;\n                &lt;/tr&gt;`;\n            }\n        });\n        \n        output += '&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;';\n        \n        // Show raw input for debugging (truncated)\n        output += '&lt;h5&gt;Raw Hash Input (Debugging)&lt;/h5&gt;';\n        output += '&lt;div class=\"alert alert-info\"&gt;';\n        selectedTables.forEach(tableName =&gt; {\n            const tableData = window.DataHashes[tableName];\n            if (tableData) {\n                const truncatedInput = tableData.rawInput.length &gt; 200 \n                    ? tableData.rawInput.substring(0, 200) + '...' \n                    : tableData.rawInput;\n                output += `&lt;p&gt;&lt;strong&gt;${tableName}:&lt;/strong&gt; &lt;code&gt;${truncatedInput}&lt;/code&gt;&lt;/p&gt;`;\n            }\n        });\n        output += '&lt;/div&gt;';\n    }\n    \n    document.getElementById('hashOutput').innerHTML = output;\n    document.getElementById('hashResults').style.display = 'block';\n}\n\nfunction compareWithStoredHashes() {\n    let output = '&lt;h4&gt;Change Detection Results&lt;/h4&gt;';\n    \n    // Check which tables are selected\n    const selectedTables = [];\n    if (document.getElementById('table-lv_lvcompbranch').checked) {\n        selectedTables.push('lv_lvcompbranch');\n    }\n    if (document.getElementById('table-lv_lvcompperiod').checked) {\n        selectedTables.push('lv_lvcompperiod');\n    }\n    \n    if (selectedTables.length === 0) {\n        output += '&lt;p class=\"text-warning\"&gt;No tables selected for comparison.&lt;/p&gt;';\n    } else {\n        const changesDetected = [];\n        const noChanges = [];\n        const noStoredHash = [];\n        \n        selectedTables.forEach(tableName =&gt; {\n            const currentData = window.DataHashes[tableName];\n            const storedHash = localStorage.getItem(`dataHash_${tableName}`);\n            const storedTimestamp = localStorage.getItem(`dataHashTimestamp_${tableName}`);\n            \n            if (!storedHash) {\n                noStoredHash.push({\n                    table: tableName,\n                    currentHash: currentData.hash,\n                    recordCount: currentData.recordCount\n                });\n            } else if (storedHash !== currentData.hash) {\n                changesDetected.push({\n                    table: tableName,\n                    currentHash: currentData.hash,\n                    storedHash: storedHash,\n                    currentCount: currentData.recordCount,\n                    storedTimestamp: storedTimestamp\n                });\n            } else {\n                noChanges.push({\n                    table: tableName,\n                    hash: currentData.hash,\n                    recordCount: currentData.recordCount,\n                    storedTimestamp: storedTimestamp\n                });\n            }\n        });\n        \n        // Display results\n        if (changesDetected.length &gt; 0) {\n            output += '&lt;div class=\"alert alert-warning\"&gt;';\n            output += '&lt;h5&gt;⚠️ Changes Detected!&lt;/h5&gt;';\n            output += '&lt;table class=\"table table-sm\"&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Table&lt;/th&gt;&lt;th&gt;Current Hash&lt;/th&gt;&lt;th&gt;Previous Hash&lt;/th&gt;&lt;th&gt;Current Count&lt;/th&gt;&lt;th&gt;Last Checked&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;';\n            changesDetected.forEach(item =&gt; {\n                output += `&lt;tr&gt;\n                    &lt;td&gt;&lt;strong&gt;${item.table}&lt;/strong&gt;&lt;/td&gt;\n                    &lt;td&gt;&lt;code style=\"font-size: 10px;\"&gt;${item.currentHash.substring(0, 16)}...&lt;/code&gt;&lt;/td&gt;\n                    &lt;td&gt;&lt;code style=\"font-size: 10px;\"&gt;${item.storedHash.substring(0, 16)}...&lt;/code&gt;&lt;/td&gt;\n                    &lt;td&gt;${item.currentCount}&lt;/td&gt;\n                    &lt;td&gt;${item.storedTimestamp || 'Unknown'}&lt;/td&gt;\n                &lt;/tr&gt;`;\n            });\n            output += '&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;';\n        }\n        \n        if (noChanges.length &gt; 0) {\n            output += '&lt;div class=\"alert alert-success\"&gt;';\n            output += '&lt;h5&gt;✅ No Changes Detected&lt;/h5&gt;';\n            output += '&lt;table class=\"table table-sm\"&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Table&lt;/th&gt;&lt;th&gt;Hash&lt;/th&gt;&lt;th&gt;Record Count&lt;/th&gt;&lt;th&gt;Last Checked&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;';\n            noChanges.forEach(item =&gt; {\n                output += `&lt;tr&gt;\n                    &lt;td&gt;&lt;strong&gt;${item.table}&lt;/strong&gt;&lt;/td&gt;\n                    &lt;td&gt;&lt;code style=\"font-size: 10px;\"&gt;${item.hash.substring(0, 16)}...&lt;/code&gt;&lt;/td&gt;\n                    &lt;td&gt;${item.recordCount}&lt;/td&gt;\n                    &lt;td&gt;${item.storedTimestamp || 'Unknown'}&lt;/td&gt;\n                &lt;/tr&gt;`;\n            });\n            output += '&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;';\n        }\n        \n        if (noStoredHash.length &gt; 0) {\n            output += '&lt;div class=\"alert alert-info\"&gt;';\n            output += '&lt;h5&gt;ℹ️ No Previous Hash Found&lt;/h5&gt;';\n            output += '&lt;p&gt;Storing current hashes for future comparison:&lt;/p&gt;';\n            output += '&lt;table class=\"table table-sm\"&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Table&lt;/th&gt;&lt;th&gt;Current Hash&lt;/th&gt;&lt;th&gt;Record Count&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;';\n            noStoredHash.forEach(item =&gt; {\n                output += `&lt;tr&gt;\n                    &lt;td&gt;&lt;strong&gt;${item.table}&lt;/strong&gt;&lt;/td&gt;\n                    &lt;td&gt;&lt;code style=\"font-size: 10px;\"&gt;${item.currentHash.substring(0, 16)}...&lt;/code&gt;&lt;/td&gt;\n                    &lt;td&gt;${item.recordCount}&lt;/td&gt;\n                &lt;/tr&gt;`;\n            });\n            output += '&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;';\n        }\n        \n        // Store current hashes for future comparison\n        selectedTables.forEach(tableName =&gt; {\n            const currentData = window.DataHashes[tableName];\n            localStorage.setItem(`dataHash_${tableName}`, currentData.hash);\n            localStorage.setItem(`dataHashTimestamp_${tableName}`, currentData.timestamp);\n        });\n        \n        output += '&lt;p&gt;&lt;small class=\"text-muted\"&gt;Current hashes have been stored for future comparisons.&lt;/small&gt;&lt;/p&gt;';\n    }\n    \n    document.getElementById('changeOutput').innerHTML = output;\n    document.getElementById('changeDetection').style.display = 'block';\n}\n\nfunction clearStoredHashes() {\n    // Clear all stored hashes\n    Object.keys(window.DataHashes).forEach(tableName =&gt; {\n        localStorage.removeItem(`dataHash_${tableName}`);\n        localStorage.removeItem(`dataHashTimestamp_${tableName}`);\n    });\n    \n    document.getElementById('changeOutput').innerHTML = '&lt;div class=\"alert alert-success\"&gt;All stored hashes have been cleared.&lt;/div&gt;';\n    document.getElementById('changeDetection').style.display = 'block';\n    \n    console.log('All stored data hashes cleared from localStorage');\n}\n\n&lt;/script&gt;\n\n&lt;style&gt;\n.card {\n    border: 1px solid #dee2e6;\n    border-radius: 0.375rem;\n    background-color: #fff;\n}\n\n.card-header {\n    padding: 0.75rem 1.25rem;\n    margin-bottom: 0;\n    background-color: #f8f9fa;\n    border-bottom: 1px solid #dee2e6;\n    border-top-left-radius: 0.375rem;\n    border-top-right-radius: 0.375rem;\n}\n\n.card-body {\n    padding: 1.25rem;\n}\n\n.btn {\n    display: inline-block;\n    padding: 0.375rem 0.75rem;\n    margin-bottom: 0;\n    font-size: 0.875rem;\n    font-weight: 400;\n    line-height: 1.5;\n    text-align: center;\n    white-space: nowrap;\n    vertical-align: middle;\n    cursor: pointer;\n    border: 1px solid transparent;\n    border-radius: 0.25rem;\n    text-decoration: none;\n}\n\n.btn-primary {\n    color: #fff;\n    background-color: #007bff;\n    border-color: #007bff;\n}\n\n.btn-secondary {\n    color: #fff;\n    background-color: #6c757d;\n    border-color: #6c757d;\n}\n\n.btn-warning {\n    color: #212529;\n    background-color: #ffc107;\n    border-color: #ffc107;\n}\n\n.btn:hover {\n    opacity: 0.8;\n}\n\n.alert {\n    padding: 0.75rem 1.25rem;\n    margin-bottom: 1rem;\n    border: 1px solid transparent;\n    border-radius: 0.25rem;\n}\n\n.alert-success {\n    color: #155724;\n    background-color: #d4edda;\n    border-color: #c3e6cb;\n}\n\n.alert-warning {\n    color: #856404;\n    background-color: #fff3cd;\n    border-color: #ffeaa7;\n}\n\n.alert-info {\n    color: #0c5460;\n    background-color: #d1ecf1;\n    border-color: #bee5eb;\n}\n\n.table-responsive {\n    display: block;\n    width: 100%;\n    overflow-x: auto;\n}\n\n.table {\n    width: 100%;\n    margin-bottom: 1rem;\n    color: #212529;\n    border-collapse: collapse;\n}\n\n.table th,\n.table td {\n    padding: 0.5rem;\n    vertical-align: top;\n    border-top: 1px solid #dee2e6;\n}\n\n.table thead th {\n    vertical-align: bottom;\n    border-bottom: 2px solid #dee2e6;\n    background-color: #f8f9fa;\n}\n\n.table-striped tbody tr:nth-of-type(odd) {\n    background-color: rgba(0, 0, 0, 0.05);\n}\n\n.form-check {\n    position: relative;\n    display: block;\n    padding-left: 1.25rem;\n}\n\n.form-check-input {\n    position: absolute;\n    margin-top: 0.3rem;\n    margin-left: -1.25rem;\n}\n\n.form-check-label {\n    margin-bottom: 0;\n}\n&lt;/style&gt;\n&lt;!-- Last modified thu aug 14 8:08pm --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;",
+  "customjavascript": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;",
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "hiddenfromsitemap": true,
+  "isroot": false,
+  "pagetemplateid": "cd587cbe-a61f-4c11-a750-6d0235a784ef",
+  "parentpageid": "362995e0-7dc5-4bbf-9595-062f468d2d44",
+  "partialurl": "lvcpx1",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "rootwebpageid": "838ed362-6ad6-e125-2fa0-41a98f701684",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;p&gt;This is a sample landing page designed to be a starting point for your website&lt;/p&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;",
+  "title": "lvcpx1"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>lvcpx1</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <searchcontent>lvcpx1&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;
+&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;
+&lt;!-- Last modified thu aug 14 8:08pm --&gt;
+{% comment %} Data Change Detection System {% endcomment %}
+
+&lt;div class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;"&gt;
+  &lt;div class="container" style="display: flex; flex-wrap: wrap;"&gt;
+    &lt;div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; padding: 16px; margin: 60px 0px;"&gt;
+      
+      &lt;h1&gt;Data Change Detection System&lt;/h1&gt;
+      &lt;p&gt;Monitor data changes across multiple tables using hash comparison&lt;/p&gt;
+      
+      &lt;div class="card" style="margin-bottom: 20px;"&gt;
+        &lt;div class="card-header"&gt;
+          &lt;h3&gt;Table Selection&lt;/h3&gt;
+        &lt;/div&gt;
+        &lt;div class="card-body"&gt;
+          &lt;div class="form-check" style="margin-bottom: 10px;"&gt;
+            &lt;input class="form-check-input" type="checkbox" id="table-lv_lvcompbranch" checked&gt;
+            &lt;label class="form-check-label" for="table-lv_lvcompbranch"&gt;
+              &lt;strong&gt;lv_lvcompbranch&lt;/strong&gt; (Branch data: lv_code, lv_name)
+            &lt;/label&gt;
+          &lt;/div&gt;
+          &lt;div class="form-check" style="margin-bottom: 10px;"&gt;
+            &lt;input class="form-check-input" type="checkbox" id="table-lv_lvcompperiod" checked&gt;
+            &lt;label class="form-check-label" for="table-lv_lvcompperiod"&gt;
+              &lt;strong&gt;lv_lvcompperiod&lt;/strong&gt; (Period data: lv_periodno, lv_name, lv_visibleonweb)
+            &lt;/label&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      
+      &lt;div class="card" style="margin-bottom: 20px;"&gt;
+        &lt;div class="card-header"&gt;
+          &lt;h3&gt;Hash Calculation&lt;/h3&gt;
+        &lt;/div&gt;
+        &lt;div class="card-body"&gt;
+          &lt;button id="calculateHashes" class="btn btn-primary" style="margin-right: 10px;"&gt;Calculate Hashes&lt;/button&gt;
+          &lt;button id="compareHashes" class="btn btn-secondary" style="margin-right: 10px;"&gt;Compare with Previous&lt;/button&gt;
+          &lt;button id="clearStoredHashes" class="btn btn-warning"&gt;Clear Stored Hashes&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      
+      &lt;div id="hashResults" class="card" style="display: none;"&gt;
+        &lt;div class="card-header"&gt;
+          &lt;h3&gt;Hash Results&lt;/h3&gt;
+        &lt;/div&gt;
+        &lt;div class="card-body"&gt;
+          &lt;div id="hashOutput"&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      
+      &lt;div id="changeDetection" class="card" style="display: none;"&gt;
+        &lt;div class="card-header"&gt;
+          &lt;h3&gt;Change Detection Results&lt;/h3&gt;
+        &lt;/div&gt;
+        &lt;div class="card-body"&gt;
+          &lt;div id="changeOutput"&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+{% comment %} Fetch data for lv_lvcompbranch table {% endcomment %}
+{% fetchxml branchHashQuery %}
+    &lt;fetch&gt;
+        &lt;entity name="lv_lvcompbranch"&gt;
+            &lt;attribute name="lv_code" /&gt;
+            &lt;attribute name="lv_name" /&gt;
+            &lt;order attribute="lv_code" /&gt;
+        &lt;/entity&gt;
+    &lt;/fetch&gt;
+{% endfetchxml %}
+
+{% comment %} Fetch data for lv_lvcompperiod table {% endcomment %}
+{% fetchxml periodHashQuery %}
+    &lt;fetch&gt;
+        &lt;entity name="lv_lvcompperiod"&gt;
+            &lt;attribute name="lv_periodno" /&gt;
+            &lt;attribute name="lv_name" /&gt;
+            &lt;attribute name="lv_visibleonweb" /&gt;
+            &lt;order attribute="lv_periodno" /&gt;
+        &lt;/entity&gt;
+    &lt;/fetch&gt;
+{% endfetchxml %}
+
+{% comment %} Calculate hash for lv_lvcompbranch {% endcomment %}
+{% assign branchRecordCount = branchHashQuery.results.entities.size %}
+{% assign branchRecordCountStr = branchRecordCount | append: "" %}
+{% assign branchHashInput = branchRecordCountStr | append: ":::" %}
+{% for branch in branchHashQuery.results.entities %}
+    {% assign code = branch.lv_code | default: "NULL" %}
+    {% assign name = branch.lv_name | default: "NULL" %}
+    {% assign branchString = code | append: "~~~" | append: name | append: "|||" %}
+    {% assign branchHashInput = branchHashInput | append: branchString %}
+{% endfor %}
+{% assign branchDataHash = branchHashInput | sha256 %}
+
+{% comment %} Calculate hash for lv_lvcompperiod {% endcomment %}
+{% assign periodRecordCount = periodHashQuery.results.entities.size %}
+{% assign periodRecordCountStr = periodRecordCount | append: "" %}
+{% assign periodHashInput = periodRecordCountStr | append: ":::" %}
+{% for period in periodHashQuery.results.entities %}
+    {% assign periodno = period.lv_periodno | default: "NULL" %}
+    {% assign name = period.lv_name | default: "NULL" %}
+    {% assign visibleonweb = period.lv_visibleonweb | default: "NULL" %}
+    {% assign periodString = periodno | append: "~~~" | append: name | append: "~~~" | append: visibleonweb | append: "|||" %}
+    {% assign periodHashInput = periodHashInput | append: periodString %}
+{% endfor %}
+{% assign periodDataHash = periodHashInput | sha256 %}
+
+&lt;script&gt;
+// Store calculated hashes as JavaScript variables
+window.DataHashes = {
+    'lv_lvcompbranch': {
+        hash: '{{ branchDataHash }}',
+        recordCount: {{ branchRecordCountStr }},
+        columns: ['lv_code', 'lv_name'],
+        rawInput: '{{ branchHashInput | escape }}',
+        timestamp: new Date().toISOString()
+    },
+    'lv_lvcompperiod': {
+        hash: '{{ periodDataHash }}',
+        recordCount: {{ periodRecordCountStr }},
+        columns: ['lv_periodno', 'lv_name', 'lv_visibleonweb'],
+        rawInput: '{{ periodHashInput | escape }}',
+        timestamp: new Date().toISOString()
+    }
+};
+
+console.log('Data Hashes calculated:', window.DataHashes);
+
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Calculate Hashes button click handler
+    document.getElementById('calculateHashes').addEventListener('click', function() {
+        displayCurrentHashes();
+    });
+    
+    // Compare Hashes button click handler
+    document.getElementById('compareHashes').addEventListener('click', function() {
+        compareWithStoredHashes();
+    });
+    
+    // Clear Stored Hashes button click handler
+    document.getElementById('clearStoredHashes').addEventListener('click', function() {
+        clearStoredHashes();
+    });
+    
+    // Auto-calculate on page load
+    displayCurrentHashes();
+});
+
+function displayCurrentHashes() {
+    let output = '&lt;h4&gt;Current Hash Values&lt;/h4&gt;';
+    
+    // Check which tables are selected
+    const selectedTables = [];
+    if (document.getElementById('table-lv_lvcompbranch').checked) {
+        selectedTables.push('lv_lvcompbranch');
+    }
+    if (document.getElementById('table-lv_lvcompperiod').checked) {
+        selectedTables.push('lv_lvcompperiod');
+    }
+    
+    if (selectedTables.length === 0) {
+        output += '&lt;p class="text-warning"&gt;No tables selected for hash calculation.&lt;/p&gt;';
+    } else {
+        output += '&lt;div class="table-responsive"&gt;';
+        output += '&lt;table class="table table-striped"&gt;';
+        output += '&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Table&lt;/th&gt;&lt;th&gt;Record Count&lt;/th&gt;&lt;th&gt;Columns&lt;/th&gt;&lt;th&gt;Hash (SHA-256)&lt;/th&gt;&lt;th&gt;Timestamp&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;';
+        
+        selectedTables.forEach(tableName =&gt; {
+            const tableData = window.DataHashes[tableName];
+            if (tableData) {
+                output += `&lt;tr&gt;
+                    &lt;td&gt;&lt;strong&gt;${tableName}&lt;/strong&gt;&lt;/td&gt;
+                    &lt;td&gt;${tableData.recordCount}&lt;/td&gt;
+                    &lt;td&gt;${tableData.columns.join(', ')}&lt;/td&gt;
+                    &lt;td&gt;&lt;code style="font-size: 10px; word-break: break-all;"&gt;${tableData.hash}&lt;/code&gt;&lt;/td&gt;
+                    &lt;td&gt;${tableData.timestamp}&lt;/td&gt;
+                &lt;/tr&gt;`;
+            }
+        });
+        
+        output += '&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;';
+        
+        // Show raw input for debugging (truncated)
+        output += '&lt;h5&gt;Raw Hash Input (Debugging)&lt;/h5&gt;';
+        output += '&lt;div class="alert alert-info"&gt;';
+        selectedTables.forEach(tableName =&gt; {
+            const tableData = window.DataHashes[tableName];
+            if (tableData) {
+                const truncatedInput = tableData.rawInput.length &gt; 200 
+                    ? tableData.rawInput.substring(0, 200) + '...' 
+                    : tableData.rawInput;
+                output += `&lt;p&gt;&lt;strong&gt;${tableName}:&lt;/strong&gt; &lt;code&gt;${truncatedInput}&lt;/code&gt;&lt;/p&gt;`;
+            }
+        });
+        output += '&lt;/div&gt;';
+    }
+    
+    document.getElementById('hashOutput').innerHTML = output;
+    document.getElementById('hashResults').style.display = 'block';
+}
+
+function compareWithStoredHashes() {
+    let output = '&lt;h4&gt;Change Detection Results&lt;/h4&gt;';
+    
+    // Check which tables are selected
+    const selectedTables = [];
+    if (document.getElementById('table-lv_lvcompbranch').checked) {
+        selectedTables.push('lv_lvcompbranch');
+    }
+    if (document.getElementById('table-lv_lvcompperiod').checked) {
+        selectedTables.push('lv_lvcompperiod');
+    }
+    
+    if (selectedTables.length === 0) {
+        output += '&lt;p class="text-warning"&gt;No tables selected for comparison.&lt;/p&gt;';
+    } else {
+        const changesDetected = [];
+        const noChanges = [];
+        const noStoredHash = [];
+        
+        selectedTables.forEach(tableName =&gt; {
+            const currentData = window.DataHashes[tableName];
+            const storedHash = localStorage.getItem(`dataHash_${tableName}`);
+            const storedTimestamp = localStorage.getItem(`dataHashTimestamp_${tableName}`);
+            
+            if (!storedHash) {
+                noStoredHash.push({
+                    table: tableName,
+                    currentHash: currentData.hash,
+                    recordCount: currentData.recordCount
+                });
+            } else if (storedHash !== currentData.hash) {
+                changesDetected.push({
+                    table: tableName,
+                    currentHash: currentData.hash,
+                    storedHash: storedHash,
+                    currentCount: currentData.recordCount,
+                    storedTimestamp: storedTimestamp
+                });
+            } else {
+                noChanges.push({
+                    table: tableName,
+                    hash: currentData.hash,
+                    recordCount: currentData.recordCount,
+                    storedTimestamp: storedTimestamp
+                });
+            }
+        });
+        
+        // Display results
+        if (changesDetected.length &gt; 0) {
+            output += '&lt;div class="alert alert-warning"&gt;';
+            output += '&lt;h5&gt;⚠️ Changes Detected!&lt;/h5&gt;';
+            output += '&lt;table class="table table-sm"&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Table&lt;/th&gt;&lt;th&gt;Current Hash&lt;/th&gt;&lt;th&gt;Previous Hash&lt;/th&gt;&lt;th&gt;Current Count&lt;/th&gt;&lt;th&gt;Last Checked&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;';
+            changesDetected.forEach(item =&gt; {
+                output += `&lt;tr&gt;
+                    &lt;td&gt;&lt;strong&gt;${item.table}&lt;/strong&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;code style="font-size: 10px;"&gt;${item.currentHash.substring(0, 16)}...&lt;/code&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;code style="font-size: 10px;"&gt;${item.storedHash.substring(0, 16)}...&lt;/code&gt;&lt;/td&gt;
+                    &lt;td&gt;${item.currentCount}&lt;/td&gt;
+                    &lt;td&gt;${item.storedTimestamp || 'Unknown'}&lt;/td&gt;
+                &lt;/tr&gt;`;
+            });
+            output += '&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;';
+        }
+        
+        if (noChanges.length &gt; 0) {
+            output += '&lt;div class="alert alert-success"&gt;';
+            output += '&lt;h5&gt;✅ No Changes Detected&lt;/h5&gt;';
+            output += '&lt;table class="table table-sm"&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Table&lt;/th&gt;&lt;th&gt;Hash&lt;/th&gt;&lt;th&gt;Record Count&lt;/th&gt;&lt;th&gt;Last Checked&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;';
+            noChanges.forEach(item =&gt; {
+                output += `&lt;tr&gt;
+                    &lt;td&gt;&lt;strong&gt;${item.table}&lt;/strong&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;code style="font-size: 10px;"&gt;${item.hash.substring(0, 16)}...&lt;/code&gt;&lt;/td&gt;
+                    &lt;td&gt;${item.recordCount}&lt;/td&gt;
+                    &lt;td&gt;${item.storedTimestamp || 'Unknown'}&lt;/td&gt;
+                &lt;/tr&gt;`;
+            });
+            output += '&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;';
+        }
+        
+        if (noStoredHash.length &gt; 0) {
+            output += '&lt;div class="alert alert-info"&gt;';
+            output += '&lt;h5&gt;ℹ️ No Previous Hash Found&lt;/h5&gt;';
+            output += '&lt;p&gt;Storing current hashes for future comparison:&lt;/p&gt;';
+            output += '&lt;table class="table table-sm"&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Table&lt;/th&gt;&lt;th&gt;Current Hash&lt;/th&gt;&lt;th&gt;Record Count&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;';
+            noStoredHash.forEach(item =&gt; {
+                output += `&lt;tr&gt;
+                    &lt;td&gt;&lt;strong&gt;${item.table}&lt;/strong&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;code style="font-size: 10px;"&gt;${item.currentHash.substring(0, 16)}...&lt;/code&gt;&lt;/td&gt;
+                    &lt;td&gt;${item.recordCount}&lt;/td&gt;
+                &lt;/tr&gt;`;
+            });
+            output += '&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;';
+        }
+        
+        // Store current hashes for future comparison
+        selectedTables.forEach(tableName =&gt; {
+            const currentData = window.DataHashes[tableName];
+            localStorage.setItem(`dataHash_${tableName}`, currentData.hash);
+            localStorage.setItem(`dataHashTimestamp_${tableName}`, currentData.timestamp);
+        });
+        
+        output += '&lt;p&gt;&lt;small class="text-muted"&gt;Current hashes have been stored for future comparisons.&lt;/small&gt;&lt;/p&gt;';
+    }
+    
+    document.getElementById('changeOutput').innerHTML = output;
+    document.getElementById('changeDetection').style.display = 'block';
+}
+
+function clearStoredHashes() {
+    // Clear all stored hashes
+    Object.keys(window.DataHashes).forEach(tableName =&gt; {
+        localStorage.removeItem(`dataHash_${tableName}`);
+        localStorage.removeItem(`dataHashTimestamp_${tableName}`);
+    });
+    
+    document.getElementById('changeOutput').innerHTML = '&lt;div class="alert alert-success"&gt;All stored hashes have been cleared.&lt;/div&gt;';
+    document.getElementById('changeDetection').style.display = 'block';
+    
+    console.log('All stored data hashes cleared from localStorage');
+}
+
+&lt;/script&gt;
+
+&lt;style&gt;
+.card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    background-color: #fff;
+}
+
+.card-header {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    border-top-left-radius: 0.375rem;
+    border-top-right-radius: 0.375rem;
+}
+
+.card-body {
+    padding: 1.25rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    margin-bottom: 0;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    text-decoration: none;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-warning {
+    color: #212529;
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+.alert {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeaa7;
+}
+
+.alert-info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+}
+
+.table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 0.5rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    background-color: #f8f9fa;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.form-check {
+    position: relative;
+    display: block;
+    padding-left: 1.25rem;
+}
+
+.form-check-input {
+    position: absolute;
+    margin-top: 0.3rem;
+    margin-left: -1.25rem;
+}
+
+.form-check-label {
+    margin-bottom: 0;
+}
+&lt;/style&gt;
+&lt;!-- Last modified thu aug 14 8:08pm --&gt;
+&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;
+&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;lvcpx1</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

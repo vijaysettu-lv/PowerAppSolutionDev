@@ -1,0 +1,13 @@
+<powerpagecomponent powerpagecomponentid="54da077e-9e54-43d7-8a38-ed8bef07e933">
+  <content>{
+  "value": "true"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Authentication/OpenIdConnect/AzureAD/AllowContactMappingWithEmail</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

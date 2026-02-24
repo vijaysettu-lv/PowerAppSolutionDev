@@ -1,0 +1,406 @@
+<powerpagecomponent powerpagecomponentid="510ddc27-b4ef-9e31-d95b-772203f602c8">
+  <content>{
+  "copy": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;p&gt;Last modified sun aug 3 7:03pm&lt;/p&gt;\n&lt;!-- Commission Query Test with SetupQuery --&gt;\n\n{% include 'snippet' snippet_name:'FetchXML - SetupQuery' %}\n\n&lt;div class=\"row sectionBlockLayout text-start\" style=\"display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;\"&gt;\n    &lt;div class=\"container\" style=\"display: flex; flex-wrap: wrap;\"&gt;\n        &lt;div class=\"col-lg-12 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; padding: 16px; margin: 60px 0px;\"&gt;\n            \n            &lt;h2&gt;Commission Query Test with FULL SetupQuery and Commission Filter&lt;/h2&gt;\n            \n            &lt;div style=\"background: #e8f4fd; padding: 15px; margin-bottom: 20px; border: 1px solid #bee5eb; border-radius: 5px;\"&gt;\n                &lt;h4&gt;✅ SetupQuery Results (Proof it's running):&lt;/h4&gt;\n                &lt;ul style=\"margin: 10px 0; font-family: monospace; font-size: 12px;\"&gt;\n                    &lt;li&gt;&lt;strong&gt;Periods found:&lt;/strong&gt; {{currentPeriodQuery.results.entities.size}}&lt;/li&gt;\n                    &lt;li&gt;&lt;strong&gt;Selected period:&lt;/strong&gt; {{sqRecUISelPeriod.lv_name}} ({{sqUISelPeriodNo}})&lt;/li&gt;\n                    &lt;li&gt;&lt;strong&gt;Accounting period:&lt;/strong&gt; {{sqRecAcctgPeriod.lv_name}} ({{sqAcctgPeriodNo}})&lt;/li&gt;\n                    &lt;li&gt;&lt;strong&gt;User roles:&lt;/strong&gt; Admin={{is_admin}} BranchMgr={{is_BranchManager}} LO={{is_OnlyLoanOfficer}}&lt;/li&gt;\n                    &lt;li&gt;&lt;strong&gt;Branch access:&lt;/strong&gt; {{userBranchList | truncate: 50}}&lt;/li&gt;\n                    &lt;li&gt;&lt;strong&gt;LO access:&lt;/strong&gt; {{userLoanOfficerList | truncate: 50}}&lt;/li&gt;\n                    &lt;li&gt;&lt;strong&gt;Branches loaded:&lt;/strong&gt; {{branchQuery.results.entities.size}}&lt;/li&gt;\n                    &lt;li&gt;&lt;strong&gt;Loan officers loaded:&lt;/strong&gt; {{allLoanOfficers.results.entities.size}}&lt;/li&gt;\n                &lt;/ul&gt;\n            &lt;/div&gt;\n            \n            &lt;div style=\"margin-bottom: 20px;\"&gt;\n                &lt;label for=\"period-select\" style=\"display: block; margin-bottom: 5px;\"&gt;Period:&lt;/label&gt;\n                &lt;select id=\"period-select\" onchange=\"setPeriodFilter()\" style=\"padding: 8px; width: 300px;\"&gt;\n                    &lt;option value=\"\"&gt;-- Select Period --&lt;/option&gt;\n                    {% for period in currentPeriodQuery.results.entities %}\n                        &lt;option value=\"{{period.lv_lvcompcommperiodcalcid}}\" \n                            {% if period.lv_lvcompcommperiodcalcid == request.params.period %} selected {% endif %} \n                            data-periodno=\"{{period.lv_periodno}}\"&gt;\n                            {{ period.lv_name }}\n                        &lt;/option&gt;\n                    {% endfor %}\n                &lt;/select&gt;\n            &lt;/div&gt;\n\n            &lt;div style=\"background: #f8f9fa; border: 2px solid #007bff; padding: 20px; margin-bottom: 20px; border-radius: 8px;\"&gt;\n                &lt;h4 style=\"color: #007bff; margin-top: 0;\"&gt;🧪 Performance Testing Controls&lt;/h4&gt;\n                &lt;form id=\"perf-controls-form\" style=\"display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: start;\"&gt;\n                    &lt;div&gt;\n                        &lt;h5&gt;Commission Processing:&lt;/h5&gt;\n                        &lt;label style=\"display: block; margin: 5px 0;\"&gt;\n                            &lt;input type=\"checkbox\" id=\"enable-comm-filtering\" \n                                {% if request.params.enableCommFiltering != \"false\" %} checked {% endif %}&gt;\n                            Enable Commission Filtering Loop\n                        &lt;/label&gt;\n                        &lt;label style=\"display: block; margin: 5px 0;\"&gt;\n                            &lt;input type=\"checkbox\" id=\"enable-comm-permissions\" \n                                {% if request.params.enableCommPermissions != \"false\" %} checked {% endif %}&gt;\n                            Enable Commission Permission Checks\n                        &lt;/label&gt;\n                        &lt;label style=\"display: block; margin: 5px 0;\"&gt;\n                            &lt;input type=\"checkbox\" id=\"enable-comm-html\" \n                                {% if request.params.enableCommHtml != \"false\" %} checked {% endif %}&gt;\n                            Enable Commission HTML Generation\n                        &lt;/label&gt;\n                    &lt;/div&gt;\n                    &lt;div&gt;\n                        &lt;h5&gt;Adjustment Processing:&lt;/h5&gt;\n                        &lt;label style=\"display: block; margin: 5px 0;\"&gt;\n                            &lt;input type=\"checkbox\" id=\"enable-adj-filtering\" \n                                {% if request.params.enableAdjFiltering != \"false\" %} checked {% endif %}&gt;\n                            Enable Adjustment Filtering Loop\n                        &lt;/label&gt;\n                        &lt;label style=\"display: block; margin: 5px 0;\"&gt;\n                            &lt;input type=\"checkbox\" id=\"enable-adj-permissions\" \n                                {% if request.params.enableAdjPermissions != \"false\" %} checked {% endif %}&gt;\n                            Enable Adjustment Permission Checks\n                        &lt;/label&gt;\n                    &lt;/div&gt;\n                    &lt;div&gt;\n                        &lt;h5&gt;Record Limits:&lt;/h5&gt;\n                        &lt;label style=\"display: block; margin: 5px 0;\"&gt;\n                            Commission Limit: \n                            &lt;input type=\"number\" id=\"comm-limit\" value=\"{{request.params.commLimit | default: '10'}}\" \n                                placeholder=\"10\" style=\"width: 80px; margin-left: 5px;\"&gt;\n                        &lt;/label&gt;\n                        &lt;label style=\"display: block; margin: 5px 0;\"&gt;\n                            Adjustment Limit: \n                            &lt;input type=\"number\" id=\"adj-limit\" value=\"{{request.params.adjLimit | default: ''}}\" \n                                placeholder=\"All\" style=\"width: 80px; margin-left: 5px;\"&gt;\n                        &lt;/label&gt;\n                        &lt;label style=\"display: block; margin: 5px 0;\"&gt;\n                            &lt;input type=\"checkbox\" id=\"use-simple-html\" \n                                {% if request.params.useSimpleHtml == \"true\" %} checked {% endif %}&gt;\n                            Use Simple HTML (skip template generation)\n                        &lt;/label&gt;\n                        &lt;label style=\"display: block; margin: 5px 0;\"&gt;\n                            &lt;input type=\"checkbox\" id=\"use-raw-data\" \n                                {% if request.params.useRawData == \"true\" %} checked {% endif %}&gt;\n                            Use Raw Data + JS Formatting (fastest)\n                        &lt;/label&gt;\n                        &lt;label style=\"display: block; margin: 5px 0;\"&gt;\n                            HTML Chunk Size: \n                            &lt;input type=\"number\" id=\"chunk-size\" value=\"{{request.params.chunkSize | default: '100'}}\" \n                                placeholder=\"100\" style=\"width: 80px; margin-left: 5px;\"&gt;\n                        &lt;/label&gt;\n                    &lt;/div&gt;\n                    &lt;div&gt;\n                        &lt;button type=\"button\" onclick=\"applyPerfControls()\" \n                            style=\"background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;\"&gt;\n                            🚀 Apply &amp; Test\n                        &lt;/button&gt;\n                        &lt;button type=\"button\" onclick=\"resetPerfControls()\" \n                            style=\"background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-left: 10px;\"&gt;\n                            Reset All\n                        &lt;/button&gt;\n                    &lt;/div&gt;\n                &lt;/form&gt;\n                &lt;div style=\"margin-top: 15px; padding: 10px; background: #e9ecef; border-radius: 4px; font-size: 12px;\"&gt;\n                    &lt;strong&gt;Current URL Parameters:&lt;/strong&gt;&lt;br&gt;\n                    enableCommFiltering={{request.params.enableCommFiltering | default: \"true\"}}, \n                    enableCommPermissions={{request.params.enableCommPermissions | default: \"true\"}}, \n                    enableCommHtml={{request.params.enableCommHtml | default: \"true\"}}, \n                    enableAdjFiltering={{request.params.enableAdjFiltering | default: \"true\"}}, \n                    enableAdjPermissions={{request.params.enableAdjPermissions | default: \"true\"}}, \n                    commLimit={{request.params.commLimit | default: \"none\"}}, \n                    adjLimit={{request.params.adjLimit | default: \"none\"}}, \n                    chunkSize={{request.params.chunkSize | default: \"100\"}}\n                &lt;/div&gt;\n            &lt;/div&gt;\n            \n            {% comment %} Commission Filter included for granular performance testing {% endcomment %}\n            {% include 'snippet' snippet_name:'Commission Filter' %}\n            \n            {% if sqUISelPeriodNo and sqUISelPeriodNo != 0 %}\n                &lt;div style=\"background: #fff3cd; padding: 15px; margin: 10px 0; border: 1px solid #ffeaa7; border-radius: 5px;\"&gt;\n                    &lt;h4&gt;✅ Commission Filter Results (Performance Testing Mode):&lt;/h4&gt;\n                    &lt;ul style=\"margin: 10px 0; font-family: monospace; font-size: 12px;\"&gt;\n                        &lt;li&gt;&lt;strong&gt;Raw commissions loaded:&lt;/strong&gt; {{allLoanBasedCommissions.results.entities.size}}&lt;/li&gt;\n                        &lt;li&gt;&lt;strong&gt;Filtered commission count:&lt;/strong&gt; {{cpCommCount}}&lt;/li&gt;\n                        &lt;li&gt;&lt;strong&gt;Commission total:&lt;/strong&gt; ${{cpCommTotal}}&lt;/li&gt;\n                        &lt;li&gt;&lt;strong&gt;Adjustment count:&lt;/strong&gt; {{cpAdjuCount}}&lt;/li&gt;\n                        &lt;li&gt;&lt;strong&gt;Adjustment total:&lt;/strong&gt; ${{cpAdjuTotal}}&lt;/li&gt;\n                        &lt;li&gt;&lt;strong&gt;Period adjustments loaded:&lt;/strong&gt; {{allPeriodBasedCommissions.results.entities.size}}&lt;/li&gt;\n                        &lt;li&gt;&lt;strong&gt;cfgAjax mode:&lt;/strong&gt; {{cfgAjax}}&lt;/li&gt;\n                    &lt;/ul&gt;\n                &lt;/div&gt;\n                \n                &lt;div style=\"margin-top: 20px;\"&gt;\n                    &lt;h3&gt;Results for Period {{sqUISelPeriodNo}} ({{sqRecUISelPeriod.lv_name}})&lt;/h3&gt;\n                    \n                    {% if cpCommCount &gt; 0 %}\n                        &lt;p&gt;Found {{cpCommCount}} filtered records out of {{allLoanBasedCommissions.results.entities.size}} total&lt;/p&gt;\n                        \n                        &lt;table border=\"1\" cellpadding=\"8\" cellspacing=\"0\" style=\"border-collapse: collapse; margin-top: 10px; font-size: 12px;\"&gt;\n                            &lt;thead&gt;\n                                &lt;tr&gt;\n                                    &lt;th&gt;Entry No&lt;/th&gt;\n                                    &lt;th&gt;Amount&lt;/th&gt;\n                                    &lt;th&gt;Borrower&lt;/th&gt;\n                                    &lt;th&gt;Loan&lt;/th&gt;\n                                    &lt;th&gt;Branch&lt;/th&gt;\n                                    &lt;th&gt;Loan Officer&lt;/th&gt;\n                                    &lt;th&gt;Commission Date&lt;/th&gt;\n                                    &lt;th&gt;Base Amount&lt;/th&gt;\n                                    &lt;th&gt;LO Split&lt;/th&gt;\n                                &lt;/tr&gt;\n                            &lt;/thead&gt;\n                            &lt;tbody&gt;\n                                {% comment %} Use filtered results from Commission Filter instead of raw data {% endcomment %}\n                                {{ cfCommissionTableRows }}\n                            &lt;/tbody&gt;\n                        &lt;/table&gt;\n                    {% else %}\n                        &lt;p&gt;No loan-based records found for period {{sqUISelPeriodNo}} ({{sqRecUISelPeriod.lv_name}})&lt;/p&gt;\n                    {% endif %}\n                &lt;/div&gt;\n            {% else %}\n                &lt;p&gt;Select a period from the dropdown above to test the query.&lt;/p&gt;\n            {% endif %}\n            \n            &lt;script&gt;\n                // Spinner functions for lvxtemp page (since Footer may not be included)\n                const SPIN_CONT_ID = 'global-spinner-container';\n                const SPIN_ELEM_ID = 'global-spinner-elem';\n\n                function spinInit() {\n                    if (document.getElementById(SPIN_CONT_ID)) return; // Already exists\n                    \n                    // Create spinner container\n                    const container = document.createElement('div');\n                    container.id = SPIN_CONT_ID;\n                    container.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10001; display: none;';\n                    \n                    // Create spinner element\n                    const spinner = document.createElement('div');\n                    spinner.id = SPIN_ELEM_ID;\n                    spinner.style.cssText = 'border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 50px; height: 50px; animation: spin 2s linear infinite; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1);';\n                    \n                    // Add CSS animation\n                    const style = document.createElement('style');\n                    style.textContent = '@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }';\n                    document.head.appendChild(style);\n                    \n                    container.appendChild(spinner);\n                    document.body.appendChild(container);\n                }\n\n                function spinShow(state) {\n                    spinInit(); // Auto-create if not exists\n                    const spinCont = document.getElementById(SPIN_CONT_ID);\n                    \n                    if (state === true) {\n                        spinCont.style.display = 'flex';\n                    } else if (state === false) {\n                        spinCont.style.display = 'none';\n                    } else {\n                        spinCont.style.display = spinCont.style.display === 'none' || spinCont.style.display === '' ? 'flex' : 'none';\n                    }\n                }\n\n                function setPeriodFilter() {\n                    // Show spinner immediately \n                    spinShow(true);\n                    \n                    // Capture timing before page refresh\n                    localStorage.setItem('TimeOfLastChangeOfPeriodDropdown', Date.now().toString());\n                    \n                    const select = document.getElementById('period-select');\n                    const periodId = select.value;\n                    const baseUrl = periodId ? `/lvxtemp?period=${periodId}` : '/lvxtemp';\n                    \n                    // Preserve current performance control parameters\n                    const currentParams = new URLSearchParams(window.location.search);\n                    const perfParams = ['enableCommFiltering', 'enableCommPermissions', 'enableCommHtml', \n                                       'enableAdjFiltering', 'enableAdjPermissions', 'commLimit', 'adjLimit', 'chunkSize', 'useSimpleHtml', 'useRawData'];\n                    \n                    const url = new URL(baseUrl, window.location.origin);\n                    perfParams.forEach(param =&gt; {\n                        if (currentParams.has(param)) {\n                            url.searchParams.set(param, currentParams.get(param));\n                        }\n                    });\n                    \n                    window.location.href = url.toString();\n                }\n\n                function applyPerfControls() {\n                    // Show spinner immediately \n                    spinShow(true);\n                    \n                    // Capture timing before page refresh\n                    localStorage.setItem('TimeOfLastChangeOfPeriodDropdown', Date.now().toString());\n                    \n                    const currentParams = new URLSearchParams(window.location.search);\n                    const url = new URL(window.location.pathname, window.location.origin);\n                    \n                    // Preserve period parameter\n                    if (currentParams.has('period')) {\n                        url.searchParams.set('period', currentParams.get('period'));\n                    }\n                    \n                    // Add performance control parameters\n                    url.searchParams.set('enableCommFiltering', document.getElementById('enable-comm-filtering').checked);\n                    url.searchParams.set('enableCommPermissions', document.getElementById('enable-comm-permissions').checked);\n                    url.searchParams.set('enableCommHtml', document.getElementById('enable-comm-html').checked);\n                    url.searchParams.set('enableAdjFiltering', document.getElementById('enable-adj-filtering').checked);\n                    url.searchParams.set('enableAdjPermissions', document.getElementById('enable-adj-permissions').checked);\n                    url.searchParams.set('useSimpleHtml', document.getElementById('use-simple-html').checked);\n                    url.searchParams.set('useRawData', document.getElementById('use-raw-data').checked);\n                    \n                    const commLimit = document.getElementById('comm-limit').value;\n                    const adjLimit = document.getElementById('adj-limit').value;\n                    const chunkSize = document.getElementById('chunk-size').value;\n                    if (commLimit) url.searchParams.set('commLimit', commLimit);\n                    if (adjLimit) url.searchParams.set('adjLimit', adjLimit);\n                    if (chunkSize) url.searchParams.set('chunkSize', chunkSize);\n                    \n                    window.location.href = url.toString();\n                }\n\n                function resetPerfControls() {\n                    // Show spinner immediately \n                    spinShow(true);\n                    \n                    // Capture timing before page refresh\n                    localStorage.setItem('TimeOfLastChangeOfPeriodDropdown', Date.now().toString());\n                    \n                    const currentParams = new URLSearchParams(window.location.search);\n                    const url = new URL(window.location.pathname, window.location.origin);\n                    \n                    // Only preserve period parameter\n                    if (currentParams.has('period')) {\n                        url.searchParams.set('period', currentParams.get('period'));\n                    }\n                    \n                    window.location.href = url.toString();\n                }\n                \n                // Format raw data rows with JavaScript (much faster than Liquid formatting)\n                function formatRawDataRows() {\n                    const rawRows = document.querySelectorAll('.raw-data-row');\n                    console.log(`Formatting ${rawRows.length} raw data rows with JavaScript...`);\n                    \n                    rawRows.forEach(row =&gt; {\n                        // Get raw data from attributes\n                        const loan = row.dataset.loan || 'N/A';\n                        const borrower = row.dataset.borrower || 'N/A';\n                        const amount = parseFloat(row.dataset.amount) || 0;\n                        const date = row.dataset.date ? new Date(row.dataset.date) : null;\n                        const base = parseFloat(row.dataset.base) || 0;\n                        const bps = parseFloat(row.dataset.bps) || 0;\n                        const calc = row.dataset.calc || 'Unknown';\n                        const branch = row.dataset.branch || 'N/A';\n                        const lo = row.dataset.lo || 'N/A';\n                        const split = parseFloat(row.dataset.split) || 100;\n                        \n                        // Format and populate cells\n                        const loanCol = row.querySelector('.loan-col');\n                        const borrowerCol = row.querySelector('.borrower-col');\n                        const dateCol = row.querySelector('.date-col');\n                        const baseCol = row.querySelector('.base-col');\n                        const amountCol = row.querySelector('.amount-col');\n                        const bpsCol = row.querySelector('.bps-col');\n                        const calcCol = row.querySelector('.calc-col');\n                        const branchCol = row.querySelector('.branch-col');\n                        const loCol = row.querySelector('.lo-col');\n                        const splitCol = row.querySelector('.split-col');\n                        \n                        if (loanCol) loanCol.textContent = loan;\n                        if (borrowerCol) borrowerCol.textContent = borrower;\n                        if (dateCol) dateCol.textContent = date ? date.toLocaleDateString() : 'No Date';\n                        if (baseCol) baseCol.textContent = base.toLocaleString('en-US', {style: 'currency', currency: 'USD'});\n                        if (amountCol) amountCol.textContent = amount.toLocaleString('en-US', {style: 'currency', currency: 'USD'});\n                        if (bpsCol) bpsCol.textContent = bps.toFixed(2);\n                        if (calcCol) calcCol.textContent = calc;\n                        if (branchCol) branchCol.textContent = branch;\n                        if (loCol) loCol.textContent = lo;\n                        if (splitCol) splitCol.textContent = split.toFixed(2) + '%';\n                    });\n                }\n\n                // Document ready: Calculate and display timing + format raw data\n                $(document).ready(function() {\n                    const startTime = localStorage.getItem('TimeOfLastChangeOfPeriodDropdown');\n                    if (startTime) {\n                        const endTime = Date.now();\n                        const deltaMs = endTime - parseInt(startTime);\n                        const deltaSeconds = (deltaMs / 1000).toFixed(1);\n                        \n                        // Insert timing display at top of page\n                        const timingHtml = `\n                            &lt;div style=\"background: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 10px; margin-bottom: 20px; border-radius: 5px; font-weight: bold; text-align: center;\"&gt;\n                                ⏱️ Refresh time: ${deltaSeconds} seconds\n                            &lt;/div&gt;\n                        `;\n                        \n                        // Insert after the h2 title\n                        $('h2').first().after(timingHtml);\n                        \n                        // Clear the timing data for next measurement\n                        localStorage.removeItem('TimeOfLastChangeOfPeriodDropdown');\n                    }\n                    \n                    // Format raw data rows if present\n                    setTimeout(() =&gt; {\n                        formatRawDataRows();\n                    }, 100);\n                });\n            &lt;/script&gt;\n            \n        &lt;/div&gt;\n    &lt;/div&gt;\n&lt;/div&gt;\n\n&lt;p&gt;Last modified sun aug 3 7:03pm&lt;/p&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;",
+  "customjavascript": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;",
+  "displayorder": 19,
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "feedbackpolicy": 756150000,
+  "hiddenfromsitemap": true,
+  "isroot": false,
+  "pagetemplateid": "cd587cbe-a61f-4c11-a750-6d0235a784ef",
+  "parentpageid": "362995e0-7dc5-4bbf-9595-062f468d2d44",
+  "partialurl": "lvxtemp",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "rootwebpageid": "6815ddcc-72c6-cdbf-5886-5a13849cc756",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;p&gt;This is a sample landing page designed to be a starting point for your website&lt;/p&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;",
+  "title": "lvxtemp"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>lvxtemp</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <searchcontent>lvxtemp&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;
+&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;
+&lt;p&gt;Last modified sun aug 3 7:03pm&lt;/p&gt;
+&lt;!-- Commission Query Test with SetupQuery --&gt;
+
+{% include 'snippet' snippet_name:'FetchXML - SetupQuery' %}
+
+&lt;div class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;"&gt;
+    &lt;div class="container" style="display: flex; flex-wrap: wrap;"&gt;
+        &lt;div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; padding: 16px; margin: 60px 0px;"&gt;
+            
+            &lt;h2&gt;Commission Query Test with FULL SetupQuery and Commission Filter&lt;/h2&gt;
+            
+            &lt;div style="background: #e8f4fd; padding: 15px; margin-bottom: 20px; border: 1px solid #bee5eb; border-radius: 5px;"&gt;
+                &lt;h4&gt;✅ SetupQuery Results (Proof it's running):&lt;/h4&gt;
+                &lt;ul style="margin: 10px 0; font-family: monospace; font-size: 12px;"&gt;
+                    &lt;li&gt;&lt;strong&gt;Periods found:&lt;/strong&gt; {{currentPeriodQuery.results.entities.size}}&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;Selected period:&lt;/strong&gt; {{sqRecUISelPeriod.lv_name}} ({{sqUISelPeriodNo}})&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;Accounting period:&lt;/strong&gt; {{sqRecAcctgPeriod.lv_name}} ({{sqAcctgPeriodNo}})&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;User roles:&lt;/strong&gt; Admin={{is_admin}} BranchMgr={{is_BranchManager}} LO={{is_OnlyLoanOfficer}}&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;Branch access:&lt;/strong&gt; {{userBranchList | truncate: 50}}&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;LO access:&lt;/strong&gt; {{userLoanOfficerList | truncate: 50}}&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;Branches loaded:&lt;/strong&gt; {{branchQuery.results.entities.size}}&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;Loan officers loaded:&lt;/strong&gt; {{allLoanOfficers.results.entities.size}}&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+            
+            &lt;div style="margin-bottom: 20px;"&gt;
+                &lt;label for="period-select" style="display: block; margin-bottom: 5px;"&gt;Period:&lt;/label&gt;
+                &lt;select id="period-select" onchange="setPeriodFilter()" style="padding: 8px; width: 300px;"&gt;
+                    &lt;option value=""&gt;-- Select Period --&lt;/option&gt;
+                    {% for period in currentPeriodQuery.results.entities %}
+                        &lt;option value="{{period.lv_lvcompcommperiodcalcid}}" 
+                            {% if period.lv_lvcompcommperiodcalcid == request.params.period %} selected {% endif %} 
+                            data-periodno="{{period.lv_periodno}}"&gt;
+                            {{ period.lv_name }}
+                        &lt;/option&gt;
+                    {% endfor %}
+                &lt;/select&gt;
+            &lt;/div&gt;
+
+            &lt;div style="background: #f8f9fa; border: 2px solid #007bff; padding: 20px; margin-bottom: 20px; border-radius: 8px;"&gt;
+                &lt;h4 style="color: #007bff; margin-top: 0;"&gt;🧪 Performance Testing Controls&lt;/h4&gt;
+                &lt;form id="perf-controls-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: start;"&gt;
+                    &lt;div&gt;
+                        &lt;h5&gt;Commission Processing:&lt;/h5&gt;
+                        &lt;label style="display: block; margin: 5px 0;"&gt;
+                            &lt;input type="checkbox" id="enable-comm-filtering" 
+                                {% if request.params.enableCommFiltering != "false" %} checked {% endif %}&gt;
+                            Enable Commission Filtering Loop
+                        &lt;/label&gt;
+                        &lt;label style="display: block; margin: 5px 0;"&gt;
+                            &lt;input type="checkbox" id="enable-comm-permissions" 
+                                {% if request.params.enableCommPermissions != "false" %} checked {% endif %}&gt;
+                            Enable Commission Permission Checks
+                        &lt;/label&gt;
+                        &lt;label style="display: block; margin: 5px 0;"&gt;
+                            &lt;input type="checkbox" id="enable-comm-html" 
+                                {% if request.params.enableCommHtml != "false" %} checked {% endif %}&gt;
+                            Enable Commission HTML Generation
+                        &lt;/label&gt;
+                    &lt;/div&gt;
+                    &lt;div&gt;
+                        &lt;h5&gt;Adjustment Processing:&lt;/h5&gt;
+                        &lt;label style="display: block; margin: 5px 0;"&gt;
+                            &lt;input type="checkbox" id="enable-adj-filtering" 
+                                {% if request.params.enableAdjFiltering != "false" %} checked {% endif %}&gt;
+                            Enable Adjustment Filtering Loop
+                        &lt;/label&gt;
+                        &lt;label style="display: block; margin: 5px 0;"&gt;
+                            &lt;input type="checkbox" id="enable-adj-permissions" 
+                                {% if request.params.enableAdjPermissions != "false" %} checked {% endif %}&gt;
+                            Enable Adjustment Permission Checks
+                        &lt;/label&gt;
+                    &lt;/div&gt;
+                    &lt;div&gt;
+                        &lt;h5&gt;Record Limits:&lt;/h5&gt;
+                        &lt;label style="display: block; margin: 5px 0;"&gt;
+                            Commission Limit: 
+                            &lt;input type="number" id="comm-limit" value="{{request.params.commLimit | default: '10'}}" 
+                                placeholder="10" style="width: 80px; margin-left: 5px;"&gt;
+                        &lt;/label&gt;
+                        &lt;label style="display: block; margin: 5px 0;"&gt;
+                            Adjustment Limit: 
+                            &lt;input type="number" id="adj-limit" value="{{request.params.adjLimit | default: ''}}" 
+                                placeholder="All" style="width: 80px; margin-left: 5px;"&gt;
+                        &lt;/label&gt;
+                        &lt;label style="display: block; margin: 5px 0;"&gt;
+                            &lt;input type="checkbox" id="use-simple-html" 
+                                {% if request.params.useSimpleHtml == "true" %} checked {% endif %}&gt;
+                            Use Simple HTML (skip template generation)
+                        &lt;/label&gt;
+                        &lt;label style="display: block; margin: 5px 0;"&gt;
+                            &lt;input type="checkbox" id="use-raw-data" 
+                                {% if request.params.useRawData == "true" %} checked {% endif %}&gt;
+                            Use Raw Data + JS Formatting (fastest)
+                        &lt;/label&gt;
+                        &lt;label style="display: block; margin: 5px 0;"&gt;
+                            HTML Chunk Size: 
+                            &lt;input type="number" id="chunk-size" value="{{request.params.chunkSize | default: '100'}}" 
+                                placeholder="100" style="width: 80px; margin-left: 5px;"&gt;
+                        &lt;/label&gt;
+                    &lt;/div&gt;
+                    &lt;div&gt;
+                        &lt;button type="button" onclick="applyPerfControls()" 
+                            style="background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;"&gt;
+                            🚀 Apply &amp; Test
+                        &lt;/button&gt;
+                        &lt;button type="button" onclick="resetPerfControls()" 
+                            style="background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-left: 10px;"&gt;
+                            Reset All
+                        &lt;/button&gt;
+                    &lt;/div&gt;
+                &lt;/form&gt;
+                &lt;div style="margin-top: 15px; padding: 10px; background: #e9ecef; border-radius: 4px; font-size: 12px;"&gt;
+                    &lt;strong&gt;Current URL Parameters:&lt;/strong&gt;&lt;br&gt;
+                    enableCommFiltering={{request.params.enableCommFiltering | default: "true"}}, 
+                    enableCommPermissions={{request.params.enableCommPermissions | default: "true"}}, 
+                    enableCommHtml={{request.params.enableCommHtml | default: "true"}}, 
+                    enableAdjFiltering={{request.params.enableAdjFiltering | default: "true"}}, 
+                    enableAdjPermissions={{request.params.enableAdjPermissions | default: "true"}}, 
+                    commLimit={{request.params.commLimit | default: "none"}}, 
+                    adjLimit={{request.params.adjLimit | default: "none"}}, 
+                    chunkSize={{request.params.chunkSize | default: "100"}}
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            {% comment %} Commission Filter included for granular performance testing {% endcomment %}
+            {% include 'snippet' snippet_name:'Commission Filter' %}
+            
+            {% if sqUISelPeriodNo and sqUISelPeriodNo != 0 %}
+                &lt;div style="background: #fff3cd; padding: 15px; margin: 10px 0; border: 1px solid #ffeaa7; border-radius: 5px;"&gt;
+                    &lt;h4&gt;✅ Commission Filter Results (Performance Testing Mode):&lt;/h4&gt;
+                    &lt;ul style="margin: 10px 0; font-family: monospace; font-size: 12px;"&gt;
+                        &lt;li&gt;&lt;strong&gt;Raw commissions loaded:&lt;/strong&gt; {{allLoanBasedCommissions.results.entities.size}}&lt;/li&gt;
+                        &lt;li&gt;&lt;strong&gt;Filtered commission count:&lt;/strong&gt; {{cpCommCount}}&lt;/li&gt;
+                        &lt;li&gt;&lt;strong&gt;Commission total:&lt;/strong&gt; ${{cpCommTotal}}&lt;/li&gt;
+                        &lt;li&gt;&lt;strong&gt;Adjustment count:&lt;/strong&gt; {{cpAdjuCount}}&lt;/li&gt;
+                        &lt;li&gt;&lt;strong&gt;Adjustment total:&lt;/strong&gt; ${{cpAdjuTotal}}&lt;/li&gt;
+                        &lt;li&gt;&lt;strong&gt;Period adjustments loaded:&lt;/strong&gt; {{allPeriodBasedCommissions.results.entities.size}}&lt;/li&gt;
+                        &lt;li&gt;&lt;strong&gt;cfgAjax mode:&lt;/strong&gt; {{cfgAjax}}&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+                
+                &lt;div style="margin-top: 20px;"&gt;
+                    &lt;h3&gt;Results for Period {{sqUISelPeriodNo}} ({{sqRecUISelPeriod.lv_name}})&lt;/h3&gt;
+                    
+                    {% if cpCommCount &gt; 0 %}
+                        &lt;p&gt;Found {{cpCommCount}} filtered records out of {{allLoanBasedCommissions.results.entities.size}} total&lt;/p&gt;
+                        
+                        &lt;table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; margin-top: 10px; font-size: 12px;"&gt;
+                            &lt;thead&gt;
+                                &lt;tr&gt;
+                                    &lt;th&gt;Entry No&lt;/th&gt;
+                                    &lt;th&gt;Amount&lt;/th&gt;
+                                    &lt;th&gt;Borrower&lt;/th&gt;
+                                    &lt;th&gt;Loan&lt;/th&gt;
+                                    &lt;th&gt;Branch&lt;/th&gt;
+                                    &lt;th&gt;Loan Officer&lt;/th&gt;
+                                    &lt;th&gt;Commission Date&lt;/th&gt;
+                                    &lt;th&gt;Base Amount&lt;/th&gt;
+                                    &lt;th&gt;LO Split&lt;/th&gt;
+                                &lt;/tr&gt;
+                            &lt;/thead&gt;
+                            &lt;tbody&gt;
+                                {% comment %} Use filtered results from Commission Filter instead of raw data {% endcomment %}
+                                {{ cfCommissionTableRows }}
+                            &lt;/tbody&gt;
+                        &lt;/table&gt;
+                    {% else %}
+                        &lt;p&gt;No loan-based records found for period {{sqUISelPeriodNo}} ({{sqRecUISelPeriod.lv_name}})&lt;/p&gt;
+                    {% endif %}
+                &lt;/div&gt;
+            {% else %}
+                &lt;p&gt;Select a period from the dropdown above to test the query.&lt;/p&gt;
+            {% endif %}
+            
+            &lt;script&gt;
+                // Spinner functions for lvxtemp page (since Footer may not be included)
+                const SPIN_CONT_ID = 'global-spinner-container';
+                const SPIN_ELEM_ID = 'global-spinner-elem';
+
+                function spinInit() {
+                    if (document.getElementById(SPIN_CONT_ID)) return; // Already exists
+                    
+                    // Create spinner container
+                    const container = document.createElement('div');
+                    container.id = SPIN_CONT_ID;
+                    container.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10001; display: none;';
+                    
+                    // Create spinner element
+                    const spinner = document.createElement('div');
+                    spinner.id = SPIN_ELEM_ID;
+                    spinner.style.cssText = 'border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 50px; height: 50px; animation: spin 2s linear infinite; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1);';
+                    
+                    // Add CSS animation
+                    const style = document.createElement('style');
+                    style.textContent = '@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }';
+                    document.head.appendChild(style);
+                    
+                    container.appendChild(spinner);
+                    document.body.appendChild(container);
+                }
+
+                function spinShow(state) {
+                    spinInit(); // Auto-create if not exists
+                    const spinCont = document.getElementById(SPIN_CONT_ID);
+                    
+                    if (state === true) {
+                        spinCont.style.display = 'flex';
+                    } else if (state === false) {
+                        spinCont.style.display = 'none';
+                    } else {
+                        spinCont.style.display = spinCont.style.display === 'none' || spinCont.style.display === '' ? 'flex' : 'none';
+                    }
+                }
+
+                function setPeriodFilter() {
+                    // Show spinner immediately 
+                    spinShow(true);
+                    
+                    // Capture timing before page refresh
+                    localStorage.setItem('TimeOfLastChangeOfPeriodDropdown', Date.now().toString());
+                    
+                    const select = document.getElementById('period-select');
+                    const periodId = select.value;
+                    const baseUrl = periodId ? `/lvxtemp?period=${periodId}` : '/lvxtemp';
+                    
+                    // Preserve current performance control parameters
+                    const currentParams = new URLSearchParams(window.location.search);
+                    const perfParams = ['enableCommFiltering', 'enableCommPermissions', 'enableCommHtml', 
+                                       'enableAdjFiltering', 'enableAdjPermissions', 'commLimit', 'adjLimit', 'chunkSize', 'useSimpleHtml', 'useRawData'];
+                    
+                    const url = new URL(baseUrl, window.location.origin);
+                    perfParams.forEach(param =&gt; {
+                        if (currentParams.has(param)) {
+                            url.searchParams.set(param, currentParams.get(param));
+                        }
+                    });
+                    
+                    window.location.href = url.toString();
+                }
+
+                function applyPerfControls() {
+                    // Show spinner immediately 
+                    spinShow(true);
+                    
+                    // Capture timing before page refresh
+                    localStorage.setItem('TimeOfLastChangeOfPeriodDropdown', Date.now().toString());
+                    
+                    const currentParams = new URLSearchParams(window.location.search);
+                    const url = new URL(window.location.pathname, window.location.origin);
+                    
+                    // Preserve period parameter
+                    if (currentParams.has('period')) {
+                        url.searchParams.set('period', currentParams.get('period'));
+                    }
+                    
+                    // Add performance control parameters
+                    url.searchParams.set('enableCommFiltering', document.getElementById('enable-comm-filtering').checked);
+                    url.searchParams.set('enableCommPermissions', document.getElementById('enable-comm-permissions').checked);
+                    url.searchParams.set('enableCommHtml', document.getElementById('enable-comm-html').checked);
+                    url.searchParams.set('enableAdjFiltering', document.getElementById('enable-adj-filtering').checked);
+                    url.searchParams.set('enableAdjPermissions', document.getElementById('enable-adj-permissions').checked);
+                    url.searchParams.set('useSimpleHtml', document.getElementById('use-simple-html').checked);
+                    url.searchParams.set('useRawData', document.getElementById('use-raw-data').checked);
+                    
+                    const commLimit = document.getElementById('comm-limit').value;
+                    const adjLimit = document.getElementById('adj-limit').value;
+                    const chunkSize = document.getElementById('chunk-size').value;
+                    if (commLimit) url.searchParams.set('commLimit', commLimit);
+                    if (adjLimit) url.searchParams.set('adjLimit', adjLimit);
+                    if (chunkSize) url.searchParams.set('chunkSize', chunkSize);
+                    
+                    window.location.href = url.toString();
+                }
+
+                function resetPerfControls() {
+                    // Show spinner immediately 
+                    spinShow(true);
+                    
+                    // Capture timing before page refresh
+                    localStorage.setItem('TimeOfLastChangeOfPeriodDropdown', Date.now().toString());
+                    
+                    const currentParams = new URLSearchParams(window.location.search);
+                    const url = new URL(window.location.pathname, window.location.origin);
+                    
+                    // Only preserve period parameter
+                    if (currentParams.has('period')) {
+                        url.searchParams.set('period', currentParams.get('period'));
+                    }
+                    
+                    window.location.href = url.toString();
+                }
+                
+                // Format raw data rows with JavaScript (much faster than Liquid formatting)
+                function formatRawDataRows() {
+                    const rawRows = document.querySelectorAll('.raw-data-row');
+                    console.log(`Formatting ${rawRows.length} raw data rows with JavaScript...`);
+                    
+                    rawRows.forEach(row =&gt; {
+                        // Get raw data from attributes
+                        const loan = row.dataset.loan || 'N/A';
+                        const borrower = row.dataset.borrower || 'N/A';
+                        const amount = parseFloat(row.dataset.amount) || 0;
+                        const date = row.dataset.date ? new Date(row.dataset.date) : null;
+                        const base = parseFloat(row.dataset.base) || 0;
+                        const bps = parseFloat(row.dataset.bps) || 0;
+                        const calc = row.dataset.calc || 'Unknown';
+                        const branch = row.dataset.branch || 'N/A';
+                        const lo = row.dataset.lo || 'N/A';
+                        const split = parseFloat(row.dataset.split) || 100;
+                        
+                        // Format and populate cells
+                        const loanCol = row.querySelector('.loan-col');
+                        const borrowerCol = row.querySelector('.borrower-col');
+                        const dateCol = row.querySelector('.date-col');
+                        const baseCol = row.querySelector('.base-col');
+                        const amountCol = row.querySelector('.amount-col');
+                        const bpsCol = row.querySelector('.bps-col');
+                        const calcCol = row.querySelector('.calc-col');
+                        const branchCol = row.querySelector('.branch-col');
+                        const loCol = row.querySelector('.lo-col');
+                        const splitCol = row.querySelector('.split-col');
+                        
+                        if (loanCol) loanCol.textContent = loan;
+                        if (borrowerCol) borrowerCol.textContent = borrower;
+                        if (dateCol) dateCol.textContent = date ? date.toLocaleDateString() : 'No Date';
+                        if (baseCol) baseCol.textContent = base.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+                        if (amountCol) amountCol.textContent = amount.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+                        if (bpsCol) bpsCol.textContent = bps.toFixed(2);
+                        if (calcCol) calcCol.textContent = calc;
+                        if (branchCol) branchCol.textContent = branch;
+                        if (loCol) loCol.textContent = lo;
+                        if (splitCol) splitCol.textContent = split.toFixed(2) + '%';
+                    });
+                }
+
+                // Document ready: Calculate and display timing + format raw data
+                $(document).ready(function() {
+                    const startTime = localStorage.getItem('TimeOfLastChangeOfPeriodDropdown');
+                    if (startTime) {
+                        const endTime = Date.now();
+                        const deltaMs = endTime - parseInt(startTime);
+                        const deltaSeconds = (deltaMs / 1000).toFixed(1);
+                        
+                        // Insert timing display at top of page
+                        const timingHtml = `
+                            &lt;div style="background: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 10px; margin-bottom: 20px; border-radius: 5px; font-weight: bold; text-align: center;"&gt;
+                                ⏱️ Refresh time: ${deltaSeconds} seconds
+                            &lt;/div&gt;
+                        `;
+                        
+                        // Insert after the h2 title
+                        $('h2').first().after(timingHtml);
+                        
+                        // Clear the timing data for next measurement
+                        localStorage.removeItem('TimeOfLastChangeOfPeriodDropdown');
+                    }
+                    
+                    // Format raw data rows if present
+                    setTimeout(() =&gt; {
+                        formatRawDataRows();
+                    }, 100);
+                });
+            &lt;/script&gt;
+            
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Last modified sun aug 3 7:03pm&lt;/p&gt;
+&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;
+&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;lvxtemp</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

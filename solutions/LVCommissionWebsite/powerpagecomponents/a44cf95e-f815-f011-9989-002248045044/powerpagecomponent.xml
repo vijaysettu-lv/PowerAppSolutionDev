@@ -1,0 +1,15 @@
+<powerpagecomponent powerpagecomponentid="a44cf95e-f815-f011-9989-002248045044">
+  <content>{
+  "display_name": "FetchXML - Current Period",
+  "type": 756150001,
+  "value": "&lt;!-- \n ENTER: fxmCurrentPeriod  selPeriodNo={{sqUISelPeriodNo}}      2506061341 Fri Jun 6 --&gt;\n&lt;!-- VERSION MARKER: FetchXML-Current-Period v300530-TEST-DEPLOY --&gt;\n&lt;!-- DEBUG ISOLATE: FetchXML Current Period starting --&gt;\n&lt;!-- DEBUG ISOLATE: FetchXML Current Period completed --&gt;\n\n{% comment %}~commissions ~commquery {% endcomment %} \n\n&lt;!-- \n\n--&gt;\n\n{% comment %} FetchXML queries moved to Commission-Filter snippet {% endcomment %}\n\n&lt;!-- fxmCP::000 --&gt;\n\n{% comment %}\nAbsolute insanity: I never could get any fetchXml to do this calculation properly\nSo I thought sure, it will be easy to do procedurally. Nope. The only thing I could\never get to work is terrible giant string concatenation. Could NOT get array to \nwork: never could get it to indicate that yes, such and such value is indeed already in the array\n{% endcomment %} \n\n{% assign seenLoansString = \"\" %}\n{% comment %} Loan counts and totals now provided by Commission-Filter snippet - removed duplicate initialization {% endcomment %}\n\n{% assign enableDebug = false %}\n{% if request.params.dbg == \"1\" %}\n\t{% assign enableDebug = true %}\n{% endif %}\n\n&lt;!-- fxmCP::001 --&gt;\n\n{% comment %} REMOVED: Duplicate filtering and loan calculation logic - now handled by Commission-Filter snippet {% endcomment %}\n\n&lt;!-- fxmCP::100a Legacy debug output - cpCommCount and cpCommTotal now set by Commission-Filter --&gt;\n\n\n{% comment %} FetchXML queries moved to Commission-Filter snippet {% endcomment %}\n\n&lt;!-- fxmCP::200 --&gt;\n\n{% comment %} Adjustment counts and totals now provided by Commission-Filter snippet {% endcomment %}\n\n"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>FetchXML - Current Period</name>
+  <powerpagecomponenttype>7</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

@@ -1,0 +1,609 @@
+<powerpagecomponent powerpagecomponentid="bdd8a3cb-9815-4a54-7400-16ac794411ef">
+  <content>{
+  "copy": "&lt;p&gt;Last modified Fri Oct 31 8:41AM&lt;/p&gt;\n&lt;p&gt;Last modified Fri Oct 31 8:39AM&lt;/p&gt;\n&lt;!-- Last modified Fri Oct 31 8:04AM --&gt;\n\n{% comment %} lvcpdev.en-US.webpage.copy.html {% endcomment %} \n\n{% include 'snippet' snippet_name:'FetchXML - SetupQuery' %}\n\n&lt;h2&gt;2025-10-30 Thu 17:21:44 ~lvcpdev &lt;span id=\"spanJsVersion\" style=\"margin-left: 10px;\"&gt;&lt;/span&gt;&lt;/h2&gt;\n\n&lt;div id=\"divTestButton\" style=\"margin-bottom: 20px;\"&gt;\n\t\t&lt;input type=\"button\" value=\"Test to Console2\" onclick=\"testToConsole()\" /&gt;\n&lt;/div&gt;\n\n&lt;style&gt;\n\t.table-container {\n\t\tmargin-top: 20px;\n\t}\n\t.table-responsive {\n\t\toverflow-x: auto;\n\t}\n\t.money-column {\n\t\ttext-align: right;\n\t}\n\t.date-column {\n\t\tmin-width: 120px;\n\t}\n&lt;/style&gt;\n\n\n\n{% comment %} I try to keep this in sync with same in /diag, but never a guarantee {% endcomment %} \n&lt;div class=\"card mt-3\"&gt; &lt;!-- USER INFORMATION 0601 --&gt;\n\t&lt;div class=\"card-header\"&gt;\n\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#currentUserCollapse\" aria-expanded=\"false\" aria-controls=\"currentUserCollapse\"&gt;\n\t\t\tCurrent User Information\n\t\t&lt;/button&gt;\n\t&lt;/div&gt;\n\n\t&lt;div class=\"collapse\" id=\"currentUserCollapse\"&gt;\n\t\t&lt;div class=\"card-body\"&gt;\n\t\t\t&lt;table class=\"user-table\"&gt;\n\t\t\t\t&lt;thead&gt;\n\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t&lt;th&gt;Variable&lt;/th&gt;\n\t\t\t\t\t\t&lt;th&gt;Value&lt;/th&gt;\n\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t&lt;/thead&gt;\n\t\t\t\t&lt;tbody&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.id&lt;/td&gt;&lt;td&gt;{{ user.id }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.username&lt;/td&gt;&lt;td&gt;{{ user.username }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.firstname&lt;/td&gt;&lt;td&gt;{{ user.firstname }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.middlename&lt;/td&gt;&lt;td&gt;{{ user.middlename }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lastname&lt;/td&gt;&lt;td&gt;{{ user.lastname }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.fullname             &lt;/td&gt;&lt;td&gt;{{ user.fullname }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.emailaddress1        &lt;/td&gt;&lt;td&gt;{{ user.emailaddress1 }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.emailaddress2        &lt;/td&gt;&lt;td&gt;{{ user.emailaddress2 }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lv_region.id   &lt;/td&gt;&lt;td&gt;{{ user.lv_region.id }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lv_region.name &lt;/td&gt;&lt;td&gt;{{ user.lv_region.name }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lv_branch.id&lt;/td&gt;&lt;td&gt;{{ user.lv_branch.id }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lv_branch.name&lt;/td&gt;&lt;td&gt;{{ user.lv_branch.name }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lv_loanofficer.id&lt;/td&gt;&lt;td&gt;{{ user.lv_loanofficer.id }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lv_loanofficer.name&lt;/td&gt;&lt;td&gt;{{ user.lv_loanofficer.name }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.roles&lt;/td&gt;&lt;td&gt;\n\t\t\t\t\t\t{% for role in user.roles %}\n\t\t\t\t\t\t\t{{ role }}{% unless forloop.last %}; {% endunless %}\n\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.isAuthenticated&lt;/td&gt;\n\t\t\t\t\t&lt;td class=\"authenticated\"&gt;{{ user.isAuthenticated }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.type&lt;/td&gt;&lt;td&gt;{{ user.type }}&lt;/td&gt;&lt;/tr&gt;\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t&lt;/table&gt;\n\t\t&lt;/div&gt;\n\t&lt;/div&gt;\n&lt;/div&gt;\n\n&lt;div class=\"card mt-3\"&gt; &lt;!-- SETUP QUERY --&gt;\n\t&lt;div class=\"card-header\"&gt;\n\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#setupQueryCollapse\" aria-expanded=\"true\" aria-controls=\"setupQueryCollapse\"&gt;\n\t\t\tSetup Query\n\t\t&lt;/button&gt;\n\t&lt;/div&gt;\n\n\t&lt;div class=\"collapse hide\" id=\"setupQueryCollapse\"&gt;\n\t\t&lt;div class=\"card-body\"&gt;\n\t\t\t&lt;table class=\"user-table\"&gt;\n\t\t\t\t&lt;thead&gt;\n\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t&lt;th&gt;Variable&lt;/th&gt;\n\t\t\t\t\t\t&lt;th&gt;Value&lt;/th&gt;\n\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t&lt;/thead&gt;\n\t\t\t\t&lt;tbody&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;cfgAccountingEnabled   &lt;/td&gt;&lt;td&gt;{{ cfgAccountingEnabled }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;cfgBranchEnabled       &lt;/td&gt;&lt;td&gt;{{ cfgBranchEnabled }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;cfgPrintEnabled        &lt;/td&gt;&lt;td&gt;{{ cfgPrintEnabled }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;cfgRegionEnabled       &lt;/td&gt;&lt;td&gt;{{ cfgRegionEnabled }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;cfgTags                &lt;/td&gt;&lt;td&gt;{{ cfgTags }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;currentBranch.name     &lt;/td&gt;&lt;td&gt;{{ currentBranch.name }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;currentRegion.name     &lt;/td&gt;&lt;td&gt;{{ currentRegion.name }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;is_admin               &lt;/td&gt;&lt;td&gt;{{ is_admin }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;is_BranchManager       &lt;/td&gt;&lt;td&gt;{{ is_BranchManager }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;is_developer           &lt;/td&gt;&lt;td&gt;{{ is_developer }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;is_LoanOfficer         &lt;/td&gt;&lt;td&gt;{{ is_LoanOfficer }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;is_OnlyLoanOfficer     &lt;/td&gt;&lt;td&gt;{{ is_OnlyLoanOfficer }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;is_RegionManager       &lt;/td&gt;&lt;td&gt;{{ is_RegionManager }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;sqAcctgPeriodNo        &lt;/td&gt;&lt;td&gt;{{ sqAcctgPeriodNo }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;sqApprovalType         &lt;/td&gt;&lt;td&gt;{{ sqApprovalType }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;sqHasCommissionProfile &lt;/td&gt;&lt;td&gt;{{ sqHasCommissionProfile }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;sqIsCommissioned       &lt;/td&gt;&lt;td&gt;{{ sqIsCommissioned }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;sqRecCommProfile       &lt;/td&gt;&lt;td&gt;{{ sqRecCommProfile.lv_name }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;sqRecLOBeingViewed     &lt;/td&gt;&lt;td&gt;{{ sqRecLOBeingViewed.lv_name }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;sqRecLOYouAre          &lt;/td&gt;&lt;td&gt;{{ sqRecLOYouAre.lv_name }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;sqUsingApprovals       &lt;/td&gt;&lt;td&gt;{{ sqUsingApprovals }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;UrlFlowContactWebRole  &lt;/td&gt;&lt;td&gt;{{ setupRecord.lv_urlflowcontactwebrole }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;userBranch             &lt;/td&gt;&lt;td&gt;{{ userBranch }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;userBranch.id          &lt;/td&gt;&lt;td&gt;{{ userBranch.id }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;userBranchList         &lt;/td&gt;&lt;td&gt;{{ userBranchList }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;userRegion             &lt;/td&gt;&lt;td&gt;{{ userRegion }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;website                &lt;/td&gt;&lt;td&gt;{{ website }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;website.id             &lt;/td&gt;&lt;td&gt;{{ website.id }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;websiteid              &lt;/td&gt;&lt;td&gt;{{ websiteid }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;site                   &lt;/td&gt;&lt;td&gt;{{ site }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;site.id                &lt;/td&gt;&lt;td&gt;{{ site.id }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;portal                 &lt;/td&gt;&lt;td&gt;{{ portal }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;portal.id              &lt;/td&gt;&lt;td&gt;{{ portal.id }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;userRegion.id          &lt;/td&gt;&lt;td&gt;{{ userRegion.id }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;userRegionList         &lt;/td&gt;&lt;td&gt;{{ userRegionList }}&lt;/td&gt;&lt;/tr&gt;\t\t\t\t\t\n\t\t\t\t&lt;/tbody&gt;\n\t\t\t&lt;/table&gt;\n\t\t&lt;/div&gt;\n\t&lt;/div&gt;\n&lt;/div&gt;\n\n&lt;div class=\"card mt-3\"&gt; &lt;!-- API SECTION --&gt;\n\t&lt;div class=\"card-header\"&gt;\n\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#apiCollapse\" aria-expanded=\"true\" aria-controls=\"apiCollapse\"&gt;\n\t\t\tAPI Calls\n\t\t&lt;/button&gt;\n\t&lt;/div&gt;\n\t&lt;div class=\"collapse show\" id=\"apiCollapse\"&gt;\n\t\t&lt;div class=\"card-body\"&gt;\n\n\t\t\t&lt;div class=\"row mb-3 align-items-center\"&gt;  &lt;!-- Prefix, Table, Id, and Action --&gt;\n\t\t\t\t&lt;div class=\"col-3\"&gt; &lt;!-- Prefix Select --&gt;\n\t\t\t\t\t&lt;div class=\"row g-2 align-items-center\"&gt;\n\t\t\t\t\t\t&lt;div class=\"col-auto\"&gt;\n\t\t\t\t\t\t\t&lt;label for=\"cboPrefix\" class=\"col-form-label me-2\"&gt;Prefix&lt;/label&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"col\"&gt;\n\t\t\t\t\t\t\t&lt;select id=\"cboPrefix\" class=\"form-select rj-persist\" onchange=\"updateApiUrl()\"&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"BCODataV4LVM\"&gt;BusCent ODataV4 LVM&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"BCODataV4\"&gt;BusCent ODataV4&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"PowerPages\"&gt;Power Pages Shortcut&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Dataverse\"&gt;Dataverse&lt;/option&gt;\n\t\t\t\t\t\t\t&lt;/select&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t&lt;div class=\"col-3\"&gt; &lt;!-- Table Select ~tablenames --&gt;\n\t\t\t\t\t&lt;div class=\"row g-2 align-items-center\"&gt;\n\t\t\t\t\t\t&lt;div class=\"col-auto\"&gt;\n\t\t\t\t\t\t\t&lt;label for=\"cboTable\" class=\"col-form-label me-2\"&gt;Table&lt;/label&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"col\"&gt;\n\t\t\t\t\t\t\t&lt;select id=\"cboTable\" class=\"form-select rj-persist\" onchange=\"updateApiUrl()\"&gt; {% comment %}  if you add here, be sure to add to translatetablename  {% endcomment %} \n\t\t\t\t\t\t\t\t&lt;option value=\"account\"&gt;account&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"ApprovalLO\"&gt;ApprovalLO&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Branch\"&gt;Branch&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"CommissionApproval\"&gt;CommissionApproval&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"CommissionProfile\"&gt;CommissionProfile&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"CommissionValue\"&gt;CommissionValue&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"contact\"&gt;contact&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"EmailLog\"&gt;EmailLog&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Loan\"&gt;Loan&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"LoanOfficer\"&gt;LoanOfficer&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Log\"&gt;Log&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"RBLO\"&gt;RBLO&lt;/option&gt;\n\t\t\t\t\t\t\t&lt;/select&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t&lt;div class=\"col-3\"&gt; &lt;!-- ID --&gt;\n\t\t\t\t\t&lt;div class=\"row g-2 align-items-center\"&gt;\n\t\t\t\t\t\t&lt;div class=\"col-auto\"&gt;\n\t\t\t\t\t\t\t&lt;label for=\"cboId\" class=\"col-form-label me-2\"&gt;ID&lt;/label&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t{% comment %}    todo8: have this query contacts, and dynamically populate with correct id's         {% endcomment %} \n\t\t\t\t\t\t&lt;div class=\"col\"&gt;\n\t\t\t\t\t\t\t&lt;select id=\"cboId\" class=\"form-select rj-persist\" onchange=\"updateApiUrl()\"&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"\"&gt;&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"EDA25D58-1CA8-EF11-B8E8-6045BDD4B776\"&gt;Contact: Robert.Martin@LoanVision.com (EDA25D58-1CA8-EF11-B8E8-6045BDD4B776)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"0A25BDD1-B2E7-EF11-A730-7C1E525A5C41\"&gt;Contact: Rodj@LoanVision.com (0A25BDD1-B2E7-EF11-A730-7C1E525A5C41)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"47bf5a15-5380-ef11-ac21-6045bda6e4f2\"&gt;Contact: Jenna (47bf5a15-5380-ef11-ac21-6045bda6e4f2)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"b108c67a-7aa0-ef11-8a69-6045bdd4b776\"&gt;Contact: Richard (b108c67a-7aa0-ef11-8a69-6045bdd4b776)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"50A76DCA-E380-EF11-AC21-6045BDA6E4F2\"&gt;Contact: Leslie Knope (50A76DCA-E380-EF11-AC21-6045BDA6E4F2)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"172A2341-E001-F011-BAE3-7C1E52153266\"&gt;LO: Rodj Martin (172A2341-E001-F011-BAE3-7C1E52153266)&lt;/option&gt;\n\t\t\t\t\t\t\t&lt;/select&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t&lt;div class=\"col-3\"&gt; &lt;!-- Action --&gt;\n\t\t\t\t\t&lt;div class=\"row g-2 align-items-center\"&gt;\n\t\t\t\t\t\t&lt;div class=\"col-auto\"&gt;\n\t\t\t\t\t\t\t&lt;label for=\"cboAction\" class=\"col-form-label me-2\"&gt;Action&lt;/label&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"col\"&gt;\n\t\t\t\t\t\t\t&lt;select id=\"cboAction\" class=\"form-select rj-persist\" onchange=\"updateApiUrl()\"&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"\"&gt;&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Top10\"&gt;Top10&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Count\"&gt;Count&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Count\"&gt;Filter&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Top1\"&gt;Top1&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Select\"&gt;&amp;$select=nickname,emailaddress1&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Id\"&gt;Id&lt;/option&gt;\n\t\t\t\t\t\t\t&lt;/select&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;div class=\"row mb-3 align-items-center\"&gt; &lt;!-- SUCCESS HISTORY --&gt;\n\t\t\t\t&lt;div class=\"col-12\"&gt;\n\t\t\t\t\t&lt;div class=\"row g-2 align-items-center\"&gt;\n\t\t\t\t\t\t&lt;div class=\"col-1\"&gt;\n\t\t\t\t\t\t\t&lt;label for=\"contactSelect\" class=\"col-form-label me-2\"&gt;HISTORY&lt;/label&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"col-11\"&gt;\n\t\t\t\t\t\t\t&lt;select id=\"cboUrlSuccessHistory\" class=\"form-select rj-persist\" onchange=\"$('#apiUrl').val('rodj')\"&gt;\n\t\t\t\t\t\t\t&lt;option value=\"\"&gt;&lt;/option&gt;\n\t\t\t\t\t\t\t&lt;/select&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;div class=\"row mb-3 align-items-center\"&gt; &lt;!-- FINAL URL --&gt;\n\t\t\t\t&lt;div class=\"col-12\"&gt;\n\t\t\t\t\t&lt;div class=\"row g-2 align-items-center\"&gt;\n\t\t\t\t\t\t&lt;div class=\"col-1\"&gt;\n\t\t\t\t\t\t\t&lt;label for=\"apiUrl\" class=\"col-form-label me-2\"&gt;API URL&lt;/label&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t&lt;div class=\"col-11\"&gt;\n\t\t\t\t\t\t\t&lt;input type=\"text\" id=\"apiUrl\" class=\"form-control rj-persist font-monospace\" value=\"https://api.businesscentral.dynamics.com/v2.0/1598698c-cbd2-4d4a-94f0-0b4b2b701763/SandboxDev/ODataV4/Company('LVM')/branches?$top=3\" /&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/\n\t\t\t\t\tdiv&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\t\t\t\n\t\t\t&lt;div class=\"row mb-3\"&gt; &lt;!-- Headers and POST Data in Two Columns --&gt;\n\t\t\t\t\n\t\t\t\t&lt;div class=\"col-md-6\"&gt; &lt;!-- Headers Section --&gt;\n\t\t\t\t\t&lt;div class=\"form-group\"&gt;\n\t\t\t\t\t\t&lt;label for=\"headersArea\" class=\"form-label\"&gt;Headers:&lt;/label&gt;\n\t\t\t\t\t\t&lt;textarea id=\"headersArea\" class=\"form-control font-monospace rj-persist\" rows=\"6\"&gt;OData-MaxVersion | 4.0\nOData-Version | 4.0\nAccept | application/json\nContent-Type | application/json; charset=utf-8\nPrefer | return=representation&lt;/textarea&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t&lt;div class=\"col-md-6\"&gt; &lt;!-- POST Data Section --&gt;\n\t\t\t\t\t&lt;div class=\"form-group\"&gt;\n\t\t\t\t\t\t&lt;label for=\"postDataArea\" class=\"form-label\"&gt;POST data:&lt;/label&gt;\n\t\t\t\t\t\t&lt;textarea id=\"postDataArea\" class=\"form-control font-monospace rj-persist\" rows=\"6\"&gt;&lt;/textarea&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;div class=\"row mb-3\"&gt; &lt;!-- Action Button and Method Selector --&gt;\n\t\t\t\t&lt;div class=\"col-12\"&gt;\n\t\t\t\t\t&lt;div class=\"d-flex align-items-center\"&gt;\n\t\t\t\t\t\t&lt;button id=\"btnCallApi\" class=\"btn btn-primary me-3\"\n\t\t\t\t\t\t\tonclick=\"callSelectedFunction()\"&gt;Go!&lt;/button&gt;\n\n\t\t\t\t\t\t&lt;div class=\"d-inline-flex align-items-center me-3\"&gt; &lt;!-- Dropdown for func name: testApi, ShowWebRoles, etc. --&gt;\n\t\t\t\t\t\t\t&lt;select id=\"jsFuncName\" class=\"form-select rj-persist\"&gt; &lt;!-- only need to add here. All else is in js file, function callSelectedFunction --&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"testApi\"&gt;testApi (uses apiUrl entry and js testApi() in rcm2)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"apiCall\"&gt;callApi (uses apiUrl entry and js apiCall in Footer)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"addWebRoleToContact\"&gt;addWebRoleToContact API Url should have contid,roleid&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"SetWebRoles\" title=\"Uses whatever value is in API Url and di from contact \"&gt;Set Web Roles&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"SetYesAllRoles\" title=\"Hardcoded to Admin,Region,Branch,LO,Assign \"&gt;SetYesAllRoles&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"SetLOAndAssign\" title=\"Hardcoded to LO,Assign \"&gt;SetLOAndAssign&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"DeleteAllApprovals\" title=\"Delete approval records for specific period number (reads period from P1 input)\"&gt;Delete All Approvals by Period&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"DeleteLogs\" title=\"Uses whatever value is in API Url as kind contains\"&gt;DeleteLogs&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"DeleteRows\" title=\"Ultimately will superceded DeleteLogs. Put logicalname, conainsfieldcolname, searchtext as comma separated in URL\"&gt;DeleteRows&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"apiGetRecord\" title=\"Calls footer.apiGetRecord(tbl, filt) with tbl from Table dropdown and filt from P1\"&gt;apiGetRecord(tbl,filt)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"apiGetRecords\" title=\"Calls footer.apiGetRecords(tbl, filt) with tbl from Table dropdown and filt from P1\"&gt;apiGetRecords(tbl,filt)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"apiGetColumnStringArray\" title=\"Calls footer.apiGetColumnStringArray(tbl, col, filtX) with tbl from Table, filt from P1, colName from colRegex\"&gt;apiGetColumnStringArray(tbl,colName,filt)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"apiGetColumnStringScalar\" title=\"Calls footer.apiGetColumnStringScalar(tbl, col, filtX) with tbl from Table, filt from P1, colName from colRegex\"&gt;apiGetColumnStringScalar(tbl,colName,filt)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"UpdateAllContactRoles\" title=\"Updates lv_roles field for all contacts based on their actual web role assignments\"&gt;UpdateAllContactRoles - Bulk Update All Contact Roles&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"TestUpdateContactRoles\" title=\"Test the role update logic on first 5 contacts only (no actual updates)\"&gt;TestUpdateContactRoles - Test Role Update Logic&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"LocalStorageRead\" title=\"Read specific key (from P1) or all keys if P1 is empty\"&gt;Local Storage: Read&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"LocalStorageSet\" title=\"Set local storage key (P1) to value (ColRx)\"&gt;Local Storage: Set&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"LocalStorageDelete\" title=\"Delete local storage key specified in P1\"&gt;Local Storage: Delete&lt;/option&gt;\n\t\t\t\t\t\t\t&lt;/select&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"d-inline-flex align-items-center me-3\"&gt; &lt;!-- Dropdown for Method --&gt;\n\t\t\t\t\t\t\t&lt;label for=\"apiMethod\" class=\"form-label me-2 mb-0\"&gt;Method:&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;select id=\"apiMethod\" class=\"form-select rj-persist\"&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"GET\"&gt;GET&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"POST\"&gt;POST&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"DELETE\"&gt;DELETE&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"PUT\"&gt;PUT&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"PATCH\"&gt;PATCH&lt;/option&gt;\n\t\t\t\t\t\t\t&lt;/select&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"form-input ms-3\"&gt; &lt;!-- P1 parameter one --&gt;\n\t\t\t\t\t\t\t&lt;label for=\"txtP1\" class=\"col-form-label me-2\"&gt;P1&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;input class=\"form-input rj-persist\" type=\"text\" id=\"txtP1\" name=\"txtP1&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"form-input ms-3\"&gt; &lt;!-- ColRegex parameter one --&gt;\n\t\t\t\t\t\t\t&lt;label for=\"txtColRegex\" class=\"col-form-label me-2\"&gt;ColRx&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;input class=\"form-input rj-persist\" type=\"text\" id=\"txtColRegex\" name=\"txtColRegex\"&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"form-check ms-3\"&gt; &lt;!-- Checkbox: Show Full Request Info --&gt;\n\t\t\t\t\t\t\t&lt;input class=\"form-check-input rj-persist\" type=\"checkbox\" checked id=\"chkFullRequestInfo\" name=\"chkFullRequestInfo\" value=\"chkFullRequestInfo\"&gt;\n\t\t\t\t\t\t\t&lt;label class=\"form-check-label\" for=\"chkFullRequestInfo\"&gt;Verbose&lt;/label&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"form-check ms-3\"&gt; &lt;!-- Checkbox: lv_ only --&gt;\n\t\t\t\t\t\t\t&lt;input class=\"form-check-input rj-persist\" type=\"checkbox\" checked id=\"chkLVOnly\" name=\"chkLVOnly\" value=\"chkLVOnly\"&gt;\n\t\t\t\t\t\t\t&lt;label class=\"form-check-label\" for=\"chkLVOnly\"&gt;lv_ Only&lt;/label&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\t\t\t\n\t\t\t&lt;div class=\"row\"&gt; &lt;!-- Results Area --&gt;\n\t\t\t\t&lt;div class=\"col-12\"&gt;\n\t\t\t\t\t&lt;div class=\"form-group\"&gt;\n\t\t\t\t\t\t&lt;label for=\"resultsArea\" class=\"form-label\" id=\"lblResults\" onclick=\"$('#resultsArea').val('');\"&gt;Results:&lt;/label&gt;\n\t\t\t\t\t\t&lt;textarea id=\"resultsArea\" class=\"form-control font-monospace\" rows=\"10\"&gt;&lt;/textarea&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\t\t&lt;/div&gt;\n\t&lt;/div&gt;\n&lt;/div&gt;\n\n&lt;div class=\"card mt-3\"&gt; &lt;!-- LOGS --&gt;\n\t&lt;div class=\"card-header\"&gt;\n\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#divLog\" aria-expanded=\"true\" aria-controls=\"divLog\"&gt;\n\t\t\tLogs\n\t\t&lt;/button&gt;\n\n\t\t&lt;div class=\"collapse hide\" id=\"divLog\"&gt;\n\t\t\n\t\t\t&lt;div class=\"container-fluid mt-2\"&gt;\n\t\t\t\t&lt;form&gt;\n\t\t\t\t\t&lt;div class=\"row mb-1\"&gt;\n\t\t\t\t\t\t&lt;div class=\"col-auto form-column\"&gt;\n\t\t\t\t\t\t\t&lt;label id=\"lblLogFrom\" for=\"txtLogFrom\" class=\"form-label\"&gt;From (Local)&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;input id=\"txtLogFrom\" onchange=\"updateLogQueryUrl()\" type=\"text\" class=\"form-control rj-persist\" style=\"width: 175px;\"&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\n\t\t\t\t\t\t&lt;div class=\"col-auto form-column\"&gt;\n\t\t\t\t\t\t\t&lt;label id=\"lblLogThru\" for=\"txtLogThru\" class=\"form-label\"&gt;Thru (Local)&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;input id=\"txtLogThru\" onchange=\"updateLogQueryUrl()\" type=\"text\" class=\"form-control rj-persist\" style=\"width: 175px;\"&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\n\t\t\t\t\t\t&lt;div class=\"col-auto form-column\"&gt;\n\t\t\t\t\t\t\t&lt;label id=\"lblLogUserName\" for=\"txtLogUserName\" class=\"form-label\"&gt;User&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;input id=\"txtLogUserName\" onchange=\"updateLogQueryUrl()\" type=\"text\" class=\"form-control rj-persist\" style=\"width: 120px;\"&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\n\t\t\t\t\t\t&lt;div class=\"col-auto form-column\"&gt;\n\t\t\t\t\t\t\t&lt;label id=\"lblLogKind\" for=\"txtLogKind\" class=\"form-label\"&gt;Kind&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;input id=\"txtLogKind\" onchange=\"updateLogQueryUrl()\" type=\"text\" class=\"form-control\" style=\"width: 100px;\"&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\n\t\t\t\t\t\t&lt;div class=\"col-auto form-column\"&gt;\n\t\t\t\t\t\t\t&lt;label id=\"lblLogDetail\" for=\"txtLogDetail\" class=\"form-label\"&gt;Detail&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;input id=\"txtLogDetail\" onchange=\"updateLogQueryUrl()\" type=\"text\" class=\"form-control rj-persist\" style=\"width: 150px;\"&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\n\t\t\t\t\t\t&lt;div class=\"col-auto form-column\"&gt;\n\t\t\t\t\t\t\t&lt;label for=\"ddlOrderBy\" class=\"form-label\"&gt;Order By&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;select id=\"ddlOrderBy\" onchange=\"updateLogQueryUrl()\" class=\"form-select rj-persist\" style=\"width: 160px;\"&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"createdon desc\" selected&gt;Date (Newest)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"createdon\"&gt;Date (Oldest)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"lv_UserFullName\"&gt;User Name&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"lv_Kind\"&gt;Kind&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"lv_Detail\"&gt;Detail&lt;/option&gt;\n\t\t\t\t\t\t\t&lt;/select&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"col-auto form-column\"&gt;\n\t\t\t\t\t\t\t&lt;input type=\"button\" value=\"Query\" onclick=\"return btnLogQuery_Click();\"/&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t&lt;div class=\"row mb-2\"&gt;\n\t\t\t\t\t\t&lt;div class=\"col-md-1 form-column\"&gt;\n\t\t\t\t\t\t\t&lt;label id=\"lblLogUrl\" for=\"txtLogUrl\" class=\"form-label\"&gt;URL&lt;/label&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t&lt;div class=\"col-md-5 form-column\"&gt;\n\t\t\t\t\t\t\t&lt;input type=\"text\" class=\"form-control rj-persist\" id=\"txtLogUrl\"&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/form&gt;\n\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;div class=\"card-body\"&gt;\n\t\t\t\t&lt;div style=\"margin-bottom: 10px;\"&gt;\n\t\t\t\t\t&lt;label for=\"txtUserFilterRx\" style=\"margin-right: 10px;\"&gt;Filter by Username (Regex):&lt;/label&gt;\n\t\t\t\t\t&lt;input type=\"text\" id=\"txtUserFilterRx\" value=\"^(?!Robert Martin$).*$\" style=\"padding: 5px; min-width: 250px;\"&gt;\n\t\t\t\t\t&lt;select id=\"ddlUserFilterPresets\" onchange=\"applyUserFilterPreset()\" style=\"margin-left: 10px; padding: 5px;\"&gt;\n\t\t\t\t\t\t&lt;option value=\"\"&gt;-- Common Filters --&lt;/option&gt;\n\t\t\t\t\t\t&lt;option value=\"^(?!Robert Martin$).*$\"&gt;Exclude Robert Martin&lt;/option&gt;\n\t\t\t\t\t\t&lt;option value=\".*\"&gt;Show All Users&lt;/option&gt;\n\t\t\t\t\t\t&lt;option value=\"^Robert Martin$\"&gt;Only Robert Martin&lt;/option&gt;\n\t\t\t\t\t\t&lt;option value=\".*@loanvision\\.com$\"&gt;Only @loanvision.com&lt;/option&gt;\n\t\t\t\t\t\t&lt;option value=\"^(?!.*@loanvision\\.com$).*$\"&gt;Exclude @loanvision.com&lt;/option&gt;\n\t\t\t\t\t\t&lt;option value=\"^(Mickey|Minnie|Daffy|Goofy).*\"&gt;Test Users Only&lt;/option&gt;\n\t\t\t\t\t&lt;/select&gt;\n\t\t\t\t&lt;/div&gt;\n\t\n\t\t\t\t&lt;table id=\"logTable\" class=\"table table-striped\" style=\"width: 100%; border-collapse: collapse; margin-top: 10px;\"&gt;\n\t\t\t\t\t&lt;thead&gt;\n\t\t\t\t\t\t&lt;tr style=\"background-color: #f2f2f2;\"&gt;\n\t\t\t\t\t\t\t&lt;th&gt;Time&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;User&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;Kind&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;Detail&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;K1Name&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;K1Value&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;K2Name&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;K2Value&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;Memo&lt;/th&gt;\n\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t&lt;/thead&gt;\n\t\t\t\t\t&lt;tbody id=\"logTableBody\"&gt;\n\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t\t&lt;/table&gt;\n\t\t\t&lt;/div&gt;\n\t\t&lt;/div&gt;\t\t\n\t&lt;/div&gt;\n&lt;/div&gt;\n\n&lt;div class=\"card mt-3\"&gt; &lt;!-- COMMISSION PERIOD APPROVALa --&gt;\n\t&lt;div class=\"card-header\"&gt;\n\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#divCPA\" aria-expanded=\"true\" aria-controls=\"divCPA\"&gt;\n\t\t\tlv_lvcompcommissionapproval\n\t\t&lt;/button&gt;\n\n\t\t&lt;div class=\"collapse hide\" id=\"divCPA\"&gt;\n\t\t\t{% fetchxml cpaQuery %}\n\t\t\t\t&lt;fetch top=\"50\"&gt;\n\t\t\t\t\t&lt;entity name=\"lv_lvcompcommissionapproval\"&gt;\n\t\t\t\t\t\t&lt;attribute name=\"createdon\" /&gt;\n\t\t\t\t\t\t&lt;attribute name=\"lv_name\" /&gt;\n\t\t\t\t\t\t&lt;attribute name=\"lv_periodno\" /&gt;\n\t\t\t\t\t\t&lt;attribute name=\"lv_periodcode\" /&gt;\n\t\t\t\t\t\t&lt;attribute name=\"lv_loanofficercode\" /&gt;\n\t\t\t\t\t\t&lt;order attribute=\"createdon\" descending=\"true\" /&gt;\n\t\t\t\t\t&lt;/entity&gt;\n\t\t\t\t&lt;/fetch&gt;\n\t\t\t{% endfetchxml %}\n\t\t\n\t\t\t&lt;div class=\"card-body\"&gt;\n\t\n\t\t\t\t&lt;table id=\"cpaTable\" style=\"width: 100%; border-collapse: collapse; margin-top: 10px;\"&gt;\n\t\t\t\t\t&lt;thead&gt;\n\t\t\t\t\t\t&lt;tr style=\"background-color: #f2f2f2;\"&gt;\n\t\t\t\t\t\t\t&lt;th&gt;Time&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;FullName&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;PeriodCode&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;LOName&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;LOId&lt;/th&gt;\n\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t&lt;/thead&gt;\n\t\t\t\t\t&lt;tbody id=\"cpaTableBody\"&gt;\n\t\t\t\t\t\t{% for cpa in cpaQuery.results.entities %}\n\t\t\t\t\t\t\t&lt;tr data-username=\"{{ cpa.lv_fullname }}\" class=\"cpa-row\"&gt;\n\t\t\t\t\t\t\t\t&lt;td&gt;{{ cpa.createdon | date: \"ddd HH:mm:ss\" }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t&lt;td&gt;{{ cpa.lv_fullname }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t&lt;td&gt;{{ cpa.lv_periodcode }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t&lt;td&gt;{{ cpa.LOName }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t&lt;td&gt;{{ cpa.lv_loanofficercode }}&lt;/td&gt;\n\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t\t&lt;/table&gt;\n\t\t\t&lt;/div&gt;\n\t\t&lt;/div&gt;\t\t\n\t&lt;/div&gt;\n&lt;/div&gt;\n\n{% comment %}    JAVASCRIPT is in separate file    {% endcomment %} \n\n\n{% comment %}\n\n\n{% fetchxml abc %}\n\t&lt;fetch&gt;\n\t\t&lt;entity name=\"lv_lvcompcommission\"&gt;\n\t\t\t&lt;attribute name=\"lv_calculationdate\" /&gt;\n\t\t\t&lt;attribute name=\"lv_amount\" /&gt;\n\t\t\t&lt;attribute name=\"lv_description\" /&gt;\n\t\t\t&lt;attribute name=\"lv_bpscalculated\" /&gt;\n\t\t\t&lt;attribute name=\"lv_cappedcommissionbaseamount\" /&gt;\n\t\t\t&lt;attribute name=\"lv_xloanofficer\" /&gt;\n\t\t\t&lt;attribute name=\"lv_loanofficer\" /&gt;\n\t\t&lt;/entity&gt;\n\t&lt;/fetch&gt;\n{% endfetchxml %}\n\n&lt;div class=\"container\"&gt;\n\t&lt;div class=\"row\"&gt;\n\t\t&lt;div class=\"col-12 table-container\"&gt;\n\t\t\t&lt;h2&gt;Commission Records&lt;/h2&gt;\n\t\t\t&lt;div class=\"table-responsive\"&gt;\n\t\t\t\t&lt;table class=\"table table-striped table-hover\"&gt;\n\t\t\t\t\t&lt;thead class=\"table-dark\"&gt;\n\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t&lt;th&gt;Calculation Date&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th class=\"money-column\"&gt;Amount&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;Description&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th class=\"money-column\"&gt;BPS Calculated&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th class=\"money-column\"&gt;Capped Commission Base&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;Branch&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;Loan Officer&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;LOLook&lt;/th&gt;\n\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t&lt;/thead&gt;\n\t\t\t\t\t&lt;tbody&gt;\n\t\t\t\t\t\t&lt;!-- This is where FetchXML results would be rendered --&gt;\n\t\t\t\t\t\t{% for item in abc.results.entities %}\n\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t&lt;td class=\"date-column\"&gt;{{ item.lv_calculationdate }}&lt;/td&gt;\n\t\t\t\t\t\t\t&lt;td class=\"money-column\"&gt;{{ item.lv_amount }}&lt;/td&gt;\n\t\t\t\t\t\t\t&lt;td&gt;{{ item.lv_description }}&lt;/td&gt;\n\t\t\t\t\t\t\t&lt;td class=\"money-column\"&gt;{{ item.lv_bpscalculated }}&lt;/td&gt;\n\t\t\t\t\t\t\t&lt;td class=\"money-column\"&gt;{{ item.lv_cappedcommissionbaseamount }}&lt;/td&gt;\n\t\t\t\t\t\t\t&lt;td&gt;{{ item.lv_xbranchcode }}&lt;/td&gt;\n\t\t\t\t\t\t\t&lt;td&gt;{{ item.lv_xloanofficer }}&lt;/td&gt;\n\t\t\t\t\t\t\t&lt;td&gt;{{ item.lv_loanofficer.name }}&lt;/td&gt;\n\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t{% endfor %}\n\n\t\t\t\t\t\t{% if abc.results.entities.size == 0 %}\n\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t&lt;td colspan=\"7\" class=\"text-center\"&gt;No commission records found.&lt;/td&gt;\n\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t\t&lt;/table&gt;\n\t\t\t&lt;/div&gt;\n\t\t&lt;/div&gt;\n\t&lt;/div&gt;\n&lt;/div&gt;\n\n\n{% endcomment %} \n\n&lt;!-- Last modified Fri Oct 31  8:04AM --&gt;\n\n&lt;!-- Last modified Fri Oct 31 8:41AM --&gt;",
+  "customcss": ".blue {\n\tcolor: blue;\n}",
+  "customjavascript": "&lt;!-- Last modified Fri Oct 31 8:45AM --&gt;\n&lt;!-- Last modified Fri Oct 31 8:04AM --&gt;\n// Last modified sat aug 16 6:38pm\n// Last modified sat aug 16 6:20pm\n// Last modified wed jul 16 9:18pm\n// Last modified wed jul 16 8:59pm\n// Last modified wed jul 16 2:46pm\n// Last modified wed jul 16 1:48pm\n// Last modified fri jul 11 10:42am\nconst ROBERTID = \"EDA25D58-1CA8-EF11-B8E8-6045BDD4B776\"; // an edit in vscode on web - these need to all be removed\nconst JENNAID = \"47bf5a15-5380-ef11-ac21-6045bda6e4f2\";\nconst RICHARDID = \"b108c67a-7aa0-ef11-8a69-6045bdd4b776\";\n\nlet G_APIJSON = {};\n\n// Debug: Ensure functions are globally accessible\nconsole.log('lvcpdev JavaScript loaded at:', new Date().toISOString());\n\nfunction testToConsole() {\n\tspinShow();\n}\n\n// #region Actions (testApi, deleteRows, ...)\n\nasync function testApi(apiUrl, method) {\n\t$('#lblResults').html('Calling API... &lt;span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"&gt;&lt;/span&gt;');\n\n\n\tconst headersText = document.getElementById('headersArea').value;\n\n\tconst headers = parseHeaders(method, headersText);\n\tconst postData = document.getElementById('postDataArea').value;\n\tconst showFullInfo = isChecked('chkFullRequestInfo');\n\n\tconst timestamp = new Date().toISOString();\n\n\tlet requestInfo = `API Call at ${timestamp}\\n`;\n\n\tconst options = { // Prepare fetch options\n\t\tmethod: method,\n\t\theaders: headers\n\t};\n\n\tif (method != 'GET' &amp;&amp; postData.trim()) { // Add body for non-GET requests\n\t\toptions.body = postData;\n\t\t\n\t\t// Set Content-Type header for PATCH/POST/PUT if not already set\n\t\tif (['PATCH', 'POST', 'PUT'].includes(method) &amp;&amp; !options.headers['Content-Type']) {\n\t\t\toptions.headers['Content-Type'] = 'application/json';\n\t\t}\n\t}\n\n\tif (apiUrl.includes('businesscentral.dynamics.com')) { // Handle Business Central APIs with MSAL authentication\n\t\ttry {\n\t\t\tconst token = await getToken();\n\n\t\t\tif (token) {\n\t\t\t\toptions.headers['Authorization'] = `Bearer ${token}`;\n\t\t\t\t\n\t\t\t\tif (showFullInfo) {\n\t\t\t\t\trequestInfo += `Authentication: Using MSAL (token first 10 chars: ${token.substring(0, 10)}...)\\n`;\n\t\t\t\t}\n\t\t\t}\n\t\t\toptions.headers['OData-MaxVersion'] = '4.0';\n\t\t\toptions.headers['OData-Version'] = '4.0';\n\t\t\t\n\t\t\t// Modify If-None-Match header for PATCH requests\n\t\t\tif (method === 'PATCH') {\n\t\t\t\t// Remove If-None-Match for PATCH requests as it's not typically needed\n\t\t\t\t// PATCH is intended for partial updates where If-None-Match makes less sense\n\t\t\t\tdelete options.headers['If-None-Match'];\n\t\t\t} else {\n\t\t\t\toptions.headers['If-None-Match'] = '*';\n\t\t\t}\n\t\t\t\n\t\t\t// Add return=representation to Prefer header for PATCH requests\n\t\t\tif (method === 'PATCH') {\n\t\t\t\toptions.headers['Prefer'] = 'return=representation,odata.include-annotations=\"*\"';\n\t\t\t} else {\n\t\t\t\toptions.headers['Prefer'] = 'odata.include-annotations=\"*\"';\n\t\t\t}\n\t\t} catch (authError) {\n\t\t\tsay(`Authentication Error: ${authError.message}`);\n\t\t\t$('#lblResults').html('Results:');\n\t\t\treturn;\n\t\t}\n\t}\n\n\tif (showFullInfo) {\n\t\trequestInfo += `URL: ${apiUrl}\\n`;\n\t\trequestInfo += `Method: ${method}\\n`;\n\t\trequestInfo += `Headers:\\n${JSON.stringify(options.headers, null, 2)}\\n`;\n\n\t\tif (method !== 'GET' &amp;&amp; postData.trim()) {\n\t\t\trequestInfo += `Body:\\n${postData}\\n`;\n\t\t}\n\t}\n\n\t// Log to console\n\tconsole.log({\n\t\turl: apiUrl,\n\t\tmethod: method,\n\t\theaders: options.headers,\n\t\tbody: method === 'GET' ? undefined : postData\n\t});\n\n\t// Display request information\n\tsay(requestInfo + '\\n');\n\n\tif (showFullInfo)\n\t\tsay('----- awaiting.... Response: -----\\n');\n\n\ttry {\n\t\tconst response = await fetch(apiUrl, options); // &lt;------------ ACTUAL WORK\n\t\t\n\t\tconst text = await response.text();\n\n\t\t// If response was successful, save this URL in history\n\t\tif (response.ok) {\n\t\t\t// For non-GET methods, pass the actual postData. For GET, leave it null\n\t\t\tconst bodyData = method !== 'GET' &amp;&amp; postData.trim() ? postData : null;\n\t\t\tsaveUrlSuccess(apiUrl, method, bodyData);\n\t\t\tloadSuccessHistory();\n\t\t}\n\n\t\tconst responseInfo = `Status: ${response.status} ${response.statusText}\\n`;\n\n\t\tlet finalResponse;\n\t\ttry {\n\t\t\tG_APIJSON = JSON.parse(text);\n\n\t\t\tlet finalJson;\n\n\t\t\tif (isChecked('chkLVOnly')) {\n\n\t\t\t\tif (Array.isArray(G_APIJSON.value)) {\n\t\t\t\t\t// For each object in the array, keep only properties with \"lv_\" in their names\n\t\t\t\t\tG_APIJSON.value = G_APIJSON.value.map(item =&gt; {\n\t\t\t\t\t\treturn Object.fromEntries(\n\t\t\t\t\t\t\tObject.entries(item).filter(([key]) =&gt; key.includes(\"lv_\"))\n\t\t\t\t\t\t);\n\t\t\t\t\t});\n\t\t\t\t} else {\n\t\t\t\t\tconsole.error(\"GAPIJSON.value is not an array or doesn't exist\");\n\t\t\t\t}\n\t\t\t\tfinalJson = G_APIJSON;\n\t\t\t} else {\n\t\t\t\tfinalJson = G_APIJSON;\n\t\t\t}\n\n\t\t\t//finalResponse = \"Count: \" + G_APIJSON[\"@odata.count\"];\n\t\t\tconst sjson = JSON.stringify(finalJson, null, 2); // null='replacer'; 2=indent with 2 spaces\n\t\t\tfinalResponse = \"jsonlen=\" + sjson.length + \"\\r\\n\" + responseInfo + sjson;\n\t\t} catch (e) {\n\t\t\t// If not JSON, return as text\n\t\t\tfinalResponse = responseInfo + text;\n\t\t}\n\n\t\tsay(finalResponse);\n\t} catch (error) {\n\t\tsay(`Error: ${error.message}`);\n\t} finally {\n\t\t$('#lblResults').html('Results:');\n\t}\n}\n\nasync function callSelectedFunction() {\n\tclearResults();\n\n\tconst apiUrl = document.getElementById('apiUrl').value;\n\n\tconst method = document.getElementById('apiMethod').value;\n\tconst funcName = document.getElementById('jsFuncName').value;\n\tconst tableNamePlural = getTableNamePlural(apiUrl);\n\tconst p1Val = $('#txtP1').val();\n\tconst colNameRegex = $('#txtColRegex').val();\n\tconst filterExpr = p1Val;\n\n\n\tconst idtSpaces = 3;\n\n\tif (funcName.Is(\"testApi\")) {\n\t\tawait testApi(apiUrl, method);\n\t} else if (funcName.Is(\"addWebRoleToContact\")) {\n\t\tconst toks = apiUrl.split(\",\");\n\t\tawait addWebRoleToContact(toks[0], toks[1]);\n\t} else if (funcName.Is(\"apiCall\")) {\n\t\tconst postDataString = document.getElementById('postDataArea').value;\n\t\tconst fullResponse = await apiCall(apiUrl, method, postDataString);\n\n\t\t// ALWAYS display the full response for debugging\n\t\tsay(\"=== FULL API RESPONSE ===\");\n\t\tsay(`SUCCESS: ${fullResponse?.success || 'undefined'}`);\n\t\tsay(`STATUS: ${fullResponse?.status || 'undefined'} ${fullResponse?.statusText || ''}`);\n\t\tsay(`MESSAGE: ${fullResponse?.message || 'undefined'}`);\n\n\t\t// Calculate row count (used at top and bottom)\n\t\tlet rowCount = 0;\n\t\tif (fullResponse?.data &amp;&amp; fullResponse.success &amp;&amp; fullResponse.data.value &amp;&amp; Array.isArray(fullResponse.data.value)) {\n\t\t\trowCount = fullResponse.data.value.length;\n\t\t}\n\n\t\tif (fullResponse?.data) {\n\t\t\tsay(\"=== RESPONSE DATA ===\");\n\n\t\t\t// Display row count at top\n\t\t\tif (rowCount &gt; 0) {\n\t\t\t\tsay(`ROW COUNT: ${rowCount} ${rowCount === 1 ? 'record' : 'records'}`);\n\t\t\t}\n\n\t\t\tif (fullResponse.success &amp;&amp; fullResponse.data.value) {\n\t\t\t\t// Success case with data.value array\n\t\t\t\tconst fullRecord = fullResponse.data.value[0];\n\t\t\t\tconst finalRecord = ExtractProperties(fullRecord, colNameRegex);\n\t\t\t\tsay(\"EXTRACTED RECORD:\");\n\t\t\t\tsay(JSON.stringify(finalRecord, null, idtSpaces));\n\t\t\t\tsay(\"FULL DATA.VALUE:\");\n\t\t\t\tsay(JSON.stringify(fullResponse.data.value, null, idtSpaces));\n\t\t\t} else {\n\t\t\t\t// Error case or different data structure\n\t\t\t\tsay(\"FULL DATA:\");\n\t\t\t\tsay(JSON.stringify(fullResponse.data, null, idtSpaces));\n\t\t\t}\n\t\t} else {\n\t\t\tsay(\"NO DATA IN RESPONSE\");\n\t\t}\n\n\t\tif (fullResponse?.requestInfo) {\n\t\t\tsay(\"=== REQUEST INFO ===\");\n\t\t\tsay(fullResponse.requestInfo);\n\t\t}\n\n\t\t// Display row count at bottom\n\t\tif (rowCount &gt; 0) {\n\t\t\tsay(\"\\n=== SUMMARY ===\");\n\t\t\tsay(`ROW COUNT: ${rowCount} ${rowCount === 1 ? 'record' : 'records'}`);\n\t\t}\n\t} else if (funcName.Is(\"apiGetRecord\")) {\n\t\tconst oRec = await apiGetRecord(tableNamePlural, filterExpr);\n\t\tconst finalRec = ExtractProperties(oRec, colNameRegex);\n\t\tsay(JSON.stringify(finalRec, null, idtSpaces));\n\t} else if (funcName.Is(\"apiGetRecords\")) {\n\t\tconst arrRecs = await apiGetRecords(tableNamePlural, filterExpr);\n\t\tconst arrFinal = ExtractPropertiesFromArray(arrRecs, colNameRegex);\n\t\tsay(JSON.stringify(arrFinal, null, idtSpaces));\n\t} else if (funcName.Is(\"apiGetColumnStringArray\")) {\n\t\tconst colName = colNameRegex;\n\t\tconst arrColVals = await apiGetColumnStringArray(tableNamePlural, colName, filterExpr);\n\t\tsay(JSON.stringify(arrColVals, null, idtSpaces));\n\t} else if (funcName.Is(\"apiGetColumnStringScalar\")) {\n\t\tconst colName = colNameRegex;\n\t\tconst strVal = await apiGetColumnStringScalar(tableNamePlural, colName, filterExpr);\n\t\tsay(\"strVal=\" + strVal);\n\t} else if (funcName.Begins === \"safeAjax\") {\n\t\tportalApiSafeAjax(apiUrl, method);\n\t} else if (funcName === \"DeleteAllApprovals\") {\n\t\tconst periodNumber = $('#txtP1').val().trim();\n\t\tif (!periodNumber || isNaN(periodNumber)) {\n\t\t\tsay(\"DeleteAllApprovals: P1 must contain a valid period number (integer)\");\n\t\t\treturn;\n\t\t}\n\t\tsay(`DeleteAllApprovals: Deleting all approvals for period ${periodNumber}`);\n\t\tawait deleteRows(\"lv_lvcompcommissionapproval\", \"lv_periodno\", periodNumber);\n\t} else if (funcName === \"DeleteLogs\") {\n\t\tawait deleteLogs(apiUrl);\n\t} else if (funcName === \"DeleteRows\") {\n\t\tconst csv = apiUrl;\n\t\tlet toks = csv.split(',');\n\n\t\tif (toks.length !== 3)\n\t\t\tthrow new Error('function DeleteRows: apiUrl must be 3 tokens: logicalname,searchcol,searchval');\n\n\t\ttoks = toks.map(token =&gt; token.trim());\n\n\t\tawait deleteRows(toks[0], toks[1], toks[2]);\n\t} else if (funcName === \"SetYesAllRoles\") {\n\t\tsetWebRoles(\"Admin,Region,Branch,LO,Assign\");\n\t} else if (funcName === \"SetLOAndAssign\") {\n\t\tsetWebRoles(\"LO,Assign\");\n\t} else if (funcName === \"SetWebRoles\") {\n\t\tsetWebRoles();\n\t} else if (funcName === \"UpdateAllContactRoles\") {\n\t\tawait updateAllContactRoles(false); // Production mode\n\t} else if (funcName === \"TestUpdateContactRoles\") {\n\t\tawait updateAllContactRoles(true); // Test mode\n\t} else if (funcName === \"LocalStorageRead\") {\n\t\t// Read and display specific key (from P1) or all keys if P1 is empty\n\t\tconst specificKey = $('#txtP1').val().trim();\n\t\tconst results = [];\n\t\t\n\t\ttry {\n\t\t\tif (specificKey) {\n\t\t\t\t// Read specific key only\n\t\t\t\tconst value = localStorage.getItem(specificKey);\n\t\t\t\tif (value !== null) {\n\t\t\t\t\tsay(`Local Storage key \"${specificKey}\":\\n${value}`);\n\t\t\t\t} else {\n\t\t\t\t\tsay(`Local Storage key \"${specificKey}\" not found`);\n\t\t\t\t}\n\t\t\t} else {\n\t\t\t\t// Read all keys (original behavior)\n\t\t\t\tfor (let i = 0; i &lt; localStorage.length; i++) {\n\t\t\t\t\tconst key = localStorage.key(i);\n\t\t\t\t\tconst value = localStorage.getItem(key);\n\t\t\t\t\tresults.push(`${key}: ${value}`);\n\t\t\t\t}\n\t\t\t\tif (results.length === 0) {\n\t\t\t\t\tsay(\"Local Storage is empty\");\n\t\t\t\t} else {\n\t\t\t\t\tsay(\"Local Storage contents:\\n\" + results.join('\\n'));\n\t\t\t\t}\n\t\t\t}\n\t\t} catch (e) {\n\t\t\tsay(\"Error reading local storage: \" + e.message);\n\t\t}\n\t} else if (funcName === \"LocalStorageSet\") {\n\t\t// Set local storage key (P1) to value (ColRx)\n\t\tconst key = $('#txtP1').val().trim();\n\t\tconst value = $('#txtColRegex').val().trim();\n\t\tif (!key) {\n\t\t\tsay(\"LocalStorageSet: P1 must contain the key name\");\n\t\t\treturn;\n\t\t}\n\t\ttry {\n\t\t\tlocalStorage.setItem(key, value);\n\t\t\tsay(`Local Storage: Set \"${key}\" = \"${value}\"`);\n\t\t} catch (e) {\n\t\t\tsay(\"Error setting local storage: \" + e.message);\n\t\t}\n\t} else if (funcName === \"LocalStorageDelete\") {\n\t\t// Delete local storage key specified in P1\n\t\tconst key = $('#txtP1').val().trim();\n\t\tif (!key) {\n\t\t\tsay(\"LocalStorageDelete: P1 must contain the key name\");\n\t\t\treturn;\n\t\t}\n\t\ttry {\n\t\t\tconst existed = localStorage.getItem(key) !== null;\n\t\t\tlocalStorage.removeItem(key);\n\t\t\tif (existed) {\n\t\t\t\tsay(`Local Storage: Deleted \"${key}\"`);\n\t\t\t} else {\n\t\t\t\tsay(`Local Storage: Key \"${key}\" did not exist`);\n\t\t\t}\n\t\t} catch (e) {\n\t\t\tsay(\"Error deleting from local storage: \" + e.message);\n\t\t}\n\t}\n\telse {\n\t\talert('Function not found: ' + funcName);\n\t}\n}\n\nasync function setWebRoles(valToSet = \"\") {\n\tconst contactId = $('#cboId').val();\n\n\tif (contactId.IsEmpty()) {\n\t\tsay(\"setWebRoles: no contact selected\");\n\t\treturn;\n\t}\n\n\tlet newRoles = valToSet;\n\tif (newRoles.IsEmpty())\n\t\tnewRoles = $('#apiUrl').val();\n\n\tif ( newRoles.Has(\"http\") || newRoles.Has(\"/\") || newRoles.Has(\"_api\") ) {\n\t\tsay(\"setWebRoles: Found one of: http, /, or _api in value, no can do\");\n\t\treturn;\n\t}\n\n\tconsole.error(\"TODO not implemented 2506011541\");\n}\n\nasync function addWebRoleToContact_FromGemini(contactId, webRoleId) { // This is what Gemini syas. Does not work. Function to add a Web Role to a Contact\n    \n\tif (!contactId || !webRoleId) {\n\t\tconst msg = \"Both Contact ID and Web Role ID are required\";\n        console.error(msg);\n\t\tsay(msg);\n        return;\n    }\n\n    var associationData = {\n        // This is the OData ID of the Web Role record being associated\n        \"@odata.id\": \"/mspp_webroles(\" + webRoleId + \")\"\n    };\n\n\tconst url = \"/_api/contacts(\" + contactId + \")/powerpagecomponent_mspp_webrole_contact/$ref\";\n\n\tconst bogus = await apiCall(url, \"POST\", associationData);\n\n\tsay(JSON.stringify(bogus));\n}\n\nasync function addWebRoleToContact(contactId, webRoleId) { // This is from Copilot. Function to add a Web Role to a Contact\n    \n\tif (!contactId || !webRoleId) {\n\t\tconst msg = \"Both Contact ID and Web Role ID are required\";\n        console.error(msg);\n\t\tsay(msg);\n        return;\n    }\n\n    var associationData = {\n        \"contact@odata.bind\": \"/contacts(\" + contactId + \")\",\n\t\t\"mspp_webrole@odata.bind\": \"/mspp_webroles(\" + webRoleId + \")\"\n    };\n\n\tconst url = \"/_api/powerpagecomponent_mspp_webrole_contacts\";\n\n\tconst bogus = await apiCall(url, \"POST\", associationData);\n\n\tsay(JSON.stringify(bogus));\n}\n\n// #region Delete\nasync function deleteAllApprovals() { // not yet implemented \n}\n\nasync function deleteLogs(kindContains) {\n\tawait deleteRows(\"lv_lvcomplogs\", \"lv_kind\", kindContains);\n}\n\nasync function deleteRows(logicalName, searchCol, searchText) {\n\ttry {\n\t\t// Step 1: Get all records matching the condition\n\t\tlet url = `/_api/${logicalName}s/?$filter=contains(${searchCol}, '${searchText}')`;\n\t\tif (searchText == '*') {\n\t\t\turl = `/_api/${logicalName}s`;\n\t\t} else if (searchText == '!') {\n\t\t\turl = `/_api/${logicalName}s/?$filter=${searchCol} eq null`;\n\t\t} else if (!isNaN(searchText) &amp;&amp; Number.isInteger(Number(searchText))) {\n\t\t\t// For numeric values, use exact equality instead of contains\n\t\t\turl = `/_api/${logicalName}s/?$filter=${searchCol} eq ${searchText}`;\n\t\t}\n\t\t\n\t\tsay(url);\n\n\t\tconst response = await fetch(url, {\n\t\t\tmethod: \"GET\",\n\t\t\theaders: {\n\t\t\t\t\"Accept\": \"application/json\",\n\t\t\t\t\"Content-Type\": \"application/json\"\n\t\t\t}\n\t\t});\n\n\t\tif (!response.ok) {\n\t\t\tthrow new Error(`Failed to retrieve records: ${response.status} ${response.statusText}`);\n\t\t}\n\n\t\tconst data = await response.json();\n\t\tconst records = data.value;\n\n\t\tif (!records || records.length === 0) {\n\t\t\tsay(\"No matching records found to delete\");\n\t\t\treturn;\n\t\t}\n\n\t\tsay(`Found ${records.length} records to delete`);\n\n\t\t// Step 2: Delete each record\n\t\tlet delCnt = 0;\n\t\tfor (const record of records) {\n\t\t\t// Extract the record ID (assuming lv_logid is the primary key)\n\t\t\tconst keyName = `${logicalName}id`\n\t\t\tconst recordId = record[keyName];\n\n\t\t\t// Make the delete request\n\t\t\tconst deleteResponse = await fetch(`/_api/${logicalName}s(${recordId})`, {\n\t\t\t\tmethod: \"DELETE\",\n\t\t\t\theaders: {\n\t\t\t\t\"Accept\": \"application/json\",\n\t\t\t\t\"__RequestVerificationToken\": CSRF_TOKEN // Make sure you have this defined\n\t\t\t\t}\n\t\t\t});\n\n\t\t\tif (deleteResponse.ok) {\n\t\t\t\tsay(`Successfully deleted record ${recordId}`);\n\t\t\t\tdelCnt++;\n\t\t\t} else {\n\t\t\t\tsay(`Failed to delete record ${recordId}: ${deleteResponse.status} ${deleteResponse.statusText}`);\n\t\t\t}\n\t\t}\n\n\t\tsay(\"Deletion process completed: Deleted: \" + delCnt);\n\t} catch (error) {\n\t  say(\"Error during deletion process:\", error);\n\t}\n}\n// #endregion Delete\n\n// #endregion Actions testApi, RobertShow, etc.\n\n// #region LogQuery\nfunction getLogQueryUrl() { // reads controls, assembles, and returns string\n\tconst from = $('#txtLogFrom').val();\n\tconst thru = $('#txtLogThru').val();\n\tconst unam = $('#txtLogUserName').val() || '';\n\tconst kind = $('#txtLogKind').val() || '';\n\tconst detl = $('#txtLogDetail').val() || '';\n\tconst orderBy = $('#ddlOrderBy').val() || 'createdon desc';\n\n\t// Base URL with select clause for all needed fields\n\tlet url = \"/_api/lv_logs?$select=createdon,lv_userfullname,lv_kind,lv_detail,lv_key1name,lv_key1value,lv_key2name,lv_key2value,lv_memo\";\n\n\t// Build filter conditions\n\tlet filterConditions = [];\n\t\n\t// From date filter (required) - convert local time to UTC\n\tif (from) {\n\t\tconst fromUTC = convertLocalTimeToUTC(from);\n\t\tif (fromUTC) {\n\t\t\tfilterConditions.push(`createdon gt ${fromUTC}`);\n\t\t}\n\t}\n\t\n\t// Thru date filter (optional) - convert local time to UTC\n\tif (thru) {\n\t\tconst thruUTC = convertLocalTimeToUTC(thru);\n\t\tif (thruUTC) {\n\t\t\tfilterConditions.push(`createdon lt ${thruUTC}`);\n\t\t}\n\t}\n\t\n\t// User name filter (optional)\n\tif (HasValue(unam)) {\n\t\tfilterConditions.push(`contains(lv_userfullname, '${unam}')`);\n\t}\n\t\n\t// Kind filter (optional)\n\tif (HasValue(kind)) {\n\t\tfilterConditions.push(`contains(lv_kind, '${kind}')`);\n\t}\n\t\n\t// Detail filter (optional)\n\tif (HasValue(detl)) {\n\t\tfilterConditions.push(`contains(lv_detail, '${detl}')`);\n\t}\n\t\n\t// Add filter clause if we have conditions\n\tif (filterConditions.length &gt; 0) {\n\t\turl += \"&amp;$filter=\" + filterConditions.join(' and ');\n\t}\n\t\n\t// Add order by clause (orderBy now includes direction)\n\turl += `&amp;$orderby=${orderBy}`;\n\t\n\t// Add top clause to limit results\n\turl += \"&amp;$top=100\";\n\t\n\treturn url;\n} // getLogQueryUrl\n\nasync function btnLogQuery_Click() {\n\ttry {\n\t\t// Build the query URL from form inputs\n\t\tconst url = getLogQueryUrl();\n\t\t\n\t\t// Update the URL display field\n\t\t$('#txtLogUrl').val(url);\n\t\t\n\t\t// Show loading indicator in results area\n\t\tsay('Querying logs...');\n\t\t\n\t\t// Execute the API call\n\t\tconst response = await fetch(url, {\n\t\t\tmethod: 'GET',\n\t\t\theaders: {\n\t\t\t\t'Accept': 'application/json',\n\t\t\t\t'Content-Type': 'application/json'\n\t\t\t}\n\t\t});\n\t\t\n\t\tif (!response.ok) {\n\t\t\tthrow new Error(`HTTP ${response.status}: ${response.statusText}`);\n\t\t}\n\t\t\n\t\tconst data = await response.json();\n\t\tconst logRows = data.value || [];\n\t\t\n\t\t// Fill the log table with the results\n\t\tlogTableFill(logRows);\n\t\t\n\t\t// Update results area with summary\n\t\tsay(`Query completed successfully. Found ${logRows.length} log entries.`);\n\t\t\n\t\t// Apply any existing client-side filtering\n\t\tconst filterTextbox = document.getElementById('txtUserFilterRx');\n\t\tif (filterTextbox) {\n\t\t\tfilterTextbox.dispatchEvent(new Event('input'));\n\t\t}\n\t\t\n\t\treturn false; // Prevent form submission\n\t\t\n\t} catch (error) {\n\t\tsay(`Error querying logs: ${error.message}`);\n\t\tconsole.error('Log query error:', error);\n\t\treturn false;\n\t}\n} // btnLogQuery_Click\n\n/**\n * Fills the log table with data from an array of log objects\n * @param {Array} arrRows - Array of log objects with properties matching the original Liquid template\n */\n function logTableFill(arrRows) {\n    // Get reference to the table body\n    const tableBody = document.getElementById('logTableBody');\n    \n    // Clear existing rows\n    tableBody.innerHTML = '';\n    \n    // Loop through the array and create a row for each log entry\n    arrRows.forEach(log =&gt; {\n        // Create a new row\n        const row = document.createElement('tr');\n        row.className = 'log-row';\n        \n        // Add data attribute for username if it exists\n        if (log.lv_userfullname) {\n            row.setAttribute('data-username', log.lv_userfullname);\n        }\n        \n        // Format the date as NYC time\n        let formattedDate = '';\n        let fullISOTime = '';\n        if (log.createdon) {\n            const date = new Date(log.createdon);\n            \n            // Store full ISO format for tooltip\n            fullISOTime = date.toISOString();\n            \n            // Convert UTC to NYC time (EST/EDT)\n            // Since the database stores UTC, and NYC is UTC-5 (EST) or UTC-4 (EDT)\n            // We need to SUBTRACT the offset to get NYC time from UTC\n            // But JavaScript Date automatically converts to local time, so let's just use that\n            // The original approach was working - let's go back to simple local time display\n            \n            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];\n            const dayName = days[date.getDay()];\n            \n            // Format time with leading zeros - use local time (excluding seconds)\n            const hours = String(date.getHours()).padStart(2, '0');\n            const minutes = String(date.getMinutes()).padStart(2, '0');\n            \n            formattedDate = `${dayName} ${hours}:${minutes}`;\n        }\n        \n        // Create cells with log data\n        const cellsData = [\n            { text: formattedDate, tooltip: fullISOTime },  // Time with tooltip\n            { text: log.lv_userfullname || '', tooltip: null },    // User\n            { text: log.lv_kind || '', tooltip: null },            // Kind\n            { text: log.lv_detail || '', tooltip: null },          // Detail\n            { text: log.lv_key1name || '', tooltip: null },        // K1Name\n            { text: log.lv_key1value || '', tooltip: null },       // K1Value\n            { text: log.lv_key2name || '', tooltip: null },        // K2Name\n            { text: log.lv_key2value || '', tooltip: null },       // K2Value\n            { text: log.lv_memo || '', tooltip: null }             // Memo\n        ];\n        \n        // Add all cells to the row\n        cellsData.forEach(cellData =&gt; {\n            const cell = document.createElement('td');\n            cell.textContent = cellData.text;\n            if (cellData.tooltip) {\n                cell.title = cellData.tooltip;\n            }\n            row.appendChild(cell);\n        });\n        \n        // Add the row to the table body\n        tableBody.appendChild(row);\n    });\n}\n\nfunction updateLogQueryUrl() { // Called whenever any of the query controls is changed\n\tconst url = getLogQueryUrl();\n\t$('#txtLogUrl').val(url);\n}\n\nconst setDefaultLogQueryFromDate = () =&gt; {\n\t// Get current date and set to midnight in local time\n\tconst now = new Date();\n\tconst todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);\n\t\n\t// Format as YYYY-MM-DD HH:MM:SS (user-friendly local time format)\n\tconst year = todayMidnight.getFullYear();\n\tconst month = String(todayMidnight.getMonth() + 1).padStart(2, '0');\n\tconst day = String(todayMidnight.getDate()).padStart(2, '0');\n\tconst hours = String(todayMidnight.getHours()).padStart(2, '0');\n\tconst minutes = String(todayMidnight.getMinutes()).padStart(2, '0');\n\tconst seconds = String(todayMidnight.getSeconds()).padStart(2, '0');\n\t\n\tconst localTimeString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;\n\t\n\t// Set the value\n\tconst txtLogFrom = $('#txtLogFrom');\n\tif (txtLogFrom.length) {\n\t\ttxtLogFrom.val(localTimeString);\n\t} else {\n\t\tconsole.warn('txtLogFrom element not found in DOM');\n\t}\n};\n\n\n/**\n * Converts a local time string to UTC ISO format for API queries\n * @param {string} localTimeString - Time in format \"YYYY-MM-DD HH:MM:SS\" assumed to be local time\n * @returns {string} UTC time in ISO format for OData queries\n */\nfunction convertLocalTimeToUTC(localTimeString) {\n\tif (!localTimeString || localTimeString.trim() === '') {\n\t\treturn '';\n\t}\n\t\n\ttry {\n\t\t// Parse the local time string (assume format: YYYY-MM-DD HH:MM:SS)\n\t\tconst parts = localTimeString.trim().split(' ');\n\t\tif (parts.length !== 2) {\n\t\t\t// Try to handle just date part\n\t\t\tif (parts.length === 1 &amp;&amp; parts[0].includes('-')) {\n\t\t\t\tparts.push('00:00:00'); // Add midnight time\n\t\t\t} else {\n\t\t\t\tconsole.warn('Invalid time format, expected YYYY-MM-DD HH:MM:SS');\n\t\t\t\treturn '';\n\t\t\t}\n\t\t}\n\t\t\n\t\tconst datePart = parts[0];\n\t\tconst timePart = parts[1];\n\t\t\n\t\tconst [year, month, day] = datePart.split('-').map(num =&gt; parseInt(num));\n\t\tconst [hours, minutes, seconds] = timePart.split(':').map(num =&gt; parseInt(num));\n\t\t\n\t\t// Create date in local time\n\t\t// JavaScript Date constructor creates a date in local time\n\t\tconst localDate = new Date(year, month - 1, day, hours, minutes, seconds);\n\t\t\n\t\t// Convert to UTC using built-in method (handles timezone conversion automatically)\n\t\treturn localDate.toISOString();\n\t} catch (error) {\n\t\tconsole.warn('Error converting local time to UTC:', error, 'Input:', localTimeString);\n\t\treturn '';\n\t}\n}\n\n/**\n * Applies a preset filter pattern to the user filter textbox\n */\nfunction applyUserFilterPreset() {\n\tconst dropdown = document.getElementById('ddlUserFilterPresets');\n\tconst textbox = document.getElementById('txtUserFilterRx');\n\t\n\tif (dropdown &amp;&amp; textbox &amp;&amp; dropdown.value) {\n\t\ttextbox.value = dropdown.value;\n\t\t\n\t\t// Reset dropdown to default\n\t\tdropdown.selectedIndex = 0;\n\t\t\n\t\t// Trigger the input event to apply the filter\n\t\ttextbox.dispatchEvent(new Event('input'));\n\t}\n}\n\n// #endregion LogQuery\n\n// #region Helper\nfunction updateApiUrl() {\n\tconst prefix = $(\"#cboPrefix\").val() || \"\";\n\tconst action = $(\"#cboAction\").val() || \"\";\n\tconst id = $(\"#cboId\").val() || \"\";\n\n\tlet url = getUrl();\n\tconst isBC = url.Has(\"businesscentral\");\n\tconst tableNamePlural = getTableNamePlural(url);\n\n\turl += \"/\" + tableNamePlural;\n\n\tlet suffix = \"\";\n\tif (action.Is(\"Top10\")) {\n\t\tsuffix = \"?$top=10\";\n\t} else if (action.Is(\"Count\")) {\n\t\tsuffix = \"/?$count=true&amp;$top=1\";\n\t} else if (action.Is(\"Filter\")) {\n\t\tsuffix = \"/?$filter=lv_name eq 'Rodj'\";\n\t} else if (action.Is(\"Top1\")) {\n\t\tsuffix = \"?$top=1\";\n\t} else if (action.Is(\"Select\")) {\n\t\tsuffix = \"&amp;$select=nickname,emailaddress1\";\n\t} else if (action.Is(\"Id\")) {\n\t\tsuffix = \"(\" + id + \")\";\n\t}\n\n\turl += suffix;\n\n\t$(\"#apiUrl\").val(url);\n}\n\nfunction getUrl() {\n\tconst prefix = $(\"#cboPrefix\").val() || \"\";\n\n\tif (prefix.Is(\"BCODataV4LVM\")) {\n\t\turl = \"https://api.businesscentral.dynamics.com/v2.0/1598698c-cbd2-4d4a-94f0-0b4b2b701763/SandboxDev/ODataV4/Company('LVM')\";\n\t} else if (prefix.Is(\"BCODataV4\")) {\n\t\turl = \"https://api.businesscentral.dynamics.com/v2.0/1598698c-cbd2-4d4a-94f0-0b4b2b701763/SandboxDev/ODataV4\";\n\t} else if (prefix.Is(\"PowerPages\")) {\n\t\turl = \"/_api\";\n\t} else if (prefix.Is(\"Dataverse\")) {\n\t\turl = \"/api/data/v9.2\";\n\t}\n\n\treturn url;\n}\n\nfunction getTableNamePlural(url = \"\") {\n\tconst isBC = url.Has(\"businesscentral\");\n\tconst friendlyName = $(\"#cboTable\").val() || \"\";\n\n\tconst realName = friendlyTableNameToPlural(friendlyName, isBC);\n\n\treturn realName;\n}\n\nfunction friendlyTableNameToPlural(baseName, isBC) {\n\tif (baseName.BeginsWith(\"account\"))\n\t\treturn isBC ? \"accounts\" : \"accounts\";\n\n\tif (baseName.Is(\"ApprovalLO\"))\n\t\treturn isBC ? \"commPeriodLOApprovals\" : \"who cares, not used\";\n\n\tif (baseName.Is(\"Branch\"))\n\t\treturn isBC ? \"todo\" : \"lv_lvcompbranchs\";\n\n\tif (baseName.Is(\"CommissionApproval\"))\n\t\treturn isBC ? \"todo\" : \"lv_lvcompcommissionapprovals\";\n\n\tif (baseName.Is(\"CommissionProfile\"))\n\t\treturn isBC ? \"todo\" : \"lv_lvcompcommissionprofiles\";\n\n\tif (baseName.Is(\"CommissionValue\"))\n\t\treturn isBC ? \"todo\" : \"lv_lvcompcommissionvalues\";\n\n\tif (baseName.Is(\"contact\"))\n\t\treturn isBC ? \"contacts\" : \"contacts\";\n\n\tif (baseName.Is(\"EmailLog\"))\n\t\treturn isBC ? \"todo\" : \"lv_lvcompemaillogs\";\n\n\tif (baseName.Is(\"Loan\"))\n\t\treturn isBC ? \"todo\" : \"lv_lvcomploans\";\n\n\tif (baseName.Is(\"LoanOfficer\"))\n\t\treturn isBC ? \"todo\" : \"lv_lvcomploanofficers\";\n\n\tif (baseName.Is(\"Log\"))\n\t\treturn isBC ? \"not applicable\" : \"lv_logs\";\n\n\tif (baseName.Is(\"RBLO\"))\n\t\treturn isBC ? \"todo\" : \"lv_contactbranchassignments\";  // Note: Old RBLO table replaced by lv_contactbranchassignment + lv_contactloanofficerrelationship\n\n\tthrow \"friendlyTableNameToPlural: unhandled: \" + baseName;\n}\n\nfunction clearResults() {\n\tconst resultsArea = document.getElementById('resultsArea');\n\tresultsArea.value = '';\n}\n\nfunction say(text) {\n\tconst resultsArea = document.getElementById('resultsArea');\n\tresultsArea.value += (resultsArea.value ? '\\n\\n' : '') + text;\n\n\t// Auto-scroll to bottom\n\tresultsArea.scrollTop = resultsArea.scrollHeight;\n}\n// #endregion Helper\n\n// #region URL Success History Management\n\n/**\n * Saves a successful URL request to local storage\n * @param {string} url - The URL of the request\n * @param {string} verb - The HTTP method (GET, POST, PUT, DELETE, etc.)\n * @param {*} postData - Optional data sent with the request (null for GET requests)\n */\n function saveUrlSuccess(url, verb, postData = null) {\n    // Get the existing history from local storage\n    const historyString = localStorage.getItem('colUrlHistory');\n    const history = historyString ? JSON.parse(historyString) : [];\n    \n    // Format current timestamp (to the nearest minute)\n    const now = new Date();\n\tconst timestamp = now.toLocaleString('en-US', {\n\t\thour: '2-digit',\n\t\tminute: '2-digit',\n\t\thour12: false,\n\t\tweekday: 'short',\n\t\tday: 'numeric',\n\t\tmonth: 'short',\n\t\tyear: '2-digit'\n\t});\n\n    // Convert postData to string for comparison if it's an object\n    const postDataString = postData !== null ? \n        (typeof postData === 'object' ? JSON.stringify(postData) : postData) : \n        null;\n    \n    // Check if this exact combination already exists\n    const exists = history.some(item =&gt; \n        item.url === url &amp;&amp; \n        item.verb === verb &amp;&amp; \n        (\n            (item.postData === null &amp;&amp; postDataString === null) ||\n            (item.postData !== null &amp;&amp; postDataString !== null &amp;&amp; \n             item.postData === postDataString)\n        )\n    );\n    \n    // If this combination doesn't exist, add it to history\n\t// unshift is inverse of push\n    if (exists) {\n\t} else {\n\n        history.unshift({\n            timestamp,\n            url,\n            verb,\n            postData: postDataString\n        });\n        \n        // Save updated history back to local storage\n        localStorage.setItem('colUrlHistory', JSON.stringify(history));\n    }\n}\n\n/**\n * Loads the success history into the dropdown\n */\nfunction loadSuccessHistory() {\n    const $dropdown = $('#cboUrlSuccessHistory');\n    \n    // Clear existing options\n    $dropdown.empty();\n    \n    // Add a default empty option\n    $dropdown.append($('&lt;option&gt;', {\n        value: '',\n        text: '-- Select Previous Request --'\n    }));\n    \n    // Get history from local storage\n    const historyString = localStorage.getItem('colUrlHistory');\n\n    if (!historyString) {\n\t\treturn;\n\t}\n\n    const history = JSON.parse(historyString);\n    \n    // Populate dropdown with history items\n    $.each(history, function(index, item) {\n        // Format display text (URL + timestamp + verb if not GET)\n        let displayText = `${item.url} (${item.timestamp})`;\n        if (item.verb !== 'GET') {\n            displayText += ` ${item.verb}`;\n        }\n        \n        $dropdown.append($('&lt;option&gt;', {\n            value: index,\n            text: displayText\n        }));\n    });\n    \n    // Add change event listener\n    $dropdown.on('change', handleHistorySelection);\n}\n\n/**\n * Handles selection from the history dropdown\n */\nfunction handleHistorySelection() {\n    const $dropdown = $('#cboUrlSuccessHistory');\n    const selectedIndex = $dropdown.val();\n    \n    // If no selection (first option), do nothing\n    if (selectedIndex === '') return;\n    \n    // Get history from local storage\n    const historyString = localStorage.getItem('colUrlHistory');\n    const history = JSON.parse(historyString);\n    \n    // Get the selected history item\n    const selectedItem = history[selectedIndex];\n    \n    // Populate the form fields\n    $('#apiUrl').val(selectedItem.url);\n    $('#apiMethod').val(selectedItem.verb);\n    \n    // Handle post data if present\n    if (selectedItem.postData) {\n        try {\n            // Try to parse and pretty-print if it's JSON\n            const parsedData = JSON.parse(selectedItem.postData);\n            $('#postDataArea').val(JSON.stringify(parsedData, null, 2));\n        } catch (e) {\n            // If not valid JSON, just set as is\n            $('#postDataArea').val(selectedItem.postData);\n        }\n    } else {\n        $('#postDataArea').val('');\n    }\n}\n// #endregion URL Success History Management\n\n// #region Doc Load\n\nfunction initializeApp() {\n\t$('#spanJsVersion').html(version());\n\n\tupdateApiUrl();\n\n\tinitPersistentControls();\n\n    loadSuccessHistory();\n\t\n\t// Make sure critical functions are globally accessible for onclick handlers\n\twindow.callSelectedFunction = callSelectedFunction;\n\twindow.updateAllContactRoles = updateAllContactRoles;\n\tconsole.log('Functions made globally accessible - callSelectedFunction:', typeof window.callSelectedFunction);\n\n    const filterTextbox = document.getElementById('txtUserFilterRx');\n\n    // Check if element exists before accessing its properties\n    if (filterTextbox) {\n        // Set default filter to exclude \"Robert Martin\"\n        filterTextbox.value = \"^(?!Robert Martin$).*$\";\n\n        // Apply initial filtering\n        applyClientSideLogRowsFilter();\n\n        // Add event listener for changes to the filter textbox\n        filterTextbox.addEventListener('input', applyClientSideLogRowsFilter);\n    } else {\n        console.warn('txtUserFilterRx element not found in DOM');\n    }\n\n    // Function to apply the filtering\n    function applyClientSideLogRowsFilter() {\n        if (!filterTextbox) return;\n        const filterValue = filterTextbox.value.trim();\n        let regex;\n\n        try {\n            regex = new RegExp(filterValue, 'i'); // 'i' for case-insensitive\n        } catch (error) {\n            regex = /.*/;\n        }\n\n        // Get all rows in the table\n        const rows = document.querySelectorAll('.log-row');\n\n        rows.forEach(row =&gt; {\n            const username = row.getAttribute('data-username') || '';\n            row.style.display = regex.test(username) ? '' : 'none';\n        });\n    }\n\n    const divMain = document.getElementById(\"divMain\");\n    if (divMain) {\n        divMain.style.display = \"block\";\n    } else {\n        console.warn('divMain element not found in DOM');\n    }\n\n\tsetDefaultLogQueryFromDate();\n\t\n\t// Make user filter preset function globally accessible\n\twindow.applyUserFilterPreset = applyUserFilterPreset;\n}\n\ndocument.addEventListener('LVGlobalDOCReady', function () {\n\n\ttry {\n\t\thandleMsalRedirect();\n\t} catch {\n\t\tconsole.error(\"ERROR: Handlemsalredirect 2503140657\")\n\t}\n\n\t// I had originally wanted to use async and await, but I never could get\n\t// it to work, and AI suggested use of Promise so as to clearly \n\t// separate the calls, while still making it clear that both (load of\n\t// jQuery and call to initializeApp) happen in sequential order\n    loadJqueryAndBootstrap().then(() =&gt; {\n        // Then initialize the app\n        initializeApp();\n        \n    });\n});\n\n// #endregion DocLoad\n\n/**\n * Updates all contact records' lv_roles field based on their actual web role assignments\n * This function implements the same logic as the Contact Form's updateRolesField() function\n * @param {boolean} testMode - If true, only processes first 5 contacts and shows detailed debug info\n */\nasync function updateAllContactRoles(testMode = false) {\n\ttry {\n\t\tsay('=== STARTING BULK lv_roles UPDATE ===');\n\t\t\n\t\t// Step 1: Get contact records with their current lv_roles field\n\t\tsay(`Step 1: Fetching ${testMode ? 'test subset of ' : 'all '}contact records...`);\n\t\tconst maxContacts = testMode ? 5 : 0; // Limit to 5 for testing, 0 = no limit for production\n\t\tconst contacts = await apiGetRecords('contacts', '$select=contactid,fullname,emailaddress1,lv_roles,lv_branch,lv_loanofficer', maxContacts);\n\t\tsay(`Found ${contacts.length} total contacts${testMode ? ' (TEST MODE)' : ''}`);\n\t\t\n\t\t// Step 2: Get all web role assignments using correct association table name\n\t\tsay('Step 2: Fetching web role assignments...');\n\t\tconst roleAssignments = await apiGetRecords('powerpagecomponent_mspp_webrole_contacts', '$expand=mspp_webrole($select=mspp_webroleid,mspp_name)', 0);\n\t\tsay(`Found ${roleAssignments.length} total role assignments`);\n\t\t\n\t\t// Step 3: Get web roles for reference\n\t\tsay('Step 3: Fetching web role definitions...');\n\t\tconst webRoles = await apiGetRecords('mspp_webroles', '$select=mspp_webroleid,mspp_name', 0);\n\t\tsay(`Found ${webRoles.length} web roles`);\n\t\t\n\t\t// Create role ID to name mapping\n\t\tconst roleIdToName = {};\n\t\twebRoles.forEach(role =&gt; {\n\t\t\troleIdToName[role.mspp_webroleid] = role.mspp_name;\n\t\t});\n\t\t\n\t\t// Also map from roleAssignments if expanded data is available\n\t\troleAssignments.forEach(assignment =&gt; {\n\t\t\tif (assignment.mspp_webrole &amp;&amp; assignment.mspp_webrole.mspp_webroleid) {\n\t\t\t\troleIdToName[assignment.mspp_webrole.mspp_webroleid] = assignment.mspp_webrole.mspp_name;\n\t\t\t}\n\t\t});\n\t\t\n\t\tsay(`Role mapping created with ${Object.keys(roleIdToName).length} roles`);\n\t\t\n\t\t// Step 4: Get branch and loan officer assignments (NEW TABLES)\n\t\tsay('Step 4: Fetching branch and loan officer assignments...');\n\t\tconst branchAssignments = await apiGetRecords('lv_contactbranchassignments', '$select=lv_contact,lv_branch,lv_branchcode', 0);\n\t\tsay(`Found ${branchAssignments.length} Branch Manager assignments (lv_contactbranchassignment)`);\n\t\tconst loRelationships = await apiGetRecords('lv_contactloanofficerrelationships', '$select=lv_contact,lv_loanofficer,lv_loanofficercode,lv_relationshiptype', 0);\n\t\tconst looAssignments = loRelationships.filter(r =&gt; r.lv_relationshiptype === 'O');\n\t\tsay(`Found ${looAssignments.length} Loan Officer Oversight assignments (lv_contactloanofficerrelationship type=O)`);\n\t\t\n\t\t// Step 5: Process each contact\n\t\tsay('Step 5: Processing contacts and calculating correct lv_roles...');\n\t\tlet updatedCount = 0;\n\t\tlet errorCount = 0;\n\t\tlet skippedCount = 0;\n\t\t\n\t\tfor (let i = 0; i &lt; contacts.length; i++) {\n\t\t\tconst contact = contacts[i];\n\t\t\tconst contactId = contact.contactid;\n\t\t\t\n\t\t\ttry {\n\t\t\t\t// Calculate what the lv_roles field should be for this contact\n\t\t\t\tconst correctRolesString = calculateContactRoles(contact, roleAssignments, roleIdToName, branchAssignments, looAssignments);\n\t\t\t\tconst currentRolesString = contact.lv_roles || '';\n\t\t\t\t\n\t\t\t\t// In test mode, show detailed debug info for each contact\n\t\t\t\tif (testMode) {\n\t\t\t\t\tconst contactRoleAssignments = roleAssignments.filter(ra =&gt; ra.contactid === contactId);\n\t\t\t\t\tsay(`\\n--- Contact ${i + 1}: ${contact.fullname || contact.emailaddress1 || contactId} ---`);\n\t\t\t\t\tsay(`Current lv_roles: \"${currentRolesString}\"`);\n\t\t\t\t\tsay(`Calculated roles: \"${correctRolesString}\"`);\n\t\t\t\t\tsay(`Has web role assignments: ${contactRoleAssignments.length}`);\n\t\t\t\t\tsay(`Legacy branch: ${contact.lv_branch || 'none'}`);\n\t\t\t\t\tsay(`Legacy loan officer: ${contact.lv_loanofficer || 'none'}`);\n\t\t\t\t\t\n\t\t\t\t\tif (contactRoleAssignments.length &gt; 0) {\n\t\t\t\t\t\tcontactRoleAssignments.forEach(ra =&gt; {\n\t\t\t\t\t\t\tconst roleName = ra.mspp_webrole?.mspp_name || roleIdToName[ra.mspp_webroleid] || 'Unknown';\n\t\t\t\t\t\t\tsay(`  - Web role: ${roleName}`);\n\t\t\t\t\t\t});\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t// Only update if the roles have changed\n\t\t\t\tif (currentRolesString !== correctRolesString) {\n\t\t\t\t\tif (!testMode) {\n\t\t\t\t\t\tsay(`Contact ${contact.fullname || contact.emailaddress1 || contactId}: \"${currentRolesString}\" -&gt; \"${correctRolesString}\"`);\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t// In test mode, don't actually update - just show what would happen\n\t\t\t\t\tif (testMode) {\n\t\t\t\t\t\tsay(`  &gt;&gt;&gt; WOULD UPDATE: \"${currentRolesString}\" -&gt; \"${correctRolesString}\"`);\n\t\t\t\t\t} else {\n\t\t\t\t\t\t// Update the contact record using _api endpoint\n\t\t\t\t\t\tconst response = await apiCall(`/_api/contacts(${contactId})`, 'PATCH', { lv_roles: correctRolesString });\n\t\t\t\t\t}\n\t\t\t\t\tupdatedCount++;\n\t\t\t\t} else {\n\t\t\t\t\tif (testMode) {\n\t\t\t\t\t\tsay(`  &gt;&gt;&gt; NO CHANGE NEEDED`);\n\t\t\t\t\t}\n\t\t\t\t\tskippedCount++;\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t// Progress indicator every 25 contacts (or every contact in test mode)\n\t\t\t\tif (testMode || (i + 1) % 25 === 0) {\n\t\t\t\t\tif (!testMode) {\n\t\t\t\t\t\tsay(`Processed ${i + 1}/${contacts.length} contacts... (${updatedCount} updated, ${skippedCount} unchanged, ${errorCount} errors)`);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\n\t\t\t} catch (contactError) {\n\t\t\t\tsay(`ERROR processing contact ${contactId}: ${contactError.message}`);\n\t\t\t\terrorCount++;\n\t\t\t}\n\t\t}\n\t\t\n\t\tsay('=== BULK UPDATE COMPLETE ===');\n\t\tsay(`Total contacts processed: ${contacts.length}`);\n\t\tsay(`Records updated: ${updatedCount}`);\n\t\tsay(`Records unchanged: ${skippedCount}`);\n\t\tsay(`Errors: ${errorCount}`);\n\t\t\n\t} catch (error) {\n\t\tsay(`FATAL ERROR: ${error.message}`);\n\t\tconsole.error('updateAllContactRoles error:', error);\n\t}\n}\n\n/**\n * Calculates what the lv_roles field should contain for a specific contact\n * Explicitly checks for all possible roles: Administrators, Branch Manager, Loan Officer, Developer, LoanVision, RoleAssign\n */\nfunction calculateContactRoles(contact, roleAssignments, roleIdToName, branchAssignments, looAssignments) {\n\tconst contactId = contact.contactid;\n\t\n\t// Get current roles from contact's web role assignments\n\tconst contactRoleAssignments = roleAssignments.filter(ra =&gt; ra.contactid === contactId);\n\t\n\t// Extract role names from assignments, handling both direct roleId and expanded data\n\tconst assignedRoleNames = [];\n\tcontactRoleAssignments.forEach(ra =&gt; {\n\t\tlet roleName = null;\n\t\t\n\t\t// Try to get role name from expanded data first\n\t\tif (ra.mspp_webrole &amp;&amp; ra.mspp_webrole.mspp_name) {\n\t\t\troleName = ra.mspp_webrole.mspp_name;\n\t\t}\n\t\t// Fallback to lookup by ID\n\t\telse if (ra.mspp_webroleid &amp;&amp; roleIdToName[ra.mspp_webroleid]) {\n\t\t\troleName = roleIdToName[ra.mspp_webroleid];\n\t\t}\n\t\t// Another fallback if different field name\n\t\telse if (ra.powerpagecomponentid &amp;&amp; roleIdToName[ra.powerpagecomponentid]) {\n\t\t\troleName = roleIdToName[ra.powerpagecomponentid];\n\t\t}\n\t\t\n\t\tif (roleName) {\n\t\t\tassignedRoleNames.push(roleName);\n\t\t}\n\t});\n\t\n\t// Array to collect all roles this contact should have\n\tconst finalRoles = [];\n\t\n\t// 1. Administrators - based on actual web role assignment\n\tif (assignedRoleNames.includes('Administrators')) {\n\t\tfinalRoles.push('Administrators');\n\t}\n\t\n\t// 2. Branch Manager - based on branch assignments (auto-managed)\n\t// Check NEW lv_contactbranchassignment table\n\tlet hasBranchAssignment = false;\n\n\t// Check new assignment system (contact is branch manager via lv_contactbranchassignment)\n\tif (branchAssignments.some(ba =&gt; ba.lv_contact === contactId)) {\n\t\thasBranchAssignment = true;\n\t}\n\n\t// Check legacy branch assignment (contact.lv_branch field) - no longer used for permissions\n\t// if (contact.lv_branch &amp;&amp; contact.lv_branch !== null) {\n\t// \thasBranchAssignment = true;\n\t// }\n\n\tif (hasBranchAssignment) {\n\t\tfinalRoles.push('Branch Manager');\n\t}\n\n\t// 3. Loan Officer - based on loan officer assignments (auto-managed)\n\t// Check NEW lv_contactloanofficerrelationship table (type='O' for oversight)\n\tlet hasLoanOfficerAssignment = false;\n\n\t// Check new assignment system (contact has loan officer oversight via lv_contactloanofficerrelationship)\n\tif (looAssignments &amp;&amp; looAssignments.some(loo =&gt; loo.lv_contact === contactId)) {\n\t\thasLoanOfficerAssignment = true;\n\t}\n\n\t// Check legacy loan officer assignment (contact.lv_loanofficer field)\n\tif (contact.lv_loanofficer &amp;&amp; contact.lv_loanofficer !== null) {\n\t\thasLoanOfficerAssignment = true;\n\t}\n\n\tif (hasLoanOfficerAssignment) {\n\t\tfinalRoles.push('Loan Officer');\n\t}\n\t\n\t// 4. Developer - based on actual web role assignment\n\tif (assignedRoleNames.includes('Developer')) {\n\t\tfinalRoles.push('Developer');\n\t}\n\t\n\t// 5. LoanVision - based on actual web role assignment\n\tif (assignedRoleNames.includes('LoanVision')) {\n\t\tfinalRoles.push('LoanVision');\n\t}\n\t\n\t// 6. RoleAssign - based on actual web role assignment (note: no space in name)\n\tif (assignedRoleNames.includes('RoleAssign')) {\n\t\tfinalRoles.push('RoleAssign');\n\t}\n\t\n\t// Sort alphabetically and join with comma-space\n\treturn finalRoles.sort().join(', ');\n}\n\nfunction version() {\n\treturn \"lvcpdev.js this one DOES have en-US\";\n}\n// Last modified sat aug 16 6:20pm\n// Last modified sat aug 16 6:38pm\n&lt;!-- Last modified Fri Oct 31 8:04AM --&gt;\n&lt;!-- Last modified Fri Oct 31 8:45AM --&gt;",
+  "displayorder": 17,
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "feedbackpolicy": 756150000,
+  "hiddenfromsitemap": true,
+  "isroot": false,
+  "pagetemplateid": "cd587cbe-a61f-4c11-a750-6d0235a784ef",
+  "parentpageid": "362995e0-7dc5-4bbf-9595-062f468d2d44",
+  "partialurl": "lvcpdev",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "rootwebpageid": "09d0b2e7-1cc7-4019-0111-1a7b1ae522ee",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;p&gt;This is a sample landing page designed to be a starting point for your website&lt;/p&gt;\n",
+  "title": "lvcpdev"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>lvcpdev</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <searchcontent>lvcpdev&lt;p&gt;Last modified Fri Oct 31 8:41AM&lt;/p&gt;
+&lt;p&gt;Last modified Fri Oct 31 8:39AM&lt;/p&gt;
+&lt;!-- Last modified Fri Oct 31 8:04AM --&gt;
+
+{% comment %} lvcpdev.en-US.webpage.copy.html {% endcomment %} 
+
+{% include 'snippet' snippet_name:'FetchXML - SetupQuery' %}
+
+&lt;h2&gt;2025-10-30 Thu 17:21:44 ~lvcpdev &lt;span id="spanJsVersion" style="margin-left: 10px;"&gt;&lt;/span&gt;&lt;/h2&gt;
+
+&lt;div id="divTestButton" style="margin-bottom: 20px;"&gt;
+		&lt;input type="button" value="Test to Console2" onclick="testToConsole()" /&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+	.table-container {
+		margin-top: 20px;
+	}
+	.table-responsive {
+		overflow-x: auto;
+	}
+	.money-column {
+		text-align: right;
+	}
+	.date-column {
+		min-width: 120px;
+	}
+&lt;/style&gt;
+
+
+
+{% comment %} I try to keep this in sync with same in /diag, but never a guarantee {% endcomment %} 
+&lt;div class="card mt-3"&gt; &lt;!-- USER INFORMATION 0601 --&gt;
+	&lt;div class="card-header"&gt;
+		&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#currentUserCollapse" aria-expanded="false" aria-controls="currentUserCollapse"&gt;
+			Current User Information
+		&lt;/button&gt;
+	&lt;/div&gt;
+
+	&lt;div class="collapse" id="currentUserCollapse"&gt;
+		&lt;div class="card-body"&gt;
+			&lt;table class="user-table"&gt;
+				&lt;thead&gt;
+					&lt;tr&gt;
+						&lt;th&gt;Variable&lt;/th&gt;
+						&lt;th&gt;Value&lt;/th&gt;
+					&lt;/tr&gt;
+				&lt;/thead&gt;
+				&lt;tbody&gt;
+					&lt;tr&gt;&lt;td&gt;user.id&lt;/td&gt;&lt;td&gt;{{ user.id }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.username&lt;/td&gt;&lt;td&gt;{{ user.username }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.firstname&lt;/td&gt;&lt;td&gt;{{ user.firstname }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.middlename&lt;/td&gt;&lt;td&gt;{{ user.middlename }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.lastname&lt;/td&gt;&lt;td&gt;{{ user.lastname }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.fullname             &lt;/td&gt;&lt;td&gt;{{ user.fullname }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.emailaddress1        &lt;/td&gt;&lt;td&gt;{{ user.emailaddress1 }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.emailaddress2        &lt;/td&gt;&lt;td&gt;{{ user.emailaddress2 }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.lv_region.id   &lt;/td&gt;&lt;td&gt;{{ user.lv_region.id }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.lv_region.name &lt;/td&gt;&lt;td&gt;{{ user.lv_region.name }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.lv_branch.id&lt;/td&gt;&lt;td&gt;{{ user.lv_branch.id }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.lv_branch.name&lt;/td&gt;&lt;td&gt;{{ user.lv_branch.name }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.lv_loanofficer.id&lt;/td&gt;&lt;td&gt;{{ user.lv_loanofficer.id }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.lv_loanofficer.name&lt;/td&gt;&lt;td&gt;{{ user.lv_loanofficer.name }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.roles&lt;/td&gt;&lt;td&gt;
+						{% for role in user.roles %}
+							{{ role }}{% unless forloop.last %}; {% endunless %}
+						{% endfor %}
+					&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.isAuthenticated&lt;/td&gt;
+					&lt;td class="authenticated"&gt;{{ user.isAuthenticated }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.type&lt;/td&gt;&lt;td&gt;{{ user.type }}&lt;/td&gt;&lt;/tr&gt;					
+					
+					&lt;/tbody&gt;
+			&lt;/table&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="card mt-3"&gt; &lt;!-- SETUP QUERY --&gt;
+	&lt;div class="card-header"&gt;
+		&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#setupQueryCollapse" aria-expanded="true" aria-controls="setupQueryCollapse"&gt;
+			Setup Query
+		&lt;/button&gt;
+	&lt;/div&gt;
+
+	&lt;div class="collapse hide" id="setupQueryCollapse"&gt;
+		&lt;div class="card-body"&gt;
+			&lt;table class="user-table"&gt;
+				&lt;thead&gt;
+					&lt;tr&gt;
+						&lt;th&gt;Variable&lt;/th&gt;
+						&lt;th&gt;Value&lt;/th&gt;
+					&lt;/tr&gt;
+				&lt;/thead&gt;
+				&lt;tbody&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;cfgAccountingEnabled   &lt;/td&gt;&lt;td&gt;{{ cfgAccountingEnabled }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;cfgBranchEnabled       &lt;/td&gt;&lt;td&gt;{{ cfgBranchEnabled }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;cfgPrintEnabled        &lt;/td&gt;&lt;td&gt;{{ cfgPrintEnabled }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;cfgRegionEnabled       &lt;/td&gt;&lt;td&gt;{{ cfgRegionEnabled }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;cfgTags                &lt;/td&gt;&lt;td&gt;{{ cfgTags }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;currentBranch.name     &lt;/td&gt;&lt;td&gt;{{ currentBranch.name }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;currentRegion.name     &lt;/td&gt;&lt;td&gt;{{ currentRegion.name }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;is_admin               &lt;/td&gt;&lt;td&gt;{{ is_admin }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;is_BranchManager       &lt;/td&gt;&lt;td&gt;{{ is_BranchManager }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;is_developer           &lt;/td&gt;&lt;td&gt;{{ is_developer }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;is_LoanOfficer         &lt;/td&gt;&lt;td&gt;{{ is_LoanOfficer }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;is_OnlyLoanOfficer     &lt;/td&gt;&lt;td&gt;{{ is_OnlyLoanOfficer }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;is_RegionManager       &lt;/td&gt;&lt;td&gt;{{ is_RegionManager }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;sqAcctgPeriodNo        &lt;/td&gt;&lt;td&gt;{{ sqAcctgPeriodNo }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;sqApprovalType         &lt;/td&gt;&lt;td&gt;{{ sqApprovalType }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;sqHasCommissionProfile &lt;/td&gt;&lt;td&gt;{{ sqHasCommissionProfile }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;sqIsCommissioned       &lt;/td&gt;&lt;td&gt;{{ sqIsCommissioned }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;sqRecCommProfile       &lt;/td&gt;&lt;td&gt;{{ sqRecCommProfile.lv_name }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;sqRecLOBeingViewed     &lt;/td&gt;&lt;td&gt;{{ sqRecLOBeingViewed.lv_name }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;sqRecLOYouAre          &lt;/td&gt;&lt;td&gt;{{ sqRecLOYouAre.lv_name }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;sqUsingApprovals       &lt;/td&gt;&lt;td&gt;{{ sqUsingApprovals }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;UrlFlowContactWebRole  &lt;/td&gt;&lt;td&gt;{{ setupRecord.lv_urlflowcontactwebrole }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;userBranch             &lt;/td&gt;&lt;td&gt;{{ userBranch }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;userBranch.id          &lt;/td&gt;&lt;td&gt;{{ userBranch.id }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;userBranchList         &lt;/td&gt;&lt;td&gt;{{ userBranchList }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;userRegion             &lt;/td&gt;&lt;td&gt;{{ userRegion }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;website                &lt;/td&gt;&lt;td&gt;{{ website }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;website.id             &lt;/td&gt;&lt;td&gt;{{ website.id }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;websiteid              &lt;/td&gt;&lt;td&gt;{{ websiteid }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;site                   &lt;/td&gt;&lt;td&gt;{{ site }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;site.id                &lt;/td&gt;&lt;td&gt;{{ site.id }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;portal                 &lt;/td&gt;&lt;td&gt;{{ portal }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;portal.id              &lt;/td&gt;&lt;td&gt;{{ portal.id }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;userRegion.id          &lt;/td&gt;&lt;td&gt;{{ userRegion.id }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;userRegionList         &lt;/td&gt;&lt;td&gt;{{ userRegionList }}&lt;/td&gt;&lt;/tr&gt;					
+				&lt;/tbody&gt;
+			&lt;/table&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="card mt-3"&gt; &lt;!-- API SECTION --&gt;
+	&lt;div class="card-header"&gt;
+		&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#apiCollapse" aria-expanded="true" aria-controls="apiCollapse"&gt;
+			API Calls
+		&lt;/button&gt;
+	&lt;/div&gt;
+	&lt;div class="collapse show" id="apiCollapse"&gt;
+		&lt;div class="card-body"&gt;
+
+			&lt;div class="row mb-3 align-items-center"&gt;  &lt;!-- Prefix, Table, Id, and Action --&gt;
+				&lt;div class="col-3"&gt; &lt;!-- Prefix Select --&gt;
+					&lt;div class="row g-2 align-items-center"&gt;
+						&lt;div class="col-auto"&gt;
+							&lt;label for="cboPrefix" class="col-form-label me-2"&gt;Prefix&lt;/label&gt;
+						&lt;/div&gt;
+
+						&lt;div class="col"&gt;
+							&lt;select id="cboPrefix" class="form-select rj-persist" onchange="updateApiUrl()"&gt;
+								&lt;option value="BCODataV4LVM"&gt;BusCent ODataV4 LVM&lt;/option&gt;
+								&lt;option value="BCODataV4"&gt;BusCent ODataV4&lt;/option&gt;
+								&lt;option value="PowerPages"&gt;Power Pages Shortcut&lt;/option&gt;
+								&lt;option value="Dataverse"&gt;Dataverse&lt;/option&gt;
+							&lt;/select&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+
+				&lt;div class="col-3"&gt; &lt;!-- Table Select ~tablenames --&gt;
+					&lt;div class="row g-2 align-items-center"&gt;
+						&lt;div class="col-auto"&gt;
+							&lt;label for="cboTable" class="col-form-label me-2"&gt;Table&lt;/label&gt;
+						&lt;/div&gt;
+
+						&lt;div class="col"&gt;
+							&lt;select id="cboTable" class="form-select rj-persist" onchange="updateApiUrl()"&gt; {% comment %}  if you add here, be sure to add to translatetablename  {% endcomment %} 
+								&lt;option value="account"&gt;account&lt;/option&gt;
+								&lt;option value="ApprovalLO"&gt;ApprovalLO&lt;/option&gt;
+								&lt;option value="Branch"&gt;Branch&lt;/option&gt;
+								&lt;option value="CommissionApproval"&gt;CommissionApproval&lt;/option&gt;
+								&lt;option value="CommissionProfile"&gt;CommissionProfile&lt;/option&gt;
+								&lt;option value="CommissionValue"&gt;CommissionValue&lt;/option&gt;
+								&lt;option value="contact"&gt;contact&lt;/option&gt;
+								&lt;option value="EmailLog"&gt;EmailLog&lt;/option&gt;
+								&lt;option value="Loan"&gt;Loan&lt;/option&gt;
+								&lt;option value="LoanOfficer"&gt;LoanOfficer&lt;/option&gt;
+								&lt;option value="Log"&gt;Log&lt;/option&gt;
+								&lt;option value="RBLO"&gt;RBLO&lt;/option&gt;
+							&lt;/select&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+
+				&lt;div class="col-3"&gt; &lt;!-- ID --&gt;
+					&lt;div class="row g-2 align-items-center"&gt;
+						&lt;div class="col-auto"&gt;
+							&lt;label for="cboId" class="col-form-label me-2"&gt;ID&lt;/label&gt;
+						&lt;/div&gt;
+
+						{% comment %}    todo8: have this query contacts, and dynamically populate with correct id's         {% endcomment %} 
+						&lt;div class="col"&gt;
+							&lt;select id="cboId" class="form-select rj-persist" onchange="updateApiUrl()"&gt;
+								&lt;option value=""&gt;&lt;/option&gt;
+								&lt;option value="EDA25D58-1CA8-EF11-B8E8-6045BDD4B776"&gt;Contact: Robert.Martin@LoanVision.com (EDA25D58-1CA8-EF11-B8E8-6045BDD4B776)&lt;/option&gt;
+								&lt;option value="0A25BDD1-B2E7-EF11-A730-7C1E525A5C41"&gt;Contact: Rodj@LoanVision.com (0A25BDD1-B2E7-EF11-A730-7C1E525A5C41)&lt;/option&gt;
+								&lt;option value="47bf5a15-5380-ef11-ac21-6045bda6e4f2"&gt;Contact: Jenna (47bf5a15-5380-ef11-ac21-6045bda6e4f2)&lt;/option&gt;
+								&lt;option value="b108c67a-7aa0-ef11-8a69-6045bdd4b776"&gt;Contact: Richard (b108c67a-7aa0-ef11-8a69-6045bdd4b776)&lt;/option&gt;
+								&lt;option value="50A76DCA-E380-EF11-AC21-6045BDA6E4F2"&gt;Contact: Leslie Knope (50A76DCA-E380-EF11-AC21-6045BDA6E4F2)&lt;/option&gt;
+								&lt;option value="172A2341-E001-F011-BAE3-7C1E52153266"&gt;LO: Rodj Martin (172A2341-E001-F011-BAE3-7C1E52153266)&lt;/option&gt;
+							&lt;/select&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+
+				&lt;div class="col-3"&gt; &lt;!-- Action --&gt;
+					&lt;div class="row g-2 align-items-center"&gt;
+						&lt;div class="col-auto"&gt;
+							&lt;label for="cboAction" class="col-form-label me-2"&gt;Action&lt;/label&gt;
+						&lt;/div&gt;
+
+						&lt;div class="col"&gt;
+							&lt;select id="cboAction" class="form-select rj-persist" onchange="updateApiUrl()"&gt;
+								&lt;option value=""&gt;&lt;/option&gt;
+								&lt;option value="Top10"&gt;Top10&lt;/option&gt;
+								&lt;option value="Count"&gt;Count&lt;/option&gt;
+								&lt;option value="Count"&gt;Filter&lt;/option&gt;
+								&lt;option value="Top1"&gt;Top1&lt;/option&gt;
+								&lt;option value="Select"&gt;&amp;$select=nickname,emailaddress1&lt;/option&gt;
+								&lt;option value="Id"&gt;Id&lt;/option&gt;
+							&lt;/select&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+
+			&lt;div class="row mb-3 align-items-center"&gt; &lt;!-- SUCCESS HISTORY --&gt;
+				&lt;div class="col-12"&gt;
+					&lt;div class="row g-2 align-items-center"&gt;
+						&lt;div class="col-1"&gt;
+							&lt;label for="contactSelect" class="col-form-label me-2"&gt;HISTORY&lt;/label&gt;
+						&lt;/div&gt;
+
+						&lt;div class="col-11"&gt;
+							&lt;select id="cboUrlSuccessHistory" class="form-select rj-persist" onchange="$('#apiUrl').val('rodj')"&gt;
+							&lt;option value=""&gt;&lt;/option&gt;
+							&lt;/select&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+
+			&lt;div class="row mb-3 align-items-center"&gt; &lt;!-- FINAL URL --&gt;
+				&lt;div class="col-12"&gt;
+					&lt;div class="row g-2 align-items-center"&gt;
+						&lt;div class="col-1"&gt;
+							&lt;label for="apiUrl" class="col-form-label me-2"&gt;API URL&lt;/label&gt;
+						&lt;/div&gt;
+						&lt;div class="col-11"&gt;
+							&lt;input type="text" id="apiUrl" class="form-control rj-persist font-monospace" value="https://api.businesscentral.dynamics.com/v2.0/1598698c-cbd2-4d4a-94f0-0b4b2b701763/SandboxDev/ODataV4/Company('LVM')/branches?$top=3" /&gt;
+						&lt;/div&gt;
+					&lt;/
+					div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+			
+			&lt;div class="row mb-3"&gt; &lt;!-- Headers and POST Data in Two Columns --&gt;
+				
+				&lt;div class="col-md-6"&gt; &lt;!-- Headers Section --&gt;
+					&lt;div class="form-group"&gt;
+						&lt;label for="headersArea" class="form-label"&gt;Headers:&lt;/label&gt;
+						&lt;textarea id="headersArea" class="form-control font-monospace rj-persist" rows="6"&gt;OData-MaxVersion | 4.0
+OData-Version | 4.0
+Accept | application/json
+Content-Type | application/json; charset=utf-8
+Prefer | return=representation&lt;/textarea&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+
+				&lt;div class="col-md-6"&gt; &lt;!-- POST Data Section --&gt;
+					&lt;div class="form-group"&gt;
+						&lt;label for="postDataArea" class="form-label"&gt;POST data:&lt;/label&gt;
+						&lt;textarea id="postDataArea" class="form-control font-monospace rj-persist" rows="6"&gt;&lt;/textarea&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+
+			&lt;div class="row mb-3"&gt; &lt;!-- Action Button and Method Selector --&gt;
+				&lt;div class="col-12"&gt;
+					&lt;div class="d-flex align-items-center"&gt;
+						&lt;button id="btnCallApi" class="btn btn-primary me-3"
+							onclick="callSelectedFunction()"&gt;Go!&lt;/button&gt;
+
+						&lt;div class="d-inline-flex align-items-center me-3"&gt; &lt;!-- Dropdown for func name: testApi, ShowWebRoles, etc. --&gt;
+							&lt;select id="jsFuncName" class="form-select rj-persist"&gt; &lt;!-- only need to add here. All else is in js file, function callSelectedFunction --&gt;
+								&lt;option value="testApi"&gt;testApi (uses apiUrl entry and js testApi() in rcm2)&lt;/option&gt;
+								&lt;option value="apiCall"&gt;callApi (uses apiUrl entry and js apiCall in Footer)&lt;/option&gt;
+								&lt;option value="addWebRoleToContact"&gt;addWebRoleToContact API Url should have contid,roleid&lt;/option&gt;
+								&lt;option value="SetWebRoles" title="Uses whatever value is in API Url and di from contact "&gt;Set Web Roles&lt;/option&gt;
+								&lt;option value="SetYesAllRoles" title="Hardcoded to Admin,Region,Branch,LO,Assign "&gt;SetYesAllRoles&lt;/option&gt;
+								&lt;option value="SetLOAndAssign" title="Hardcoded to LO,Assign "&gt;SetLOAndAssign&lt;/option&gt;
+								&lt;option value="DeleteAllApprovals" title="Delete approval records for specific period number (reads period from P1 input)"&gt;Delete All Approvals by Period&lt;/option&gt;
+								&lt;option value="DeleteLogs" title="Uses whatever value is in API Url as kind contains"&gt;DeleteLogs&lt;/option&gt;
+								&lt;option value="DeleteRows" title="Ultimately will superceded DeleteLogs. Put logicalname, conainsfieldcolname, searchtext as comma separated in URL"&gt;DeleteRows&lt;/option&gt;
+								&lt;option value="apiGetRecord" title="Calls footer.apiGetRecord(tbl, filt) with tbl from Table dropdown and filt from P1"&gt;apiGetRecord(tbl,filt)&lt;/option&gt;
+								&lt;option value="apiGetRecords" title="Calls footer.apiGetRecords(tbl, filt) with tbl from Table dropdown and filt from P1"&gt;apiGetRecords(tbl,filt)&lt;/option&gt;
+								&lt;option value="apiGetColumnStringArray" title="Calls footer.apiGetColumnStringArray(tbl, col, filtX) with tbl from Table, filt from P1, colName from colRegex"&gt;apiGetColumnStringArray(tbl,colName,filt)&lt;/option&gt;
+								&lt;option value="apiGetColumnStringScalar" title="Calls footer.apiGetColumnStringScalar(tbl, col, filtX) with tbl from Table, filt from P1, colName from colRegex"&gt;apiGetColumnStringScalar(tbl,colName,filt)&lt;/option&gt;
+								&lt;option value="UpdateAllContactRoles" title="Updates lv_roles field for all contacts based on their actual web role assignments"&gt;UpdateAllContactRoles - Bulk Update All Contact Roles&lt;/option&gt;
+								&lt;option value="TestUpdateContactRoles" title="Test the role update logic on first 5 contacts only (no actual updates)"&gt;TestUpdateContactRoles - Test Role Update Logic&lt;/option&gt;
+								&lt;option value="LocalStorageRead" title="Read specific key (from P1) or all keys if P1 is empty"&gt;Local Storage: Read&lt;/option&gt;
+								&lt;option value="LocalStorageSet" title="Set local storage key (P1) to value (ColRx)"&gt;Local Storage: Set&lt;/option&gt;
+								&lt;option value="LocalStorageDelete" title="Delete local storage key specified in P1"&gt;Local Storage: Delete&lt;/option&gt;
+							&lt;/select&gt;
+						&lt;/div&gt;
+
+						&lt;div class="d-inline-flex align-items-center me-3"&gt; &lt;!-- Dropdown for Method --&gt;
+							&lt;label for="apiMethod" class="form-label me-2 mb-0"&gt;Method:&lt;/label&gt;
+							&lt;select id="apiMethod" class="form-select rj-persist"&gt;
+								&lt;option value="GET"&gt;GET&lt;/option&gt;
+								&lt;option value="POST"&gt;POST&lt;/option&gt;
+								&lt;option value="DELETE"&gt;DELETE&lt;/option&gt;
+								&lt;option value="PUT"&gt;PUT&lt;/option&gt;
+								&lt;option value="PATCH"&gt;PATCH&lt;/option&gt;
+							&lt;/select&gt;
+						&lt;/div&gt;
+
+						&lt;div class="form-input ms-3"&gt; &lt;!-- P1 parameter one --&gt;
+							&lt;label for="txtP1" class="col-form-label me-2"&gt;P1&lt;/label&gt;
+							&lt;input class="form-input rj-persist" type="text" id="txtP1" name="txtP1&gt;
+						&lt;/div&gt;
+
+						&lt;div class="form-input ms-3"&gt; &lt;!-- ColRegex parameter one --&gt;
+							&lt;label for="txtColRegex" class="col-form-label me-2"&gt;ColRx&lt;/label&gt;
+							&lt;input class="form-input rj-persist" type="text" id="txtColRegex" name="txtColRegex"&gt;
+						&lt;/div&gt;
+
+						&lt;div class="form-check ms-3"&gt; &lt;!-- Checkbox: Show Full Request Info --&gt;
+							&lt;input class="form-check-input rj-persist" type="checkbox" checked id="chkFullRequestInfo" name="chkFullRequestInfo" value="chkFullRequestInfo"&gt;
+							&lt;label class="form-check-label" for="chkFullRequestInfo"&gt;Verbose&lt;/label&gt;
+						&lt;/div&gt;
+
+						&lt;div class="form-check ms-3"&gt; &lt;!-- Checkbox: lv_ only --&gt;
+							&lt;input class="form-check-input rj-persist" type="checkbox" checked id="chkLVOnly" name="chkLVOnly" value="chkLVOnly"&gt;
+							&lt;label class="form-check-label" for="chkLVOnly"&gt;lv_ Only&lt;/label&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+			
+			&lt;div class="row"&gt; &lt;!-- Results Area --&gt;
+				&lt;div class="col-12"&gt;
+					&lt;div class="form-group"&gt;
+						&lt;label for="resultsArea" class="form-label" id="lblResults" onclick="$('#resultsArea').val('');"&gt;Results:&lt;/label&gt;
+						&lt;textarea id="resultsArea" class="form-control font-monospace" rows="10"&gt;&lt;/textarea&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="card mt-3"&gt; &lt;!-- LOGS --&gt;
+	&lt;div class="card-header"&gt;
+		&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#divLog" aria-expanded="true" aria-controls="divLog"&gt;
+			Logs
+		&lt;/button&gt;
+
+		&lt;div class="collapse hide" id="divLog"&gt;
+		
+			&lt;div class="container-fluid mt-2"&gt;
+				&lt;form&gt;
+					&lt;div class="row mb-1"&gt;
+						&lt;div class="col-auto form-column"&gt;
+							&lt;label id="lblLogFrom" for="txtLogFrom" class="form-label"&gt;From (Local)&lt;/label&gt;
+							&lt;input id="txtLogFrom" onchange="updateLogQueryUrl()" type="text" class="form-control rj-persist" style="width: 175px;"&gt;
+						&lt;/div&gt;
+						
+						&lt;div class="col-auto form-column"&gt;
+							&lt;label id="lblLogThru" for="txtLogThru" class="form-label"&gt;Thru (Local)&lt;/label&gt;
+							&lt;input id="txtLogThru" onchange="updateLogQueryUrl()" type="text" class="form-control rj-persist" style="width: 175px;"&gt;
+						&lt;/div&gt;
+						
+						&lt;div class="col-auto form-column"&gt;
+							&lt;label id="lblLogUserName" for="txtLogUserName" class="form-label"&gt;User&lt;/label&gt;
+							&lt;input id="txtLogUserName" onchange="updateLogQueryUrl()" type="text" class="form-control rj-persist" style="width: 120px;"&gt;
+						&lt;/div&gt;
+						
+						&lt;div class="col-auto form-column"&gt;
+							&lt;label id="lblLogKind" for="txtLogKind" class="form-label"&gt;Kind&lt;/label&gt;
+							&lt;input id="txtLogKind" onchange="updateLogQueryUrl()" type="text" class="form-control" style="width: 100px;"&gt;
+						&lt;/div&gt;
+						
+						&lt;div class="col-auto form-column"&gt;
+							&lt;label id="lblLogDetail" for="txtLogDetail" class="form-label"&gt;Detail&lt;/label&gt;
+							&lt;input id="txtLogDetail" onchange="updateLogQueryUrl()" type="text" class="form-control rj-persist" style="width: 150px;"&gt;
+						&lt;/div&gt;
+						
+						&lt;div class="col-auto form-column"&gt;
+							&lt;label for="ddlOrderBy" class="form-label"&gt;Order By&lt;/label&gt;
+							&lt;select id="ddlOrderBy" onchange="updateLogQueryUrl()" class="form-select rj-persist" style="width: 160px;"&gt;
+								&lt;option value="createdon desc" selected&gt;Date (Newest)&lt;/option&gt;
+								&lt;option value="createdon"&gt;Date (Oldest)&lt;/option&gt;
+								&lt;option value="lv_UserFullName"&gt;User Name&lt;/option&gt;
+								&lt;option value="lv_Kind"&gt;Kind&lt;/option&gt;
+								&lt;option value="lv_Detail"&gt;Detail&lt;/option&gt;
+							&lt;/select&gt;
+						&lt;/div&gt;
+
+						&lt;div class="col-auto form-column"&gt;
+							&lt;input type="button" value="Query" onclick="return btnLogQuery_Click();"/&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+
+					&lt;div class="row mb-2"&gt;
+						&lt;div class="col-md-1 form-column"&gt;
+							&lt;label id="lblLogUrl" for="txtLogUrl" class="form-label"&gt;URL&lt;/label&gt;
+						&lt;/div&gt;
+						&lt;div class="col-md-5 form-column"&gt;
+							&lt;input type="text" class="form-control rj-persist" id="txtLogUrl"&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/form&gt;
+			&lt;/div&gt;
+
+			&lt;div class="card-body"&gt;
+				&lt;div style="margin-bottom: 10px;"&gt;
+					&lt;label for="txtUserFilterRx" style="margin-right: 10px;"&gt;Filter by Username (Regex):&lt;/label&gt;
+					&lt;input type="text" id="txtUserFilterRx" value="^(?!Robert Martin$).*$" style="padding: 5px; min-width: 250px;"&gt;
+					&lt;select id="ddlUserFilterPresets" onchange="applyUserFilterPreset()" style="margin-left: 10px; padding: 5px;"&gt;
+						&lt;option value=""&gt;-- Common Filters --&lt;/option&gt;
+						&lt;option value="^(?!Robert Martin$).*$"&gt;Exclude Robert Martin&lt;/option&gt;
+						&lt;option value=".*"&gt;Show All Users&lt;/option&gt;
+						&lt;option value="^Robert Martin$"&gt;Only Robert Martin&lt;/option&gt;
+						&lt;option value=".*@loanvision\.com$"&gt;Only @loanvision.com&lt;/option&gt;
+						&lt;option value="^(?!.*@loanvision\.com$).*$"&gt;Exclude @loanvision.com&lt;/option&gt;
+						&lt;option value="^(Mickey|Minnie|Daffy|Goofy).*"&gt;Test Users Only&lt;/option&gt;
+					&lt;/select&gt;
+				&lt;/div&gt;
+	
+				&lt;table id="logTable" class="table table-striped" style="width: 100%; border-collapse: collapse; margin-top: 10px;"&gt;
+					&lt;thead&gt;
+						&lt;tr style="background-color: #f2f2f2;"&gt;
+							&lt;th&gt;Time&lt;/th&gt;
+							&lt;th&gt;User&lt;/th&gt;
+							&lt;th&gt;Kind&lt;/th&gt;
+							&lt;th&gt;Detail&lt;/th&gt;
+							&lt;th&gt;K1Name&lt;/th&gt;
+							&lt;th&gt;K1Value&lt;/th&gt;
+							&lt;th&gt;K2Name&lt;/th&gt;
+							&lt;th&gt;K2Value&lt;/th&gt;
+							&lt;th&gt;Memo&lt;/th&gt;
+						&lt;/tr&gt;
+					&lt;/thead&gt;
+					&lt;tbody id="logTableBody"&gt;
+					&lt;/tbody&gt;
+				&lt;/table&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;		
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="card mt-3"&gt; &lt;!-- COMMISSION PERIOD APPROVALa --&gt;
+	&lt;div class="card-header"&gt;
+		&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#divCPA" aria-expanded="true" aria-controls="divCPA"&gt;
+			lv_lvcompcommissionapproval
+		&lt;/button&gt;
+
+		&lt;div class="collapse hide" id="divCPA"&gt;
+			{% fetchxml cpaQuery %}
+				&lt;fetch top="50"&gt;
+					&lt;entity name="lv_lvcompcommissionapproval"&gt;
+						&lt;attribute name="createdon" /&gt;
+						&lt;attribute name="lv_name" /&gt;
+						&lt;attribute name="lv_periodno" /&gt;
+						&lt;attribute name="lv_periodcode" /&gt;
+						&lt;attribute name="lv_loanofficercode" /&gt;
+						&lt;order attribute="createdon" descending="true" /&gt;
+					&lt;/entity&gt;
+				&lt;/fetch&gt;
+			{% endfetchxml %}
+		
+			&lt;div class="card-body"&gt;
+	
+				&lt;table id="cpaTable" style="width: 100%; border-collapse: collapse; margin-top: 10px;"&gt;
+					&lt;thead&gt;
+						&lt;tr style="background-color: #f2f2f2;"&gt;
+							&lt;th&gt;Time&lt;/th&gt;
+							&lt;th&gt;FullName&lt;/th&gt;
+							&lt;th&gt;PeriodCode&lt;/th&gt;
+							&lt;th&gt;LOName&lt;/th&gt;
+							&lt;th&gt;LOId&lt;/th&gt;
+						&lt;/tr&gt;
+					&lt;/thead&gt;
+					&lt;tbody id="cpaTableBody"&gt;
+						{% for cpa in cpaQuery.results.entities %}
+							&lt;tr data-username="{{ cpa.lv_fullname }}" class="cpa-row"&gt;
+								&lt;td&gt;{{ cpa.createdon | date: "ddd HH:mm:ss" }}&lt;/td&gt;
+								&lt;td&gt;{{ cpa.lv_fullname }}&lt;/td&gt;
+								&lt;td&gt;{{ cpa.lv_periodcode }}&lt;/td&gt;
+								&lt;td&gt;{{ cpa.LOName }}&lt;/td&gt;
+								&lt;td&gt;{{ cpa.lv_loanofficercode }}&lt;/td&gt;
+							&lt;/tr&gt;
+						{% endfor %}
+					&lt;/tbody&gt;
+				&lt;/table&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;		
+	&lt;/div&gt;
+&lt;/div&gt;
+
+{% comment %}    JAVASCRIPT is in separate file    {% endcomment %} 
+
+
+{% comment %}
+
+
+{% fetchxml abc %}
+	&lt;fetch&gt;
+		&lt;entity name="lv_lvcompcommission"&gt;
+			&lt;attribute name="lv_calculationdate" /&gt;
+			&lt;attribute name="lv_amount" /&gt;
+			&lt;attribute name="lv_description" /&gt;
+			&lt;attribute name="lv_bpscalculated" /&gt;
+			&lt;attribute name="lv_cappedcommissionbaseamount" /&gt;
+			&lt;attribute name="lv_xloanofficer" /&gt;
+			&lt;attribute name="lv_loanofficer" /&gt;
+		&lt;/entity&gt;
+	&lt;/fetch&gt;
+{% endfetchxml %}
+
+&lt;div class="container"&gt;
+	&lt;div class="row"&gt;
+		&lt;div class="col-12 table-container"&gt;
+			&lt;h2&gt;Commission Records&lt;/h2&gt;
+			&lt;div class="table-responsive"&gt;
+				&lt;table class="table table-striped table-hover"&gt;
+					&lt;thead class="table-dark"&gt;
+						&lt;tr&gt;
+							&lt;th&gt;Calculation Date&lt;/th&gt;
+							&lt;th class="money-column"&gt;Amount&lt;/th&gt;
+							&lt;th&gt;Description&lt;/th&gt;
+							&lt;th class="money-column"&gt;BPS Calculated&lt;/th&gt;
+							&lt;th class="money-column"&gt;Capped Commission Base&lt;/th&gt;
+							&lt;th&gt;Branch&lt;/th&gt;
+							&lt;th&gt;Loan Officer&lt;/th&gt;
+							&lt;th&gt;LOLook&lt;/th&gt;
+						&lt;/tr&gt;
+					&lt;/thead&gt;
+					&lt;tbody&gt;
+						&lt;!-- This is where FetchXML results would be rendered --&gt;
+						{% for item in abc.results.entities %}
+						&lt;tr&gt;
+							&lt;td class="date-column"&gt;{{ item.lv_calculationdate }}&lt;/td&gt;
+							&lt;td class="money-column"&gt;{{ item.lv_amount }}&lt;/td&gt;
+							&lt;td&gt;{{ item.lv_description }}&lt;/td&gt;
+							&lt;td class="money-column"&gt;{{ item.lv_bpscalculated }}&lt;/td&gt;
+							&lt;td class="money-column"&gt;{{ item.lv_cappedcommissionbaseamount }}&lt;/td&gt;
+							&lt;td&gt;{{ item.lv_xbranchcode }}&lt;/td&gt;
+							&lt;td&gt;{{ item.lv_xloanofficer }}&lt;/td&gt;
+							&lt;td&gt;{{ item.lv_loanofficer.name }}&lt;/td&gt;
+						&lt;/tr&gt;
+						{% endfor %}
+
+						{% if abc.results.entities.size == 0 %}
+						&lt;tr&gt;
+							&lt;td colspan="7" class="text-center"&gt;No commission records found.&lt;/td&gt;
+						&lt;/tr&gt;
+						{% endif %}
+					&lt;/tbody&gt;
+				&lt;/table&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+
+
+{% endcomment %} 
+
+&lt;!-- Last modified Fri Oct 31  8:04AM --&gt;
+
+&lt;!-- Last modified Fri Oct 31 8:41AM --&gt;lvcpdev</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

@@ -1,0 +1,15 @@
+<powerpagecomponent powerpagecomponentid="4f844ba3-925d-f011-bec2-6045bd078e56">
+  <content>{
+  "description": "Used in determining whether commission approvals are enabled for a particular period. The value in /NumApprovalPeriods is SUBTRACTED from the period number of the MOST RECENT period. Given that the most recent period has period number R, then for any particular period number X, approvals are enabled if X &gt;= (R - NumApprovalPeriods). So by default, ONLY the most recent period will be enabled for approvals",
+  "source": 0,
+  "value": "0"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>LV/NumApprovalPeriods</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

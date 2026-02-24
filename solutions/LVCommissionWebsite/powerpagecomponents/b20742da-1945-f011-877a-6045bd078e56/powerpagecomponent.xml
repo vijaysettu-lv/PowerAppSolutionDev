@@ -1,0 +1,15 @@
+<powerpagecomponent powerpagecomponentid="b20742da-1945-f011-877a-6045bd078e56">
+  <content>{
+  "description": "URL of the Power Automate flow used to add and remove roles for a contact",
+  "source": 0,
+  "value": "https://www.rodj.me"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>LoanVision/UrlFlowContactWebRole</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

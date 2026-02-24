@@ -1,0 +1,15 @@
+<powerpagecomponent powerpagecomponentid="862bea8f-c12a-f011-8c4d-6045bd078e56">
+  <content>{
+  "anonymoususersrole": false,
+  "authenticatedusersrole": false,
+  "description": "Intended for any features we want to display only to Loan Vision staff, typically testers or developers."
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>LoanVision</name>
+  <powerpagecomponenttype>11</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

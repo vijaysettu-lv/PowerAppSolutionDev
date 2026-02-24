@@ -1,0 +1,13 @@
+<powerpagecomponent powerpagecomponentid="8215280a-c316-f011-9989-002248045044">
+  <content>{
+  "pageid": "d089bc82-3ff8-d27c-107a-f45396129a38"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Edit Contact</name>
+  <powerpagecomponenttype>13</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

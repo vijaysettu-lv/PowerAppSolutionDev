@@ -1,0 +1,24 @@
+<powerpagecomponent powerpagecomponentid="71b10340-c8ca-f011-bbd3-6045bd078e56">
+  <content>{
+   "scope": 756150000,
+   "entitylogicalname": "lv_contactloanofficerrelationship",
+   "entityname": "ContactLoanOfficerRelationship (Admin)",
+   "appendto": true,
+   "append": true,
+   "delete": true,
+   "create": true,
+   "write": true,
+   "read": true,
+   "adx_entitypermission_webrole": [
+      "007ff13c-35b2-410f-aaff-3b671f3876bd"
+   ]
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>ContactLoanOfficerRelationship (Admin)</name>
+  <powerpagecomponenttype>18</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

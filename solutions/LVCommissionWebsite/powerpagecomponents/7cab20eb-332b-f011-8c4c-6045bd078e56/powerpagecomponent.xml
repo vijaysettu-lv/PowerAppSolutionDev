@@ -1,0 +1,24 @@
+<powerpagecomponent powerpagecomponentid="7cab20eb-332b-f011-8c4c-6045bd078e56">
+  <content>{
+  "append": true,
+  "appendto": true,
+  "create": true,
+  "delete": false,
+  "entitylogicalname": "lv_lvcompcommissionapproval",
+  "entityname": "CommisionApproval",
+  "read": true,
+  "scope": 756150000,
+  "write": true,
+  "adx_entitypermission_webrole": [
+    "40653bb0-5116-f011-9989-002248045044"
+  ]
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>CommisionApproval</name>
+  <powerpagecomponenttype>18</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

@@ -1,0 +1,18 @@
+<powerpagecomponent powerpagecomponentid="ab965973-3c79-4b17-9267-d4056a65b611">
+  <content>{
+  "display_name": "Footer",
+  "type": 756150001,
+  "value": "&lt;!-- Last modified Mon Nov 17 7:17PM --&gt;\n&lt;!-- Last modified Mon Nov 10 1:28PM --&gt;\n&lt;!-- Last modified Mon Nov 10 1:00PM --&gt;\n\n{% comment %}~version ~footer{% endcomment %}\n\n&lt;p&gt;\n\t&lt;span&gt;\n\t\tCopyright © {{ now | date: 'yyyy' }}. All rights reserved\n\t&lt;/span&gt;\n\n\t&lt;span style=\"margin-left: 6px; font-size: 14px;\"&gt;\n\t\t(v1.12.101833-Bat-LOE)\n\t&lt;/span&gt;\n&lt;/p&gt;\n\n&lt;!-- Last modified Mon Nov 10 1:00PM --&gt;\n&lt;!-- Last modified Mon Nov 10 1:28PM --&gt;\n&lt;!-- Last modified Mon Nov 17 7:17PM --&gt;"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Footer</name>
+  <powerpagecomponenttype>7</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

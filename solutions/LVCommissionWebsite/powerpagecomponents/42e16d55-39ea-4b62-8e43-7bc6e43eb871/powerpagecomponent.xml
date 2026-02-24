@@ -1,0 +1,13 @@
+<powerpagecomponent powerpagecomponentid="42e16d55-39ea-4b62-8e43-7bc6e43eb871">
+  <content>{
+  "source": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n{% extends 'Layout 2 Column Wide Left' %}\n\n{% block title %}\n  {% assign rt = snippets[\"Search/ResultsTitle\"] %}\n  {% if rt %}\n    {% assign title = rt | liquid %}\n  {% else %}\n    {% assign title = rt %}\n  {% endif %}\n  {% assign title = title | truncate: 115 %}\n  {% include 'Page Header' title: title %}\n{% endblock %}\n\n{% block main %}\n  {% assign page_size = 10 %}\n  {% assign current_page = request.params.page | default: 1 %}\n  {% searchindex query: request.params.q, page: request.params.page, page_size: page_size %}\n    {% if searchindex.results.size &gt; 0 %}\n      &lt;p class=\"result-count\"&gt;{% assign rc = snippets[\"Search/ResultsCount\"] %}{% if rc %}{{ rc | liquid }}{% else %}{{ current_page }} - {{ page_size }} of {{ searchindex.approximate_total_hits }} Results test{% endif %}&lt;/p&gt;\n      &lt;ul class=\"search-results\"&gt;\n        {% for result in searchindex.results %}\n        &lt;li&gt;\n          &lt;h4&gt;\n            &lt;a title=\"{{ result.title | escape }}\" href=\"{{ result.url | escape }}\"&gt;{{ result.title | escape }}&lt;/a&gt;\n          &lt;/h4&gt;\n          &lt;p class=\"fragment\"&gt;{{ result.fragment }}&lt;/p&gt;\n        &lt;/li&gt;\n        {% endfor %}\n      &lt;/ul&gt;\n      {% include 'Pagination' current_page: searchindex.page, page_size: page_size, total: searchindex.approximate_total_hits %}\n    {% else %}\n      {{ snippets[\"Search/NoResults\"] }}\n    {% endif %}\n  {% endsearchindex %}\n{% endblock %}\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Search Results</name>
+  <powerpagecomponenttype>8</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

@@ -1,0 +1,19 @@
+<powerpagecomponent powerpagecomponentid="fd21df46-0e20-8e3a-e7a6-8c1285bcb294">
+  <content>{
+  "displayimageonly": false,
+  "displaypagechildlinks": false,
+  "openinnewwindow": false,
+  "pageid": "1076642a-d062-f5b4-6d16-439edb8702f3",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "robotsfollowlink": true,
+  "weblinksetid": "bbd580f2-3d22-41e6-82f1-9e178b7779c9"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>lvcpx2</name>
+  <powerpagecomponenttype>5</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>1</statecode>
+  <statuscode>2</statuscode>
+</powerpagecomponent>

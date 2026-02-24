@@ -1,0 +1,119 @@
+<powerpagecomponent powerpagecomponentid="8305dbaa-6d40-ffd0-6d35-1f156b34ba90">
+  <content>{
+  "copy": "{% comment %}\nAPI Proxy Page - Poor Man's API Endpoint\nUsage: /lvxcpzoh?url=&lt;encoded-api-url&gt;\nReturns: Raw JSON response suitable for parsing\n{% endcomment %}\n\n&lt;div id=\"json-output\"&gt;&lt;/div&gt;\n\n&lt;script&gt;\n// Wait for DOM and global functions to be ready\ndocument.addEventListener('LVGlobalDOCReady', async function() {\n    console.log('API Proxy: LVGlobalDOCReady fired');\n\n    // Get URL parameter from query string\n    const urlParams = new URLSearchParams(window.location.search);\n    let apiUrl = urlParams.get('url');\n\n    if (!apiUrl) {\n        const errorResponse = {\n            error: 'Missing required parameter: url',\n            usage: '/lvxcpzoh?url=&lt;encoded-api-url&gt;',\n            example: '/lvxcpzoh?url=' + encodeURIComponent('/_api/contacts?$top=5'),\n            hack: 'Manual entry: use ~ for ? and ^ for &amp; (e.g., ?url=/_api/lv_logs~$select=id^$filter=...)'\n        };\n        document.getElementById('json-output').textContent = JSON.stringify(errorResponse, null, 2);\n        return;\n    }\n\n    // HACK: Replace special characters to allow manual URL entry without encoding issues\n    // ~ becomes ? (for starting query string)\n    // ^ becomes &amp; (for separating query parameters)\n    // Example: /lvxcpzoh?url=/_api/lv_logs~$select=createdon,lv_kind^$filter=lv_kind eq 'CommissionDataReady'\n    // Becomes: /_api/lv_logs?$select=createdon,lv_kind&amp;$filter=lv_kind eq 'CommissionDataReady'\n    apiUrl = apiUrl.replace(/~/g, '?').replace(/\\^/g, '&amp;');\n\n    console.log('API Proxy: Calling API with URL:', apiUrl);\n\n    try {\n        // Call the API using the global apiCall function\n        const result = await apiCall(apiUrl, 'GET', '', false);\n\n        console.log('API Proxy: API call completed', result);\n\n        if (result.success &amp;&amp; result.data) {\n            // Output ONLY the raw JSON data\n            document.getElementById('json-output').textContent = JSON.stringify(result.data, null, 2);\n        } else {\n            // If call failed, return error info as JSON\n            const errorResponse = {\n                error: 'API call failed',\n                status: result.status,\n                statusText: result.statusText,\n                message: result.message\n            };\n            document.getElementById('json-output').textContent = JSON.stringify(errorResponse, null, 2);\n        }\n    } catch (error) {\n        console.error('API Proxy: Exception occurred', error);\n        const errorResponse = {\n            error: 'Exception occurred',\n            message: error.message,\n            stack: error.stack\n        };\n        document.getElementById('json-output').textContent = JSON.stringify(errorResponse, null, 2);\n    }\n});\n&lt;/script&gt;\n\n&lt;style&gt;\n/* Remove all visual styling - make this look like raw JSON */\nbody {\n    margin: 0;\n    padding: 0;\n    font-family: monospace;\n    font-size: 12px;\n}\n\n#json-output {\n    white-space: pre-wrap;\n    word-wrap: break-word;\n    margin: 0;\n    padding: 0;\n}\n\n/* Hide header, footer, navigation - show ONLY JSON */\nheader, footer, nav, .navbar {\n    display: none !important;\n}\n&lt;/style&gt;\n",
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "hiddenfromsitemap": true,
+  "isroot": false,
+  "pagetemplateid": "cd587cbe-a61f-4c11-a750-6d0235a784ef",
+  "parentpageid": "362995e0-7dc5-4bbf-9595-062f468d2d44",
+  "partialurl": "lvxcpzoh",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "rootwebpageid": "e9ca36b2-197d-5c29-39fc-efdc96f9e6dc",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;p&gt;This is a sample landing page designed to be a starting point for your website&lt;/p&gt;",
+  "title": "lvxcpzoh"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>lvxcpzoh</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <searchcontent>lvxcpzoh{% comment %}
+API Proxy Page - Poor Man's API Endpoint
+Usage: /lvxcpzoh?url=&lt;encoded-api-url&gt;
+Returns: Raw JSON response suitable for parsing
+{% endcomment %}
+
+&lt;div id="json-output"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+// Wait for DOM and global functions to be ready
+document.addEventListener('LVGlobalDOCReady', async function() {
+    console.log('API Proxy: LVGlobalDOCReady fired');
+
+    // Get URL parameter from query string
+    const urlParams = new URLSearchParams(window.location.search);
+    let apiUrl = urlParams.get('url');
+
+    if (!apiUrl) {
+        const errorResponse = {
+            error: 'Missing required parameter: url',
+            usage: '/lvxcpzoh?url=&lt;encoded-api-url&gt;',
+            example: '/lvxcpzoh?url=' + encodeURIComponent('/_api/contacts?$top=5'),
+            hack: 'Manual entry: use ~ for ? and ^ for &amp; (e.g., ?url=/_api/lv_logs~$select=id^$filter=...)'
+        };
+        document.getElementById('json-output').textContent = JSON.stringify(errorResponse, null, 2);
+        return;
+    }
+
+    // HACK: Replace special characters to allow manual URL entry without encoding issues
+    // ~ becomes ? (for starting query string)
+    // ^ becomes &amp; (for separating query parameters)
+    // Example: /lvxcpzoh?url=/_api/lv_logs~$select=createdon,lv_kind^$filter=lv_kind eq 'CommissionDataReady'
+    // Becomes: /_api/lv_logs?$select=createdon,lv_kind&amp;$filter=lv_kind eq 'CommissionDataReady'
+    apiUrl = apiUrl.replace(/~/g, '?').replace(/\^/g, '&amp;');
+
+    console.log('API Proxy: Calling API with URL:', apiUrl);
+
+    try {
+        // Call the API using the global apiCall function
+        const result = await apiCall(apiUrl, 'GET', '', false);
+
+        console.log('API Proxy: API call completed', result);
+
+        if (result.success &amp;&amp; result.data) {
+            // Output ONLY the raw JSON data
+            document.getElementById('json-output').textContent = JSON.stringify(result.data, null, 2);
+        } else {
+            // If call failed, return error info as JSON
+            const errorResponse = {
+                error: 'API call failed',
+                status: result.status,
+                statusText: result.statusText,
+                message: result.message
+            };
+            document.getElementById('json-output').textContent = JSON.stringify(errorResponse, null, 2);
+        }
+    } catch (error) {
+        console.error('API Proxy: Exception occurred', error);
+        const errorResponse = {
+            error: 'Exception occurred',
+            message: error.message,
+            stack: error.stack
+        };
+        document.getElementById('json-output').textContent = JSON.stringify(errorResponse, null, 2);
+    }
+});
+&lt;/script&gt;
+
+&lt;style&gt;
+/* Remove all visual styling - make this look like raw JSON */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+#json-output {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin: 0;
+    padding: 0;
+}
+
+/* Hide header, footer, navigation - show ONLY JSON */
+header, footer, nav, .navbar {
+    display: none !important;
+}
+&lt;/style&gt;
+lvxcpzoh</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

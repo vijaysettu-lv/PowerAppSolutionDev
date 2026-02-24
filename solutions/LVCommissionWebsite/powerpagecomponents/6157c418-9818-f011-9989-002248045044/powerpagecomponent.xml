@@ -1,0 +1,14 @@
+<powerpagecomponent powerpagecomponentid="6157c418-9818-f011-9989-002248045044">
+  <content>{
+  "source": 0,
+  "value": "*"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Webapi/lv_log/fields</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

@@ -1,0 +1,13 @@
+<powerpagecomponent powerpagecomponentid="e8a35c00-5752-47cb-bf62-43b9b1b09584">
+  <content>{
+  "source": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Power virtual agents web template V2.0 --&gt;\n{% assign botconsumer = entities.adx_botconsumer[bot_consumer_id] %}\n{% assign env = environment %}\n{% assign languageCode = website.selected_language.code %}\n{% assign botConfig = botconsumer.adx_configjson %}\n&lt;div class='pva-floating-style'&gt;\n    &lt;div name='webChat'&gt;&lt;/div&gt;\n    &lt;script type='text/javascript' id='pvaChatInlineScript'&gt;\n        var script = document.createElement('script');\n        script.onload = function() {\n            var botConfig = {{botConfig}};\n\n        // Learn more about advanced configuration: https://go.microsoft.com/fwlink/?linkid=2147420\n        const webChatHeaderStyleOptions = botConfig?.webChatHeaderStyleOptions;\n        const webChatCanvasStyleOptions = botConfig?.webChatCanvasStyleOptions;\n        const webChatWidgetStyleOptions = botConfig?.webChatWidgetStyleOptions;\n        const botTitle = botConfig?.headerText;\n        let chatWidth = \"320px\";\n        let chatHeight =  \"480px\";\n        window.PvaEmbeddedWebChat.renderWebChat(\n            {\n                \"container\": document.getElementsByName('webChat')[0],\n                \"botSchemaName\": \"{{ botconsumer.adx_botschemaname }}\",\n                \"environmentId\": \"{{ env.Id }}\",\n                \"width\": chatWidth,\n                \"height\": chatHeight,\n                \"client\": \"msportals\", // client and version is needed for the ease of future breaking changes\n                \"version\": \"v1\",\n                \"headerText\": botTitle,\n                \"webChatCanvasStyleOptions\": webChatCanvasStyleOptions,\n                \"webChatHeaderStyleOptions\": webChatHeaderStyleOptions,\n                \"webChatWidgetStyleOptions\": webChatWidgetStyleOptions,\n                \"accessibilityLanguage\": \"{{languageCode}}\"\n            });\n            }\n        script.src = \"https://embed.powerva.microsoft.com/webchat/embedded.js?client=msportals&amp;version=v1\";\n        document.getElementsByTagName('head')[0].appendChild(script);\n    &lt;/script&gt;\n&lt;/div&gt;\n\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Power Virtual Agents</name>
+  <powerpagecomponenttype>8</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

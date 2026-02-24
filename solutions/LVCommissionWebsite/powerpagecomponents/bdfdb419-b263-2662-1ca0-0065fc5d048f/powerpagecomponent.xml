@@ -1,0 +1,66 @@
+<powerpagecomponent powerpagecomponentid="bdfdb419-b263-2662-1ca0-0065fc5d048f">
+  <content>{
+  "copy": "&lt;!-- Last modified fri aug 15 8:36am --&gt;\n{% include 'snippet' snippet_name:'FetchXML - SetupQuery' %} {% if sqHasCommissionProfile\" %}\n\n&lt;div class=\"row sectionBlockLayout text-start\" style=\"display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;\"&gt;\n  &lt;div class=\"container\" style=\"display: flex; flex-wrap: wrap;\"&gt;\n    &lt;div class=\"col-lg-12 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; word-break: break-word; padding: 16px; margin: 60px 0px;\"&gt;\n      {% include 'Pages Breadcrumb' %} {% include 'snippet' snippet_name:'FetchXML - Commission Profiles' %} {% if is_admin == true or is_BranchManager == true %} {% include 'snippet' snippet_name:'Commission Profile Selection' %} {% endif %} {% include 'snippet' snippet_name:'Commission Profile Dashboard' %}\n      &lt;div class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 15px;\"&gt;&lt;/div&gt;\n      &lt;div class=\"ppFlexContainer\" style=\"display: flex; align-items: center; padding: 8px 0 8px 0;\"&gt;\n        &lt;div data-component-theme=\"portalThemeColor10\" class=\"ppFlexContainer\" style=\"display: flex; border-radius: 8px 8px 8px 8px; align-items: center; justify-content: center; max-width: auto; width: auto; height: 45px; flex-grow: 0; flex-shrink: 0; flex-basis: 200px;\"&gt;\n          &lt;p style=\"text-align: left; color: var(--portalThemeColor5); font-size: 18px;\"&gt;&lt;a href=\"/Loan-Officer/Commission-Profile/Tiers\" class=\"anchor-inherit-styles\"&gt;​​Tiers&lt;/a&gt;&lt;b&gt;&lt;/b&gt;&lt;/p&gt;\n        &lt;/div&gt;\n      &lt;/div&gt;\n\n      {% comment %} This renders the 'File Based' calculation {% endcomment %} {% include 'Primary Commission Profile Table' %}\n\n      &lt;div class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 25px;\"&gt;&lt;/div&gt;\n\n      {% comment %} This renders the 'Period Based' calculation {% endcomment %} {% include 'Primary Period Based Calculation Table' %}\n    &lt;/div&gt;\n  &lt;/div&gt;\n&lt;/div&gt;\n\n{% else %}\n\n&lt;script&gt;\n  window.location.href = \"/access-denied\";\n&lt;/script&gt;\n\n{% endif %}\n&lt;div class=\"row sectionBlockLayout text-start\" style=\"display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;\"&gt;\n  &lt;div class=\"container\" style=\"padding: 0px; display: flex; flex-wrap: wrap;\"&gt;&lt;div class=\"col-lg-12 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 250px;\"&gt;&lt;/div&gt;&lt;/div&gt;\n&lt;/div&gt;\n\n&lt;!-- Last modified fri aug 15 8:36am --&gt;",
+  "customjavascript": "\n",
+  "displayorder": 9,
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "hiddenfromsitemap": true,
+  "isroot": false,
+  "pagetemplateid": "cd587cbe-a61f-4c11-a750-6d0235a784ef",
+  "parentpageid": "362995e0-7dc5-4bbf-9595-062f468d2d44",
+  "partialurl": "Commission-Profile",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "rootwebpageid": "a82ff7f8-5505-113c-bdf4-07b09097337a",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;p&gt;This is a sample landing page designed to be a starting point for your website&lt;/p&gt;\n",
+  "title": "Commission Profile"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Commission Profile</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <searchcontent>Commission Profile&lt;!-- Last modified fri aug 15 8:36am --&gt;
+{% include 'snippet' snippet_name:'FetchXML - SetupQuery' %} {% if sqHasCommissionProfile" %}
+
+&lt;div class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;"&gt;
+  &lt;div class="container" style="display: flex; flex-wrap: wrap;"&gt;
+    &lt;div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; word-break: break-word; padding: 16px; margin: 60px 0px;"&gt;
+      {% include 'Pages Breadcrumb' %} {% include 'snippet' snippet_name:'FetchXML - Commission Profiles' %} {% if is_admin == true or is_BranchManager == true %} {% include 'snippet' snippet_name:'Commission Profile Selection' %} {% endif %} {% include 'snippet' snippet_name:'Commission Profile Dashboard' %}
+      &lt;div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 15px;"&gt;&lt;/div&gt;
+      &lt;div class="ppFlexContainer" style="display: flex; align-items: center; padding: 8px 0 8px 0;"&gt;
+        &lt;div data-component-theme="portalThemeColor10" class="ppFlexContainer" style="display: flex; border-radius: 8px 8px 8px 8px; align-items: center; justify-content: center; max-width: auto; width: auto; height: 45px; flex-grow: 0; flex-shrink: 0; flex-basis: 200px;"&gt;
+          &lt;p style="text-align: left; color: var(--portalThemeColor5); font-size: 18px;"&gt;&lt;a href="/Loan-Officer/Commission-Profile/Tiers" class="anchor-inherit-styles"&gt;​​Tiers&lt;/a&gt;&lt;b&gt;&lt;/b&gt;&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      {% comment %} This renders the 'File Based' calculation {% endcomment %} {% include 'Primary Commission Profile Table' %}
+
+      &lt;div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 25px;"&gt;&lt;/div&gt;
+
+      {% comment %} This renders the 'Period Based' calculation {% endcomment %} {% include 'Primary Period Based Calculation Table' %}
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+{% else %}
+
+&lt;script&gt;
+  window.location.href = "/access-denied";
+&lt;/script&gt;
+
+{% endif %}
+&lt;div class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;"&gt;
+  &lt;div class="container" style="padding: 0px; display: flex; flex-wrap: wrap;"&gt;&lt;div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px;"&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Last modified fri aug 15 8:36am --&gt;Commission Profile</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

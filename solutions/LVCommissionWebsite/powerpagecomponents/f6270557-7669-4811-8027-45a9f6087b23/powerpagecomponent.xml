@@ -1,0 +1,13 @@
+<powerpagecomponent powerpagecomponentid="f6270557-7669-4811-8027-45a9f6087b23">
+  <content>{
+  "value": "true"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Site/BootstrapV5Enabled</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

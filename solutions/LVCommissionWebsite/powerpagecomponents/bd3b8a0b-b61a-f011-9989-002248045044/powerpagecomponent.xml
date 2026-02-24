@@ -1,0 +1,14 @@
+<powerpagecomponent powerpagecomponentid="bd3b8a0b-b61a-f011-9989-002248045044">
+  <content>{
+  "source": 0,
+  "value": "*"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Webapi/lv_lvcompcommissionsetup/fields</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

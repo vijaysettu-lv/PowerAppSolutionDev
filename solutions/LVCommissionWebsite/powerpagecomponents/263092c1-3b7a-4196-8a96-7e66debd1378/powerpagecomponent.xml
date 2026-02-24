@@ -1,0 +1,16 @@
+<powerpagecomponent powerpagecomponentid="263092c1-3b7a-4196-8a96-7e66debd1378">
+  <content>{
+  "displayorder": 4,
+  "pageid": "1fbe1936-197c-95df-44ed-0821fb35ea91",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "weblinksetid": "3baf98b9-97fe-4c16-a5b4-071bd273fea8"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Diag</name>
+  <powerpagecomponenttype>5</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

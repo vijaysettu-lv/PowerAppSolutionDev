@@ -1,0 +1,28 @@
+<powerpagecomponent powerpagecomponentid="d1398561-bf9e-40b0-9e98-c3792c8c4f38">
+  <content>{
+  "attachfilestoragelocation": 756150000,
+  "captcharequired": false,
+  "containername": "",
+  "entityname": "lv_lvcompcommission",
+  "entitypermissionsenabled": true,
+  "entitysourcetype": 756150001,
+  "formname": "Information",
+  "hideformonsuccess": true,
+  "maximumnooffiles": 5,
+  "mode": 100000001,
+  "onsuccess": 756150001,
+  "recordidquerystringparametername": "id",
+  "redirectwebpage": "3904d53f-e8bc-9c7d-8920-cda5e7854416",
+  "registerstartupscript": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;",
+  "showcaptchaforauthenticatedusers": false,
+  "storageaccountname": ""
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>DesignStudioInformation</name>
+  <powerpagecomponenttype>15</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

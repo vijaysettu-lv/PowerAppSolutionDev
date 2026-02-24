@@ -1,0 +1,21 @@
+<powerpagecomponent powerpagecomponentid="2f433c1f-143e-f011-b4cb-6045bd078e56">
+  <content>{
+  "append": true,
+  "appendto": true,
+  "create": true,
+  "delete": true,
+  "entitylogicalname": "mspp_website",
+  "entityname": "mspp_website",
+  "read": true,
+  "scope": 756150000,
+  "write": true
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>mspp_website</name>
+  <powerpagecomponenttype>18</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

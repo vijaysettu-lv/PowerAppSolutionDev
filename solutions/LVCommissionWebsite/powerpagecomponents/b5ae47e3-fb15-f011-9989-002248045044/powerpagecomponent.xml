@@ -1,0 +1,24 @@
+<powerpagecomponent powerpagecomponentid="b5ae47e3-fb15-f011-9989-002248045044">
+  <content>{
+  "append": true,
+  "appendto": true,
+  "create": true,
+  "delete": false,
+  "entitylogicalname": "lv_lvcompemaillog",
+  "entityname": "lvcEmailLog",
+  "read": true,
+  "scope": 756150000,
+  "write": true,
+  "adx_entitypermission_webrole": [
+    "e1e17fc7-e0e5-4803-b01b-0ba213d4c790"
+  ]
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>lvcEmailLog</name>
+  <powerpagecomponenttype>18</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

@@ -1,0 +1,16 @@
+<powerpagecomponent powerpagecomponentid="0963830e-d435-f011-8c4e-6045bd078e56">
+  <content>{
+  "isdefault": false,
+  "type": 756150001,
+  "usewebsiteheaderandfooter": false,
+  "webtemplateid": "56bb25c6-d335-f011-8c4e-6045bd078e56"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>lvxdata</name>
+  <powerpagecomponenttype>6</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

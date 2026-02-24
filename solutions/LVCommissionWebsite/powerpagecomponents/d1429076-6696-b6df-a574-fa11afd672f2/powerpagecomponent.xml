@@ -1,0 +1,19 @@
+<powerpagecomponent powerpagecomponentid="d1429076-6696-b6df-a574-fa11afd672f2">
+  <content>{
+  "right": 2,
+  "scope": 1,
+  "webpageid": "6815ddcc-72c6-cdbf-5886-5a13849cc756",
+  "adx_webpageaccesscontrolrule_webrole": [
+    "862bea8f-c12a-f011-8c4d-6045bd078e56",
+    "e8341cc3-a325-f011-8c4d-6045bd078e56"
+  ]
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Restrict Read on lvxtemp</name>
+  <powerpagecomponenttype>10</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

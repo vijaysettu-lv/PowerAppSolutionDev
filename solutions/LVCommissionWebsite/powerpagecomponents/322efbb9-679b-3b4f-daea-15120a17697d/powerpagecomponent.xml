@@ -1,0 +1,953 @@
+<powerpagecomponent powerpagecomponentid="322efbb9-679b-3b4f-daea-15120a17697d">
+  <content>{"filecontent":null,"copy":"&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified sat aug 16 8:10am --&gt;\n&lt;!-- Last modified sat aug 16 8:05am --&gt;\n&lt;!-- Last modified sat aug 16 7:46am --&gt;\n&lt;!-- Last modified sat aug 16 7:29am --&gt;\n&lt;!-- Last modified sat aug 16 7:13am --&gt;\n&lt;!-- Last modified sat aug 16 6:56am --&gt;\n&lt;!-- Last modified sat aug 16 6:47am --&gt;\n&lt;!-- Last modified sat aug 16 6:43am --&gt;\n&lt;!-- Last modified fri aug 15 11:01am --&gt;\n&lt;!-- Rodj manual update 2508141410 --&gt;\n\n&lt;!-- /web-pages/Profiles.html --&gt;\n\n{% include 'snippet' snippet_name:'FetchXML - SetupQuery' %} {% if is_admin != true and is_RoleAssign != true and has_admin_backdoor != true %}\n&lt;!-- PROFILE01 --&gt;\n&lt;script&gt;\n       (function() {\n  let redir = \"~/\";\n\n  if (G_Roles.isAdmin || G_Roles.isAssign || (window.DEBUG_AdminVars &amp;&amp; window.DEBUG_AdminVars.has_admin_backdoor)) {\n  \t// console.log(\"Profiles: admin or assign, so no redirect\");\n  \tredir = \"\";\n  } else if (G_Roles.isBranch) {\n  \tredir = \"/Branch\";\n  } else if (G_Roles.isLO) {\n  \tredir = \"/Loan-Officer\";\n  }\n\n  // console.log(\"Accounting page: Access denied: Admin permission required. Redir=\" + redir);\n\n  if (redir != \"\") {\n  \t// Delay the redirect slightly to allow for logging\n  \tsetTimeout(function() {\n  \t\twindow.location.href = redir;\n  \t}, 100);\n  }\n       })();\n&lt;/script&gt;\n\n{% else %}\n&lt;!-- PROFILE02 --&gt;\n\n&lt;div class=\"row sectionBlockLayout text-start\" style=\"display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;\"&gt;\n  &lt;div class=\"container\" style=\"display: flex; flex-wrap: wrap;\"&gt;\n    &lt;div class=\"col-lg-12 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; word-break: break-word; padding: 16px; margin: 60px 0px;\"&gt;\n      {% include 'Pages Breadcrumb' %}\n\n      &lt;h1 style=\"text-align: left;\"&gt;Users&lt;/h1&gt;\n\n      &lt;div class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 16px;\"&gt;&lt;/div&gt;\n\n      {% include 'entity_list' key: 'Active Contacts' %}\n    &lt;/div&gt;\n  &lt;/div&gt;\n&lt;/div&gt;\n\n{% endif %}\n\n&lt;script&gt;\n\n\n  document.addEventListener('LVGlobalDOCReady', function() {\n      // Restore original working search functionality (without % enhancement)\n      tryFindAndFocusSearch();\n\n      setupPageChangeObservers();\n\n      setTimeout(adjustSearchAlignment, 500);\n      \n      // Enable contains search functionality\n      setTimeout(setupAutoContainsSearch, 1000);\n      \n      // ENHANCEMENT: Setup \"Create User\" button and \"Users\" breadcrumb text changes\n      setTimeout(function() {\n          enhanceProfilesPageFunctionality();\n      }, 1000);\n  });\n\n  // EVENT DELEGATION: Row click handlers that never get lost\n  $(document).on('click', '.entitylist .table.table-striped tbody tr', function(e) {\n      // Don't trigger when clicking on dropdowns or links\n      if ($(e.target).closest('.dropdown, a').length) {\n          return;\n      }\n\n      const editUrl = getRowEditUrl(this);\n      if (editUrl) {\n          doNavigate(editUrl);\n      }\n  });\n\n  // EVENT DELEGATION: Double-click handler\n  $(document).on('dblclick', '.entitylist .table.table-striped tbody tr', function(e) {\n      // Don't trigger when double-clicking on dropdowns or links\n      if ($(e.target).closest('.dropdown, a').length) {\n          return;\n      }\n\n      const editUrl = getRowEditUrl(this);\n      if (editUrl) {\n          doNavigate(editUrl);\n      }\n  });\n\n  // Helper function to get edit URL for a row\n  function getRowEditUrl(row) {\n      const $row = $(row);\n\n      // Method 1: Look for dropdown edit link\n      const editLink = $row.find(\".dropdown-menu a:contains('Edit')\");\n      if (editLink.length &gt; 0) {\n          return editLink.attr(\"href\");\n      }\n\n      // Method 2: Try to construct URL from row data\n      let contactId = $row.attr(\"data-id\") || $row.attr(\"data-contactid\");\n\n      if (!contactId) {\n          // Try to find ID in any link within the row\n          const anyLink = $row.find(\"a\").first();\n          if (anyLink.length &gt; 0) {\n              const href = anyLink.attr(\"href\");\n              if (href &amp;&amp; href.includes(\"id=\")) {\n                  const match = href.match(/id=([^&amp;]+)/);\n                  if (match) {\n                      contactId = match[1];\n                  }\n              }\n          }\n      }\n\n      if (!contactId) {\n          // Look for any attribute that might contain a GUID\n          const allAttrs = row.attributes;\n          for (let i = 0; i &lt; allAttrs.length; i++) {\n              const attr = allAttrs[i];\n              if (attr.value &amp;&amp; attr.value.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {\n                  contactId = attr.value;\n                  break;\n              }\n          }\n      }\n\n      if (contactId) {\n          return `/edit-profile?id=${contactId}`;\n      }\n\n      // Method 3: Look for any edit-related link in the row\n      const editLinks = $row.find(\"a\").filter(function() {\n          const href = $(this).attr(\"href\");\n          return href &amp;&amp; (href.includes(\"edit\") || href.includes(\"profile\"));\n      });\n\n      if (editLinks.length &gt; 0) {\n          return editLinks.first().attr(\"href\");\n      }\n\n      return null;\n  }\n\n  \t// Ridiculousness for handling for the special case where only one row is displayed, in which case the dropdown is obscured\n  \t$(document).on('click', 'button[data-bs-toggle=\"dropdown\"]', function() {\n  \t\t// Get the dropdown menu associated with this button\n  \t\tvar $dropdownMenu = $(this).siblings('ul.dropdown-menu');\n\n  \t\t// Always position above and to the left\n  \t\t$dropdownMenu.css({\n  \t\t\t'bottom': '80%', // 100 makes it too high up\n  \t\t\t'top': 'auto',\n  \t\t\t'left': '-30px',\n  \t\t\t'right': 'auto' // override any right positioning\n  \t\t});\n  \t});\n\n  window.addEventListener('load', function() {\n      // Restore original load functionality\n      tryFindAndFocusSearch();\n      adjustSearchAlignment();\n  });\n\n\n  function setupPageChangeObservers() {\n      // Watch for changes to the table (which might indicate filtering/searching)\n      const tableObserver = new MutationObserver((mutations) =&gt; {\n          // Event delegation handles row clicks automatically, just check for single result\n          setTimeout(() =&gt; {\n              checkForSingleResult();\n          }, 100);\n      });\n\n      // Try to find the table to observe\n      setTimeout(() =&gt; {\n          const table = document.querySelector('.entitylist .table.table-striped tbody');\n          if (table) {\n              tableObserver.observe(table, {\n                  childList: true,\n                  subtree: true\n              });\n          }\n      }, 1000);\n\n      // Also observe for AJAX complete events\n      $(document).ajaxComplete(function(event, xhr, settings) {\n          // Event delegation handles row clicks automatically, just check for single result\n          setTimeout(() =&gt; {\n              checkForSingleResult();\n          }, 100);\n      });\n  }\n\n  function clickOnFirstRow() {\n      // all rows in table\n      const rows = $(\".entitylist .table.table-striped tbody tr\");\n\n      // If there's at least one result and we came from a search operation with Enter key\n      if (rows.length &gt; 0 &amp;&amp; window.lastSearchEvent &amp;&amp; window.lastSearchEvent.keyCode === 13) {\n\n          window.lastSearchEvent = null;\n\n          // Simulate a click on the first row after a short delay\n          setTimeout(() =&gt; {\n              const firstRow = rows[0];\n              const editUrl = getRowEditUrl(firstRow);\n\n              if (editUrl) {\n                  doNavigate(editUrl);\n              }\n          }, 300);\n      }\n  }\n\n  {% comment %}    This check on window.PAGE_USERROLES is empty must be done here, *before* we display the contact form   {% endcomment %}\n  async function doNavigate(editUrl) {\n  \tspinShow(true);\n      window.location.href = editUrl;\n  }\n\n  function adjustSearchAlignment() {\n      try {\n          const searchContainer = document.querySelector('.input-group.float-start.view-search');\n          if (searchContainer) {\n              searchContainer.style.cssFloat = 'left';\n              searchContainer.style.marginRight = 'auto';\n\n              const searchInput = searchContainer.querySelector('input.query.form-control');\n              if (searchInput) {\n                  searchInput.style.width = '300px';\n              }\n\n          } else {\n              console.error(\"Could not find search container to adjust\");\n          }\n      } catch (error) {\n          console.error(\"Error adjusting search alignment:\", error);\n      }\n  }\n\n  function tryFindAndFocusSearch() {\n      // ---- SEARCH INPUT SECTION ----\n      // console.log(\"Attempting to find search input...\");\n\n      // Try multiple selectors to find the search input\n      const searchInputSelectors = [\n          'input.query.form-control',\n          '.input-group input[placeholder=\"Search\"]',\n          '.view-search input',\n          'input[placeholder=\"Search\"]',\n          // More general selectors\n          'input[type=\"text\"]',\n          '.input-group input',\n          'input.form-control'\n      ];\n\n      // Function to try all selectors\n      function trySelectors() {\n          let searchInput = null;\n\n\n          // Dump all inputs on the page to help diagnose\n          const allInputs = document.querySelectorAll('input');\n          // console.log(`Found ${allInputs.length} total input elements on page`);\n          allInputs.forEach((input, i) =&gt; {\n              if (input.type !== 'hidden') { // Skip hidden inputs in the log\n                  // console.log(`Input #${i+1}:`, {\n                  //     type: input.type,\n                  //     class: input.className,\n                  //     placeholder: input.placeholder,\n                  //     id: input.id,\n                  //     visible: input.offsetParent !== null\n                  // });\n              }\n          });\n\n\n          for (const selector of searchInputSelectors) {\n              const element = document.querySelector(selector);\n              if (element) {\n                  searchInput = element;\n                  setupSearchInput(searchInput);\n                  break;\n              }\n          }\n\n          if (!searchInput) {\n              // console.log(\"❌ Could not find search input with any selector\");\n\n              // More aggressive approach - look for any input that has \"search\" in its attributes\n              const allInputs = document.querySelectorAll('input');\n              for (const input of allInputs) {\n                  if (input.type === 'hidden') continue; // Skip hidden inputs\n\n                  const html = input.outerHTML.toLowerCase();\n                  if (html.includes('search') ||\n                      (input.placeholder &amp;&amp; input.placeholder.toLowerCase().includes('search'))) {\n                      searchInput = input;\n                      setupSearchInput(searchInput);\n                      break;\n                  }\n              }\n          }\n\n          return searchInput;\n      }\n\n      // Try immediately\n      if (!trySelectors()) {\n          // If not found, try again with increasing delays\n          const retryDelays = [500, 1000, 2000];\n\n          retryDelays.forEach((delay, index) =&gt; {\n              setTimeout(() =&gt; {\n                  // console.log(`Retry attempt #${index + 1} to find search input after ${delay}ms`);\n                  trySelectors();\n              }, delay);\n          });\n\n          // Also set up a MutationObserver to watch for the search input being added\n          setupMutationObserver();\n      }\n  }\n\n  function setupMutationObserver() {\n      const observer = new MutationObserver((mutations) =&gt; {\n          for (const mutation of mutations) {\n              if (mutation.addedNodes.length) {\n                  // Check if any of the added nodes is our search input or contains it\n                  for (const node of mutation.addedNodes) {\n                      if (node.nodeType === 1) { // ELEMENT_NODE\n                          // Check if this element is a search input\n                          if (isSearchInput(node)) {\n                              // console.log(\"🔍 MutationObserver found search input:\", node);\n                              setupSearchInput(node);\n                              observer.disconnect();\n                              return;\n                          }\n\n                          // Check if it contains a search input\n                          const searchInput = node.querySelector('input.query.form-control, input[placeholder=\"Search\"]');\n                          if (searchInput) {\n                              // console.log(\"🔍 MutationObserver found search input inside added node:\", searchInput);\n                              setupSearchInput(searchInput);\n                              observer.disconnect();\n                              return;\n                          }\n                      }\n                  }\n              }\n          }\n      });\n\n      // Start observing the entire document for changes\n      observer.observe(document.body, {\n          childList: true,\n          subtree: true\n      });\n\n      // Auto-disconnect after 10 seconds to prevent memory leaks\n      setTimeout(() =&gt; {\n          observer.disconnect();\n          // console.log(\"MutationObserver disconnected after timeout\");\n      }, 10000);\n  }\n\n  function isSearchInput(element) {\n      if (element.tagName === 'INPUT') {\n          return element.className.includes('query') ||\n                 (element.placeholder &amp;&amp; element.placeholder.toLowerCase().includes('search'));\n      }\n      return false;\n  }\n\n  function setupSearchInput(searchInput) {\n      try {\n          searchInput.focus();\n\n          // Verify focus was set\n          const activeElement = document.activeElement;\n\n          // console.log(\"Active element after focus attempt:\", activeElement.tagName, {\n          //     id: activeElement.id,\n          //     class: activeElement.className,\n          //     isSameAsSearchInput: activeElement === searchInput\n          // });\n\n\n          if (activeElement === searchInput) {\n              dbglog(\"✅ Focus successfully set on search input\", \"search\");\n          } else {\n              dbgerr(\"❌ Focus NOT set on search input\", \"search\");\n          }\n\n      } catch (error) {\n          console.error(\"Error setting focus:\", error);\n      }\n\n      // ---- SEARCH BUTTON SECTION ----\n      // console.log(\"Attempting to find search button for input:\", searchInput);\n\n      // Try multiple approaches to find the search button\n      const buttonSelectors = [\n          // Direct parent-child relation\n          () =&gt; searchInput.closest('.input-group')?.querySelector('button'),\n          // Using the HTML structure we saw\n          () =&gt; document.querySelector('.input-group-btn button span.fa-search')?.parentElement,\n          // Find by icon\n          () =&gt; document.querySelector('button:has(span.fa-search)'),\n          // Look for any nearby button\n          () =&gt; searchInput.closest('.input-group')?.nextElementSibling?.querySelector('button'),\n          // jQuery approaches\n          () =&gt; $(\"button:has(span.fa-search)\")[0],\n          () =&gt; $(searchInput).closest('div').find('button')[0]\n      ];\n\n      let searchButton = null;\n      for (let i = 0; i &lt; buttonSelectors.length; i++) {\n          try {\n              const btn = buttonSelectors[i]();\n              if (btn) {\n                  searchButton = btn;\n                  // console.log(`✅ Search button found with selector approach #${i+1}`);\n                  break;\n              } else {\n                  // console.log(`❌ No button found with selector approach #${i+1}`);\n              }\n          } catch (error) {\n              console.error(`Error with button selector approach #${i+1}:`, error);\n          }\n      }\n\n      if (!searchButton) {\n          // Last resort: find any button near the search input\n          try {\n              const parentDiv = searchInput.closest('div');\n              if (parentDiv) {\n                  const nearbyButtons = parentDiv.querySelectorAll('button');\n                  if (nearbyButtons.length &gt; 0) {\n                      searchButton = nearbyButtons[0];\n                      // console.log(\"⚠️ Found search button with last resort approach:\", searchButton);\n                  }\n              }\n          } catch (error) {\n              console.error(\"Error with last resort button search:\", error);\n          }\n      }\n\n      // console.log(\"Search button found:\", searchButton ? true : false);\n      if (searchButton) {\n          // console.log(\"Search button details:\", {\n          //     id: searchButton.id,\n          //     class: searchButton.className,\n          //     html: searchButton.outerHTML\n          // });\n\n\n          // Monitor the button's click event\n          $(searchButton).on(\"click\", function(e) {\n              // console.log(\"Search button clicked directly\", e);\n              // Check for single result after search\n              setTimeout(() =&gt; {\n                  checkForSingleResult();\n              }, 500);\n          });\n\n          let searchTimer;\n\n          // Simple auto-search functionality - only handle text input keys\n          $(searchInput).on(\"input\", function(e) {\n              // Clear any existing timer\n              clearTimeout(searchTimer);\n\n              // Set a new timer to trigger search after typing stops\n              searchTimer = setTimeout(function() {\n                  try {\n                      searchButton.click();\n                      \n                      // Check for auto-click on single result\n                      setTimeout(() =&gt; {\n                          checkForSingleResult();\n                      }, 500);\n                  } catch (err) {\n                      console.error(\"Auto-search button click failed:\", err);\n                  }\n              }, 500);\n          });\n\n          // Handle Enter key separately without interfering with other keys\n          $(searchInput).on(\"keydown\", function(e) {\n              if (e.keyCode === 13) {\n                  // Store the last search event for the single result check\n                  window.lastSearchEvent = e;\n                  \n                  // Clear any existing timer\n                  clearTimeout(searchTimer);\n\n                  // Trigger search immediately\n                  try {\n                      searchButton.click();\n                      \n                      // Check for auto-click on single result\n                      setTimeout(() =&gt; {\n                          clickOnFirstRow();\n                      }, 500);\n                  } catch (err) {\n                      console.error(\"Error with Enter key search:\", err);\n                  }\n              }\n          });\n      } else {\n          // console.log(\"❌ Could not find a search button to click\");\n      }\n  }\n\n  function checkForSingleResult() {\n  \t// Check if there's exactly one search result and auto-open it\n  \tconst rows = $(\".entitylist .table.table-striped tbody tr\");\n\n  \tif (rows.length === 1 &amp;&amp; window.lastSearchEvent &amp;&amp; window.lastSearchEvent.keyCode === 13) {\n  \t\t// Only one result from Enter key search - auto-open it\n  \t\tdbglog(\"Single search result found, auto-opening...\", \"search\");\n  \t\tclickOnFirstRow();\n  \t}\n  }\n\n  // Old initializeRowClicks function removed - now using event delegation above\n\n  // Add CSS for clickable rows\n  const style = document.createElement('style');\n  style.textContent = `\n      .entitylist .table.table-striped tbody tr {\n          cursor: pointer;\n      }\n      .entitylist .table.table-striped tbody tr:hover {\n          background-color: #f8f9fa !important;\n      }\n  `;\n  document.head.appendChild(style);\n\n  function setupAutoContainsSearch() {\n      dbglog('🔍 Setting up contains search with button interception...', 'search');\n\n      // Find the search input and button\n      const searchInput = document.querySelector('input.query.form-control') || \n                         document.querySelector('.input-group input[placeholder=\"Search\"]') || \n                         document.querySelector('input[placeholder=\"Search\"]');\n      \n      const searchButton = document.querySelector('.input-group-btn button') ||\n                          document.querySelector('button[type=\"submit\"]') ||\n                          document.querySelector('.input-group button');\n      \n      if (!searchInput || !searchButton) {\n          dbglog('❌ Could not find search input or button, retrying...', 'search');\n          setTimeout(setupAutoContainsSearch, 1000);\n          return;\n      }\n\n      dbglog('✅ Found search input and button', 'search');\n\n      // Function to wrap search term with % for contains search\n      function wrapSearchTerm(searchTerm) {\n          const trimmed = searchTerm.trim();\n          if (!trimmed) return trimmed;\n          \n          // Convert * to % for user-friendly wildcards\n          let term = trimmed.replace(/\\*/g, '%');\n          \n          // If user hasn't provided explicit % wildcards, auto-wrap for contains search\n          if (!trimmed.includes('%')) {\n              term = '%' + term + '%';\n          }\n          \n          dbglog('🔄 Search term conversion: ' + JSON.stringify(trimmed) + ' -&gt; ' + JSON.stringify(term), 'search');\n          return term;\n      }\n\n      // Function to handle table row visibility based on search results\n      function handleSearchResults() {\n          // Wait for the search results to be processed by Microsoft's framework\n          setTimeout(() =&gt; {\n              const searchTerm = searchInput.value.trim();\n              const tableRows = document.querySelectorAll('.entitylist .table.table-striped tbody tr');\n              const noResultsMessage = document.querySelector('.entitylist .no-records-message, .entitylist .empty-message, .entitylist [data-empty-message]');\n              \n              if (searchTerm) {\n                  // Check if there are actual results (not just the \"no results\" message)\n                  if (noResultsMessage &amp;&amp; noResultsMessage.style.display !== 'none') {\n                      // No results found - hide all table rows\n                      dbglog('🔍 No search results found, hiding all table rows', 'search');\n                      tableRows.forEach(row =&gt; {\n                          row.style.display = 'none';\n                      });\n                  } else {\n                      // Results found - show all rows (they may be filtered by Microsoft's framework)\n                      dbglog('🔍 Search results found, ensuring rows are visible', 'search');\n                      tableRows.forEach(row =&gt; {\n                          row.style.display = '';\n                      });\n                  }\n              } else {\n                  // No search term - show all rows\n                  dbglog('🔍 No search term, showing all table rows', 'search');\n                  tableRows.forEach(row =&gt; {\n                      row.style.display = '';\n                  });\n              }\n          }, 100); // Short delay to let Microsoft's framework process the search\n      }\n\n      // Store original values for restoration\n      let isSearchInProgress = false;\n      \n      // Intercept button clicks with immediate restoration to avoid state issues\n      searchButton.addEventListener('click', function(e) {\n          if (isSearchInProgress) return; // Avoid double-processing\n          \n          dbglog('🎯 Search button clicked - applying contains search', 'search');\n          \n          const originalValue = searchInput.value;\n          const wrappedValue = wrapSearchTerm(originalValue);\n          \n          if (originalValue !== wrappedValue) {\n              isSearchInProgress = true;\n              dbglog('🔄 Applying contains search transformation', 'search');\n              \n              // Temporarily change the value for this search\n              searchInput.value = wrappedValue;\n              \n              // Immediately restore the original value to preserve user's input\n              setTimeout(() =&gt; {\n                  searchInput.value = originalValue;\n                  isSearchInProgress = false;\n                  dbglog('✅ Restored original search value', 'search');\n                  \n                  // Handle the search results after restoration\n                  handleSearchResults();\n              }, 50); // Shorter delay to minimize state interference\n          } else {\n              // No transformation needed, handle results directly\n              handleSearchResults();\n          }\n      }, true); // Use capture phase to run before Microsoft's handler\n\n      // Add clear button functionality\n      addClearButton(searchInput, searchButton);\n\n      dbglog('✅ Contains search interception setup complete', 'search');\n  }\n\n  function addClearButton(searchInput, searchButton) {\n      dbglog('🔍 Adding clear button between input and search button...', 'search');\n\n      // Find the input group container\n      const inputGroup = searchInput.closest('.input-group');\n      if (!inputGroup) {\n          dbglog('❌ Could not find input group for clear button', 'search');\n          return;\n      }\n\n      // Create clear button positioned between input and search button\n      const clearButton = document.createElement('button');\n      clearButton.type = 'button';\n      clearButton.className = 'btn btn-outline-secondary';\n      clearButton.innerHTML = '✕';\n      clearButton.title = 'Clear search';\n      clearButton.style.cssText = `\n          border-left: none;\n          border-right: none;\n          padding: 6px 8px;\n          font-size: 16px;\n          display: none;\n          border-radius: 0;\n      `;\n\n      // Insert the clear button between the input and search button\n      const buttonContainer = searchButton.parentElement;\n      if (buttonContainer) {\n          // Insert before the search button within the button container\n          buttonContainer.insertBefore(clearButton, searchButton);\n      } else {\n          // If no container, insert directly before the search button\n          searchButton.parentNode.insertBefore(clearButton, searchButton);\n      }\n\n      // Show/hide clear button based on input content\n      function toggleClearButton() {\n          if (searchInput.value.trim()) {\n              clearButton.style.display = 'inline-block';\n          } else {\n              clearButton.style.display = 'none';\n          }\n      }\n\n      // Clear button click handler\n      clearButton.addEventListener('click', function(e) {\n          e.preventDefault();\n          e.stopPropagation();\n          dbglog('🗑️ Clear button clicked', 'search');\n          \n          searchInput.value = '';\n          searchInput.focus();\n          toggleClearButton();\n          \n          // Show all table rows when clearing search\n          showAllTableRows();\n          \n          // Trigger a search to show all results\n          searchButton.click();\n      });\n\n      // Show/hide clear button on input changes\n      searchInput.addEventListener('input', toggleClearButton);\n      searchInput.addEventListener('keyup', toggleClearButton);\n      \n      // Initial state\n      toggleClearButton();\n\n      dbglog('✅ Clear button added between input and search button', 'search');\n  }\n\n  // Function to show all table rows (used when clearing search or showing all results)\n  function showAllTableRows() {\n      const tableRows = document.querySelectorAll('.entitylist .table.table-striped tbody tr');\n      dbglog('🔍 Showing all table rows', 'search');\n      tableRows.forEach(row =&gt; {\n          row.style.display = '';\n      });\n  }\n\nfunction enhanceProfilesPageFunctionality() {\n    dbglog('=== enhanceProfilesPageFunctionality called ===', 'ui');\n    \n    // 1. Change button text from \"Create Profile\" to \"Create User\"\n    changeCreateButtonText();\n    \n    // 2. Change breadcrumb text from \"Profiles\" to \"Users\"\n    changeBreadcrumbText();\n}\n\nfunction changeCreateButtonText() {\n    // Use jQuery to find buttons with \"Create\" in their text content\n    const createButtons = $('a[href*=\"create\"], button, .btn').filter(function() {\n        return $(this).text().includes('Create');\n    });\n    \n    createButtons.each(function() {\n        const $button = $(this);\n        const buttonText = $button.text();\n        \n        if (buttonText.includes('Create Profile')) {\n            dbglog('Found \"Create Profile\" button, changing to \"Create User\"', 'ui');\n            const newText = buttonText.replace('Create Profile', 'Create User');\n            $button.text(newText);\n        }\n    });\n    \n    // Also check for any buttons that might be added dynamically using MutationObserver\n    const observer = new MutationObserver((mutations) =&gt; {\n        mutations.forEach((mutation) =&gt; {\n            if (mutation.addedNodes.length) {\n                mutation.addedNodes.forEach((node) =&gt; {\n                    if (node.nodeType === 1) { // ELEMENT_NODE\n                        const $node = $(node);\n                        \n                        // Check the node itself\n                        if ($node.is('a[href*=\"create\"], button, .btn') &amp;&amp; $node.text().includes('Create Profile')) {\n                            dbglog('Found MutationObserver \"Create Profile\" button, changing to \"Create User\"', 'ui');\n                            const newText = $node.text().replace('Create Profile', 'Create User');\n                            $node.text(newText);\n                        }\n                        \n                        // Check child nodes using jQuery\n                        $node.find('a[href*=\"create\"], button, .btn').each(function() {\n                            const $childButton = $(this);\n                            const buttonText = $childButton.text();\n                            \n                            if (buttonText.includes('Create Profile')) {\n                                dbglog('Found MutationObserver child \"Create Profile\" button, changing to \"Create User\"', 'ui');\n                                const newText = buttonText.replace('Create Profile', 'Create User');\n                                $childButton.text(newText);\n                            }\n                        });\n                    }\n                });\n            }\n        });\n    });\n    \n    // Start observing for dynamic content changes\n    observer.observe(document.body, {\n        childList: true,\n        subtree: true\n    });\n    \n    // Auto-disconnect after 30 seconds to prevent memory leaks\n    setTimeout(() =&gt; {\n        observer.disconnect();\n    }, 30000);\n}\n\nfunction changeBreadcrumbText() {\n    // Change breadcrumb text from \"Profiles\" to \"Users\" - PRECISE SURGICAL APPROACH\n    function updateBreadcrumbText() {\n        // Target ONLY the active breadcrumb item in the specific Pages Breadcrumb structure\n        const $activeItem = $('.pagesBreadcrumb .breadcrumb-item.active');\n        \n        if ($activeItem.length &gt; 0) {\n            // Find the p element within the active item\n            const $pElement = $activeItem.find('p').first();\n            \n            if ($pElement.length &gt; 0) {\n                const pText = $pElement.text().trim();\n                \n                if (pText === 'Profiles') {\n                    $pElement.text('Users');\n                    \n                    // Also update the aria-current attribute for accessibility\n                    $activeItem.attr('aria-current', 'Users');\n                    return; // Success, exit early\n                }\n            } else {\n                // Fallback: Try to find any text content directly\n                const directText = $activeItem.text().trim();\n                \n                if (directText === 'Profiles') {\n                    // Replace the text content while preserving HTML structure\n                    $activeItem.html($activeItem.html().replace(/Profiles/g, 'Users'));\n                    $activeItem.attr('aria-current', 'Users');\n                    return;\n                }\n            }\n        }\n        \n        // Fallback: If the above structure doesn't exist, try a more generic approach\n        let foundMatch = false;\n        \n        $('.breadcrumb-item').each(function(index) {\n            const $item = $(this);\n            const $p = $item.find('p');\n            \n            if ($p.length &gt; 0 &amp;&amp; $p.text().trim() === 'Profiles') {\n                // Verify this is not inside a link (to avoid changing linked breadcrumb items)\n                if ($item.find('a').length === 0) {\n                    $p.text('Users');\n                    \n                    // Update aria-current if it exists\n                    if ($item.attr('aria-current')) {\n                        $item.attr('aria-current', 'Users');\n                    }\n                    \n                    foundMatch = true;\n                }\n            }\n        });\n    }\n    \n    // Update immediately\n    updateBreadcrumbText();\n    \n    // Also set up a MutationObserver to catch dynamically loaded breadcrumbs\n    const observer = new MutationObserver((mutations) =&gt; {\n        let shouldUpdate = false;\n        \n        mutations.forEach((mutation) =&gt; {\n            if (mutation.addedNodes.length) {\n                mutation.addedNodes.forEach((node) =&gt; {\n                    if (node.nodeType === 1) { // ELEMENT_NODE\n                        const $node = $(node);\n                        const nodeText = $node.text();\n                        \n                        // Check if the added node contains breadcrumb-related content\n                        if (nodeText.includes('Profiles') || \n                            $node.find('*').text().includes('Profiles') ||\n                            node.className.includes('breadcrumb') ||\n                            $node.find('[class*=\"breadcrumb\"]').length &gt; 0) {\n                            shouldUpdate = true;\n                        }\n                    }\n                });\n            }\n            \n            if (mutation.type === 'characterData' &amp;&amp; mutation.target.textContent.includes('Profiles')) {\n                shouldUpdate = true;\n            }\n        });\n        \n        if (shouldUpdate) {\n            setTimeout(updateBreadcrumbText, 100);\n        }\n    });\n    \n    // Start observing\n    observer.observe(document.body, {\n        childList: true,\n        subtree: true,\n        characterData: true\n    });\n    \n    // Auto-disconnect after 30 seconds to prevent memory leaks\n    setTimeout(() =&gt; {\n        observer.disconnect();\n    }, 30000);\n}\n\n&lt;/script&gt;\n\n&lt;!-- Rodj manual update 2508141410 --&gt;\n&lt;!-- Last modified fri aug 15 7:15am --&gt;\n&lt;!-- Last modified fri aug 15 11:01am --&gt;\n&lt;!-- Last modified fri aug 16 6:25am --&gt;\n&lt;!-- Last modified sat aug 16 6:47am --&gt;\n&lt;!-- Last modified sat aug 16 6:56am --&gt;\n&lt;!-- Last modified sat aug 16 7:13am --&gt;\n&lt;!-- Last modified sat aug 16 7:29am --&gt;\n&lt;!-- Last modified sat aug 16 7:46am --&gt;\n&lt;!-- Last modified sat aug 16 8:05am --&gt;\n&lt;!-- Last modified sat aug 16 8:10am --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;","customcss":"/* Table Container */\n.entitylist .table-responsive {\n    border: none;\n    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);\n    border-radius: 8px;\n    overflow: hidden;\n}\n\n/* Table Styles */\n.entitylist .table.table-striped {\n    width: 100%;\n    border-collapse: separate;\n    border-spacing: 0;\n    margin-bottom: 0;\n    background-color: var(--portalThemeColor7);\n}\n\n/* Table Header */\n.entitylist .table.table-striped thead tr {\n    background-color: var(--portalThemeColor1);\n}\n\n.entitylist .table.table-striped th {\n    color: var(--portalThemeColor7);\n    font-weight: 600;\n    padding: 15px;\n    text-transform: uppercase;\n    letter-spacing: 0.5px;\n    border: none;\n    white-space: nowrap;\n}\n\n.entitylist .table.table-striped th a {\n    color: var(--portalThemeColor7);\n    text-decoration: none;\n}\n\n/* Table Body */\n.entitylist .table.table-striped tbody tr {\n    transition: background-color 0.3s ease;\n}\n\n.entitylist .table.table-striped tbody tr:nth-of-type(even) {\n    background-color: var(--portalThemeColor5);\n}\n\n.entitylist .table.table-striped tbody tr:hover {\n    background-color: var(--portalThemeColor4);\n}\n\n.entitylist .table.table-striped td {\n    padding: 12px 15px;\n    border-top: 1px solid var(--portalThemeColor5);\n    vertical-align: middle;\n}\n\n/* Action Column */\n.entitylist .table.table-striped td:last-child {\n    text-align: center;\n    white-space: nowrap;\n}\n\n/* Dropdown Action Button */\n.entitylist .table.table-striped .dropdown .btn {\n    background-color: transparent;\n    border: none;\n    color: var(--portalThemeColor1);\n}\n\n.entitylist .table.table-striped .dropdown .btn:hover,\n.entitylist .table.table-striped .dropdown .btn:focus {\n    color: var(--portalThemeColor9);\n}\n\n/* Pagination Container */\n.view-pagination {\n    margin-top: 20px;\n    display: flex;\n    justify-content: center;\n}\n\n/* Pagination List */\n.jquery-bootstrap-pagination .pagination {\n    display: flex;\n    padding-left: 0;\n    list-style: none;\n    border-radius: 0.25rem;\n}\n\n/* Pagination Items */\n.jquery-bootstrap-pagination .page-item {\n    margin: 0 2px;\n}\n\n/* Pagination Links */\n.jquery-bootstrap-pagination .page-link {\n    position: relative;\n    display: block;\n    padding: 0.5rem 0.75rem;\n    margin-left: -1px;\n    line-height: 1.25;\n    color: var(--portalThemeColor1);\n    background-color: var(--portalThemeColor7);\n    border: 1px solid var(--portalThemeColor2);\n    transition: all 0.3s ease;\n}\n\n/* Hover and Focus States */\n.jquery-bootstrap-pagination .page-link:hover,\n.jquery-bootstrap-pagination .page-link:focus {\n    z-index: 2;\n    color: var(--portalThemeColor7);\n    text-decoration: none;\n    background-color: var(--portalThemeColor9);\n    border-color: var(--portalThemeColor9);\n}\n\n/* Active State */\n.jquery-bootstrap-pagination .page-item.active .page-link {\n    z-index: 3;\n    color: var(--portalThemeColor7);\n    background-color: var(--portalThemeColor1);\n    border-color: var(--portalThemeColor1);\n}\n\n/* Disabled State */\n.jquery-bootstrap-pagination .page-item.disabled .page-link {\n    color: var(--portalThemeColor6);\n    pointer-events: none;\n    cursor: auto;\n    \n    border-color: var(--portalThemeColor2);\n}\n\n/* Previous and Next buttons */\n.jquery-bootstrap-pagination .entity-pager-prev-link,\n.jquery-bootstrap-pagination .entity-pager-next-link {\n    font-weight: bold;\n}\n\n/* Search Container */\n.view-toolbar.grid-actions {\n    margin-bottom: 20px;\n    padding: 15px;\n    \n    border-radius: 8px;\n}\n\n/* Search Input Group */\n.view-toolbar .input-group.view-search {\n    display: flex;\n    width: 100%;\n    max-width: 500px;\n    margin-left: auto;\n}\n\n/* Search Input */\n.view-toolbar .input-group.view-search .form-control {\n    flex-grow: 1;\n    height: 40px;\n    padding: 8px 15px;\n    font-size: 14px;\n    color: var(--portalThemeColor8);\n    background-color: var(--portalThemeColor7);\n    border: 1px solid var(--portalThemeColor2);\n    border-right: none;\n    border-top-left-radius: 4px;\n    border-bottom-left-radius: 4px;\n    transition: all 0.3s ease;\n}\n\n.view-toolbar .input-group.view-search .form-control:focus {\n    outline: none;\n    box-shadow: 0 0 0 2px var(--portalThemeColor9);\n}\n\n/* Search Button */\n.view-toolbar .input-group.view-search .input-group-btn .btn {\n    height: 40px;\n    padding: 8px 15px;\n    color: var(--portalThemeColor7);\n    background-color: var(--portalThemeColor1);\n    border: 1px solid var(--portalThemeColor1);\n    border-top-right-radius: 4px;\n    border-bottom-right-radius: 4px;\n    transition: all 0.3s ease;\n}\n\n.view-toolbar .input-group.view-search .input-group-btn .btn:hover,\n.view-toolbar .input-group.view-search .input-group-btn .btn:focus {\n    background-color: var(--portalThemeColor9);\n    border-color: var(--portalThemeColor9);\n}\n\n.view-toolbar .input-group .btn.create-action {\n    display: flex;\n    gap: .5rem;\n}\n\n/* Search Icon */\n.view-toolbar .input-group.view-search .input-group-btn .btn .fa-search {\n    font-size: 16px;\n}\n\n/* Responsive adjustments */\n@media (max-width: 768px) {\n    .view-toolbar.grid-actions {\n        padding: 10px;\n    }\n\n    .view-toolbar .input-group.view-search {\n        max-width: 100%;\n    }\n\n    .view-toolbar .input-group.view-search .form-control,\n    .view-toolbar .input-group.view-search .input-group-btn .btn {\n        height: 36px;\n        font-size: 13px;\n    }\n}\n\n/* Responsive adjustments */\n@media (max-width: 576px) {\n    .jquery-bootstrap-pagination .page-link {\n        padding: 0.4rem 0.6rem;\n        font-size: 0.9rem;\n    }\n}\n\n/* Responsive Design */\n@media (max-width: 768px) {\n    .entitylist .table.table-striped {\n        font-size: 14px;\n    }\n\n    .entitylist .table.table-striped th,\n    .entitylist .table.table-striped td {\n        padding: 10px;\n    }\n}\n\n/* Ensure the action column is always visible on smaller screens */\n@media (max-width: 576px) {\n    .entitylist .table.table-striped td:last-child {\n        position: sticky;\n        right: 0;\n        background-color: inherit;\n        box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.1);\n    }\n}\n\n/* 1. Reset Floats and Display Properties */\n/* Remove existing floats and table display styles */\n.view-toolbar.grid-actions .toolbar-actions,\n.view-toolbar.grid-actions .toolbar-actions .input-group,\n.view-toolbar.grid-actions .toolbar-actions .create-action {\n    float: none !important;\n    display: flex !important;\n    align-items: center;\n}\n\n/* 2. Set Up Flex Container for Toolbar Actions */\n/* Make the toolbar-actions a flex container */\n.view-toolbar.grid-actions .toolbar-actions {\n    display: flex !important;\n    align-items: center;\n    justify-content: flex-end; /* Align items to the right */\n    gap: 15px; /* Space between search bar and create button */\n    flex-wrap: wrap; /* Allow wrapping on smaller screens */\n}\n\n/* 3. Style the Search Input Group */\n/* Ensure the search input group is flexible */\n.view-toolbar.grid-actions .toolbar-actions .view-search {\n    display: flex !important;\n    flex: 1 1 auto; /* Allow to grow and shrink */\n    max-width: 500px; /* Maintain maximum width */\n}\n\n/* Override inline styles for search input and button */\n.view-toolbar.grid-actions .toolbar-actions .view-search .form-control,\n.view-toolbar.grid-actions .toolbar-actions .view-search .input-group-btn {\n    display: flex !important;\n    width: auto !important; /* Remove 100% width from input */\n}\n\n/* Ensure the search input takes available space */\n.view-toolbar.grid-actions .toolbar-actions .view-search .form-control {\n    flex: 1;\n    margin-right: 5px; /* Space between input and button */\n}\n\n/* 4. Style the Create Button */\n/* Ensure the create button aligns properly */\n.view-toolbar.grid-actions .toolbar-actions .create-action {\n    display: inline-flex !important;\n    align-items: center;\n    padding: 8px 15px; /* Match search button height */\n    font-size: 14px;\n    white-space: nowrap; /* Prevent text wrapping */\n}\n\n/* Optional: Adjust the search button to match the create button height */\n.view-toolbar.grid-actions .toolbar-actions .view-search .input-group-btn .btn {\n    height: 40px; /* Match the height of the create button */\n    padding: 8px 15px;\n}\n\n/* 5. Responsive Adjustments */\n/* For tablets and larger phones */\n@media (max-width: 768px) {\n    .view-toolbar.grid-actions .toolbar-actions {\n        gap: 10px;\n    }\n\n    .view-toolbar.grid-actions .toolbar-actions .view-search {\n        max-width: 100%;\n    }\n\n    .view-toolbar.grid-actions .toolbar-actions .create-action {\n        flex: 1 1 100%;\n        justify-content: center;\n        margin-top: 10px;\n    }\n}\n\n/* For small phones */\n@media (max-width: 576px) {\n    .view-toolbar.grid-actions .toolbar-actions .view-search .form-control {\n        font-size: 13px;\n    }\n\n    .view-toolbar.grid-actions .toolbar-actions .create-action {\n        padding: 6px 12px;\n        font-size: 13px;\n    }\n}\n","customjavascript":"&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;","displayorder":13,"enablerating":false,"enabletracking":false,"excludefromsearch":false,"feedbackpolicy":756150000,"hiddenfromsitemap":true,"isroot":false,"pagetemplateid":"cd587cbe-a61f-4c11-a750-6d0235a784ef","parentpageid":"f9e4fac8-bb2b-fab4-760d-3e3ce999cadb","partialurl":"Profiles","publishingstateid":"2177b470-e9b1-4c6b-8f73-91dc8f4d21e9","rootwebpageid":"6a63d2f7-83e5-fad8-c9e0-6fc67507f3ef","sharedpageconfiguration":false,"summary":"&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;p&gt;This is a sample landing page designed to be a starting point for your website&lt;/p&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;","title":"Profiles"}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Profiles</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <searchcontent>Profiles&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;
+&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;
+&lt;!-- Last modified sat aug 16 8:10am --&gt;
+&lt;!-- Last modified sat aug 16 8:05am --&gt;
+&lt;!-- Last modified sat aug 16 7:46am --&gt;
+&lt;!-- Last modified sat aug 16 7:29am --&gt;
+&lt;!-- Last modified sat aug 16 7:13am --&gt;
+&lt;!-- Last modified sat aug 16 6:56am --&gt;
+&lt;!-- Last modified sat aug 16 6:47am --&gt;
+&lt;!-- Last modified sat aug 16 6:43am --&gt;
+&lt;!-- Last modified fri aug 15 11:01am --&gt;
+&lt;!-- Rodj manual update 2508141410 --&gt;
+
+&lt;!-- /web-pages/Profiles.html --&gt;
+
+{% include 'snippet' snippet_name:'FetchXML - SetupQuery' %} {% if is_admin != true and is_RoleAssign != true and has_admin_backdoor != true %}
+&lt;!-- PROFILE01 --&gt;
+&lt;script&gt;
+       (function() {
+  let redir = "~/";
+
+  if (G_Roles.isAdmin || G_Roles.isAssign || (window.DEBUG_AdminVars &amp;&amp; window.DEBUG_AdminVars.has_admin_backdoor)) {
+  	// console.log("Profiles: admin or assign, so no redirect");
+  	redir = "";
+  } else if (G_Roles.isBranch) {
+  	redir = "/Branch";
+  } else if (G_Roles.isLO) {
+  	redir = "/Loan-Officer";
+  }
+
+  // console.log("Accounting page: Access denied: Admin permission required. Redir=" + redir);
+
+  if (redir != "") {
+  	// Delay the redirect slightly to allow for logging
+  	setTimeout(function() {
+  		window.location.href = redir;
+  	}, 100);
+  }
+       })();
+&lt;/script&gt;
+
+{% else %}
+&lt;!-- PROFILE02 --&gt;
+
+&lt;div class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;"&gt;
+  &lt;div class="container" style="display: flex; flex-wrap: wrap;"&gt;
+    &lt;div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; word-break: break-word; padding: 16px; margin: 60px 0px;"&gt;
+      {% include 'Pages Breadcrumb' %}
+
+      &lt;h1 style="text-align: left;"&gt;Users&lt;/h1&gt;
+
+      &lt;div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 16px;"&gt;&lt;/div&gt;
+
+      {% include 'entity_list' key: 'Active Contacts' %}
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+{% endif %}
+
+&lt;script&gt;
+
+
+  document.addEventListener('LVGlobalDOCReady', function() {
+      // Restore original working search functionality (without % enhancement)
+      tryFindAndFocusSearch();
+
+      setupPageChangeObservers();
+
+      setTimeout(adjustSearchAlignment, 500);
+      
+      // Enable contains search functionality
+      setTimeout(setupAutoContainsSearch, 1000);
+      
+      // ENHANCEMENT: Setup "Create User" button and "Users" breadcrumb text changes
+      setTimeout(function() {
+          enhanceProfilesPageFunctionality();
+      }, 1000);
+  });
+
+  // EVENT DELEGATION: Row click handlers that never get lost
+  $(document).on('click', '.entitylist .table.table-striped tbody tr', function(e) {
+      // Don't trigger when clicking on dropdowns or links
+      if ($(e.target).closest('.dropdown, a').length) {
+          return;
+      }
+
+      const editUrl = getRowEditUrl(this);
+      if (editUrl) {
+          doNavigate(editUrl);
+      }
+  });
+
+  // EVENT DELEGATION: Double-click handler
+  $(document).on('dblclick', '.entitylist .table.table-striped tbody tr', function(e) {
+      // Don't trigger when double-clicking on dropdowns or links
+      if ($(e.target).closest('.dropdown, a').length) {
+          return;
+      }
+
+      const editUrl = getRowEditUrl(this);
+      if (editUrl) {
+          doNavigate(editUrl);
+      }
+  });
+
+  // Helper function to get edit URL for a row
+  function getRowEditUrl(row) {
+      const $row = $(row);
+
+      // Method 1: Look for dropdown edit link
+      const editLink = $row.find(".dropdown-menu a:contains('Edit')");
+      if (editLink.length &gt; 0) {
+          return editLink.attr("href");
+      }
+
+      // Method 2: Try to construct URL from row data
+      let contactId = $row.attr("data-id") || $row.attr("data-contactid");
+
+      if (!contactId) {
+          // Try to find ID in any link within the row
+          const anyLink = $row.find("a").first();
+          if (anyLink.length &gt; 0) {
+              const href = anyLink.attr("href");
+              if (href &amp;&amp; href.includes("id=")) {
+                  const match = href.match(/id=([^&amp;]+)/);
+                  if (match) {
+                      contactId = match[1];
+                  }
+              }
+          }
+      }
+
+      if (!contactId) {
+          // Look for any attribute that might contain a GUID
+          const allAttrs = row.attributes;
+          for (let i = 0; i &lt; allAttrs.length; i++) {
+              const attr = allAttrs[i];
+              if (attr.value &amp;&amp; attr.value.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
+                  contactId = attr.value;
+                  break;
+              }
+          }
+      }
+
+      if (contactId) {
+          return `/edit-profile?id=${contactId}`;
+      }
+
+      // Method 3: Look for any edit-related link in the row
+      const editLinks = $row.find("a").filter(function() {
+          const href = $(this).attr("href");
+          return href &amp;&amp; (href.includes("edit") || href.includes("profile"));
+      });
+
+      if (editLinks.length &gt; 0) {
+          return editLinks.first().attr("href");
+      }
+
+      return null;
+  }
+
+  	// Ridiculousness for handling for the special case where only one row is displayed, in which case the dropdown is obscured
+  	$(document).on('click', 'button[data-bs-toggle="dropdown"]', function() {
+  		// Get the dropdown menu associated with this button
+  		var $dropdownMenu = $(this).siblings('ul.dropdown-menu');
+
+  		// Always position above and to the left
+  		$dropdownMenu.css({
+  			'bottom': '80%', // 100 makes it too high up
+  			'top': 'auto',
+  			'left': '-30px',
+  			'right': 'auto' // override any right positioning
+  		});
+  	});
+
+  window.addEventListener('load', function() {
+      // Restore original load functionality
+      tryFindAndFocusSearch();
+      adjustSearchAlignment();
+  });
+
+
+  function setupPageChangeObservers() {
+      // Watch for changes to the table (which might indicate filtering/searching)
+      const tableObserver = new MutationObserver((mutations) =&gt; {
+          // Event delegation handles row clicks automatically, just check for single result
+          setTimeout(() =&gt; {
+              checkForSingleResult();
+          }, 100);
+      });
+
+      // Try to find the table to observe
+      setTimeout(() =&gt; {
+          const table = document.querySelector('.entitylist .table.table-striped tbody');
+          if (table) {
+              tableObserver.observe(table, {
+                  childList: true,
+                  subtree: true
+              });
+          }
+      }, 1000);
+
+      // Also observe for AJAX complete events
+      $(document).ajaxComplete(function(event, xhr, settings) {
+          // Event delegation handles row clicks automatically, just check for single result
+          setTimeout(() =&gt; {
+              checkForSingleResult();
+          }, 100);
+      });
+  }
+
+  function clickOnFirstRow() {
+      // all rows in table
+      const rows = $(".entitylist .table.table-striped tbody tr");
+
+      // If there's at least one result and we came from a search operation with Enter key
+      if (rows.length &gt; 0 &amp;&amp; window.lastSearchEvent &amp;&amp; window.lastSearchEvent.keyCode === 13) {
+
+          window.lastSearchEvent = null;
+
+          // Simulate a click on the first row after a short delay
+          setTimeout(() =&gt; {
+              const firstRow = rows[0];
+              const editUrl = getRowEditUrl(firstRow);
+
+              if (editUrl) {
+                  doNavigate(editUrl);
+              }
+          }, 300);
+      }
+  }
+
+  {% comment %}    This check on window.PAGE_USERROLES is empty must be done here, *before* we display the contact form   {% endcomment %}
+  async function doNavigate(editUrl) {
+  	spinShow(true);
+      window.location.href = editUrl;
+  }
+
+  function adjustSearchAlignment() {
+      try {
+          const searchContainer = document.querySelector('.input-group.float-start.view-search');
+          if (searchContainer) {
+              searchContainer.style.cssFloat = 'left';
+              searchContainer.style.marginRight = 'auto';
+
+              const searchInput = searchContainer.querySelector('input.query.form-control');
+              if (searchInput) {
+                  searchInput.style.width = '300px';
+              }
+
+          } else {
+              console.error("Could not find search container to adjust");
+          }
+      } catch (error) {
+          console.error("Error adjusting search alignment:", error);
+      }
+  }
+
+  function tryFindAndFocusSearch() {
+      // ---- SEARCH INPUT SECTION ----
+      // console.log("Attempting to find search input...");
+
+      // Try multiple selectors to find the search input
+      const searchInputSelectors = [
+          'input.query.form-control',
+          '.input-group input[placeholder="Search"]',
+          '.view-search input',
+          'input[placeholder="Search"]',
+          // More general selectors
+          'input[type="text"]',
+          '.input-group input',
+          'input.form-control'
+      ];
+
+      // Function to try all selectors
+      function trySelectors() {
+          let searchInput = null;
+
+
+          // Dump all inputs on the page to help diagnose
+          const allInputs = document.querySelectorAll('input');
+          // console.log(`Found ${allInputs.length} total input elements on page`);
+          allInputs.forEach((input, i) =&gt; {
+              if (input.type !== 'hidden') { // Skip hidden inputs in the log
+                  // console.log(`Input #${i+1}:`, {
+                  //     type: input.type,
+                  //     class: input.className,
+                  //     placeholder: input.placeholder,
+                  //     id: input.id,
+                  //     visible: input.offsetParent !== null
+                  // });
+              }
+          });
+
+
+          for (const selector of searchInputSelectors) {
+              const element = document.querySelector(selector);
+              if (element) {
+                  searchInput = element;
+                  setupSearchInput(searchInput);
+                  break;
+              }
+          }
+
+          if (!searchInput) {
+              // console.log("❌ Could not find search input with any selector");
+
+              // More aggressive approach - look for any input that has "search" in its attributes
+              const allInputs = document.querySelectorAll('input');
+              for (const input of allInputs) {
+                  if (input.type === 'hidden') continue; // Skip hidden inputs
+
+                  const html = input.outerHTML.toLowerCase();
+                  if (html.includes('search') ||
+                      (input.placeholder &amp;&amp; input.placeholder.toLowerCase().includes('search'))) {
+                      searchInput = input;
+                      setupSearchInput(searchInput);
+                      break;
+                  }
+              }
+          }
+
+          return searchInput;
+      }
+
+      // Try immediately
+      if (!trySelectors()) {
+          // If not found, try again with increasing delays
+          const retryDelays = [500, 1000, 2000];
+
+          retryDelays.forEach((delay, index) =&gt; {
+              setTimeout(() =&gt; {
+                  // console.log(`Retry attempt #${index + 1} to find search input after ${delay}ms`);
+                  trySelectors();
+              }, delay);
+          });
+
+          // Also set up a MutationObserver to watch for the search input being added
+          setupMutationObserver();
+      }
+  }
+
+  function setupMutationObserver() {
+      const observer = new MutationObserver((mutations) =&gt; {
+          for (const mutation of mutations) {
+              if (mutation.addedNodes.length) {
+                  // Check if any of the added nodes is our search input or contains it
+                  for (const node of mutation.addedNodes) {
+                      if (node.nodeType === 1) { // ELEMENT_NODE
+                          // Check if this element is a search input
+                          if (isSearchInput(node)) {
+                              // console.log("🔍 MutationObserver found search input:", node);
+                              setupSearchInput(node);
+                              observer.disconnect();
+                              return;
+                          }
+
+                          // Check if it contains a search input
+                          const searchInput = node.querySelector('input.query.form-control, input[placeholder="Search"]');
+                          if (searchInput) {
+                              // console.log("🔍 MutationObserver found search input inside added node:", searchInput);
+                              setupSearchInput(searchInput);
+                              observer.disconnect();
+                              return;
+                          }
+                      }
+                  }
+              }
+          }
+      });
+
+      // Start observing the entire document for changes
+      observer.observe(document.body, {
+          childList: true,
+          subtree: true
+      });
+
+      // Auto-disconnect after 10 seconds to prevent memory leaks
+      setTimeout(() =&gt; {
+          observer.disconnect();
+          // console.log("MutationObserver disconnected after timeout");
+      }, 10000);
+  }
+
+  function isSearchInput(element) {
+      if (element.tagName === 'INPUT') {
+          return element.className.includes('query') ||
+                 (element.placeholder &amp;&amp; element.placeholder.toLowerCase().includes('search'));
+      }
+      return false;
+  }
+
+  function setupSearchInput(searchInput) {
+      try {
+          searchInput.focus();
+
+          // Verify focus was set
+          const activeElement = document.activeElement;
+
+          // console.log("Active element after focus attempt:", activeElement.tagName, {
+          //     id: activeElement.id,
+          //     class: activeElement.className,
+          //     isSameAsSearchInput: activeElement === searchInput
+          // });
+
+
+          if (activeElement === searchInput) {
+              dbglog("✅ Focus successfully set on search input", "search");
+          } else {
+              dbgerr("❌ Focus NOT set on search input", "search");
+          }
+
+      } catch (error) {
+          console.error("Error setting focus:", error);
+      }
+
+      // ---- SEARCH BUTTON SECTION ----
+      // console.log("Attempting to find search button for input:", searchInput);
+
+      // Try multiple approaches to find the search button
+      const buttonSelectors = [
+          // Direct parent-child relation
+          () =&gt; searchInput.closest('.input-group')?.querySelector('button'),
+          // Using the HTML structure we saw
+          () =&gt; document.querySelector('.input-group-btn button span.fa-search')?.parentElement,
+          // Find by icon
+          () =&gt; document.querySelector('button:has(span.fa-search)'),
+          // Look for any nearby button
+          () =&gt; searchInput.closest('.input-group')?.nextElementSibling?.querySelector('button'),
+          // jQuery approaches
+          () =&gt; $("button:has(span.fa-search)")[0],
+          () =&gt; $(searchInput).closest('div').find('button')[0]
+      ];
+
+      let searchButton = null;
+      for (let i = 0; i &lt; buttonSelectors.length; i++) {
+          try {
+              const btn = buttonSelectors[i]();
+              if (btn) {
+                  searchButton = btn;
+                  // console.log(`✅ Search button found with selector approach #${i+1}`);
+                  break;
+              } else {
+                  // console.log(`❌ No button found with selector approach #${i+1}`);
+              }
+          } catch (error) {
+              console.error(`Error with button selector approach #${i+1}:`, error);
+          }
+      }
+
+      if (!searchButton) {
+          // Last resort: find any button near the search input
+          try {
+              const parentDiv = searchInput.closest('div');
+              if (parentDiv) {
+                  const nearbyButtons = parentDiv.querySelectorAll('button');
+                  if (nearbyButtons.length &gt; 0) {
+                      searchButton = nearbyButtons[0];
+                      // console.log("⚠️ Found search button with last resort approach:", searchButton);
+                  }
+              }
+          } catch (error) {
+              console.error("Error with last resort button search:", error);
+          }
+      }
+
+      // console.log("Search button found:", searchButton ? true : false);
+      if (searchButton) {
+          // console.log("Search button details:", {
+          //     id: searchButton.id,
+          //     class: searchButton.className,
+          //     html: searchButton.outerHTML
+          // });
+
+
+          // Monitor the button's click event
+          $(searchButton).on("click", function(e) {
+              // console.log("Search button clicked directly", e);
+              // Check for single result after search
+              setTimeout(() =&gt; {
+                  checkForSingleResult();
+              }, 500);
+          });
+
+          let searchTimer;
+
+          // Simple auto-search functionality - only handle text input keys
+          $(searchInput).on("input", function(e) {
+              // Clear any existing timer
+              clearTimeout(searchTimer);
+
+              // Set a new timer to trigger search after typing stops
+              searchTimer = setTimeout(function() {
+                  try {
+                      searchButton.click();
+                      
+                      // Check for auto-click on single result
+                      setTimeout(() =&gt; {
+                          checkForSingleResult();
+                      }, 500);
+                  } catch (err) {
+                      console.error("Auto-search button click failed:", err);
+                  }
+              }, 500);
+          });
+
+          // Handle Enter key separately without interfering with other keys
+          $(searchInput).on("keydown", function(e) {
+              if (e.keyCode === 13) {
+                  // Store the last search event for the single result check
+                  window.lastSearchEvent = e;
+                  
+                  // Clear any existing timer
+                  clearTimeout(searchTimer);
+
+                  // Trigger search immediately
+                  try {
+                      searchButton.click();
+                      
+                      // Check for auto-click on single result
+                      setTimeout(() =&gt; {
+                          clickOnFirstRow();
+                      }, 500);
+                  } catch (err) {
+                      console.error("Error with Enter key search:", err);
+                  }
+              }
+          });
+      } else {
+          // console.log("❌ Could not find a search button to click");
+      }
+  }
+
+  function checkForSingleResult() {
+  	// Check if there's exactly one search result and auto-open it
+  	const rows = $(".entitylist .table.table-striped tbody tr");
+
+  	if (rows.length === 1 &amp;&amp; window.lastSearchEvent &amp;&amp; window.lastSearchEvent.keyCode === 13) {
+  		// Only one result from Enter key search - auto-open it
+  		dbglog("Single search result found, auto-opening...", "search");
+  		clickOnFirstRow();
+  	}
+  }
+
+  // Old initializeRowClicks function removed - now using event delegation above
+
+  // Add CSS for clickable rows
+  const style = document.createElement('style');
+  style.textContent = `
+      .entitylist .table.table-striped tbody tr {
+          cursor: pointer;
+      }
+      .entitylist .table.table-striped tbody tr:hover {
+          background-color: #f8f9fa !important;
+      }
+  `;
+  document.head.appendChild(style);
+
+  function setupAutoContainsSearch() {
+      dbglog('🔍 Setting up contains search with button interception...', 'search');
+
+      // Find the search input and button
+      const searchInput = document.querySelector('input.query.form-control') || 
+                         document.querySelector('.input-group input[placeholder="Search"]') || 
+                         document.querySelector('input[placeholder="Search"]');
+      
+      const searchButton = document.querySelector('.input-group-btn button') ||
+                          document.querySelector('button[type="submit"]') ||
+                          document.querySelector('.input-group button');
+      
+      if (!searchInput || !searchButton) {
+          dbglog('❌ Could not find search input or button, retrying...', 'search');
+          setTimeout(setupAutoContainsSearch, 1000);
+          return;
+      }
+
+      dbglog('✅ Found search input and button', 'search');
+
+      // Function to wrap search term with % for contains search
+      function wrapSearchTerm(searchTerm) {
+          const trimmed = searchTerm.trim();
+          if (!trimmed) return trimmed;
+          
+          // Convert * to % for user-friendly wildcards
+          let term = trimmed.replace(/\*/g, '%');
+          
+          // If user hasn't provided explicit % wildcards, auto-wrap for contains search
+          if (!trimmed.includes('%')) {
+              term = '%' + term + '%';
+          }
+          
+          dbglog('🔄 Search term conversion: ' + JSON.stringify(trimmed) + ' -&gt; ' + JSON.stringify(term), 'search');
+          return term;
+      }
+
+      // Function to handle table row visibility based on search results
+      function handleSearchResults() {
+          // Wait for the search results to be processed by Microsoft's framework
+          setTimeout(() =&gt; {
+              const searchTerm = searchInput.value.trim();
+              const tableRows = document.querySelectorAll('.entitylist .table.table-striped tbody tr');
+              const noResultsMessage = document.querySelector('.entitylist .no-records-message, .entitylist .empty-message, .entitylist [data-empty-message]');
+              
+              if (searchTerm) {
+                  // Check if there are actual results (not just the "no results" message)
+                  if (noResultsMessage &amp;&amp; noResultsMessage.style.display !== 'none') {
+                      // No results found - hide all table rows
+                      dbglog('🔍 No search results found, hiding all table rows', 'search');
+                      tableRows.forEach(row =&gt; {
+                          row.style.display = 'none';
+                      });
+                  } else {
+                      // Results found - show all rows (they may be filtered by Microsoft's framework)
+                      dbglog('🔍 Search results found, ensuring rows are visible', 'search');
+                      tableRows.forEach(row =&gt; {
+                          row.style.display = '';
+                      });
+                  }
+              } else {
+                  // No search term - show all rows
+                  dbglog('🔍 No search term, showing all table rows', 'search');
+                  tableRows.forEach(row =&gt; {
+                      row.style.display = '';
+                  });
+              }
+          }, 100); // Short delay to let Microsoft's framework process the search
+      }
+
+      // Store original values for restoration
+      let isSearchInProgress = false;
+      
+      // Intercept button clicks with immediate restoration to avoid state issues
+      searchButton.addEventListener('click', function(e) {
+          if (isSearchInProgress) return; // Avoid double-processing
+          
+          dbglog('🎯 Search button clicked - applying contains search', 'search');
+          
+          const originalValue = searchInput.value;
+          const wrappedValue = wrapSearchTerm(originalValue);
+          
+          if (originalValue !== wrappedValue) {
+              isSearchInProgress = true;
+              dbglog('🔄 Applying contains search transformation', 'search');
+              
+              // Temporarily change the value for this search
+              searchInput.value = wrappedValue;
+              
+              // Immediately restore the original value to preserve user's input
+              setTimeout(() =&gt; {
+                  searchInput.value = originalValue;
+                  isSearchInProgress = false;
+                  dbglog('✅ Restored original search value', 'search');
+                  
+                  // Handle the search results after restoration
+                  handleSearchResults();
+              }, 50); // Shorter delay to minimize state interference
+          } else {
+              // No transformation needed, handle results directly
+              handleSearchResults();
+          }
+      }, true); // Use capture phase to run before Microsoft's handler
+
+      // Add clear button functionality
+      addClearButton(searchInput, searchButton);
+
+      dbglog('✅ Contains search interception setup complete', 'search');
+  }
+
+  function addClearButton(searchInput, searchButton) {
+      dbglog('🔍 Adding clear button between input and search button...', 'search');
+
+      // Find the input group container
+      const inputGroup = searchInput.closest('.input-group');
+      if (!inputGroup) {
+          dbglog('❌ Could not find input group for clear button', 'search');
+          return;
+      }
+
+      // Create clear button positioned between input and search button
+      const clearButton = document.createElement('button');
+      clearButton.type = 'button';
+      clearButton.className = 'btn btn-outline-secondary';
+      clearButton.innerHTML = '✕';
+      clearButton.title = 'Clear search';
+      clearButton.style.cssText = `
+          border-left: none;
+          border-right: none;
+          padding: 6px 8px;
+          font-size: 16px;
+          display: none;
+          border-radius: 0;
+      `;
+
+      // Insert the clear button between the input and search button
+      const buttonContainer = searchButton.parentElement;
+      if (buttonContainer) {
+          // Insert before the search button within the button container
+          buttonContainer.insertBefore(clearButton, searchButton);
+      } else {
+          // If no container, insert directly before the search button
+          searchButton.parentNode.insertBefore(clearButton, searchButton);
+      }
+
+      // Show/hide clear button based on input content
+      function toggleClearButton() {
+          if (searchInput.value.trim()) {
+              clearButton.style.display = 'inline-block';
+          } else {
+              clearButton.style.display = 'none';
+          }
+      }
+
+      // Clear button click handler
+      clearButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dbglog('🗑️ Clear button clicked', 'search');
+          
+          searchInput.value = '';
+          searchInput.focus();
+          toggleClearButton();
+          
+          // Show all table rows when clearing search
+          showAllTableRows();
+          
+          // Trigger a search to show all results
+          searchButton.click();
+      });
+
+      // Show/hide clear button on input changes
+      searchInput.addEventListener('input', toggleClearButton);
+      searchInput.addEventListener('keyup', toggleClearButton);
+      
+      // Initial state
+      toggleClearButton();
+
+      dbglog('✅ Clear button added between input and search button', 'search');
+  }
+
+  // Function to show all table rows (used when clearing search or showing all results)
+  function showAllTableRows() {
+      const tableRows = document.querySelectorAll('.entitylist .table.table-striped tbody tr');
+      dbglog('🔍 Showing all table rows', 'search');
+      tableRows.forEach(row =&gt; {
+          row.style.display = '';
+      });
+  }
+
+function enhanceProfilesPageFunctionality() {
+    dbglog('=== enhanceProfilesPageFunctionality called ===', 'ui');
+    
+    // 1. Change button text from "Create Profile" to "Create User"
+    changeCreateButtonText();
+    
+    // 2. Change breadcrumb text from "Profiles" to "Users"
+    changeBreadcrumbText();
+}
+
+function changeCreateButtonText() {
+    // Use jQuery to find buttons with "Create" in their text content
+    const createButtons = $('a[href*="create"], button, .btn').filter(function() {
+        return $(this).text().includes('Create');
+    });
+    
+    createButtons.each(function() {
+        const $button = $(this);
+        const buttonText = $button.text();
+        
+        if (buttonText.includes('Create Profile')) {
+            dbglog('Found "Create Profile" button, changing to "Create User"', 'ui');
+            const newText = buttonText.replace('Create Profile', 'Create User');
+            $button.text(newText);
+        }
+    });
+    
+    // Also check for any buttons that might be added dynamically using MutationObserver
+    const observer = new MutationObserver((mutations) =&gt; {
+        mutations.forEach((mutation) =&gt; {
+            if (mutation.addedNodes.length) {
+                mutation.addedNodes.forEach((node) =&gt; {
+                    if (node.nodeType === 1) { // ELEMENT_NODE
+                        const $node = $(node);
+                        
+                        // Check the node itself
+                        if ($node.is('a[href*="create"], button, .btn') &amp;&amp; $node.text().includes('Create Profile')) {
+                            dbglog('Found MutationObserver "Create Profile" button, changing to "Create User"', 'ui');
+                            const newText = $node.text().replace('Create Profile', 'Create User');
+                            $node.text(newText);
+                        }
+                        
+                        // Check child nodes using jQuery
+                        $node.find('a[href*="create"], button, .btn').each(function() {
+                            const $childButton = $(this);
+                            const buttonText = $childButton.text();
+                            
+                            if (buttonText.includes('Create Profile')) {
+                                dbglog('Found MutationObserver child "Create Profile" button, changing to "Create User"', 'ui');
+                                const newText = buttonText.replace('Create Profile', 'Create User');
+                                $childButton.text(newText);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+    
+    // Start observing for dynamic content changes
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+    
+    // Auto-disconnect after 30 seconds to prevent memory leaks
+    setTimeout(() =&gt; {
+        observer.disconnect();
+    }, 30000);
+}
+
+function changeBreadcrumbText() {
+    // Change breadcrumb text from "Profiles" to "Users" - PRECISE SURGICAL APPROACH
+    function updateBreadcrumbText() {
+        // Target ONLY the active breadcrumb item in the specific Pages Breadcrumb structure
+        const $activeItem = $('.pagesBreadcrumb .breadcrumb-item.active');
+        
+        if ($activeItem.length &gt; 0) {
+            // Find the p element within the active item
+            const $pElement = $activeItem.find('p').first();
+            
+            if ($pElement.length &gt; 0) {
+                const pText = $pElement.text().trim();
+                
+                if (pText === 'Profiles') {
+                    $pElement.text('Users');
+                    
+                    // Also update the aria-current attribute for accessibility
+                    $activeItem.attr('aria-current', 'Users');
+                    return; // Success, exit early
+                }
+            } else {
+                // Fallback: Try to find any text content directly
+                const directText = $activeItem.text().trim();
+                
+                if (directText === 'Profiles') {
+                    // Replace the text content while preserving HTML structure
+                    $activeItem.html($activeItem.html().replace(/Profiles/g, 'Users'));
+                    $activeItem.attr('aria-current', 'Users');
+                    return;
+                }
+            }
+        }
+        
+        // Fallback: If the above structure doesn't exist, try a more generic approach
+        let foundMatch = false;
+        
+        $('.breadcrumb-item').each(function(index) {
+            const $item = $(this);
+            const $p = $item.find('p');
+            
+            if ($p.length &gt; 0 &amp;&amp; $p.text().trim() === 'Profiles') {
+                // Verify this is not inside a link (to avoid changing linked breadcrumb items)
+                if ($item.find('a').length === 0) {
+                    $p.text('Users');
+                    
+                    // Update aria-current if it exists
+                    if ($item.attr('aria-current')) {
+                        $item.attr('aria-current', 'Users');
+                    }
+                    
+                    foundMatch = true;
+                }
+            }
+        });
+    }
+    
+    // Update immediately
+    updateBreadcrumbText();
+    
+    // Also set up a MutationObserver to catch dynamically loaded breadcrumbs
+    const observer = new MutationObserver((mutations) =&gt; {
+        let shouldUpdate = false;
+        
+        mutations.forEach((mutation) =&gt; {
+            if (mutation.addedNodes.length) {
+                mutation.addedNodes.forEach((node) =&gt; {
+                    if (node.nodeType === 1) { // ELEMENT_NODE
+                        const $node = $(node);
+                        const nodeText = $node.text();
+                        
+                        // Check if the added node contains breadcrumb-related content
+                        if (nodeText.includes('Profiles') || 
+                            $node.find('*').text().includes('Profiles') ||
+                            node.className.includes('breadcrumb') ||
+                            $node.find('[class*="breadcrumb"]').length &gt; 0) {
+                            shouldUpdate = true;
+                        }
+                    }
+                });
+            }
+            
+            if (mutation.type === 'characterData' &amp;&amp; mutation.target.textContent.includes('Profiles')) {
+                shouldUpdate = true;
+            }
+        });
+        
+        if (shouldUpdate) {
+            setTimeout(updateBreadcrumbText, 100);
+        }
+    });
+    
+    // Start observing
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        characterData: true
+    });
+    
+    // Auto-disconnect after 30 seconds to prevent memory leaks
+    setTimeout(() =&gt; {
+        observer.disconnect();
+    }, 30000);
+}
+
+&lt;/script&gt;
+
+&lt;!-- Rodj manual update 2508141410 --&gt;
+&lt;!-- Last modified fri aug 15 7:15am --&gt;
+&lt;!-- Last modified fri aug 15 11:01am --&gt;
+&lt;!-- Last modified fri aug 16 6:25am --&gt;
+&lt;!-- Last modified sat aug 16 6:47am --&gt;
+&lt;!-- Last modified sat aug 16 6:56am --&gt;
+&lt;!-- Last modified sat aug 16 7:13am --&gt;
+&lt;!-- Last modified sat aug 16 7:29am --&gt;
+&lt;!-- Last modified sat aug 16 7:46am --&gt;
+&lt;!-- Last modified sat aug 16 8:05am --&gt;
+&lt;!-- Last modified sat aug 16 8:10am --&gt;
+&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;
+&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;Profiles</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

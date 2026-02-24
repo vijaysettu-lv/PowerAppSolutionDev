@@ -1,0 +1,18 @@
+<powerpagecomponent powerpagecomponentid="312d0fae-701f-f011-998a-7c1e521b1a65">
+  <content>{
+  "display_name": "FetchXML - Commission Values by Loan Officer",
+  "type": 756150001,
+  "value": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sun Aug 31 5:00PM --&gt;\n{% comment %} Define our own FetchXML query identical to Commission Filter {% endcomment %}\n{% fetchxml loanOfficerCommissions %}\n\t&lt;fetch&gt;\n\t\t&lt;entity name=\"lv_lvcompcommission\"&gt;\n\t\t\t&lt;attribute name=\"lv_lvcompcommissionid\" /&gt;\n\t\t\t&lt;attribute name=\"lv_entryno\" /&gt;\n\t\t\t&lt;attribute name=\"lv_amount\" /&gt;\n\t\t\t&lt;attribute name=\"lv_type\" /&gt;\n\t\t\t&lt;attribute name=\"lv_branch\" /&gt;\n\t\t\t&lt;attribute name=\"lv_loanofficer\" /&gt;\n\t\t\t&lt;attribute name=\"lv_borrowername\" /&gt;\n\t\t\t&lt;attribute name=\"lv_commissiondate\" /&gt;\n\t\t\t&lt;attribute name=\"lv_commissionbaseamount\" /&gt;\n\t\t\t&lt;attribute name=\"lv_bpscalculated\" /&gt;\n\t\t\t&lt;attribute name=\"lv_calculationtype\" /&gt;\n\t\t\t&lt;attribute name=\"lv_loan\" /&gt;\n\t\t\t&lt;attribute name=\"lv_xloan\" /&gt;\n\t\t\t&lt;attribute name=\"lv_losplit\" /&gt;\n\t\t\t&lt;attribute name=\"lv_cappedcommissionbaseamount\" /&gt;\n\t\t\t&lt;attribute name=\"lv_calculationschemalineno\" /&gt;\n\t\t\t&lt;attribute name=\"lv_calculationdate\" /&gt;\n\t\t\t&lt;attribute name=\"lv_description\" /&gt;\n\t\t\t&lt;attribute name=\"lv_periodno\" /&gt;\n\t\t\t&lt;attribute name=\"lv_xprofile\" /&gt;\n\t\t\t&lt;attribute name=\"lv_xloanamount\" /&gt;\n\t\t\t&lt;attribute name=\"lv_xloanofficername\" /&gt;\n\t\t\t&lt;attribute name=\"lv_xloanofficercode\" /&gt;\n\t\t\t&lt;attribute name=\"lv_loancardurl\" /&gt;\n\n\t\t\t&lt;filter type=\"and\"&gt;\n\t\t\t\t&lt;condition attribute=\"lv_type\" operator=\"eq\" value=\"Loan Based\" /&gt;\n\t\t\t\t&lt;condition attribute=\"lv_periodno\" operator=\"eq\" value=\"{{sqUISelPeriodNo}}\" /&gt;\n\t\t\t&lt;/filter&gt;\n\t\t\t&lt;order attribute=\"lv_xloanofficername\" /&gt;\n\t\t&lt;/entity&gt;\n\t&lt;/fetch&gt;\n{% endfetchxml %}\n\n{% assign valuesByLoanOfficerQuery = loanOfficerCommissions.results.entities %}\n\n&lt;!-- LEAVE:Snippet: FetchXML - Commission Values by Loan Officer 2504220755bbc --&gt;\n&lt;!-- Last modified Sun Aug 31 5:00PM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>FetchXML - Commission Values by Loan Officer</name>
+  <powerpagecomponenttype>7</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

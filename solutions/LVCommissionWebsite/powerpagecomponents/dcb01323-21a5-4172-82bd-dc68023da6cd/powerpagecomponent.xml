@@ -1,0 +1,16 @@
+<powerpagecomponent powerpagecomponentid="dcb01323-21a5-4172-82bd-dc68023da6cd">
+  <content>{
+  "displayorder": 6,
+  "pageid": "6249e2f5-2a59-722d-a8fb-447db5b6beca",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "weblinksetid": "3baf98b9-97fe-4c16-a5b4-071bd273fea8"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Loan Officer</name>
+  <powerpagecomponenttype>5</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

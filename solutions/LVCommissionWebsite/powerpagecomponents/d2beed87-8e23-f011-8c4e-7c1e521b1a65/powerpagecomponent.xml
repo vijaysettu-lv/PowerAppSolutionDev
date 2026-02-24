@@ -1,0 +1,24 @@
+<powerpagecomponent powerpagecomponentid="d2beed87-8e23-f011-8c4e-7c1e521b1a65">
+  <content>{
+  "append": true,
+  "appendto": true,
+  "create": true,
+  "delete": true,
+  "entitylogicalname": "mspp_webrole",
+  "entityname": "mspp_webrole (Web Role)",
+  "read": true,
+  "scope": 756150000,
+  "write": true,
+  "adx_entitypermission_webrole": [
+    "5a90d3ec-5116-f011-9989-002248045044"
+  ]
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>mspp_webrole (Web Role)</name>
+  <powerpagecomponenttype>18</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

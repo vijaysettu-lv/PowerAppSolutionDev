@@ -1,0 +1,28 @@
+<powerpagecomponent powerpagecomponentid="a1e7ef6b-890f-4962-8245-2ebbe8f9b7a6">
+  <content>{
+  "attachfilestoragelocation": 756150000,
+  "captcharequired": false,
+  "containername": "",
+  "entityname": "lv_lvcomploanofficer",
+  "entitypermissionsenabled": true,
+  "entitysourcetype": 756150001,
+  "formname": "FormCreatedInSolutionForOfficer",
+  "hideformonsuccess": true,
+  "maximumnooffiles": 5,
+  "mode": 100000001,
+  "onsuccess": 756150001,
+  "recordidquerystringparametername": "id",
+  "redirectwebpage": "bc5cb3c0-d9a9-5307-6549-e3b12b00e1f7",
+  "registerstartupscript": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;",
+  "showcaptchaforauthenticatedusers": false,
+  "storageaccountname": ""
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>CopyOfFormCreatedInSolutionForOfficer</name>
+  <powerpagecomponenttype>15</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

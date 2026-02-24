@@ -1,0 +1,14 @@
+<powerpagecomponent powerpagecomponentid="8f137143-daf7-4b1e-a8e4-37956ee5d2b8">
+  <content>{
+  "description": "URL to redirect to after user signs out",
+  "value": "/"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Authentication/Registration/LocalLogoutRedirectURL</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

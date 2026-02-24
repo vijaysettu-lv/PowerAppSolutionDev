@@ -1,0 +1,13 @@
+<powerpagecomponent powerpagecomponentid="c580b418-4896-42d1-a0be-521b6d4a4d49">
+  <content>{
+  "value": "true"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Authentication/UserManager/UserValidator/RequireUniqueEmail</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

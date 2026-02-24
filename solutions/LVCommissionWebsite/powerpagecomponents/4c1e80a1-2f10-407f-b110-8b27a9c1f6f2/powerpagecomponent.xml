@@ -1,0 +1,16 @@
+<powerpagecomponent powerpagecomponentid="4c1e80a1-2f10-407f-b110-8b27a9c1f6f2">
+  <content>{
+  "displayorder": 21,
+  "pageid": "2693ba16-d7b3-80ec-4af7-72db95bca349",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "weblinksetid": "3baf98b9-97fe-4c16-a5b4-071bd273fea8"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>lvcpx3</name>
+  <powerpagecomponenttype>5</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

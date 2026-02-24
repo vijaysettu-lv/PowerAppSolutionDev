@@ -1,0 +1,21 @@
+<powerpagecomponent powerpagecomponentid="30203cdd-fa15-f011-9989-002248045044">
+  <content>{
+  "append": false,
+  "appendto": false,
+  "create": false,
+  "delete": false,
+  "entitylogicalname": "lv_lvcompcommissionsetup",
+  "entityname": "lvcSetup",
+  "read": true,
+  "scope": 756150000,
+  "write": true
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>lvcSetup</name>
+  <powerpagecomponenttype>18</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

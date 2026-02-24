@@ -1,0 +1,24 @@
+<powerpagecomponent powerpagecomponentid="cfe6d8ff-7923-f011-8c4e-7c1e521b1a65">
+  <content>{
+  "append": true,
+  "appendto": true,
+  "create": true,
+  "delete": true,
+  "entitylogicalname": "powerpagecomponent",
+  "entityname": "powerpagecomponent",
+  "read": true,
+  "scope": 756150000,
+  "write": true,
+  "adx_entitypermission_webrole": [
+    "e1e17fc7-e0e5-4803-b01b-0ba213d4c790"
+  ]
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>powerpagecomponent</name>
+  <powerpagecomponenttype>18</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

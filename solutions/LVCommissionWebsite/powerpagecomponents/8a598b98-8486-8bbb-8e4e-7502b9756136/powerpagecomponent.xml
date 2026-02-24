@@ -1,0 +1,18 @@
+<powerpagecomponent powerpagecomponentid="8a598b98-8486-8bbb-8e4e-7502b9756136">
+  <content>{
+  "display_name": "Logo alt text",
+  "type": 756150000,
+  "value": "Loan Vision Logo\n"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Logo alt text</name>
+  <powerpagecomponenttype>7</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

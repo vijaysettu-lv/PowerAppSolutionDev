@@ -1,0 +1,18 @@
+<powerpagecomponent powerpagecomponentid="b51e5af7-d8b9-6061-218c-8ff7424b1502">
+  <content>{
+  "right": 2,
+  "scope": 1,
+  "webpageid": "bc5cb3c0-d9a9-5307-6549-e3b12b00e1f7",
+  "adx_webpageaccesscontrolrule_webrole": [
+    "007ff13c-35b2-410f-aaff-3b671f3876bd"
+  ]
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Restrict Read on Officers</name>
+  <powerpagecomponenttype>10</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

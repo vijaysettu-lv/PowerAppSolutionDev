@@ -1,0 +1,179 @@
+<powerpagecomponent powerpagecomponentid="6a7226ca-731f-4055-a7ed-a6062eb9a4ca">
+  <content>{
+  "copy": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Mon Dec 02 11:15AM --&gt;\n&lt;!-- Last modified Mon Dec 02 12:00PM --&gt;\n&lt;!-- Last modified Mon Dec 02 12:15PM --&gt;\n{% include 'snippet' snippet_name:'FetchXML - SetupQuery' %}\n\n{%- comment -%} ============================================= {%- endcomment -%}\n{%- comment -%} ASSIGNMENT INFORMATION SECTION {%- endcomment -%}\n{%- comment -%} This div is moved via JavaScript to appear after \"Your information\" {%- endcomment -%}\n{%- comment -%} ============================================= {%- endcomment -%}\n\n&lt;div id=\"assignment-info-section\" class=\"assignment-info-section\" style=\"margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 5px; border: 1px solid #dee2e6; display: none;\"&gt;\n\t&lt;h4 style=\"margin-bottom: 15px; color: #495057;\"&gt;Your Assignments&lt;/h4&gt;\n\n\t{%- comment -%} 1) Direct Loan Officer Assignment {%- endcomment -%}\n\t&lt;div style=\"margin-bottom: 10px;\"&gt;\n\t\t&lt;strong&gt;Your Direct Loan Officer Assignment:&lt;/strong&gt;\n\t\t{%- if user.lv_loanofficer and user.lv_loanofficer.id != blank -%}\n\t\t\t{%- comment -%} Look up the code from allLoanOfficers {%- endcomment -%}\n\t\t\t{%- assign directLoCode = \"\" -%}\n\t\t\t{%- for lo in allLoanOfficers.results.entities -%}\n\t\t\t\t{%- if lo.lv_lvcomploanofficerid == user.lv_loanofficer.id -%}\n\t\t\t\t\t{%- assign directLoCode = lo.lv_code -%}\n\t\t\t\t\t{%- break -%}\n\t\t\t\t{%- endif -%}\n\t\t\t{%- endfor -%}\n\t\t\t&lt;span&gt;{{ user.lv_loanofficer.name }}{%- if directLoCode != \"\" %} ({{ directLoCode }}){%- endif -%}&lt;/span&gt;\n\t\t{%- else -%}\n\t\t\t&lt;span style=\"color: #6c757d;\"&gt;(none)&lt;/span&gt;\n\t\t{%- endif -%}\n\t&lt;/div&gt;\n\n\t{%- comment -%} 2) Branch Manager Assignments {%- endcomment -%}\n\t&lt;div style=\"margin-bottom: 10px;\"&gt;\n\t\t&lt;strong&gt;Branch Manager:&lt;/strong&gt;\n\t\t{%- assign bmCount = 0 -%}\n\t\t{%- assign bmDisplay = \"\" -%}\n\t\t{%- for row in fxmUserAsBM.results.entities -%}\n\t\t\t{%- assign bmCount = bmCount | plus: 1 -%}\n\t\t\t{%- if bmDisplay != \"\" -%}\n\t\t\t\t{%- assign bmDisplay = bmDisplay | append: \", \" -%}\n\t\t\t{%- endif -%}\n\t\t\t{%- assign bmDisplay = bmDisplay | append: row.lv_branchname -%}\n\t\t\t{%- if row.lv_branchcode and row.lv_branchcode != blank -%}\n\t\t\t\t{%- assign bmDisplay = bmDisplay | append: \" (\" | append: row.lv_branchcode | append: \")\" -%}\n\t\t\t{%- endif -%}\n\t\t{%- endfor -%}\n\t\t{%- if bmCount &gt; 0 -%}\n\t\t\t&lt;span&gt;{{ bmDisplay }}&lt;/span&gt;\n\t\t{%- else -%}\n\t\t\t&lt;span style=\"color: #6c757d;\"&gt;(none)&lt;/span&gt;\n\t\t{%- endif -%}\n\t&lt;/div&gt;\n\n\t{%- comment -%} 3) Loan Officer Oversight Assignments (only type='O', NOT exclusions) {%- endcomment -%}\n\t&lt;div style=\"margin-bottom: 10px;\"&gt;\n\t\t&lt;strong&gt;Loan Officer Oversight:&lt;/strong&gt;\n\t\t{%- assign looCount = 0 -%}\n\t\t{%- assign looDisplay = \"\" -%}\n\t\t{%- for row in fxmUserAsLOO.results.entities -%}\n\t\t\t{%- comment -%} fxmUserAsLOO already filters for type='O' in SetupQuery {%- endcomment -%}\n\t\t\t{%- assign looCount = looCount | plus: 1 -%}\n\t\t\t{%- if looDisplay != \"\" -%}\n\t\t\t\t{%- assign looDisplay = looDisplay | append: \", \" -%}\n\t\t\t{%- endif -%}\n\t\t\t{%- assign looDisplay = looDisplay | append: row.lv_loanofficername -%}\n\t\t\t{%- if row.lv_loanofficercode and row.lv_loanofficercode != blank -%}\n\t\t\t\t{%- assign looDisplay = looDisplay | append: \" (\" | append: row.lv_loanofficercode | append: \")\" -%}\n\t\t\t{%- endif -%}\n\t\t{%- endfor -%}\n\t\t{%- if looCount &gt; 0 -%}\n\t\t\t&lt;span&gt;{{ looDisplay }}&lt;/span&gt;\n\t\t{%- else -%}\n\t\t\t&lt;span style=\"color: #6c757d;\"&gt;(none)&lt;/span&gt;\n\t\t{%- endif -%}\n\t&lt;/div&gt;\n\n\t{%- comment -%} 4) Web Roles {%- endcomment -%}\n\t&lt;div&gt;\n\t\t&lt;strong&gt;Roles:&lt;/strong&gt;\n\t\t{%- assign roleDisplay = \"\" -%}\n\t\t{%- assign roleCount = 0 -%}\n\t\t{%- for role in user.roles -%}\n\t\t\t{%- assign roleCount = roleCount | plus: 1 -%}\n\t\t\t{%- if roleDisplay != \"\" -%}\n\t\t\t\t{%- assign roleDisplay = roleDisplay | append: \", \" -%}\n\t\t\t{%- endif -%}\n\t\t\t{%- capture roleStr -%}{{ role }}{%- endcapture -%}\n\t\t\t{%- assign roleDisplay = roleDisplay | append: roleStr -%}\n\t\t{%- endfor -%}\n\t\t{%- if roleCount &gt; 0 -%}\n\t\t\t&lt;span&gt;{{ roleDisplay }}&lt;/span&gt;\n\t\t{%- else -%}\n\t\t\t&lt;span style=\"color: #6c757d;\"&gt;(none)&lt;/span&gt;\n\t\t{%- endif -%}\n\t&lt;/div&gt;\n&lt;/div&gt;\n\n&lt;script&gt;\n\ndocument.addEventListener(\"LVGlobalDOCReady\", function() {\n\tconsole.log(\"contact form doc ready!!!!\");\n\n\t// After submit, redirect the user to the home page\n\t$(\"#content_form\").attr('action', \"/profile/?returnUrl=/\");\n\n\tconst hidethese = [\"adx_organizationname\", \"jobtitle\", \"nickname\", \"websiteurl\", \"adx_publicprofilecopy\", \"mspp_userpreferredlcid\", \"ContentContainer_MainContent_MainContent_ContentBottom_MarketingOptionsPanel\"];\n\n\thidethese.forEach(eid =&gt; {\n\t\t$(\"#\" + eid).hide();\n\t\t$(\"#\" + eid + \"_label\").hide();\n\t\t$(\"#\" + eid).closest(\"tr\").hide();\n\t});\n\n\t// Hide \"Your information for this site:\" text\n\t$(\"p:contains('Your information for this site')\").hide();\n\n\t// Hide the old \"Roles\" section from the Microsoft form (we display roles in our custom section now)\n\t// The Roles field has label \"Roles\" - find and hide the entire row\n\t$(\"label:contains('Roles')\").closest(\"tr\").hide();\n\t$(\"label:contains('Roles')\").closest(\".form-group\").hide();\n\t// Also try by field name pattern\n\t$(\"[id*='webroles'], [id*='WebRoles'], [id*='Roles']\").closest(\"tr\").hide();\n\t$(\"[id*='webroles'], [id*='WebRoles'], [id*='Roles']\").closest(\".form-group\").hide();\n\n\t// Move assignment section to appear after the \"Your information\" section (after the form)\n\tconst assignmentSection = $(\"#assignment-info-section\");\n\tconst submitButton = $(\"#ContentContainer_MainContent_MainContent_ContentBottom_SubmitButton\");\n\n\tif (assignmentSection.length &amp;&amp; submitButton.length) {\n\t\t// Add moderate spacing before our section (reduced from 200px to keep some separation)\n\t\tsubmitButton.css(\"margin-bottom\", \"40px\");\n\t\t// Insert after the submit button\n\t\tassignmentSection.insertAfter(submitButton);\n\t\tassignmentSection.show();\n\t} else {\n\t\t// Fallback: just show it where it is\n\t\tassignmentSection.show();\n\t}\n});\n\n&lt;/script&gt;\n\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Mon Dec 02 12:00PM --&gt;\n",
+  "customjavascript": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;",
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "feedbackpolicy": 756150000,
+  "hiddenfromsitemap": true,
+  "isroot": false,
+  "pagetemplateid": "da65964f-7d57-48c1-9653-496b6b2c8535",
+  "parentpageid": "362995e0-7dc5-4bbf-9595-062f468d2d44",
+  "partialurl": "profile",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "rootwebpageid": "9b0905f8-b9a0-43e5-91b7-ce28a5c637fe",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;",
+  "title": "Profile"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Profile</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <searchcontent>Profile&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;
+&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;
+&lt;!-- Last modified Mon Dec 02 11:15AM --&gt;
+&lt;!-- Last modified Mon Dec 02 12:00PM --&gt;
+&lt;!-- Last modified Mon Dec 02 12:15PM --&gt;
+{% include 'snippet' snippet_name:'FetchXML - SetupQuery' %}
+
+{%- comment -%} ============================================= {%- endcomment -%}
+{%- comment -%} ASSIGNMENT INFORMATION SECTION {%- endcomment -%}
+{%- comment -%} This div is moved via JavaScript to appear after "Your information" {%- endcomment -%}
+{%- comment -%} ============================================= {%- endcomment -%}
+
+&lt;div id="assignment-info-section" class="assignment-info-section" style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 5px; border: 1px solid #dee2e6; display: none;"&gt;
+	&lt;h4 style="margin-bottom: 15px; color: #495057;"&gt;Your Assignments&lt;/h4&gt;
+
+	{%- comment -%} 1) Direct Loan Officer Assignment {%- endcomment -%}
+	&lt;div style="margin-bottom: 10px;"&gt;
+		&lt;strong&gt;Your Direct Loan Officer Assignment:&lt;/strong&gt;
+		{%- if user.lv_loanofficer and user.lv_loanofficer.id != blank -%}
+			{%- comment -%} Look up the code from allLoanOfficers {%- endcomment -%}
+			{%- assign directLoCode = "" -%}
+			{%- for lo in allLoanOfficers.results.entities -%}
+				{%- if lo.lv_lvcomploanofficerid == user.lv_loanofficer.id -%}
+					{%- assign directLoCode = lo.lv_code -%}
+					{%- break -%}
+				{%- endif -%}
+			{%- endfor -%}
+			&lt;span&gt;{{ user.lv_loanofficer.name }}{%- if directLoCode != "" %} ({{ directLoCode }}){%- endif -%}&lt;/span&gt;
+		{%- else -%}
+			&lt;span style="color: #6c757d;"&gt;(none)&lt;/span&gt;
+		{%- endif -%}
+	&lt;/div&gt;
+
+	{%- comment -%} 2) Branch Manager Assignments {%- endcomment -%}
+	&lt;div style="margin-bottom: 10px;"&gt;
+		&lt;strong&gt;Branch Manager:&lt;/strong&gt;
+		{%- assign bmCount = 0 -%}
+		{%- assign bmDisplay = "" -%}
+		{%- for row in fxmUserAsBM.results.entities -%}
+			{%- assign bmCount = bmCount | plus: 1 -%}
+			{%- if bmDisplay != "" -%}
+				{%- assign bmDisplay = bmDisplay | append: ", " -%}
+			{%- endif -%}
+			{%- assign bmDisplay = bmDisplay | append: row.lv_branchname -%}
+			{%- if row.lv_branchcode and row.lv_branchcode != blank -%}
+				{%- assign bmDisplay = bmDisplay | append: " (" | append: row.lv_branchcode | append: ")" -%}
+			{%- endif -%}
+		{%- endfor -%}
+		{%- if bmCount &gt; 0 -%}
+			&lt;span&gt;{{ bmDisplay }}&lt;/span&gt;
+		{%- else -%}
+			&lt;span style="color: #6c757d;"&gt;(none)&lt;/span&gt;
+		{%- endif -%}
+	&lt;/div&gt;
+
+	{%- comment -%} 3) Loan Officer Oversight Assignments (only type='O', NOT exclusions) {%- endcomment -%}
+	&lt;div style="margin-bottom: 10px;"&gt;
+		&lt;strong&gt;Loan Officer Oversight:&lt;/strong&gt;
+		{%- assign looCount = 0 -%}
+		{%- assign looDisplay = "" -%}
+		{%- for row in fxmUserAsLOO.results.entities -%}
+			{%- comment -%} fxmUserAsLOO already filters for type='O' in SetupQuery {%- endcomment -%}
+			{%- assign looCount = looCount | plus: 1 -%}
+			{%- if looDisplay != "" -%}
+				{%- assign looDisplay = looDisplay | append: ", " -%}
+			{%- endif -%}
+			{%- assign looDisplay = looDisplay | append: row.lv_loanofficername -%}
+			{%- if row.lv_loanofficercode and row.lv_loanofficercode != blank -%}
+				{%- assign looDisplay = looDisplay | append: " (" | append: row.lv_loanofficercode | append: ")" -%}
+			{%- endif -%}
+		{%- endfor -%}
+		{%- if looCount &gt; 0 -%}
+			&lt;span&gt;{{ looDisplay }}&lt;/span&gt;
+		{%- else -%}
+			&lt;span style="color: #6c757d;"&gt;(none)&lt;/span&gt;
+		{%- endif -%}
+	&lt;/div&gt;
+
+	{%- comment -%} 4) Web Roles {%- endcomment -%}
+	&lt;div&gt;
+		&lt;strong&gt;Roles:&lt;/strong&gt;
+		{%- assign roleDisplay = "" -%}
+		{%- assign roleCount = 0 -%}
+		{%- for role in user.roles -%}
+			{%- assign roleCount = roleCount | plus: 1 -%}
+			{%- if roleDisplay != "" -%}
+				{%- assign roleDisplay = roleDisplay | append: ", " -%}
+			{%- endif -%}
+			{%- capture roleStr -%}{{ role }}{%- endcapture -%}
+			{%- assign roleDisplay = roleDisplay | append: roleStr -%}
+		{%- endfor -%}
+		{%- if roleCount &gt; 0 -%}
+			&lt;span&gt;{{ roleDisplay }}&lt;/span&gt;
+		{%- else -%}
+			&lt;span style="color: #6c757d;"&gt;(none)&lt;/span&gt;
+		{%- endif -%}
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+
+document.addEventListener("LVGlobalDOCReady", function() {
+	console.log("contact form doc ready!!!!");
+
+	// After submit, redirect the user to the home page
+	$("#content_form").attr('action', "/profile/?returnUrl=/");
+
+	const hidethese = ["adx_organizationname", "jobtitle", "nickname", "websiteurl", "adx_publicprofilecopy", "mspp_userpreferredlcid", "ContentContainer_MainContent_MainContent_ContentBottom_MarketingOptionsPanel"];
+
+	hidethese.forEach(eid =&gt; {
+		$("#" + eid).hide();
+		$("#" + eid + "_label").hide();
+		$("#" + eid).closest("tr").hide();
+	});
+
+	// Hide "Your information for this site:" text
+	$("p:contains('Your information for this site')").hide();
+
+	// Hide the old "Roles" section from the Microsoft form (we display roles in our custom section now)
+	// The Roles field has label "Roles" - find and hide the entire row
+	$("label:contains('Roles')").closest("tr").hide();
+	$("label:contains('Roles')").closest(".form-group").hide();
+	// Also try by field name pattern
+	$("[id*='webroles'], [id*='WebRoles'], [id*='Roles']").closest("tr").hide();
+	$("[id*='webroles'], [id*='WebRoles'], [id*='Roles']").closest(".form-group").hide();
+
+	// Move assignment section to appear after the "Your information" section (after the form)
+	const assignmentSection = $("#assignment-info-section");
+	const submitButton = $("#ContentContainer_MainContent_MainContent_ContentBottom_SubmitButton");
+
+	if (assignmentSection.length &amp;&amp; submitButton.length) {
+		// Add moderate spacing before our section (reduced from 200px to keep some separation)
+		submitButton.css("margin-bottom", "40px");
+		// Insert after the submit button
+		assignmentSection.insertAfter(submitButton);
+		assignmentSection.show();
+	} else {
+		// Fallback: just show it where it is
+		assignmentSection.show();
+	}
+});
+
+&lt;/script&gt;
+
+&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;
+&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;
+&lt;!-- Last modified Mon Dec 02 12:00PM --&gt;
+Profile</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

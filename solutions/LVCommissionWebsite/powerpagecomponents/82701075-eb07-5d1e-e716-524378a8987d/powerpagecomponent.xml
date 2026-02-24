@@ -1,0 +1,20 @@
+<powerpagecomponent powerpagecomponentid="82701075-eb07-5d1e-e716-524378a8987d">
+  <content>{
+  "displayimageonly": false,
+  "displayorder": 10,
+  "displaypagechildlinks": false,
+  "openinnewwindow": false,
+  "pageid": "d089bc82-3ff8-d27c-107a-f45396129a38",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "robotsfollowlink": true,
+  "weblinksetid": "bbd580f2-3d22-41e6-82f1-9e178b7779c9"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Edit Profile</name>
+  <powerpagecomponenttype>5</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>1</statecode>
+  <statuscode>2</statuscode>
+</powerpagecomponent>

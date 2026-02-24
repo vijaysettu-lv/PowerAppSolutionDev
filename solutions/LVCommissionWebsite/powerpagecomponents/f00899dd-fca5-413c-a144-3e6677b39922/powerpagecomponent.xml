@@ -1,0 +1,16 @@
+<powerpagecomponent powerpagecomponentid="f00899dd-fca5-413c-a144-3e6677b39922">
+  <content>{
+  "displayorder": 14,
+  "pageid": "e4c0967d-c896-24d8-112b-9cca36ce4dfd",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "weblinksetid": "3baf98b9-97fe-4c16-a5b4-071bd273fea8"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Setup</name>
+  <powerpagecomponenttype>5</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

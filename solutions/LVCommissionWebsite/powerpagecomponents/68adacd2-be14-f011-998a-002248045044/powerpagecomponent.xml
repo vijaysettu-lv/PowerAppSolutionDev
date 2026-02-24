@@ -1,0 +1,14 @@
+<powerpagecomponent powerpagecomponentid="68adacd2-be14-f011-998a-002248045044">
+  <content>{
+  "botschemaname": "crc9f_18ce68e2-e247-4bd4-b7c0-60e9f176cd40",
+  "configjson": "{\"skillConfigViewName\":\"LVCP bot Answers\"}"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Bot Consumer</name>
+  <powerpagecomponenttype>27</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

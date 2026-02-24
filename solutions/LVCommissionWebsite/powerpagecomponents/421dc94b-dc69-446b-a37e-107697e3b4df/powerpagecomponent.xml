@@ -1,0 +1,13 @@
+<powerpagecomponent powerpagecomponentid="421dc94b-dc69-446b-a37e-107697e3b4df">
+  <content>{
+  "source": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;div class=\"page-header\"&gt;\n    &lt;h1&gt;{% editable page 'adx_title' type: 'html', liquid: true %}&lt;/h1&gt;\n&lt;/div&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Page Header</name>
+  <powerpagecomponenttype>8</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

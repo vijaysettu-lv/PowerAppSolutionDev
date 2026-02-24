@@ -1,0 +1,13 @@
+<powerpagecomponent powerpagecomponentid="acaf651d-b9c0-4f01-baf1-98d2e20c868e">
+  <content>{
+  "pageid": "7551256a-c247-4f99-bc01-5e2061a259b4"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Page Not Found</name>
+  <powerpagecomponenttype>13</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

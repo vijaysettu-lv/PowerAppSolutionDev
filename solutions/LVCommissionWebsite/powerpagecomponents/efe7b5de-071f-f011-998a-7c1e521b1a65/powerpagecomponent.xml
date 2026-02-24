@@ -1,0 +1,18 @@
+<powerpagecomponent powerpagecomponentid="efe7b5de-071f-f011-998a-7c1e521b1a65">
+  <content>{
+  "display_name": "FetchXML - Regions",
+  "type": 756150001,
+  "value": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n{% fetchxml regionQuery %}\n&lt;fetch&gt;\n\t&lt;!-- Table --&gt;\n\t&lt;entity name=\"account\"&gt;\n\t\t&lt;!-- Columns --&gt;\n\t\t&lt;attribute name=\"accountid\" /&gt;\n\t\t&lt;attribute name=\"name\" /&gt;\n\t\t&lt;!-- Filter By --&gt;\n\t\t&lt;filter type=\"and\"&gt;\n\t\t\t&lt;condition attribute=\"statecode\" operator=\"eq\" value=\"0\" /&gt;\n\t\t&lt;/filter&gt;\n\t\t&lt;order attribute=\"name\" /&gt;\n\t&lt;/entity&gt;\n&lt;/fetch&gt;\n{% endfetchxml %}\n{% assign regionQuerySize = regionQuery.results.entities.size %}\n{% assign regions = regionQuery.results.entities %}\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>FetchXML - Regions</name>
+  <powerpagecomponenttype>7</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

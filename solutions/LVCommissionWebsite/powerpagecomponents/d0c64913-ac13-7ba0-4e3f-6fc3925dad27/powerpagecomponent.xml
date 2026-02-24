@@ -1,0 +1,19 @@
+<powerpagecomponent powerpagecomponentid="d0c64913-ac13-7ba0-4e3f-6fc3925dad27">
+  <content>{
+  "displayimageonly": false,
+  "displaypagechildlinks": false,
+  "openinnewwindow": false,
+  "pageid": "3904d53f-e8bc-9c7d-8920-cda5e7854416",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "robotsfollowlink": true,
+  "weblinksetid": "bbd580f2-3d22-41e6-82f1-9e178b7779c9"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Commissions</name>
+  <powerpagecomponenttype>5</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>1</statecode>
+  <statuscode>2</statuscode>
+</powerpagecomponent>

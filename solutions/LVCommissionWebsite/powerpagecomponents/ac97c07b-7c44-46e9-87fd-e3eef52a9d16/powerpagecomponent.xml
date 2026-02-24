@@ -1,0 +1,11 @@
+<powerpagecomponent powerpagecomponentid="ac97c07b-7c44-46e9-87fd-e3eef52a9d16">
+  <content>{}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Authentication/OpenAuth/LinkedIn/ConsumerSecret</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

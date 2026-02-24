@@ -1,0 +1,20 @@
+<powerpagecomponent powerpagecomponentid="ce7dbe38-6b4d-ef2b-aa77-033761d666e8">
+  <content>{
+  "displayimageonly": false,
+  "displayorder": 17,
+  "displaypagechildlinks": false,
+  "openinnewwindow": false,
+  "pageid": "09d0b2e7-1cc7-4019-0111-1a7b1ae522ee",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "robotsfollowlink": true,
+  "weblinksetid": "bbd580f2-3d22-41e6-82f1-9e178b7779c9"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>lvcpdev</name>
+  <powerpagecomponenttype>5</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>1</statecode>
+  <statuscode>2</statuscode>
+</powerpagecomponent>

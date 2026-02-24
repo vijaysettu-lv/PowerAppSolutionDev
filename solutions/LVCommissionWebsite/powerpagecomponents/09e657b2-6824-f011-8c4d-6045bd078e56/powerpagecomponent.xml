@@ -1,0 +1,14 @@
+<powerpagecomponent powerpagecomponentid="09e657b2-6824-f011-8c4d-6045bd078e56">
+  <content>{
+  "botschemaname": "crdc7_5ebf57f0-2c07-4e0b-83a0-732e1cc5cf68",
+  "configjson": "{\"skillConfigViewName\":\"LVSiteNameDuringReactivate bot Answers\"}"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Bot Consumer</name>
+  <powerpagecomponenttype>27</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

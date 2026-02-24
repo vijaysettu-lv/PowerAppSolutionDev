@@ -1,0 +1,11 @@
+<powerpagecomponent powerpagecomponentid="defa1938-0da0-483d-a49d-e69aab5a5172">
+  <content>{}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Authentication/OpenAuth/Facebook/AppId</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

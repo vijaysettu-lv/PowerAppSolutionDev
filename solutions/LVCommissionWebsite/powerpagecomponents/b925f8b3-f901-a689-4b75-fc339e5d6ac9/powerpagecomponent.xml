@@ -1,0 +1,18 @@
+<powerpagecomponent powerpagecomponentid="b925f8b3-f901-a689-4b75-fc339e5d6ac9">
+  <content>{
+  "right": 2,
+  "scope": 1,
+  "webpageid": "e4b15869-ccb3-d282-6d12-4396b31c7b66",
+  "adx_webpageaccesscontrolrule_webrole": [
+    "e1e17fc7-e0e5-4803-b01b-0ba213d4c790"
+  ]
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Restrict Read on Email Log</name>
+  <powerpagecomponenttype>10</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

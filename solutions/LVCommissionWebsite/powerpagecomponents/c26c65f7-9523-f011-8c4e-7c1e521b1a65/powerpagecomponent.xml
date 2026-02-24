@@ -1,0 +1,28 @@
+<powerpagecomponent powerpagecomponentid="c26c65f7-9523-f011-8c4e-7c1e521b1a65">
+  <content>{
+  "append": false,
+  "appendto": false,
+  "create": false,
+  "delete": false,
+  "entitylogicalname": "contact",
+  "entityname": "contact-readonly",
+  "read": true,
+  "scope": 756150000,
+  "write": false,
+  "adx_entitypermission_webrole": [
+    "007ff13c-35b2-410f-aaff-3b671f3876bd",
+    "0e895982-bf14-f011-998a-002248045044",
+    "40653bb0-5116-f011-9989-002248045044",
+    "940ca42e-4f16-f011-9989-002248045044",
+    "e1e17fc7-e0e5-4803-b01b-0ba213d4c790"
+  ]
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>contact-readonly</name>
+  <powerpagecomponenttype>18</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

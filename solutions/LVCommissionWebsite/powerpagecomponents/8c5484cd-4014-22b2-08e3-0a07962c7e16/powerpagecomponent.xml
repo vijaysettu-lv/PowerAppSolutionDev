@@ -1,0 +1,472 @@
+<powerpagecomponent powerpagecomponentid="8c5484cd-4014-22b2-08e3-0a07962c7e16">
+  <content>{
+  "copy": "&lt;!-- Last modified Wed Sep 17 2:34PM --&gt;&lt;!-- Page: lvxcpquery --&gt;\n&lt;div class=\"container-fluid mt-4\"&gt;\n  &lt;div class=\"row\"&gt;&lt;div class=\"col-12\"&gt;&lt;/div&gt;&lt;/div&gt;\n  &lt;!-- Date Range Controls --&gt;\n  &lt;div class=\"row mb-4\"&gt;\n    &lt;div class=\"col-12\"&gt;\n      &lt;div class=\"card\" style=\"box-shadow: rgba(0, 0, 0, 0.075) 0px 0.125rem 0.25rem;\"&gt;\n        &lt;div class=\"card-header\"&gt;&lt;h5 class=\"mb-0\"&gt;Query Parameters 2509020745&lt;/h5&gt;&lt;/div&gt;\n        &lt;div class=\"card-body\"&gt;\n          &lt;div class=\"row g-3\"&gt;\n            &lt;div class=\"col-md-4\"&gt;\n              &lt;label for=\"dateRangePreset\" class=\"form-label\"&gt;Quick Select:&lt;/label\n              &gt;&lt;select id=\"dateRangePreset\" onchange=\"applyDateRangePreset()\" class=\"form-control\"&gt;\n                &lt;option value=\"\"&gt;-- Select Range --&lt;/option&gt;\n                &lt;option value=\"lastHour\"&gt;Last Hour&lt;/option&gt;\n                &lt;option value=\"today\" selected=\"\"&gt;Today&lt;/option&gt;\n                &lt;option value=\"todayYesterday\"&gt;Today and Yesterday&lt;/option&gt;\n                &lt;option value=\"last7Days\"&gt;Last 7 Days&lt;/option&gt;\n                &lt;option value=\"last30Days\"&gt;Last 30 Days&lt;/option&gt;\n              &lt;/select&gt;\n            &lt;/div&gt;\n            &lt;div class=\"col-md-4\"&gt;&lt;label for=\"fromDate\" class=\"form-label\"&gt;From Date:&lt;/label&gt;&lt;input type=\"datetime-local\" id=\"fromDate\" name=\"fromDate\" class=\"form-control\" /&gt;&lt;/div&gt;\n            &lt;div class=\"col-md-4\"&gt;&lt;label for=\"thruDate\" class=\"form-label\"&gt;Thru Date:&lt;/label&gt;&lt;input type=\"datetime-local\" id=\"thruDate\" name=\"thruDate\" class=\"form-control\" /&gt;&lt;/div&gt;\n          &lt;/div&gt;\n          &lt;div class=\"row mt-3\"&gt;\n            &lt;div class=\"col-md-12\"&gt;\n              &lt;label for=\"tableSelect\" class=\"form-label\"&gt;Table to Query:&lt;/label\n              &gt;&lt;select id=\"tableSelect\" onchange=\"onTableChange()\" class=\"form-control\"&gt;\n                &lt;option value=\"lv_logs\" selected=\"\"&gt;lv_logs (User Activity Log)&lt;/option&gt;\n                &lt;option value=\"lv_lvcomploanofficers\"&gt;lv_lvcomploanofficers (Loan Officers)&lt;/option&gt;\n                &lt;option value=\"lv_lvcompcommissions\"&gt;lv_lvcompcommissions (Commissions)&lt;/option&gt;\n                &lt;option value=\"lv_lvcompbranchs\"&gt;lv_lvcompbranchs (Branches)&lt;/option&gt;\n              &lt;/select&gt;\n            &lt;/div&gt;\n          &lt;/div&gt;\n          &lt;div class=\"row mt-3\"&gt;\n            &lt;div class=\"col-md-6\"&gt;&lt;label for=\"txtUserFilter\" class=\"form-label\"&gt;User Name Filter (Regex):&lt;/label&gt;&lt;input type=\"text\" id=\"txtUserFilter\" placeholder=\"Enter regex pattern or use presets below\" oninput=\"applyUserFilter()\" class=\"form-control\" /&gt;&lt;/div&gt;\n            &lt;div class=\"col-md-6\"&gt;\n              &lt;label for=\"ddlUserFilterPresets\" class=\"form-label\"&gt;User Filter Presets:&lt;/label\n              &gt;&lt;select id=\"ddlUserFilterPresets\" onchange=\"applyUserFilterPreset()\" class=\"form-control\"&gt;\n                &lt;option value=\"\"&gt;-- Common User Filters --&lt;/option&gt;\n                &lt;option value=\"^(?!.*Loan Vision).*$\"&gt;Exclude \"Loan Vision\"&lt;/option&gt;\n                &lt;option value=\"^(?!.*Robert Martin).*$\"&gt;Exclude \"Robert Martin\"&lt;/option&gt;\n                &lt;option value=\"^(?!.*Loanvisiontesting)(?!.*Loan Vision)(?!.*Robert Martin)(?!.*Michael LeBuhn).*$\"&gt;Exclude \"Loanvisiontesting\", \"Loan Vision\", \"Robert Martin\", and \"Michael LeBuhn\"&lt;/option&gt;\n                &lt;option value=\".*\"&gt;Show All Users&lt;/option&gt;\n                &lt;option value=\".*Robert Martin.*\"&gt;Only \"Robert Martin\"&lt;/option&gt;\n                &lt;option value=\".*Loan Vision.*\"&gt;Only \"Loan Vision\"&lt;/option&gt;\n              &lt;/select&gt;\n            &lt;/div&gt;\n          &lt;/div&gt;\n          &lt;div class=\"row mt-3\"&gt;\n            &lt;div class=\"col-12\"&gt;\n              &lt;button type=\"button\" onclick=\"executeQuery()\" class=\"btn btn-primary\"&gt;&lt;i class=\"fas fa-search\"&gt;&lt;/i&gt; Execute Query&lt;/button&gt;&lt;button type=\"button\" onclick=\"resetDates()\" class=\"btn btn-secondary ms-2\"&gt;&lt;i class=\"fas fa-refresh\"&gt;&lt;/i&gt; Reset&lt;/button&gt;\n            &lt;/div&gt;\n          &lt;/div&gt;\n        &lt;/div&gt;\n      &lt;/div&gt;\n    &lt;/div&gt;\n  &lt;/div&gt;\n  &lt;!-- Results Table --&gt;\n  &lt;div class=\"row\"&gt;\n    &lt;div class=\"col-12\"&gt;\n      &lt;div class=\"card\" style=\"box-shadow: rgba(0, 0, 0, 0.075) 0px 0.125rem 0.25rem;\"&gt;\n        &lt;div class=\"card-header d-flex justify-content-between align-items-center\"&gt;\n          &lt;h5 class=\"mb-0\"&gt;\n            Query Results &lt;small class=\"text-muted\"&gt;(&lt;span id=\"resultCount\"&gt;0&lt;/span&gt; records)&lt;/small&gt;\n          &lt;/h5&gt;\n          &lt;div id=\"statusBadge\" class=\"badge bg-secondary\" style=\"font-size: 0.75em; min-width: 80px; text-align: center;\"&gt;Ready&lt;/div&gt;\n        &lt;/div&gt;\n        &lt;div class=\"card-body\"&gt;\n          &lt;div class=\"table-responsive\" style=\"max-height: 600px; overflow-y: auto;\"&gt;\n            &lt;table id=\"resultsTable\" class=\"table table-striped table-hover\"&gt;\n              &lt;thead class=\"table-dark\"&gt;\n                &lt;tr&gt;\n                  &lt;th&gt;When&lt;/th&gt;\n                  &lt;th&gt;User&lt;/th&gt;\n                  &lt;th&gt;Kind&lt;/th&gt;\n                  &lt;th&gt;Detail/Memo&lt;/th&gt;\n                &lt;/tr&gt;\n              &lt;/thead&gt;\n              &lt;tbody id=\"resultsBody\"&gt;\n                &lt;tr style=\"background-color: rgba(0, 0, 0, 0.024);\" bgcolor=\"rgba(0, 0, 0, 0.024)\"&gt;\n                  &lt;td colspan=\"4\" class=\"text-center text-muted\"&gt;&lt;i class=\"fas fa-info-circle\"&gt;&lt;/i&gt; Click \"Execute Query\" to load results&lt;/td&gt;\n                &lt;/tr&gt;\n              &lt;/tbody&gt;\n            &lt;/table&gt;\n          &lt;/div&gt;\n        &lt;/div&gt;\n      &lt;/div&gt;\n    &lt;/div&gt;\n  &lt;/div&gt;\n&lt;/div&gt;\n&lt;script&gt;\n  // Table configurations for different schemas - Based on Data Dictionary\n  const tableConfigs = {\n      'lv_logs': {\n          dateField: 'createdon',\n          userField: 'lv_userfullname',\n          selectFields: 'createdon,lv_userfullname,lv_kind,lv_detail,lv_memo',\n          headers: ['When', 'User', 'Kind', 'Detail/Memo'],\n          displayFunction: displayLogsResults,\n          supportsDateFilter: true\n      },\n      'lv_lvcomploanofficers': {\n          dateField: null,\n          userField: 'lv_name',\n          selectFields: 'lv_name,lv_code,lv_branchname,lv_emailaddress',\n          headers: ['Name', 'Code', 'Branch', 'Email'],\n          displayFunction: displayLoanOfficerResults,\n          supportsDateFilter: false\n      },\n      'lv_lvcompcommissions': {\n          dateField: 'lv_commissiondate',\n          userField: 'lv_xloanofficername',\n          selectFields: 'lv_commissiondate,lv_xloanofficername,lv_xloanofficercode,lv_xbranchname,lv_amount',\n          headers: ['Commission Date', 'Loan Officer', 'Code', 'Branch', 'Amount'],\n          displayFunction: displayCommissionResults,\n          supportsDateFilter: true\n      },\n      'lv_lvcompbranchs': {\n          dateField: null,\n          userField: 'lv_name',\n          selectFields: 'lv_name,lv_code',\n          headers: ['Branch Name', 'Code'],\n          displayFunction: displayBranchResults,\n          supportsDateFilter: false\n      }\n  };\n\n  function onTableChange() {\n      const selectedTable = document.getElementById('tableSelect').value;\n      const config = tableConfigs[selectedTable];\n\n      // Update table headers\n      const headerRow = document.querySelector('#resultsTable thead tr');\n      headerRow.innerHTML = '';\n      config.headers.forEach(header =&gt; {\n          headerRow.innerHTML += `&lt;th&gt;${header}&lt;/th&gt;`;\n      });\n\n      // Clear existing results\n      const tbody = document.getElementById('resultsBody');\n      tbody.innerHTML = `\n          &lt;tr&gt;\n              &lt;td colspan=\"${config.headers.length}\" class=\"text-center text-muted\"&gt;\n                  &lt;i class=\"fas fa-info-circle\"&gt;&lt;/i&gt; Click \"Execute Query\" to load results\n              &lt;/td&gt;\n          &lt;/tr&gt;\n      `;\n      document.getElementById('resultCount').textContent = '0';\n      document.getElementById('statusBadge').textContent = 'Ready';\n      document.getElementById('statusBadge').className = 'badge bg-secondary';\n  }\n\n  function applyDateRangePreset() {\n      const preset = document.getElementById('dateRangePreset').value;\n      const now = new Date();\n\n      let fromDate, thruDate;\n\n      switch (preset) {\n          case 'lastHour':\n              fromDate = new Date(now.getTime() - (60 * 60 * 1000)); // 1 hour ago\n              thruDate = now;\n              break;\n          case 'today':\n              fromDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);\n              thruDate = now;\n              break;\n          case 'todayYesterday':\n              fromDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 0, 0, 0);\n              thruDate = now;\n              break;\n          case 'last7Days':\n              fromDate = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000));\n              thruDate = now;\n              break;\n          case 'last30Days':\n              fromDate = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));\n              thruDate = now;\n              break;\n          default:\n              return; // Don't update if no preset selected\n      }\n\n      // Format for datetime-local input (YYYY-MM-DDTHH:MM)\n      document.getElementById('fromDate').value = fromDate.toISOString().slice(0, 16);\n      document.getElementById('thruDate').value = thruDate.toISOString().slice(0, 16);\n  }\n\n  function resetDates() {\n      // Set \"Today\" as default\n      document.getElementById('dateRangePreset').value = 'today';\n      applyDateRangePreset();\n\n      // Clear user filter\n      document.getElementById('txtUserFilter').value = '';\n      document.getElementById('ddlUserFilterPresets').selectedIndex = 0;\n\n      // Clear results\n      const selectedTable = document.getElementById('tableSelect').value;\n      const config = tableConfigs[selectedTable];\n      const tbody = document.getElementById('resultsBody');\n      tbody.innerHTML = `\n          &lt;tr&gt;\n              &lt;td colspan=\"${config.headers.length}\" class=\"text-center text-muted\"&gt;\n                  &lt;i class=\"fas fa-info-circle\"&gt;&lt;/i&gt; Click \"Execute Query\" to load results\n              &lt;/td&gt;\n          &lt;/tr&gt;\n      `;\n      document.getElementById('resultCount').textContent = '0';\n      document.getElementById('statusBadge').textContent = 'Ready';\n      document.getElementById('statusBadge').className = 'badge bg-secondary';\n  }\n\n  async function executeQuery() {\n      const fromDate = document.getElementById('fromDate').value;\n      const thruDate = document.getElementById('thruDate').value;\n      const selectedTable = document.getElementById('tableSelect').value;\n      const config = tableConfigs[selectedTable];\n\n      // Only require dates for tables that support date filtering\n      if (config.supportsDateFilter) {\n          if (!fromDate || !thruDate) {\n              alert('Please select both From and Thru dates');\n              return;\n          }\n\n          if (fromDate &gt; thruDate) {\n              alert('From date cannot be later than Thru date');\n              return;\n          }\n      }\n\n      // Update status\n      document.getElementById('statusBadge').textContent = 'Loading...';\n      document.getElementById('statusBadge').className = 'badge bg-warning';\n\n      // Show loading in table\n      const tbody = document.getElementById('resultsBody');\n      tbody.innerHTML = `\n          &lt;tr&gt;\n              &lt;td colspan=\"${config.headers.length}\" class=\"text-center\"&gt;\n                  &lt;i class=\"fas fa-spinner fa-spin\"&gt;&lt;/i&gt; Loading data...\n              &lt;/td&gt;\n          &lt;/tr&gt;\n      `;\n\n      // Build API query\n      let apiUrl;\n      if (config.supportsDateFilter) {\n          // Build API query with date filters - fromDate and thruDate are already in format YYYY-MM-DDTHH:MM\n          const fromDateTime = fromDate + ':00Z'; // Add seconds and Z for UTC\n          const thruDateTime = thruDate + ':59Z'; // Add seconds and Z for UTC\n\n          apiUrl = `/_api/${selectedTable}?$filter=${config.dateField} ge ${fromDateTime} and ${config.dateField} le ${thruDateTime}&amp;$orderby=${config.dateField} desc&amp;$select=${config.selectFields}`;\n      } else {\n          // Simple query without date filtering, limit to 100 records\n          apiUrl = `/_api/${selectedTable}?$top=100&amp;$select=${config.selectFields}`;\n      }\n\n      console.log('API URL:', apiUrl);\n\n      try {\n          const response = await apiCall(apiUrl, 'GET', '', true);\n          console.log('API Response:', response);\n\n          if (response.success &amp;&amp; response.data &amp;&amp; response.data.value) {\n              config.displayFunction(response.data.value);\n          } else if (response.data &amp;&amp; Array.isArray(response.data)) {\n              // Handle case where data is directly an array\n              config.displayFunction(response.data);\n          } else {\n              throw new Error(response.message || 'Unknown API error');\n          }\n      } catch (error) {\n          console.error('Query error:', error);\n          tbody.innerHTML = `\n              &lt;tr&gt;\n                  &lt;td colspan=\"${config.headers.length}\" class=\"text-center text-danger\"&gt;\n                      &lt;i class=\"fas fa-exclamation-triangle\"&gt;&lt;/i&gt; Error loading data: ${error.message || error}\n                  &lt;/td&gt;\n              &lt;/tr&gt;\n          `;\n          document.getElementById('statusBadge').textContent = 'Error';\n          document.getElementById('statusBadge').className = 'badge bg-danger';\n      }\n  }\n\n  function displayLogsResults(results) {\n      const selectedTable = document.getElementById('tableSelect').value;\n      const config = tableConfigs[selectedTable];\n      const tbody = document.getElementById('resultsBody');\n      const resultCount = results.length;\n\n      document.getElementById('resultCount').textContent = resultCount;\n\n      if (resultCount === 0) {\n          tbody.innerHTML = `\n              &lt;tr&gt;\n                  &lt;td colspan=\"${config.headers.length}\" class=\"text-center text-muted\"&gt;\n                      &lt;i class=\"fas fa-search\"&gt;&lt;/i&gt; No records found for the selected date range\n                  &lt;/td&gt;\n              &lt;/tr&gt;\n          `;\n          document.getElementById('statusBadge').textContent = 'No Results';\n          document.getElementById('statusBadge').className = 'badge bg-info';\n          return;\n      }\n\n      let tableRows = '';\n      results.forEach(row =&gt; {\n          const createdDate = new Date(row.createdon);\n          const whenText = minutesAgo(createdDate);\n          const fullDateTitle = createdDate.toLocaleDateString('en-US', {\n              weekday: 'short',\n              day: 'numeric',\n              month: 'short',\n              hour: '2-digit',\n              minute: '2-digit',\n              second: '2-digit',\n              hour12: true\n          });\n          const user = row.lv_userfullname || 'Unknown';\n          const kind = row.lv_kind || '';\n          const details = row.lv_detail || row.lv_memo || '';\n\n          tableRows += `\n              &lt;tr class=\"query-result-row\" data-username=\"${user}\"&gt;\n                  &lt;td class=\"date-column\" title=\"${fullDateTitle}\"&gt;${whenText}&lt;/td&gt;\n                  &lt;td&gt;${user}&lt;/td&gt;\n                  &lt;td&gt;&lt;span class=\"badge bg-light text-dark\"&gt;${kind}&lt;/span&gt;&lt;/td&gt;\n                  &lt;td class=\"text-truncate\" style=\"max-width: 500px;\" title=\"${details}\"&gt;${details}&lt;/td&gt;\n              &lt;/tr&gt;\n          `;\n      });\n\n      tbody.innerHTML = tableRows;\n      document.getElementById('statusBadge').textContent = `${resultCount} Results`;\n      document.getElementById('statusBadge').className = 'badge bg-success';\n\n      // Apply any existing user filter to the new results\n      const userFilterValue = document.getElementById('txtUserFilter').value.trim();\n      if (userFilterValue) {\n          applyUserFilter();\n      }\n  }\n\n  function displayLoanOfficerResults(results) {\n      const selectedTable = document.getElementById('tableSelect').value;\n      const config = tableConfigs[selectedTable];\n      const tbody = document.getElementById('resultsBody');\n      const resultCount = results.length;\n\n      document.getElementById('resultCount').textContent = resultCount;\n\n      if (resultCount === 0) {\n          tbody.innerHTML = `\n              &lt;tr&gt;\n                  &lt;td colspan=\"${config.headers.length}\" class=\"text-center text-muted\"&gt;\n                      &lt;i class=\"fas fa-search\"&gt;&lt;/i&gt; No records found\n                  &lt;/td&gt;\n              &lt;/tr&gt;\n          `;\n          document.getElementById('statusBadge').textContent = 'No Results';\n          document.getElementById('statusBadge').className = 'badge bg-info';\n          return;\n      }\n\n      let tableRows = '';\n      results.forEach(row =&gt; {\n          const name = row.lv_name || 'Unknown';\n          const code = row.lv_code || '';\n          const branch = row.lv_branchname || '';\n          const email = row.lv_emailaddress || '';\n\n          tableRows += `\n              &lt;tr class=\"query-result-row\" data-username=\"${name}\"&gt;\n                  &lt;td&gt;${name}&lt;/td&gt;\n                  &lt;td&gt;&lt;span class=\"badge bg-light text-dark\"&gt;${code}&lt;/span&gt;&lt;/td&gt;\n                  &lt;td&gt;${branch}&lt;/td&gt;\n                  &lt;td&gt;${email}&lt;/td&gt;\n              &lt;/tr&gt;\n          `;\n      });\n\n      tbody.innerHTML = tableRows;\n      document.getElementById('statusBadge').textContent = `${resultCount} Results`;\n      document.getElementById('statusBadge').className = 'badge bg-success';\n\n      // Apply any existing user filter to the new results\n      const userFilterValue = document.getElementById('txtUserFilter').value.trim();\n      if (userFilterValue) {\n          applyUserFilter();\n      }\n  }\n\n  function displayCommissionResults(results) {\n      const selectedTable = document.getElementById('tableSelect').value;\n      const config = tableConfigs[selectedTable];\n      const tbody = document.getElementById('resultsBody');\n      const resultCount = results.length;\n\n      document.getElementById('resultCount').textContent = resultCount;\n\n      if (resultCount === 0) {\n          tbody.innerHTML = `\n              &lt;tr&gt;\n                  &lt;td colspan=\"${config.headers.length}\" class=\"text-center text-muted\"&gt;\n                      &lt;i class=\"fas fa-search\"&gt;&lt;/i&gt; No records found for the selected date range\n                  &lt;/td&gt;\n              &lt;/tr&gt;\n          `;\n          document.getElementById('statusBadge').textContent = 'No Results';\n          document.getElementById('statusBadge').className = 'badge bg-info';\n          return;\n      }\n\n      let tableRows = '';\n      results.forEach(row =&gt; {\n          const commissionDate = new Date(row.lv_commissiondate);\n          const whenText = commissionDate.toLocaleDateString('en-US', {\n              month: 'short',\n              day: 'numeric'\n          });\n          const fullDateTitle = commissionDate.toLocaleDateString('en-US', {\n              weekday: 'short',\n              day: 'numeric',\n              month: 'short',\n              year: 'numeric'\n          });\n          const name = row.lv_xloanofficername || 'Unknown';\n          const code = row.lv_xloanofficercode || '';\n          const branch = row.lv_branchname || '';\n          const amount = row.lv_amount ? '\n&lt;/script&gt;\n&lt;!-- Page: lvxcpquery --&gt;&lt;!-- Last modified Wed Sep 17 2:34PMa --&gt;\n&lt;div class=\"row sectionBlockLayout text-start\" style=\"display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;\"&gt;\n  &lt;div class=\"container\" style=\"padding: 0px; display: flex; flex-wrap: wrap;\"&gt;&lt;div class=\"col-lg-12 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 250px;\"&gt;&lt;/div&gt;&lt;/div&gt;\n&lt;/div&gt;\n",
+  "customjavascript": "\n",
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "feedbackpolicy": 756150000,
+  "hiddenfromsitemap": true,
+  "isroot": false,
+  "pagetemplateid": "cd587cbe-a61f-4c11-a750-6d0235a784ef",
+  "parentpageid": "362995e0-7dc5-4bbf-9595-062f468d2d44",
+  "partialurl": "lvxcpquery",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "rootwebpageid": "52a6fdfb-0848-7258-e45b-e3eb6577115f",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;p&gt;This is a sample landing page designed to be a starting point for your website&lt;/p&gt;\n",
+  "title": "lvxcpquery"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>lvxcpquery</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <searchcontent>lvxcpquery&lt;!-- Last modified Wed Sep 17 2:34PM --&gt;&lt;!-- Page: lvxcpquery --&gt;
+&lt;div class="container-fluid mt-4"&gt;
+  &lt;div class="row"&gt;&lt;div class="col-12"&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;!-- Date Range Controls --&gt;
+  &lt;div class="row mb-4"&gt;
+    &lt;div class="col-12"&gt;
+      &lt;div class="card" style="box-shadow: rgba(0, 0, 0, 0.075) 0px 0.125rem 0.25rem;"&gt;
+        &lt;div class="card-header"&gt;&lt;h5 class="mb-0"&gt;Query Parameters 2509020745&lt;/h5&gt;&lt;/div&gt;
+        &lt;div class="card-body"&gt;
+          &lt;div class="row g-3"&gt;
+            &lt;div class="col-md-4"&gt;
+              &lt;label for="dateRangePreset" class="form-label"&gt;Quick Select:&lt;/label
+              &gt;&lt;select id="dateRangePreset" onchange="applyDateRangePreset()" class="form-control"&gt;
+                &lt;option value=""&gt;-- Select Range --&lt;/option&gt;
+                &lt;option value="lastHour"&gt;Last Hour&lt;/option&gt;
+                &lt;option value="today" selected=""&gt;Today&lt;/option&gt;
+                &lt;option value="todayYesterday"&gt;Today and Yesterday&lt;/option&gt;
+                &lt;option value="last7Days"&gt;Last 7 Days&lt;/option&gt;
+                &lt;option value="last30Days"&gt;Last 30 Days&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+            &lt;div class="col-md-4"&gt;&lt;label for="fromDate" class="form-label"&gt;From Date:&lt;/label&gt;&lt;input type="datetime-local" id="fromDate" name="fromDate" class="form-control" /&gt;&lt;/div&gt;
+            &lt;div class="col-md-4"&gt;&lt;label for="thruDate" class="form-label"&gt;Thru Date:&lt;/label&gt;&lt;input type="datetime-local" id="thruDate" name="thruDate" class="form-control" /&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class="row mt-3"&gt;
+            &lt;div class="col-md-12"&gt;
+              &lt;label for="tableSelect" class="form-label"&gt;Table to Query:&lt;/label
+              &gt;&lt;select id="tableSelect" onchange="onTableChange()" class="form-control"&gt;
+                &lt;option value="lv_logs" selected=""&gt;lv_logs (User Activity Log)&lt;/option&gt;
+                &lt;option value="lv_lvcomploanofficers"&gt;lv_lvcomploanofficers (Loan Officers)&lt;/option&gt;
+                &lt;option value="lv_lvcompcommissions"&gt;lv_lvcompcommissions (Commissions)&lt;/option&gt;
+                &lt;option value="lv_lvcompbranchs"&gt;lv_lvcompbranchs (Branches)&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class="row mt-3"&gt;
+            &lt;div class="col-md-6"&gt;&lt;label for="txtUserFilter" class="form-label"&gt;User Name Filter (Regex):&lt;/label&gt;&lt;input type="text" id="txtUserFilter" placeholder="Enter regex pattern or use presets below" oninput="applyUserFilter()" class="form-control" /&gt;&lt;/div&gt;
+            &lt;div class="col-md-6"&gt;
+              &lt;label for="ddlUserFilterPresets" class="form-label"&gt;User Filter Presets:&lt;/label
+              &gt;&lt;select id="ddlUserFilterPresets" onchange="applyUserFilterPreset()" class="form-control"&gt;
+                &lt;option value=""&gt;-- Common User Filters --&lt;/option&gt;
+                &lt;option value="^(?!.*Loan Vision).*$"&gt;Exclude "Loan Vision"&lt;/option&gt;
+                &lt;option value="^(?!.*Robert Martin).*$"&gt;Exclude "Robert Martin"&lt;/option&gt;
+                &lt;option value="^(?!.*Loanvisiontesting)(?!.*Loan Vision)(?!.*Robert Martin)(?!.*Michael LeBuhn).*$"&gt;Exclude "Loanvisiontesting", "Loan Vision", "Robert Martin", and "Michael LeBuhn"&lt;/option&gt;
+                &lt;option value=".*"&gt;Show All Users&lt;/option&gt;
+                &lt;option value=".*Robert Martin.*"&gt;Only "Robert Martin"&lt;/option&gt;
+                &lt;option value=".*Loan Vision.*"&gt;Only "Loan Vision"&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class="row mt-3"&gt;
+            &lt;div class="col-12"&gt;
+              &lt;button type="button" onclick="executeQuery()" class="btn btn-primary"&gt;&lt;i class="fas fa-search"&gt;&lt;/i&gt; Execute Query&lt;/button&gt;&lt;button type="button" onclick="resetDates()" class="btn btn-secondary ms-2"&gt;&lt;i class="fas fa-refresh"&gt;&lt;/i&gt; Reset&lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!-- Results Table --&gt;
+  &lt;div class="row"&gt;
+    &lt;div class="col-12"&gt;
+      &lt;div class="card" style="box-shadow: rgba(0, 0, 0, 0.075) 0px 0.125rem 0.25rem;"&gt;
+        &lt;div class="card-header d-flex justify-content-between align-items-center"&gt;
+          &lt;h5 class="mb-0"&gt;
+            Query Results &lt;small class="text-muted"&gt;(&lt;span id="resultCount"&gt;0&lt;/span&gt; records)&lt;/small&gt;
+          &lt;/h5&gt;
+          &lt;div id="statusBadge" class="badge bg-secondary" style="font-size: 0.75em; min-width: 80px; text-align: center;"&gt;Ready&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="card-body"&gt;
+          &lt;div class="table-responsive" style="max-height: 600px; overflow-y: auto;"&gt;
+            &lt;table id="resultsTable" class="table table-striped table-hover"&gt;
+              &lt;thead class="table-dark"&gt;
+                &lt;tr&gt;
+                  &lt;th&gt;When&lt;/th&gt;
+                  &lt;th&gt;User&lt;/th&gt;
+                  &lt;th&gt;Kind&lt;/th&gt;
+                  &lt;th&gt;Detail/Memo&lt;/th&gt;
+                &lt;/tr&gt;
+              &lt;/thead&gt;
+              &lt;tbody id="resultsBody"&gt;
+                &lt;tr style="background-color: rgba(0, 0, 0, 0.024);" bgcolor="rgba(0, 0, 0, 0.024)"&gt;
+                  &lt;td colspan="4" class="text-center text-muted"&gt;&lt;i class="fas fa-info-circle"&gt;&lt;/i&gt; Click "Execute Query" to load results&lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/tbody&gt;
+            &lt;/table&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+  // Table configurations for different schemas - Based on Data Dictionary
+  const tableConfigs = {
+      'lv_logs': {
+          dateField: 'createdon',
+          userField: 'lv_userfullname',
+          selectFields: 'createdon,lv_userfullname,lv_kind,lv_detail,lv_memo',
+          headers: ['When', 'User', 'Kind', 'Detail/Memo'],
+          displayFunction: displayLogsResults,
+          supportsDateFilter: true
+      },
+      'lv_lvcomploanofficers': {
+          dateField: null,
+          userField: 'lv_name',
+          selectFields: 'lv_name,lv_code,lv_branchname,lv_emailaddress',
+          headers: ['Name', 'Code', 'Branch', 'Email'],
+          displayFunction: displayLoanOfficerResults,
+          supportsDateFilter: false
+      },
+      'lv_lvcompcommissions': {
+          dateField: 'lv_commissiondate',
+          userField: 'lv_xloanofficername',
+          selectFields: 'lv_commissiondate,lv_xloanofficername,lv_xloanofficercode,lv_xbranchname,lv_amount',
+          headers: ['Commission Date', 'Loan Officer', 'Code', 'Branch', 'Amount'],
+          displayFunction: displayCommissionResults,
+          supportsDateFilter: true
+      },
+      'lv_lvcompbranchs': {
+          dateField: null,
+          userField: 'lv_name',
+          selectFields: 'lv_name,lv_code',
+          headers: ['Branch Name', 'Code'],
+          displayFunction: displayBranchResults,
+          supportsDateFilter: false
+      }
+  };
+
+  function onTableChange() {
+      const selectedTable = document.getElementById('tableSelect').value;
+      const config = tableConfigs[selectedTable];
+
+      // Update table headers
+      const headerRow = document.querySelector('#resultsTable thead tr');
+      headerRow.innerHTML = '';
+      config.headers.forEach(header =&gt; {
+          headerRow.innerHTML += `&lt;th&gt;${header}&lt;/th&gt;`;
+      });
+
+      // Clear existing results
+      const tbody = document.getElementById('resultsBody');
+      tbody.innerHTML = `
+          &lt;tr&gt;
+              &lt;td colspan="${config.headers.length}" class="text-center text-muted"&gt;
+                  &lt;i class="fas fa-info-circle"&gt;&lt;/i&gt; Click "Execute Query" to load results
+              &lt;/td&gt;
+          &lt;/tr&gt;
+      `;
+      document.getElementById('resultCount').textContent = '0';
+      document.getElementById('statusBadge').textContent = 'Ready';
+      document.getElementById('statusBadge').className = 'badge bg-secondary';
+  }
+
+  function applyDateRangePreset() {
+      const preset = document.getElementById('dateRangePreset').value;
+      const now = new Date();
+
+      let fromDate, thruDate;
+
+      switch (preset) {
+          case 'lastHour':
+              fromDate = new Date(now.getTime() - (60 * 60 * 1000)); // 1 hour ago
+              thruDate = now;
+              break;
+          case 'today':
+              fromDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
+              thruDate = now;
+              break;
+          case 'todayYesterday':
+              fromDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 0, 0, 0);
+              thruDate = now;
+              break;
+          case 'last7Days':
+              fromDate = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000));
+              thruDate = now;
+              break;
+          case 'last30Days':
+              fromDate = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
+              thruDate = now;
+              break;
+          default:
+              return; // Don't update if no preset selected
+      }
+
+      // Format for datetime-local input (YYYY-MM-DDTHH:MM)
+      document.getElementById('fromDate').value = fromDate.toISOString().slice(0, 16);
+      document.getElementById('thruDate').value = thruDate.toISOString().slice(0, 16);
+  }
+
+  function resetDates() {
+      // Set "Today" as default
+      document.getElementById('dateRangePreset').value = 'today';
+      applyDateRangePreset();
+
+      // Clear user filter
+      document.getElementById('txtUserFilter').value = '';
+      document.getElementById('ddlUserFilterPresets').selectedIndex = 0;
+
+      // Clear results
+      const selectedTable = document.getElementById('tableSelect').value;
+      const config = tableConfigs[selectedTable];
+      const tbody = document.getElementById('resultsBody');
+      tbody.innerHTML = `
+          &lt;tr&gt;
+              &lt;td colspan="${config.headers.length}" class="text-center text-muted"&gt;
+                  &lt;i class="fas fa-info-circle"&gt;&lt;/i&gt; Click "Execute Query" to load results
+              &lt;/td&gt;
+          &lt;/tr&gt;
+      `;
+      document.getElementById('resultCount').textContent = '0';
+      document.getElementById('statusBadge').textContent = 'Ready';
+      document.getElementById('statusBadge').className = 'badge bg-secondary';
+  }
+
+  async function executeQuery() {
+      const fromDate = document.getElementById('fromDate').value;
+      const thruDate = document.getElementById('thruDate').value;
+      const selectedTable = document.getElementById('tableSelect').value;
+      const config = tableConfigs[selectedTable];
+
+      // Only require dates for tables that support date filtering
+      if (config.supportsDateFilter) {
+          if (!fromDate || !thruDate) {
+              alert('Please select both From and Thru dates');
+              return;
+          }
+
+          if (fromDate &gt; thruDate) {
+              alert('From date cannot be later than Thru date');
+              return;
+          }
+      }
+
+      // Update status
+      document.getElementById('statusBadge').textContent = 'Loading...';
+      document.getElementById('statusBadge').className = 'badge bg-warning';
+
+      // Show loading in table
+      const tbody = document.getElementById('resultsBody');
+      tbody.innerHTML = `
+          &lt;tr&gt;
+              &lt;td colspan="${config.headers.length}" class="text-center"&gt;
+                  &lt;i class="fas fa-spinner fa-spin"&gt;&lt;/i&gt; Loading data...
+              &lt;/td&gt;
+          &lt;/tr&gt;
+      `;
+
+      // Build API query
+      let apiUrl;
+      if (config.supportsDateFilter) {
+          // Build API query with date filters - fromDate and thruDate are already in format YYYY-MM-DDTHH:MM
+          const fromDateTime = fromDate + ':00Z'; // Add seconds and Z for UTC
+          const thruDateTime = thruDate + ':59Z'; // Add seconds and Z for UTC
+
+          apiUrl = `/_api/${selectedTable}?$filter=${config.dateField} ge ${fromDateTime} and ${config.dateField} le ${thruDateTime}&amp;$orderby=${config.dateField} desc&amp;$select=${config.selectFields}`;
+      } else {
+          // Simple query without date filtering, limit to 100 records
+          apiUrl = `/_api/${selectedTable}?$top=100&amp;$select=${config.selectFields}`;
+      }
+
+      console.log('API URL:', apiUrl);
+
+      try {
+          const response = await apiCall(apiUrl, 'GET', '', true);
+          console.log('API Response:', response);
+
+          if (response.success &amp;&amp; response.data &amp;&amp; response.data.value) {
+              config.displayFunction(response.data.value);
+          } else if (response.data &amp;&amp; Array.isArray(response.data)) {
+              // Handle case where data is directly an array
+              config.displayFunction(response.data);
+          } else {
+              throw new Error(response.message || 'Unknown API error');
+          }
+      } catch (error) {
+          console.error('Query error:', error);
+          tbody.innerHTML = `
+              &lt;tr&gt;
+                  &lt;td colspan="${config.headers.length}" class="text-center text-danger"&gt;
+                      &lt;i class="fas fa-exclamation-triangle"&gt;&lt;/i&gt; Error loading data: ${error.message || error}
+                  &lt;/td&gt;
+              &lt;/tr&gt;
+          `;
+          document.getElementById('statusBadge').textContent = 'Error';
+          document.getElementById('statusBadge').className = 'badge bg-danger';
+      }
+  }
+
+  function displayLogsResults(results) {
+      const selectedTable = document.getElementById('tableSelect').value;
+      const config = tableConfigs[selectedTable];
+      const tbody = document.getElementById('resultsBody');
+      const resultCount = results.length;
+
+      document.getElementById('resultCount').textContent = resultCount;
+
+      if (resultCount === 0) {
+          tbody.innerHTML = `
+              &lt;tr&gt;
+                  &lt;td colspan="${config.headers.length}" class="text-center text-muted"&gt;
+                      &lt;i class="fas fa-search"&gt;&lt;/i&gt; No records found for the selected date range
+                  &lt;/td&gt;
+              &lt;/tr&gt;
+          `;
+          document.getElementById('statusBadge').textContent = 'No Results';
+          document.getElementById('statusBadge').className = 'badge bg-info';
+          return;
+      }
+
+      let tableRows = '';
+      results.forEach(row =&gt; {
+          const createdDate = new Date(row.createdon);
+          const whenText = minutesAgo(createdDate);
+          const fullDateTitle = createdDate.toLocaleDateString('en-US', {
+              weekday: 'short',
+              day: 'numeric',
+              month: 'short',
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+              hour12: true
+          });
+          const user = row.lv_userfullname || 'Unknown';
+          const kind = row.lv_kind || '';
+          const details = row.lv_detail || row.lv_memo || '';
+
+          tableRows += `
+              &lt;tr class="query-result-row" data-username="${user}"&gt;
+                  &lt;td class="date-column" title="${fullDateTitle}"&gt;${whenText}&lt;/td&gt;
+                  &lt;td&gt;${user}&lt;/td&gt;
+                  &lt;td&gt;&lt;span class="badge bg-light text-dark"&gt;${kind}&lt;/span&gt;&lt;/td&gt;
+                  &lt;td class="text-truncate" style="max-width: 500px;" title="${details}"&gt;${details}&lt;/td&gt;
+              &lt;/tr&gt;
+          `;
+      });
+
+      tbody.innerHTML = tableRows;
+      document.getElementById('statusBadge').textContent = `${resultCount} Results`;
+      document.getElementById('statusBadge').className = 'badge bg-success';
+
+      // Apply any existing user filter to the new results
+      const userFilterValue = document.getElementById('txtUserFilter').value.trim();
+      if (userFilterValue) {
+          applyUserFilter();
+      }
+  }
+
+  function displayLoanOfficerResults(results) {
+      const selectedTable = document.getElementById('tableSelect').value;
+      const config = tableConfigs[selectedTable];
+      const tbody = document.getElementById('resultsBody');
+      const resultCount = results.length;
+
+      document.getElementById('resultCount').textContent = resultCount;
+
+      if (resultCount === 0) {
+          tbody.innerHTML = `
+              &lt;tr&gt;
+                  &lt;td colspan="${config.headers.length}" class="text-center text-muted"&gt;
+                      &lt;i class="fas fa-search"&gt;&lt;/i&gt; No records found
+                  &lt;/td&gt;
+              &lt;/tr&gt;
+          `;
+          document.getElementById('statusBadge').textContent = 'No Results';
+          document.getElementById('statusBadge').className = 'badge bg-info';
+          return;
+      }
+
+      let tableRows = '';
+      results.forEach(row =&gt; {
+          const name = row.lv_name || 'Unknown';
+          const code = row.lv_code || '';
+          const branch = row.lv_branchname || '';
+          const email = row.lv_emailaddress || '';
+
+          tableRows += `
+              &lt;tr class="query-result-row" data-username="${name}"&gt;
+                  &lt;td&gt;${name}&lt;/td&gt;
+                  &lt;td&gt;&lt;span class="badge bg-light text-dark"&gt;${code}&lt;/span&gt;&lt;/td&gt;
+                  &lt;td&gt;${branch}&lt;/td&gt;
+                  &lt;td&gt;${email}&lt;/td&gt;
+              &lt;/tr&gt;
+          `;
+      });
+
+      tbody.innerHTML = tableRows;
+      document.getElementById('statusBadge').textContent = `${resultCount} Results`;
+      document.getElementById('statusBadge').className = 'badge bg-success';
+
+      // Apply any existing user filter to the new results
+      const userFilterValue = document.getElementById('txtUserFilter').value.trim();
+      if (userFilterValue) {
+          applyUserFilter();
+      }
+  }
+
+  function displayCommissionResults(results) {
+      const selectedTable = document.getElementById('tableSelect').value;
+      const config = tableConfigs[selectedTable];
+      const tbody = document.getElementById('resultsBody');
+      const resultCount = results.length;
+
+      document.getElementById('resultCount').textContent = resultCount;
+
+      if (resultCount === 0) {
+          tbody.innerHTML = `
+              &lt;tr&gt;
+                  &lt;td colspan="${config.headers.length}" class="text-center text-muted"&gt;
+                      &lt;i class="fas fa-search"&gt;&lt;/i&gt; No records found for the selected date range
+                  &lt;/td&gt;
+              &lt;/tr&gt;
+          `;
+          document.getElementById('statusBadge').textContent = 'No Results';
+          document.getElementById('statusBadge').className = 'badge bg-info';
+          return;
+      }
+
+      let tableRows = '';
+      results.forEach(row =&gt; {
+          const commissionDate = new Date(row.lv_commissiondate);
+          const whenText = commissionDate.toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric'
+          });
+          const fullDateTitle = commissionDate.toLocaleDateString('en-US', {
+              weekday: 'short',
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric'
+          });
+          const name = row.lv_xloanofficername || 'Unknown';
+          const code = row.lv_xloanofficercode || '';
+          const branch = row.lv_branchname || '';
+          const amount = row.lv_amount ? '
+&lt;/script&gt;
+&lt;!-- Page: lvxcpquery --&gt;&lt;!-- Last modified Wed Sep 17 2:34PMa --&gt;
+&lt;div class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;"&gt;
+  &lt;div class="container" style="padding: 0px; display: flex; flex-wrap: wrap;"&gt;&lt;div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px;"&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+lvxcpquery</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

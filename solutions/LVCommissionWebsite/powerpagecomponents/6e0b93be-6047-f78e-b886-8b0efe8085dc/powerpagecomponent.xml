@@ -1,0 +1,18 @@
+<powerpagecomponent powerpagecomponentid="6e0b93be-6047-f78e-b886-8b0efe8085dc">
+  <content>{
+  "right": 2,
+  "scope": 1,
+  "webpageid": "3f0ecd35-28c0-b41c-917e-13f607a1b552",
+  "adx_webpageaccesscontrolrule_webrole": [
+    "007ff13c-35b2-410f-aaff-3b671f3876bd"
+  ]
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Restrict Read on Add Profile</name>
+  <powerpagecomponenttype>10</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

@@ -1,0 +1,29 @@
+<powerpagecomponent powerpagecomponentid="3b1e05e6-559b-fa2d-91ca-5743d4c373c4">
+  <content>{
+  "copy": "\n",
+  "customjavascript": "\n",
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "feedbackpolicy": 756150000,
+  "hiddenfromsitemap": true,
+  "isroot": true,
+  "pagetemplateid": "cd587cbe-a61f-4c11-a750-6d0235a784ef",
+  "parentpageid": "362995e0-7dc5-4bbf-9595-062f468d2d44",
+  "partialurl": "LV",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;p&gt;This is a sample landing page designed to be a starting point for your website&lt;/p&gt;\n",
+  "title": "LV"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>LV</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <searchcontent>LV
+LV</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

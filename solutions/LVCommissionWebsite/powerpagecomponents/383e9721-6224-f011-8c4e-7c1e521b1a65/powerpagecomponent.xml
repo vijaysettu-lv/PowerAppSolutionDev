@@ -1,0 +1,14 @@
+<powerpagecomponent powerpagecomponentid="383e9721-6224-f011-8c4e-7c1e521b1a65">
+  <content>{
+  "source": 0,
+  "value": "*"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Webapi/contact/fields</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

@@ -1,0 +1,585 @@
+<powerpagecomponent powerpagecomponentid="09d0b2e7-1cc7-4019-0111-1a7b1ae522ee">
+  <content>{
+  "copy": "&lt;!-- Last modified Sun Aug 31 5:00PM --&gt;\n{% include 'snippet' snippet_name:'FetchXML - SetupQuery' %}\n\n&lt;h2&gt;      2025-06-23 Mon 14:43 ET ~lvcpdev           &lt;span id=\"spanJsVersion\" style=\"margin-left: 10px;\"&gt;&lt;/span&gt;               &lt;/h2&gt;\n\n&lt;div id=\"divTestButton\" style=\"margin-bottom: 20px;\"&gt;\n\t\t&lt;input type=\"button\" value=\"Test to Console2\" onclick=\"testToConsole()\" /&gt;\n&lt;/div&gt;\n\n&lt;style&gt;\n\t.table-container {\n\t\tmargin-top: 20px;\n\t}\n\t.table-responsive {\n\t\toverflow-x: auto;\n\t}\n\t.money-column {\n\t\ttext-align: right;\n\t}\n\t.date-column {\n\t\tmin-width: 120px;\n\t}\n&lt;/style&gt;\n\n\n\n{% comment %} I try to keep this in sync with same in /diag, but never a guarantee {% endcomment %} \n&lt;div class=\"card mt-3\"&gt; &lt;!-- USER INFORMATION 0601 --&gt;\n\t&lt;div class=\"card-header\"&gt;\n\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#currentUserCollapse\" aria-expanded=\"true\" aria-controls=\"currentUserCollapse\"&gt;\n\t\t\tCurrent User Information\n\t\t&lt;/button&gt;\n\t&lt;/div&gt;\n\n\t&lt;div class=\"collapse show\" id=\"currentUserCollapse\"&gt;\n\t\t&lt;div class=\"card-body\"&gt;\n\t\t\t&lt;table class=\"user-table\"&gt;\n\t\t\t\t&lt;thead&gt;\n\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t&lt;th&gt;Variable&lt;/th&gt;\n\t\t\t\t\t\t&lt;th&gt;Value&lt;/th&gt;\n\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t&lt;/thead&gt;\n\t\t\t\t&lt;tbody&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.id&lt;/td&gt;&lt;td&gt;{{ user.id }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.username&lt;/td&gt;&lt;td&gt;{{ user.username }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.firstname&lt;/td&gt;&lt;td&gt;{{ user.firstname }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.middlename&lt;/td&gt;&lt;td&gt;{{ user.middlename }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lastname&lt;/td&gt;&lt;td&gt;{{ user.lastname }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.fullname             &lt;/td&gt;&lt;td&gt;{{ user.fullname }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.emailaddress1        &lt;/td&gt;&lt;td&gt;{{ user.emailaddress1 }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.emailaddress2        &lt;/td&gt;&lt;td&gt;{{ user.emailaddress2 }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lv_region.id   &lt;/td&gt;&lt;td&gt;{{ user.lv_region.id }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lv_region.name &lt;/td&gt;&lt;td&gt;{{ user.lv_region.name }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lv_branch.id&lt;/td&gt;&lt;td&gt;{{ user.lv_branch.id }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lv_branch.name&lt;/td&gt;&lt;td&gt;{{ user.lv_branch.name }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lv_loanofficer.id&lt;/td&gt;&lt;td&gt;{{ user.lv_loanofficer.id }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lv_loanofficer.name&lt;/td&gt;&lt;td&gt;{{ user.lv_loanofficer.name }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.roles&lt;/td&gt;&lt;td&gt;\n\t\t\t\t\t\t{% for role in user.roles %}\n\t\t\t\t\t\t\t{{ role }}{% unless forloop.last %}; {% endunless %}\n\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.isAuthenticated&lt;/td&gt;\n\t\t\t\t\t&lt;td class=\"authenticated\"&gt;{{ user.isAuthenticated }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.type&lt;/td&gt;&lt;td&gt;{{ user.type }}&lt;/td&gt;&lt;/tr&gt;\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t&lt;/table&gt;\n\t\t&lt;/div&gt;\n\t&lt;/div&gt;\n&lt;/div&gt;\n\n&lt;div class=\"card mt-3\"&gt; &lt;!-- SETUP QUERY --&gt;\n\t&lt;div class=\"card-header\"&gt;\n\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#setupQueryCollapse\" aria-expanded=\"true\" aria-controls=\"setupQueryCollapse\"&gt;\n\t\t\tSetup Query\n\t\t&lt;/button&gt;\n\t&lt;/div&gt;\n\n\t&lt;div class=\"collapse hide\" id=\"setupQueryCollapse\"&gt;\n\t\t&lt;div class=\"card-body\"&gt;\n\t\t\t&lt;table class=\"user-table\"&gt;\n\t\t\t\t&lt;thead&gt;\n\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t&lt;th&gt;Variable&lt;/th&gt;\n\t\t\t\t\t\t&lt;th&gt;Value&lt;/th&gt;\n\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t&lt;/thead&gt;\n\t\t\t\t&lt;tbody&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;cfgTags                &lt;/td&gt;&lt;td&gt;{{ cfgTags }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;UrlFlowContactWebRole  &lt;/td&gt;&lt;td&gt;{{ setupRecord.lv_urlflowcontactwebrole }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;cfgAccountingEnabled   &lt;/td&gt;&lt;td&gt;{{ cfgAccountingEnabled }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;cfgRegionEnabled       &lt;/td&gt;&lt;td&gt;{{ cfgRegionEnabled }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;cfgBranchEnabled       &lt;/td&gt;&lt;td&gt;{{ cfgBranchEnabled }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;cfgPrintEnabled        &lt;/td&gt;&lt;td&gt;{{ cfgPrintEnabled }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;currentRegion.name     &lt;/td&gt;&lt;td&gt;{{ currentRegion.name }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;currentBranch.name     &lt;/td&gt;&lt;td&gt;{{ currentBranch.name }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;is_admin               &lt;/td&gt;&lt;td&gt;{{ is_admin }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;is_RegionManager       &lt;/td&gt;&lt;td&gt;{{ is_RegionManager }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;is_BranchManager       &lt;/td&gt;&lt;td&gt;{{ is_BranchManager }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;is_LoanOfficer         &lt;/td&gt;&lt;td&gt;{{ is_LoanOfficer }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;is_OnlyLoanOfficer     &lt;/td&gt;&lt;td&gt;{{ is_OnlyLoanOfficer }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;is_developer           &lt;/td&gt;&lt;td&gt;{{ is_developer }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;sqApprovalType         &lt;/td&gt;&lt;td&gt;{{ sqApprovalType }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;sqHasCommissionProfile &lt;/td&gt;&lt;td&gt;{{ sqHasCommissionProfile }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;sqIsCommissioned       &lt;/td&gt;&lt;td&gt;{{ sqIsCommissioned }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;sqAcctgPeriodNo        &lt;/td&gt;&lt;td&gt;{{ sqAcctgPeriodNo }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;sqRecCommProfile       &lt;/td&gt;&lt;td&gt;{{ sqRecCommProfile.lv_name }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;sqRecLOBeingViewed     &lt;/td&gt;&lt;td&gt;{{ sqRecLOBeingViewed.lv_name }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;sqRecLOYouAre          &lt;/td&gt;&lt;td&gt;{{ sqRecLOYouAre.lv_name }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;sqUsingApprovals       &lt;/td&gt;&lt;td&gt;{{ sqUsingApprovals }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;userBranchList         &lt;/td&gt;&lt;td&gt;{{ userBranchList }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;userRegionList         &lt;/td&gt;&lt;td&gt;{{ userRegionList }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;userRegion             &lt;/td&gt;&lt;td&gt;{{ userRegion }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;userRegion.id          &lt;/td&gt;&lt;td&gt;{{ userRegion.id }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;userBranch             &lt;/td&gt;&lt;td&gt;{{ userBranch }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t&lt;tr&gt;&lt;td class=\"variable-name\"&gt;userBranch.id          &lt;/td&gt;&lt;td&gt;{{ userBranch.id }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t&lt;/tbody&gt;\n\t\t\t&lt;/table&gt;\n\t\t&lt;/div&gt;\n\t&lt;/div&gt;\n&lt;/div&gt;\n\n&lt;div class=\"card mt-3\"&gt; &lt;!-- API SECTION --&gt;\n\t&lt;div class=\"card-header\"&gt;\n\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#apiCollapse\" aria-expanded=\"true\" aria-controls=\"apiCollapse\"&gt;\n\t\t\tAPI Calls\n\t\t&lt;/button&gt;\n\t&lt;/div&gt;\n\t&lt;div class=\"collapse show\" id=\"apiCollapse\"&gt;\n\t\t&lt;div class=\"card-body\"&gt;\n\n\t\t\t&lt;div class=\"row mb-3 align-items-center\"&gt;  &lt;!-- Prefix, Table, Id, and Action --&gt;\n\t\t\t\t&lt;div class=\"col-3\"&gt; &lt;!-- Prefix Select --&gt;\n\t\t\t\t\t&lt;div class=\"row g-2 align-items-center\"&gt;\n\t\t\t\t\t\t&lt;div class=\"col-auto\"&gt;\n\t\t\t\t\t\t\t&lt;label for=\"cboPrefix\" class=\"col-form-label me-2\"&gt;Prefix&lt;/label&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"col\"&gt;\n\t\t\t\t\t\t\t&lt;select id=\"cboPrefix\" class=\"form-select rj-persist\" onchange=\"updateApiUrl()\"&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"BCODataV4LVM\"&gt;BusCent ODataV4 LVM&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"BCODataV4\"&gt;BusCent ODataV4&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"PowerPages\"&gt;Power Pages Shortcut&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Dataverse\"&gt;Dataverse&lt;/option&gt;\n\t\t\t\t\t\t\t&lt;/select&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t&lt;div class=\"col-3\"&gt; &lt;!-- Table Select ~tablenames --&gt;\n\t\t\t\t\t&lt;div class=\"row g-2 align-items-center\"&gt;\n\t\t\t\t\t\t&lt;div class=\"col-auto\"&gt;\n\t\t\t\t\t\t\t&lt;label for=\"cboTable\" class=\"col-form-label me-2\"&gt;Table&lt;/label&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"col\"&gt;\n\t\t\t\t\t\t\t&lt;select id=\"cboTable\" class=\"form-select rj-persist\" onchange=\"updateApiUrl()\"&gt; {% comment %}  if you add here, be sure to add to translatetablename  {% endcomment %} \n\t\t\t\t\t\t\t\t&lt;option value=\"account\"&gt;account&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"ApprovalLO\"&gt;ApprovalLO&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Branch\"&gt;Branch&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"CommissionApproval\"&gt;CommissionApproval&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"CommissionProfile\"&gt;CommissionProfile&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"CommissionValue\"&gt;CommissionValue&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"contact\"&gt;contact&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"EmailLog\"&gt;EmailLog&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Loan\"&gt;Loan&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"LoanOfficer\"&gt;LoanOfficer&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Log\"&gt;Log&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"RBLO\"&gt;RBLO&lt;/option&gt;\n\t\t\t\t\t\t\t&lt;/select&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t&lt;div class=\"col-3\"&gt; &lt;!-- ID --&gt;\n\t\t\t\t\t&lt;div class=\"row g-2 align-items-center\"&gt;\n\t\t\t\t\t\t&lt;div class=\"col-auto\"&gt;\n\t\t\t\t\t\t\t&lt;label for=\"cboId\" class=\"col-form-label me-2\"&gt;ID&lt;/label&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t{% comment %}    todo8: have this query contacts, and dynamically populate with correct id's         {% endcomment %} \n\t\t\t\t\t\t&lt;div class=\"col\"&gt;\n\t\t\t\t\t\t\t&lt;select id=\"cboId\" class=\"form-select rj-persist\" onchange=\"updateApiUrl()\"&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"\"&gt;&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"EDA25D58-1CA8-EF11-B8E8-6045BDD4B776\"&gt;Contact: Robert.Martin@LoanVision.com (EDA25D58-1CA8-EF11-B8E8-6045BDD4B776)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"0A25BDD1-B2E7-EF11-A730-7C1E525A5C41\"&gt;Contact: Rodj@LoanVision.com (0A25BDD1-B2E7-EF11-A730-7C1E525A5C41)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"47bf5a15-5380-ef11-ac21-6045bda6e4f2\"&gt;Contact: Jenna (47bf5a15-5380-ef11-ac21-6045bda6e4f2)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"b108c67a-7aa0-ef11-8a69-6045bdd4b776\"&gt;Contact: Richard (b108c67a-7aa0-ef11-8a69-6045bdd4b776)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"50A76DCA-E380-EF11-AC21-6045BDA6E4F2\"&gt;Contact: Leslie Knope (50A76DCA-E380-EF11-AC21-6045BDA6E4F2)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"172A2341-E001-F011-BAE3-7C1E52153266\"&gt;LO: Rodj Martin (172A2341-E001-F011-BAE3-7C1E52153266)&lt;/option&gt;\n\t\t\t\t\t\t\t&lt;/select&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t&lt;div class=\"col-3\"&gt; &lt;!-- Action --&gt;\n\t\t\t\t\t&lt;div class=\"row g-2 align-items-center\"&gt;\n\t\t\t\t\t\t&lt;div class=\"col-auto\"&gt;\n\t\t\t\t\t\t\t&lt;label for=\"cboAction\" class=\"col-form-label me-2\"&gt;Action&lt;/label&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"col\"&gt;\n\t\t\t\t\t\t\t&lt;select id=\"cboAction\" class=\"form-select rj-persist\" onchange=\"updateApiUrl()\"&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"\"&gt;&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Top10\"&gt;Top10&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Count\"&gt;Count&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Count\"&gt;Filter&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Top1\"&gt;Top1&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Select\"&gt;&amp;$select=nickname,emailaddress1&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"Id\"&gt;Id&lt;/option&gt;\n\t\t\t\t\t\t\t&lt;/select&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;div class=\"row mb-3 align-items-center\"&gt; &lt;!-- SUCCESS HISTORY --&gt;\n\t\t\t\t&lt;div class=\"col-12\"&gt;\n\t\t\t\t\t&lt;div class=\"row g-2 align-items-center\"&gt;\n\t\t\t\t\t\t&lt;div class=\"col-1\"&gt;\n\t\t\t\t\t\t\t&lt;label for=\"contactSelect\" class=\"col-form-label me-2\"&gt;HISTORY&lt;/label&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"col-11\"&gt;\n\t\t\t\t\t\t\t&lt;select id=\"cboUrlSuccessHistory\" class=\"form-select rj-persist\" onchange=\"$('#apiUrl').val('rodj')\"&gt;\n\t\t\t\t\t\t\t&lt;option value=\"\"&gt;&lt;/option&gt;\n\t\t\t\t\t\t\t&lt;/select&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;div class=\"row mb-3 align-items-center\"&gt; &lt;!-- FINAL URL --&gt;\n\t\t\t\t&lt;div class=\"col-12\"&gt;\n\t\t\t\t\t&lt;div class=\"row g-2 align-items-center\"&gt;\n\t\t\t\t\t\t&lt;div class=\"col-1\"&gt;\n\t\t\t\t\t\t\t&lt;label for=\"apiUrl\" class=\"col-form-label me-2\"&gt;API URL&lt;/label&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t&lt;div class=\"col-11\"&gt;\n\t\t\t\t\t\t\t&lt;input type=\"text\" id=\"apiUrl\" class=\"form-control rj-persist font-monospace\" value=\"https://api.businesscentral.dynamics.com/v2.0/1598698c-cbd2-4d4a-94f0-0b4b2b701763/SandboxDev/ODataV4/Company('LVM')/branches?$top=3\" /&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/\n\t\t\t\t\tdiv&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\t\t\t\n\t\t\t&lt;div class=\"row mb-3\"&gt; &lt;!-- Headers and POST Data in Two Columns --&gt;\n\t\t\t\t\n\t\t\t\t&lt;div class=\"col-md-6\"&gt; &lt;!-- Headers Section --&gt;\n\t\t\t\t\t&lt;div class=\"form-group\"&gt;\n\t\t\t\t\t\t&lt;label for=\"headersArea\" class=\"form-label\"&gt;Headers:&lt;/label&gt;\n\t\t\t\t\t\t&lt;textarea id=\"headersArea\" class=\"form-control font-monospace rj-persist\" rows=\"6\"&gt;OData-MaxVersion | 4.0\nOData-Version | 4.0\nAccept | application/json\nContent-Type | application/json; charset=utf-8\nPrefer | return=representation&lt;/textarea&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t&lt;div class=\"col-md-6\"&gt; &lt;!-- POST Data Section --&gt;\n\t\t\t\t\t&lt;div class=\"form-group\"&gt;\n\t\t\t\t\t\t&lt;label for=\"postDataArea\" class=\"form-label\"&gt;POST data:&lt;/label&gt;\n\t\t\t\t\t\t&lt;textarea id=\"postDataArea\" class=\"form-control font-monospace rj-persist\" rows=\"6\"&gt;&lt;/textarea&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;div class=\"row mb-3\"&gt; &lt;!-- Action Button and Method Selector --&gt;\n\t\t\t\t&lt;div class=\"col-12\"&gt;\n\t\t\t\t\t&lt;div class=\"d-flex align-items-center\"&gt;\n\t\t\t\t\t\t&lt;button id=\"btnCallApi\" class=\"btn btn-primary me-3\"\n\t\t\t\t\t\t\tonclick=\"callSelectedFunction()\"&gt;Go!&lt;/button&gt;\n\n\t\t\t\t\t\t&lt;div class=\"d-inline-flex align-items-center me-3\"&gt; &lt;!-- Dropdown for func name: testApi, ShowWebRoles, etc. --&gt;\n\t\t\t\t\t\t\t&lt;select id=\"jsFuncName\" class=\"form-select rj-persist\"&gt; &lt;!-- only need to add here. All else is in js file, function callSelectedFunction --&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"testApi\"&gt;testApi (uses apiUrl entry and js testApi() in rcm2)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"apiCall\"&gt;callApi (uses apiUrl entry and js apiCall in Footer)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"addWebRoleToContact\"&gt;addWebRoleToContact API Url should have contid,roleid&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"SetWebRoles\" title=\"Uses whatever value is in API Url and di from contact \"&gt;Set Web Roles&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"SetYesAllRoles\" title=\"Hardcoded to Admin,Region,Branch,LO,Assign \"&gt;SetYesAllRoles&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"SetLOAndAssign\" title=\"Hardcoded to LO,Assign \"&gt;SetLOAndAssign&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"DeleteAllApprovals\" title=\"Delete all rows from table lv_lvcompcommissionapproval\"&gt;Delete All Commission Approval&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"DeleteLogs\" title=\"Uses whatever value is in API Url as kind contains\"&gt;DeleteLogs&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"DeleteRows\" title=\"Ultimately will superceded DeleteLogs. Put logicalname, conainsfieldcolname, searchtext as comma separated in URL\"&gt;DeleteRows&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"apiGetRecord\" title=\"Calls footer.apiGetRecord(tbl, filt) with tbl from Table dropdown and filt from P1\"&gt;apiGetRecord(tbl,filt)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"apiGetRecords\" title=\"Calls footer.apiGetRecords(tbl, filt) with tbl from Table dropdown and filt from P1\"&gt;apiGetRecords(tbl,filt)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"apiGetColumnStringArray\" title=\"Calls footer.apiGetColumnStringArray(tbl, col, filtX) with tbl from Table, filt from P1, colName from colRegex\"&gt;apiGetColumnStringArray(tbl,colName,filt)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"apiGetColumnStringScalar\" title=\"Calls footer.apiGetColumnStringScalar(tbl, col, filtX) with tbl from Table, filt from P1, colName from colRegex\"&gt;apiGetColumnStringScalar(tbl,colName,filt)&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"UpdateAllContactRoles\" title=\"Updates lv_roles field for all contacts based on their actual web role assignments\"&gt;UpdateAllContactRoles - Bulk Update All Contact Roles&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"TestUpdateContactRoles\" title=\"Test the role update logic on first 5 contacts only (no actual updates)\"&gt;TestUpdateContactRoles - Test Role Update Logic&lt;/option&gt;\n\t\t\t\t\t\t\t&lt;/select&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"d-inline-flex align-items-center me-3\"&gt; &lt;!-- Dropdown for Method --&gt;\n\t\t\t\t\t\t\t&lt;label for=\"apiMethod\" class=\"form-label me-2 mb-0\"&gt;Method:&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;select id=\"apiMethod\" class=\"form-select rj-persist\"&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"GET\"&gt;GET&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"POST\"&gt;POST&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"DELETE\"&gt;DELETE&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"PUT\"&gt;PUT&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"PATCH\"&gt;PATCH&lt;/option&gt;\n\t\t\t\t\t\t\t&lt;/select&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"form-input ms-3\"&gt; &lt;!-- P1 parameter one --&gt;\n\t\t\t\t\t\t\t&lt;label for=\"txtP1\" class=\"col-form-label me-2\"&gt;P1&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;input class=\"form-input rj-persist\" type=\"text\" id=\"txtP1\" name=\"txtP1&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"form-input ms-3\"&gt; &lt;!-- ColRegex parameter one --&gt;\n\t\t\t\t\t\t\t&lt;label for=\"txtColRegex\" class=\"col-form-label me-2\"&gt;ColRx&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;input class=\"form-input rj-persist\" type=\"text\" id=\"txtColRegex\" name=\"txtColRegex\"&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"form-check ms-3\"&gt; &lt;!-- Checkbox: Show Full Request Info --&gt;\n\t\t\t\t\t\t\t&lt;input class=\"form-check-input rj-persist\" type=\"checkbox\" checked id=\"chkFullRequestInfo\" name=\"chkFullRequestInfo\" value=\"chkFullRequestInfo\"&gt;\n\t\t\t\t\t\t\t&lt;label class=\"form-check-label\" for=\"chkFullRequestInfo\"&gt;Verbose&lt;/label&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"form-check ms-3\"&gt; &lt;!-- Checkbox: lv_ only --&gt;\n\t\t\t\t\t\t\t&lt;input class=\"form-check-input rj-persist\" type=\"checkbox\" checked id=\"chkLVOnly\" name=\"chkLVOnly\" value=\"chkLVOnly\"&gt;\n\t\t\t\t\t\t\t&lt;label class=\"form-check-label\" for=\"chkLVOnly\"&gt;lv_ Only&lt;/label&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\t\t\t\n\t\t\t&lt;div class=\"row\"&gt; &lt;!-- Results Area --&gt;\n\t\t\t\t&lt;div class=\"col-12\"&gt;\n\t\t\t\t\t&lt;div class=\"form-group\"&gt;\n\t\t\t\t\t\t&lt;label for=\"resultsArea\" class=\"form-label\" id=\"lblResults\" onclick=\"$('#resultsArea').val('');\"&gt;Results:&lt;/label&gt;\n\t\t\t\t\t\t&lt;textarea id=\"resultsArea\" class=\"form-control font-monospace\" rows=\"10\"&gt;&lt;/textarea&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\t\t&lt;/div&gt;\n\t&lt;/div&gt;\n&lt;/div&gt;\n\n&lt;div class=\"card mt-3\"&gt; &lt;!-- LOGS --&gt;\n\t&lt;div class=\"card-header\"&gt;\n\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#divLog\" aria-expanded=\"true\" aria-controls=\"divLog\"&gt;\n\t\t\tLogs\n\t\t&lt;/button&gt;\n\n\t\t&lt;div class=\"collapse hide\" id=\"divLog\"&gt;\n\t\t\n\t\t\t&lt;div class=\"container-fluid mt-2\"&gt;\n\t\t\t\t&lt;form&gt;\n\t\t\t\t\t&lt;div class=\"row mb-1\"&gt;\n\t\t\t\t\t\t&lt;div class=\"col-auto form-column\"&gt;\n\t\t\t\t\t\t\t&lt;label id=\"lblLogFrom\" for=\"txtLogFrom\" class=\"form-label\"&gt;From&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;input id=\"txtLogFrom\" onchange=\"updateLogQueryUrl()\" type=\"text\" class=\"form-control rj-persist\" style=\"width: 175px;\"&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\n\t\t\t\t\t\t&lt;div class=\"col-auto form-column\"&gt;\n\t\t\t\t\t\t\t&lt;label id=\"lblLogThru\" for=\"txtLogThru\" class=\"form-label\"&gt;Thru&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;input id=\"txtLogThru\" onchange=\"updateLogQueryUrl()\" type=\"text\" class=\"form-control rj-persist\" style=\"width: 175px;\"&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\n\t\t\t\t\t\t&lt;div class=\"col-auto form-column\"&gt;\n\t\t\t\t\t\t\t&lt;label id=\"lblLogUserName\" for=\"txtLogUserName\" class=\"form-label\"&gt;User&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;input id=\"txtLogUserName\" onchange=\"updateLogQueryUrl()\" type=\"text\" class=\"form-control rj-persist\" style=\"width: 120px;\"&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\n\t\t\t\t\t\t&lt;div class=\"col-auto form-column\"&gt;\n\t\t\t\t\t\t\t&lt;label id=\"lblLogKind\" for=\"txtLogKind\" class=\"form-label\"&gt;Kind&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;input id=\"txtLogKind\" onchange=\"updateLogQueryUrl()\" type=\"text\" class=\"form-control\" style=\"width: 100px;\"&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\n\t\t\t\t\t\t&lt;div class=\"col-auto form-column\"&gt;\n\t\t\t\t\t\t\t&lt;label id=\"lblLogDetail\" for=\"txtLogDetail\" class=\"form-label\"&gt;Detail&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;input id=\"txtLogDetail\" onchange=\"updateLogQueryUrl()\" type=\"text\" class=\"form-control rj-persist\" style=\"width: 150px;\"&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\n\t\t\t\t\t\t&lt;div class=\"col-auto form-column\"&gt;\n\t\t\t\t\t\t\t&lt;label for=\"ddlOrderBy\" class=\"form-label\"&gt;Order By&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;select id=\"ddlOrderBy\" onchange=\"updateLogQueryUrl()\" class=\"form-select rj-persist\" style=\"width: 120px;\"&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"createdon\"&gt;createdon&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"lv_UserFullName\"&gt;lv_UserFullName&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"lv_Kind\"&gt;lv_Kind&lt;/option&gt;\n\t\t\t\t\t\t\t\t&lt;option value=\"lv_Detail\"&gt;lv_Detail&lt;/option&gt;\n\t\t\t\t\t\t\t&lt;/select&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\n\t\t\t\t\t\t&lt;div class=\"col-auto form-column\"&gt;\n\t\t\t\t\t\t\t&lt;div class=\"form-check pt-1 rj-persist\"&gt;\n\t\t\t\t\t\t\t\t&lt;input id=\"chkDesc\" class=\"form-check-input rj-persist\" type=\"checkbox\"&gt;\n\t\t\t\t\t\t\t\t&lt;label class=\"form-check-label\" for=\"chkDesc\"&gt;Desc?&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t\t&lt;div class=\"col-auto form-column\"&gt;\n\t\t\t\t\t\t\t&lt;input type=\"button\" value=\"Query\" onclick=\"return btnLogQuery_Click();\"/&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t&lt;div class=\"row mb-2\"&gt;\n\t\t\t\t\t\t&lt;div class=\"col-md-1 form-column\"&gt;\n\t\t\t\t\t\t\t&lt;label id=\"lblLogUrl\" for=\"txtLogUrl\" class=\"form-label\"&gt;URL&lt;/label&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t&lt;div class=\"col-md-5 form-column\"&gt;\n\t\t\t\t\t\t\t&lt;input type=\"text\" class=\"form-control rj-persist\" id=\"txtLogUrl\"&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/form&gt;\n\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;div class=\"card-body\"&gt;\n\t\t\t\t&lt;div style=\"margin-bottom: 10px;\"&gt;\n\t\t\t\t\t&lt;label for=\"txtUserFilterRx\" style=\"margin-right: 10px;\"&gt;Filter by Username (Regex):&lt;/label&gt;\n\t\t\t\t\t&lt;input type=\"text\" id=\"txtUserFilterRx\" value=\"^(?!Robert Martin$).*$\" style=\"padding: 5px; min-width: 250px;\"&gt;\n\t\t\t\t&lt;/div&gt;\n\t\n\t\t\t\t&lt;table id=\"logTable\" style=\"width: 100%; border-collapse: collapse; margin-top: 10px;\"&gt;\n\t\t\t\t\t&lt;thead&gt;\n\t\t\t\t\t\t&lt;tr style=\"background-color: #f2f2f2;\"&gt;\n\t\t\t\t\t\t\t&lt;th&gt;Time&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;User&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;Kind&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;Detail&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;K1Name&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;K1Value&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;K2Name&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;K2Value&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;Memo&lt;/th&gt;\n\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t&lt;/thead&gt;\n\t\t\t\t\t&lt;tbody id=\"logTableBody\"&gt;\n\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t\t&lt;/table&gt;\n\t\t\t&lt;/div&gt;\n\t\t&lt;/div&gt;\t\t\n\t&lt;/div&gt;\n&lt;/div&gt;\n\n&lt;div class=\"card mt-3\"&gt; &lt;!-- COMMISSION PERIOD APPROVALa --&gt;\n\t&lt;div class=\"card-header\"&gt;\n\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#divCPA\" aria-expanded=\"true\" aria-controls=\"divCPA\"&gt;\n\t\t\tlv_lvcompcommissionapproval\n\t\t&lt;/button&gt;\n\n\t\t&lt;div class=\"collapse hide\" id=\"divCPA\"&gt;\n\t\t\t{% fetchxml cpaQuery %}\n\t\t\t\t&lt;fetch top=\"50\"&gt;\n\t\t\t\t\t&lt;entity name=\"lv_lvcompcommissionapproval\"&gt;\n\t\t\t\t\t\t&lt;attribute name=\"createdon\" /&gt;\n\t\t\t\t\t\t&lt;attribute name=\"lv_name\" /&gt;\n\t\t\t\t\t\t&lt;attribute name=\"lv_periodno\" /&gt;\n\t\t\t\t\t\t&lt;attribute name=\"lv_periodcode\" /&gt;\n\t\t\t\t\t\t&lt;attribute name=\"lv_loanofficercode\" /&gt;\n\t\t\t\t\t\t&lt;order attribute=\"createdon\" descending=\"true\" /&gt;\n\t\t\t\t\t&lt;/entity&gt;\n\t\t\t\t&lt;/fetch&gt;\n\t\t\t{% endfetchxml %}\n\t\t\n\t\t\t&lt;div class=\"card-body\"&gt;\n\t\n\t\t\t\t&lt;table id=\"cpaTable\" style=\"width: 100%; border-collapse: collapse; margin-top: 10px;\"&gt;\n\t\t\t\t\t&lt;thead&gt;\n\t\t\t\t\t\t&lt;tr style=\"background-color: #f2f2f2;\"&gt;\n\t\t\t\t\t\t\t&lt;th&gt;Time&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;FullName&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;PeriodCode&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;LOName&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;LOId&lt;/th&gt;\n\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t&lt;/thead&gt;\n\t\t\t\t\t&lt;tbody id=\"cpaTableBody\"&gt;\n\t\t\t\t\t\t{% for cpa in cpaQuery.results.entities %}\n\t\t\t\t\t\t\t&lt;tr data-username=\"{{ cpa.lv_fullname }}\" class=\"cpa-row\"&gt;\n\t\t\t\t\t\t\t\t&lt;td&gt;{{ cpa.createdon | date: \"ddd HH:mm:ss\" }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t&lt;td&gt;{{ cpa.lv_fullname }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t&lt;td&gt;{{ cpa.lv_periodcode }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t&lt;td&gt;{{ cpa.LOName }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t&lt;td&gt;{{ cpa.lv_loanofficercode }}&lt;/td&gt;\n\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t\t&lt;/table&gt;\n\t\t\t&lt;/div&gt;\n\t\t&lt;/div&gt;\t\t\n\t&lt;/div&gt;\n&lt;/div&gt;\n\n{% comment %}    JAVASCRIPT is in separate file    {% endcomment %} \n\n\n{% comment %}\n\n\n{% fetchxml abc %}\n\t&lt;fetch&gt;\n\t\t&lt;entity name=\"lv_lvcompcommission\"&gt;\n\t\t\t&lt;attribute name=\"lv_calculationdate\" /&gt;\n\t\t\t&lt;attribute name=\"lv_amount\" /&gt;\n\t\t\t&lt;attribute name=\"lv_description\" /&gt;\n\t\t\t&lt;attribute name=\"lv_bpscalculated\" /&gt;\n\t\t\t&lt;attribute name=\"lv_cappedcommissionbaseamount\" /&gt;\n\t\t\t&lt;attribute name=\"lv_xloanofficer\" /&gt;\n\t\t\t&lt;attribute name=\"lv_loanofficer\" /&gt;\n\t\t&lt;/entity&gt;\n\t&lt;/fetch&gt;\n{% endfetchxml %}\n\n&lt;div class=\"container\"&gt;\n\t&lt;div class=\"row\"&gt;\n\t\t&lt;div class=\"col-12 table-container\"&gt;\n\t\t\t&lt;h2&gt;Commission Records&lt;/h2&gt;\n\t\t\t&lt;div class=\"table-responsive\"&gt;\n\t\t\t\t&lt;table class=\"table table-striped table-hover\"&gt;\n\t\t\t\t\t&lt;thead class=\"table-dark\"&gt;\n\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t&lt;th&gt;Calculation Date&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th class=\"money-column\"&gt;Amount&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;Description&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th class=\"money-column\"&gt;BPS Calculated&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th class=\"money-column\"&gt;Capped Commission Base&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;Branch&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;Loan Officer&lt;/th&gt;\n\t\t\t\t\t\t\t&lt;th&gt;LOLook&lt;/th&gt;\n\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t&lt;/thead&gt;\n\t\t\t\t\t&lt;tbody&gt;\n\t\t\t\t\t\t&lt;!-- This is where FetchXML results would be rendered --&gt;\n\t\t\t\t\t\t{% for item in abc.results.entities %}\n\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t&lt;td class=\"date-column\"&gt;{{ item.lv_calculationdate }}&lt;/td&gt;\n\t\t\t\t\t\t\t&lt;td class=\"money-column\"&gt;{{ item.lv_amount }}&lt;/td&gt;\n\t\t\t\t\t\t\t&lt;td&gt;{{ item.lv_description }}&lt;/td&gt;\n\t\t\t\t\t\t\t&lt;td class=\"money-column\"&gt;{{ item.lv_bpscalculated }}&lt;/td&gt;\n\t\t\t\t\t\t\t&lt;td class=\"money-column\"&gt;{{ item.lv_cappedcommissionbaseamount }}&lt;/td&gt;\n\t\t\t\t\t\t\t&lt;td&gt;{{ item.lv_xbranchcode }}&lt;/td&gt;\n\t\t\t\t\t\t\t&lt;td&gt;{{ item.lv_xloanofficer }}&lt;/td&gt;\n\t\t\t\t\t\t\t&lt;td&gt;{{ item.lv_loanofficer.name }}&lt;/td&gt;\n\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t\t&lt;!-- If no results, show a message --&gt;\n\t\t\t\t\t\t{% if abc.results.entities.size == 0 %}\n\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t&lt;td colspan=\"7\" class=\"text-center\"&gt;No commission records found.&lt;/td&gt;\n\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t\t&lt;/table&gt;\n\t\t\t&lt;/div&gt;\n\t\t&lt;/div&gt;\n\t&lt;/div&gt;\n&lt;/div&gt;\n\n\n\n\n{% endcomment %} \n&lt;!-- Last modified Sun Aug 31 5:00PM --&gt;",
+  "customcss": ".blue {\n\tcolor: blue;\n}",
+  "displayorder": 17,
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "feedbackpolicy": 756150000,
+  "hiddenfromsitemap": true,
+  "isroot": true,
+  "pagetemplateid": "cd587cbe-a61f-4c11-a750-6d0235a784ef",
+  "parentpageid": "362995e0-7dc5-4bbf-9595-062f468d2d44",
+  "partialurl": "lvcpdev",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;p&gt;This is a sample landing page designed to be a starting point for your website&lt;/p&gt;\n",
+  "title": "lvcpdev"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>lvcpdev</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <searchcontent>lvcpdev&lt;!-- Last modified Sun Aug 31 5:00PM --&gt;
+{% include 'snippet' snippet_name:'FetchXML - SetupQuery' %}
+
+&lt;h2&gt;      2025-06-23 Mon 14:43 ET ~lvcpdev           &lt;span id="spanJsVersion" style="margin-left: 10px;"&gt;&lt;/span&gt;               &lt;/h2&gt;
+
+&lt;div id="divTestButton" style="margin-bottom: 20px;"&gt;
+		&lt;input type="button" value="Test to Console2" onclick="testToConsole()" /&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+	.table-container {
+		margin-top: 20px;
+	}
+	.table-responsive {
+		overflow-x: auto;
+	}
+	.money-column {
+		text-align: right;
+	}
+	.date-column {
+		min-width: 120px;
+	}
+&lt;/style&gt;
+
+
+
+{% comment %} I try to keep this in sync with same in /diag, but never a guarantee {% endcomment %} 
+&lt;div class="card mt-3"&gt; &lt;!-- USER INFORMATION 0601 --&gt;
+	&lt;div class="card-header"&gt;
+		&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#currentUserCollapse" aria-expanded="true" aria-controls="currentUserCollapse"&gt;
+			Current User Information
+		&lt;/button&gt;
+	&lt;/div&gt;
+
+	&lt;div class="collapse show" id="currentUserCollapse"&gt;
+		&lt;div class="card-body"&gt;
+			&lt;table class="user-table"&gt;
+				&lt;thead&gt;
+					&lt;tr&gt;
+						&lt;th&gt;Variable&lt;/th&gt;
+						&lt;th&gt;Value&lt;/th&gt;
+					&lt;/tr&gt;
+				&lt;/thead&gt;
+				&lt;tbody&gt;
+					&lt;tr&gt;&lt;td&gt;user.id&lt;/td&gt;&lt;td&gt;{{ user.id }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.username&lt;/td&gt;&lt;td&gt;{{ user.username }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.firstname&lt;/td&gt;&lt;td&gt;{{ user.firstname }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.middlename&lt;/td&gt;&lt;td&gt;{{ user.middlename }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.lastname&lt;/td&gt;&lt;td&gt;{{ user.lastname }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.fullname             &lt;/td&gt;&lt;td&gt;{{ user.fullname }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.emailaddress1        &lt;/td&gt;&lt;td&gt;{{ user.emailaddress1 }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.emailaddress2        &lt;/td&gt;&lt;td&gt;{{ user.emailaddress2 }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.lv_region.id   &lt;/td&gt;&lt;td&gt;{{ user.lv_region.id }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.lv_region.name &lt;/td&gt;&lt;td&gt;{{ user.lv_region.name }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.lv_branch.id&lt;/td&gt;&lt;td&gt;{{ user.lv_branch.id }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.lv_branch.name&lt;/td&gt;&lt;td&gt;{{ user.lv_branch.name }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.lv_loanofficer.id&lt;/td&gt;&lt;td&gt;{{ user.lv_loanofficer.id }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.lv_loanofficer.name&lt;/td&gt;&lt;td&gt;{{ user.lv_loanofficer.name }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.roles&lt;/td&gt;&lt;td&gt;
+						{% for role in user.roles %}
+							{{ role }}{% unless forloop.last %}; {% endunless %}
+						{% endfor %}
+					&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.isAuthenticated&lt;/td&gt;
+					&lt;td class="authenticated"&gt;{{ user.isAuthenticated }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td&gt;user.type&lt;/td&gt;&lt;td&gt;{{ user.type }}&lt;/td&gt;&lt;/tr&gt;					
+					
+					&lt;/tbody&gt;
+			&lt;/table&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="card mt-3"&gt; &lt;!-- SETUP QUERY --&gt;
+	&lt;div class="card-header"&gt;
+		&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#setupQueryCollapse" aria-expanded="true" aria-controls="setupQueryCollapse"&gt;
+			Setup Query
+		&lt;/button&gt;
+	&lt;/div&gt;
+
+	&lt;div class="collapse hide" id="setupQueryCollapse"&gt;
+		&lt;div class="card-body"&gt;
+			&lt;table class="user-table"&gt;
+				&lt;thead&gt;
+					&lt;tr&gt;
+						&lt;th&gt;Variable&lt;/th&gt;
+						&lt;th&gt;Value&lt;/th&gt;
+					&lt;/tr&gt;
+				&lt;/thead&gt;
+				&lt;tbody&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;cfgTags                &lt;/td&gt;&lt;td&gt;{{ cfgTags }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;UrlFlowContactWebRole  &lt;/td&gt;&lt;td&gt;{{ setupRecord.lv_urlflowcontactwebrole }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;cfgAccountingEnabled   &lt;/td&gt;&lt;td&gt;{{ cfgAccountingEnabled }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;cfgRegionEnabled       &lt;/td&gt;&lt;td&gt;{{ cfgRegionEnabled }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;cfgBranchEnabled       &lt;/td&gt;&lt;td&gt;{{ cfgBranchEnabled }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;cfgPrintEnabled        &lt;/td&gt;&lt;td&gt;{{ cfgPrintEnabled }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;currentRegion.name     &lt;/td&gt;&lt;td&gt;{{ currentRegion.name }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;currentBranch.name     &lt;/td&gt;&lt;td&gt;{{ currentBranch.name }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;is_admin               &lt;/td&gt;&lt;td&gt;{{ is_admin }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;is_RegionManager       &lt;/td&gt;&lt;td&gt;{{ is_RegionManager }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;is_BranchManager       &lt;/td&gt;&lt;td&gt;{{ is_BranchManager }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;is_LoanOfficer         &lt;/td&gt;&lt;td&gt;{{ is_LoanOfficer }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;is_OnlyLoanOfficer     &lt;/td&gt;&lt;td&gt;{{ is_OnlyLoanOfficer }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;is_developer           &lt;/td&gt;&lt;td&gt;{{ is_developer }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;sqApprovalType         &lt;/td&gt;&lt;td&gt;{{ sqApprovalType }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;sqHasCommissionProfile &lt;/td&gt;&lt;td&gt;{{ sqHasCommissionProfile }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;sqIsCommissioned       &lt;/td&gt;&lt;td&gt;{{ sqIsCommissioned }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;sqAcctgPeriodNo        &lt;/td&gt;&lt;td&gt;{{ sqAcctgPeriodNo }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;sqRecCommProfile       &lt;/td&gt;&lt;td&gt;{{ sqRecCommProfile.lv_name }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;sqRecLOBeingViewed     &lt;/td&gt;&lt;td&gt;{{ sqRecLOBeingViewed.lv_name }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;sqRecLOYouAre          &lt;/td&gt;&lt;td&gt;{{ sqRecLOYouAre.lv_name }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;sqUsingApprovals       &lt;/td&gt;&lt;td&gt;{{ sqUsingApprovals }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;userBranchList         &lt;/td&gt;&lt;td&gt;{{ userBranchList }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;userRegionList         &lt;/td&gt;&lt;td&gt;{{ userRegionList }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;userRegion             &lt;/td&gt;&lt;td&gt;{{ userRegion }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;userRegion.id          &lt;/td&gt;&lt;td&gt;{{ userRegion.id }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;userBranch             &lt;/td&gt;&lt;td&gt;{{ userBranch }}&lt;/td&gt;&lt;/tr&gt;
+					&lt;tr&gt;&lt;td class="variable-name"&gt;userBranch.id          &lt;/td&gt;&lt;td&gt;{{ userBranch.id }}&lt;/td&gt;&lt;/tr&gt;
+				&lt;/tbody&gt;
+			&lt;/table&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="card mt-3"&gt; &lt;!-- API SECTION --&gt;
+	&lt;div class="card-header"&gt;
+		&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#apiCollapse" aria-expanded="true" aria-controls="apiCollapse"&gt;
+			API Calls
+		&lt;/button&gt;
+	&lt;/div&gt;
+	&lt;div class="collapse show" id="apiCollapse"&gt;
+		&lt;div class="card-body"&gt;
+
+			&lt;div class="row mb-3 align-items-center"&gt;  &lt;!-- Prefix, Table, Id, and Action --&gt;
+				&lt;div class="col-3"&gt; &lt;!-- Prefix Select --&gt;
+					&lt;div class="row g-2 align-items-center"&gt;
+						&lt;div class="col-auto"&gt;
+							&lt;label for="cboPrefix" class="col-form-label me-2"&gt;Prefix&lt;/label&gt;
+						&lt;/div&gt;
+
+						&lt;div class="col"&gt;
+							&lt;select id="cboPrefix" class="form-select rj-persist" onchange="updateApiUrl()"&gt;
+								&lt;option value="BCODataV4LVM"&gt;BusCent ODataV4 LVM&lt;/option&gt;
+								&lt;option value="BCODataV4"&gt;BusCent ODataV4&lt;/option&gt;
+								&lt;option value="PowerPages"&gt;Power Pages Shortcut&lt;/option&gt;
+								&lt;option value="Dataverse"&gt;Dataverse&lt;/option&gt;
+							&lt;/select&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+
+				&lt;div class="col-3"&gt; &lt;!-- Table Select ~tablenames --&gt;
+					&lt;div class="row g-2 align-items-center"&gt;
+						&lt;div class="col-auto"&gt;
+							&lt;label for="cboTable" class="col-form-label me-2"&gt;Table&lt;/label&gt;
+						&lt;/div&gt;
+
+						&lt;div class="col"&gt;
+							&lt;select id="cboTable" class="form-select rj-persist" onchange="updateApiUrl()"&gt; {% comment %}  if you add here, be sure to add to translatetablename  {% endcomment %} 
+								&lt;option value="account"&gt;account&lt;/option&gt;
+								&lt;option value="ApprovalLO"&gt;ApprovalLO&lt;/option&gt;
+								&lt;option value="Branch"&gt;Branch&lt;/option&gt;
+								&lt;option value="CommissionApproval"&gt;CommissionApproval&lt;/option&gt;
+								&lt;option value="CommissionProfile"&gt;CommissionProfile&lt;/option&gt;
+								&lt;option value="CommissionValue"&gt;CommissionValue&lt;/option&gt;
+								&lt;option value="contact"&gt;contact&lt;/option&gt;
+								&lt;option value="EmailLog"&gt;EmailLog&lt;/option&gt;
+								&lt;option value="Loan"&gt;Loan&lt;/option&gt;
+								&lt;option value="LoanOfficer"&gt;LoanOfficer&lt;/option&gt;
+								&lt;option value="Log"&gt;Log&lt;/option&gt;
+								&lt;option value="RBLO"&gt;RBLO&lt;/option&gt;
+							&lt;/select&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+
+				&lt;div class="col-3"&gt; &lt;!-- ID --&gt;
+					&lt;div class="row g-2 align-items-center"&gt;
+						&lt;div class="col-auto"&gt;
+							&lt;label for="cboId" class="col-form-label me-2"&gt;ID&lt;/label&gt;
+						&lt;/div&gt;
+
+						{% comment %}    todo8: have this query contacts, and dynamically populate with correct id's         {% endcomment %} 
+						&lt;div class="col"&gt;
+							&lt;select id="cboId" class="form-select rj-persist" onchange="updateApiUrl()"&gt;
+								&lt;option value=""&gt;&lt;/option&gt;
+								&lt;option value="EDA25D58-1CA8-EF11-B8E8-6045BDD4B776"&gt;Contact: Robert.Martin@LoanVision.com (EDA25D58-1CA8-EF11-B8E8-6045BDD4B776)&lt;/option&gt;
+								&lt;option value="0A25BDD1-B2E7-EF11-A730-7C1E525A5C41"&gt;Contact: Rodj@LoanVision.com (0A25BDD1-B2E7-EF11-A730-7C1E525A5C41)&lt;/option&gt;
+								&lt;option value="47bf5a15-5380-ef11-ac21-6045bda6e4f2"&gt;Contact: Jenna (47bf5a15-5380-ef11-ac21-6045bda6e4f2)&lt;/option&gt;
+								&lt;option value="b108c67a-7aa0-ef11-8a69-6045bdd4b776"&gt;Contact: Richard (b108c67a-7aa0-ef11-8a69-6045bdd4b776)&lt;/option&gt;
+								&lt;option value="50A76DCA-E380-EF11-AC21-6045BDA6E4F2"&gt;Contact: Leslie Knope (50A76DCA-E380-EF11-AC21-6045BDA6E4F2)&lt;/option&gt;
+								&lt;option value="172A2341-E001-F011-BAE3-7C1E52153266"&gt;LO: Rodj Martin (172A2341-E001-F011-BAE3-7C1E52153266)&lt;/option&gt;
+							&lt;/select&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+
+				&lt;div class="col-3"&gt; &lt;!-- Action --&gt;
+					&lt;div class="row g-2 align-items-center"&gt;
+						&lt;div class="col-auto"&gt;
+							&lt;label for="cboAction" class="col-form-label me-2"&gt;Action&lt;/label&gt;
+						&lt;/div&gt;
+
+						&lt;div class="col"&gt;
+							&lt;select id="cboAction" class="form-select rj-persist" onchange="updateApiUrl()"&gt;
+								&lt;option value=""&gt;&lt;/option&gt;
+								&lt;option value="Top10"&gt;Top10&lt;/option&gt;
+								&lt;option value="Count"&gt;Count&lt;/option&gt;
+								&lt;option value="Count"&gt;Filter&lt;/option&gt;
+								&lt;option value="Top1"&gt;Top1&lt;/option&gt;
+								&lt;option value="Select"&gt;&amp;$select=nickname,emailaddress1&lt;/option&gt;
+								&lt;option value="Id"&gt;Id&lt;/option&gt;
+							&lt;/select&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+
+			&lt;div class="row mb-3 align-items-center"&gt; &lt;!-- SUCCESS HISTORY --&gt;
+				&lt;div class="col-12"&gt;
+					&lt;div class="row g-2 align-items-center"&gt;
+						&lt;div class="col-1"&gt;
+							&lt;label for="contactSelect" class="col-form-label me-2"&gt;HISTORY&lt;/label&gt;
+						&lt;/div&gt;
+
+						&lt;div class="col-11"&gt;
+							&lt;select id="cboUrlSuccessHistory" class="form-select rj-persist" onchange="$('#apiUrl').val('rodj')"&gt;
+							&lt;option value=""&gt;&lt;/option&gt;
+							&lt;/select&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+
+			&lt;div class="row mb-3 align-items-center"&gt; &lt;!-- FINAL URL --&gt;
+				&lt;div class="col-12"&gt;
+					&lt;div class="row g-2 align-items-center"&gt;
+						&lt;div class="col-1"&gt;
+							&lt;label for="apiUrl" class="col-form-label me-2"&gt;API URL&lt;/label&gt;
+						&lt;/div&gt;
+						&lt;div class="col-11"&gt;
+							&lt;input type="text" id="apiUrl" class="form-control rj-persist font-monospace" value="https://api.businesscentral.dynamics.com/v2.0/1598698c-cbd2-4d4a-94f0-0b4b2b701763/SandboxDev/ODataV4/Company('LVM')/branches?$top=3" /&gt;
+						&lt;/div&gt;
+					&lt;/
+					div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+			
+			&lt;div class="row mb-3"&gt; &lt;!-- Headers and POST Data in Two Columns --&gt;
+				
+				&lt;div class="col-md-6"&gt; &lt;!-- Headers Section --&gt;
+					&lt;div class="form-group"&gt;
+						&lt;label for="headersArea" class="form-label"&gt;Headers:&lt;/label&gt;
+						&lt;textarea id="headersArea" class="form-control font-monospace rj-persist" rows="6"&gt;OData-MaxVersion | 4.0
+OData-Version | 4.0
+Accept | application/json
+Content-Type | application/json; charset=utf-8
+Prefer | return=representation&lt;/textarea&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+
+				&lt;div class="col-md-6"&gt; &lt;!-- POST Data Section --&gt;
+					&lt;div class="form-group"&gt;
+						&lt;label for="postDataArea" class="form-label"&gt;POST data:&lt;/label&gt;
+						&lt;textarea id="postDataArea" class="form-control font-monospace rj-persist" rows="6"&gt;&lt;/textarea&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+
+			&lt;div class="row mb-3"&gt; &lt;!-- Action Button and Method Selector --&gt;
+				&lt;div class="col-12"&gt;
+					&lt;div class="d-flex align-items-center"&gt;
+						&lt;button id="btnCallApi" class="btn btn-primary me-3"
+							onclick="callSelectedFunction()"&gt;Go!&lt;/button&gt;
+
+						&lt;div class="d-inline-flex align-items-center me-3"&gt; &lt;!-- Dropdown for func name: testApi, ShowWebRoles, etc. --&gt;
+							&lt;select id="jsFuncName" class="form-select rj-persist"&gt; &lt;!-- only need to add here. All else is in js file, function callSelectedFunction --&gt;
+								&lt;option value="testApi"&gt;testApi (uses apiUrl entry and js testApi() in rcm2)&lt;/option&gt;
+								&lt;option value="apiCall"&gt;callApi (uses apiUrl entry and js apiCall in Footer)&lt;/option&gt;
+								&lt;option value="addWebRoleToContact"&gt;addWebRoleToContact API Url should have contid,roleid&lt;/option&gt;
+								&lt;option value="SetWebRoles" title="Uses whatever value is in API Url and di from contact "&gt;Set Web Roles&lt;/option&gt;
+								&lt;option value="SetYesAllRoles" title="Hardcoded to Admin,Region,Branch,LO,Assign "&gt;SetYesAllRoles&lt;/option&gt;
+								&lt;option value="SetLOAndAssign" title="Hardcoded to LO,Assign "&gt;SetLOAndAssign&lt;/option&gt;
+								&lt;option value="DeleteAllApprovals" title="Delete all rows from table lv_lvcompcommissionapproval"&gt;Delete All Commission Approval&lt;/option&gt;
+								&lt;option value="DeleteLogs" title="Uses whatever value is in API Url as kind contains"&gt;DeleteLogs&lt;/option&gt;
+								&lt;option value="DeleteRows" title="Ultimately will superceded DeleteLogs. Put logicalname, conainsfieldcolname, searchtext as comma separated in URL"&gt;DeleteRows&lt;/option&gt;
+								&lt;option value="apiGetRecord" title="Calls footer.apiGetRecord(tbl, filt) with tbl from Table dropdown and filt from P1"&gt;apiGetRecord(tbl,filt)&lt;/option&gt;
+								&lt;option value="apiGetRecords" title="Calls footer.apiGetRecords(tbl, filt) with tbl from Table dropdown and filt from P1"&gt;apiGetRecords(tbl,filt)&lt;/option&gt;
+								&lt;option value="apiGetColumnStringArray" title="Calls footer.apiGetColumnStringArray(tbl, col, filtX) with tbl from Table, filt from P1, colName from colRegex"&gt;apiGetColumnStringArray(tbl,colName,filt)&lt;/option&gt;
+								&lt;option value="apiGetColumnStringScalar" title="Calls footer.apiGetColumnStringScalar(tbl, col, filtX) with tbl from Table, filt from P1, colName from colRegex"&gt;apiGetColumnStringScalar(tbl,colName,filt)&lt;/option&gt;
+								&lt;option value="UpdateAllContactRoles" title="Updates lv_roles field for all contacts based on their actual web role assignments"&gt;UpdateAllContactRoles - Bulk Update All Contact Roles&lt;/option&gt;
+								&lt;option value="TestUpdateContactRoles" title="Test the role update logic on first 5 contacts only (no actual updates)"&gt;TestUpdateContactRoles - Test Role Update Logic&lt;/option&gt;
+							&lt;/select&gt;
+						&lt;/div&gt;
+
+						&lt;div class="d-inline-flex align-items-center me-3"&gt; &lt;!-- Dropdown for Method --&gt;
+							&lt;label for="apiMethod" class="form-label me-2 mb-0"&gt;Method:&lt;/label&gt;
+							&lt;select id="apiMethod" class="form-select rj-persist"&gt;
+								&lt;option value="GET"&gt;GET&lt;/option&gt;
+								&lt;option value="POST"&gt;POST&lt;/option&gt;
+								&lt;option value="DELETE"&gt;DELETE&lt;/option&gt;
+								&lt;option value="PUT"&gt;PUT&lt;/option&gt;
+								&lt;option value="PATCH"&gt;PATCH&lt;/option&gt;
+							&lt;/select&gt;
+						&lt;/div&gt;
+
+						&lt;div class="form-input ms-3"&gt; &lt;!-- P1 parameter one --&gt;
+							&lt;label for="txtP1" class="col-form-label me-2"&gt;P1&lt;/label&gt;
+							&lt;input class="form-input rj-persist" type="text" id="txtP1" name="txtP1&gt;
+						&lt;/div&gt;
+
+						&lt;div class="form-input ms-3"&gt; &lt;!-- ColRegex parameter one --&gt;
+							&lt;label for="txtColRegex" class="col-form-label me-2"&gt;ColRx&lt;/label&gt;
+							&lt;input class="form-input rj-persist" type="text" id="txtColRegex" name="txtColRegex"&gt;
+						&lt;/div&gt;
+
+						&lt;div class="form-check ms-3"&gt; &lt;!-- Checkbox: Show Full Request Info --&gt;
+							&lt;input class="form-check-input rj-persist" type="checkbox" checked id="chkFullRequestInfo" name="chkFullRequestInfo" value="chkFullRequestInfo"&gt;
+							&lt;label class="form-check-label" for="chkFullRequestInfo"&gt;Verbose&lt;/label&gt;
+						&lt;/div&gt;
+
+						&lt;div class="form-check ms-3"&gt; &lt;!-- Checkbox: lv_ only --&gt;
+							&lt;input class="form-check-input rj-persist" type="checkbox" checked id="chkLVOnly" name="chkLVOnly" value="chkLVOnly"&gt;
+							&lt;label class="form-check-label" for="chkLVOnly"&gt;lv_ Only&lt;/label&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+			
+			&lt;div class="row"&gt; &lt;!-- Results Area --&gt;
+				&lt;div class="col-12"&gt;
+					&lt;div class="form-group"&gt;
+						&lt;label for="resultsArea" class="form-label" id="lblResults" onclick="$('#resultsArea').val('');"&gt;Results:&lt;/label&gt;
+						&lt;textarea id="resultsArea" class="form-control font-monospace" rows="10"&gt;&lt;/textarea&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="card mt-3"&gt; &lt;!-- LOGS --&gt;
+	&lt;div class="card-header"&gt;
+		&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#divLog" aria-expanded="true" aria-controls="divLog"&gt;
+			Logs
+		&lt;/button&gt;
+
+		&lt;div class="collapse hide" id="divLog"&gt;
+		
+			&lt;div class="container-fluid mt-2"&gt;
+				&lt;form&gt;
+					&lt;div class="row mb-1"&gt;
+						&lt;div class="col-auto form-column"&gt;
+							&lt;label id="lblLogFrom" for="txtLogFrom" class="form-label"&gt;From&lt;/label&gt;
+							&lt;input id="txtLogFrom" onchange="updateLogQueryUrl()" type="text" class="form-control rj-persist" style="width: 175px;"&gt;
+						&lt;/div&gt;
+						
+						&lt;div class="col-auto form-column"&gt;
+							&lt;label id="lblLogThru" for="txtLogThru" class="form-label"&gt;Thru&lt;/label&gt;
+							&lt;input id="txtLogThru" onchange="updateLogQueryUrl()" type="text" class="form-control rj-persist" style="width: 175px;"&gt;
+						&lt;/div&gt;
+						
+						&lt;div class="col-auto form-column"&gt;
+							&lt;label id="lblLogUserName" for="txtLogUserName" class="form-label"&gt;User&lt;/label&gt;
+							&lt;input id="txtLogUserName" onchange="updateLogQueryUrl()" type="text" class="form-control rj-persist" style="width: 120px;"&gt;
+						&lt;/div&gt;
+						
+						&lt;div class="col-auto form-column"&gt;
+							&lt;label id="lblLogKind" for="txtLogKind" class="form-label"&gt;Kind&lt;/label&gt;
+							&lt;input id="txtLogKind" onchange="updateLogQueryUrl()" type="text" class="form-control" style="width: 100px;"&gt;
+						&lt;/div&gt;
+						
+						&lt;div class="col-auto form-column"&gt;
+							&lt;label id="lblLogDetail" for="txtLogDetail" class="form-label"&gt;Detail&lt;/label&gt;
+							&lt;input id="txtLogDetail" onchange="updateLogQueryUrl()" type="text" class="form-control rj-persist" style="width: 150px;"&gt;
+						&lt;/div&gt;
+						
+						&lt;div class="col-auto form-column"&gt;
+							&lt;label for="ddlOrderBy" class="form-label"&gt;Order By&lt;/label&gt;
+							&lt;select id="ddlOrderBy" onchange="updateLogQueryUrl()" class="form-select rj-persist" style="width: 120px;"&gt;
+								&lt;option value="createdon"&gt;createdon&lt;/option&gt;
+								&lt;option value="lv_UserFullName"&gt;lv_UserFullName&lt;/option&gt;
+								&lt;option value="lv_Kind"&gt;lv_Kind&lt;/option&gt;
+								&lt;option value="lv_Detail"&gt;lv_Detail&lt;/option&gt;
+							&lt;/select&gt;
+						&lt;/div&gt;
+						
+						&lt;div class="col-auto form-column"&gt;
+							&lt;div class="form-check pt-1 rj-persist"&gt;
+								&lt;input id="chkDesc" class="form-check-input rj-persist" type="checkbox"&gt;
+								&lt;label class="form-check-label" for="chkDesc"&gt;Desc?&lt;/label&gt;
+							&lt;/div&gt;
+						&lt;/div&gt;
+
+						&lt;div class="col-auto form-column"&gt;
+							&lt;input type="button" value="Query" onclick="return btnLogQuery_Click();"/&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+
+					&lt;div class="row mb-2"&gt;
+						&lt;div class="col-md-1 form-column"&gt;
+							&lt;label id="lblLogUrl" for="txtLogUrl" class="form-label"&gt;URL&lt;/label&gt;
+						&lt;/div&gt;
+						&lt;div class="col-md-5 form-column"&gt;
+							&lt;input type="text" class="form-control rj-persist" id="txtLogUrl"&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/form&gt;
+			&lt;/div&gt;
+
+			&lt;div class="card-body"&gt;
+				&lt;div style="margin-bottom: 10px;"&gt;
+					&lt;label for="txtUserFilterRx" style="margin-right: 10px;"&gt;Filter by Username (Regex):&lt;/label&gt;
+					&lt;input type="text" id="txtUserFilterRx" value="^(?!Robert Martin$).*$" style="padding: 5px; min-width: 250px;"&gt;
+				&lt;/div&gt;
+	
+				&lt;table id="logTable" style="width: 100%; border-collapse: collapse; margin-top: 10px;"&gt;
+					&lt;thead&gt;
+						&lt;tr style="background-color: #f2f2f2;"&gt;
+							&lt;th&gt;Time&lt;/th&gt;
+							&lt;th&gt;User&lt;/th&gt;
+							&lt;th&gt;Kind&lt;/th&gt;
+							&lt;th&gt;Detail&lt;/th&gt;
+							&lt;th&gt;K1Name&lt;/th&gt;
+							&lt;th&gt;K1Value&lt;/th&gt;
+							&lt;th&gt;K2Name&lt;/th&gt;
+							&lt;th&gt;K2Value&lt;/th&gt;
+							&lt;th&gt;Memo&lt;/th&gt;
+						&lt;/tr&gt;
+					&lt;/thead&gt;
+					&lt;tbody id="logTableBody"&gt;
+					&lt;/tbody&gt;
+				&lt;/table&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;		
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="card mt-3"&gt; &lt;!-- COMMISSION PERIOD APPROVALa --&gt;
+	&lt;div class="card-header"&gt;
+		&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#divCPA" aria-expanded="true" aria-controls="divCPA"&gt;
+			lv_lvcompcommissionapproval
+		&lt;/button&gt;
+
+		&lt;div class="collapse hide" id="divCPA"&gt;
+			{% fetchxml cpaQuery %}
+				&lt;fetch top="50"&gt;
+					&lt;entity name="lv_lvcompcommissionapproval"&gt;
+						&lt;attribute name="createdon" /&gt;
+						&lt;attribute name="lv_name" /&gt;
+						&lt;attribute name="lv_periodno" /&gt;
+						&lt;attribute name="lv_periodcode" /&gt;
+						&lt;attribute name="lv_loanofficercode" /&gt;
+						&lt;order attribute="createdon" descending="true" /&gt;
+					&lt;/entity&gt;
+				&lt;/fetch&gt;
+			{% endfetchxml %}
+		
+			&lt;div class="card-body"&gt;
+	
+				&lt;table id="cpaTable" style="width: 100%; border-collapse: collapse; margin-top: 10px;"&gt;
+					&lt;thead&gt;
+						&lt;tr style="background-color: #f2f2f2;"&gt;
+							&lt;th&gt;Time&lt;/th&gt;
+							&lt;th&gt;FullName&lt;/th&gt;
+							&lt;th&gt;PeriodCode&lt;/th&gt;
+							&lt;th&gt;LOName&lt;/th&gt;
+							&lt;th&gt;LOId&lt;/th&gt;
+						&lt;/tr&gt;
+					&lt;/thead&gt;
+					&lt;tbody id="cpaTableBody"&gt;
+						{% for cpa in cpaQuery.results.entities %}
+							&lt;tr data-username="{{ cpa.lv_fullname }}" class="cpa-row"&gt;
+								&lt;td&gt;{{ cpa.createdon | date: "ddd HH:mm:ss" }}&lt;/td&gt;
+								&lt;td&gt;{{ cpa.lv_fullname }}&lt;/td&gt;
+								&lt;td&gt;{{ cpa.lv_periodcode }}&lt;/td&gt;
+								&lt;td&gt;{{ cpa.LOName }}&lt;/td&gt;
+								&lt;td&gt;{{ cpa.lv_loanofficercode }}&lt;/td&gt;
+							&lt;/tr&gt;
+						{% endfor %}
+					&lt;/tbody&gt;
+				&lt;/table&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;		
+	&lt;/div&gt;
+&lt;/div&gt;
+
+{% comment %}    JAVASCRIPT is in separate file    {% endcomment %} 
+
+
+{% comment %}
+
+
+{% fetchxml abc %}
+	&lt;fetch&gt;
+		&lt;entity name="lv_lvcompcommission"&gt;
+			&lt;attribute name="lv_calculationdate" /&gt;
+			&lt;attribute name="lv_amount" /&gt;
+			&lt;attribute name="lv_description" /&gt;
+			&lt;attribute name="lv_bpscalculated" /&gt;
+			&lt;attribute name="lv_cappedcommissionbaseamount" /&gt;
+			&lt;attribute name="lv_xloanofficer" /&gt;
+			&lt;attribute name="lv_loanofficer" /&gt;
+		&lt;/entity&gt;
+	&lt;/fetch&gt;
+{% endfetchxml %}
+
+&lt;div class="container"&gt;
+	&lt;div class="row"&gt;
+		&lt;div class="col-12 table-container"&gt;
+			&lt;h2&gt;Commission Records&lt;/h2&gt;
+			&lt;div class="table-responsive"&gt;
+				&lt;table class="table table-striped table-hover"&gt;
+					&lt;thead class="table-dark"&gt;
+						&lt;tr&gt;
+							&lt;th&gt;Calculation Date&lt;/th&gt;
+							&lt;th class="money-column"&gt;Amount&lt;/th&gt;
+							&lt;th&gt;Description&lt;/th&gt;
+							&lt;th class="money-column"&gt;BPS Calculated&lt;/th&gt;
+							&lt;th class="money-column"&gt;Capped Commission Base&lt;/th&gt;
+							&lt;th&gt;Branch&lt;/th&gt;
+							&lt;th&gt;Loan Officer&lt;/th&gt;
+							&lt;th&gt;LOLook&lt;/th&gt;
+						&lt;/tr&gt;
+					&lt;/thead&gt;
+					&lt;tbody&gt;
+						&lt;!-- This is where FetchXML results would be rendered --&gt;
+						{% for item in abc.results.entities %}
+						&lt;tr&gt;
+							&lt;td class="date-column"&gt;{{ item.lv_calculationdate }}&lt;/td&gt;
+							&lt;td class="money-column"&gt;{{ item.lv_amount }}&lt;/td&gt;
+							&lt;td&gt;{{ item.lv_description }}&lt;/td&gt;
+							&lt;td class="money-column"&gt;{{ item.lv_bpscalculated }}&lt;/td&gt;
+							&lt;td class="money-column"&gt;{{ item.lv_cappedcommissionbaseamount }}&lt;/td&gt;
+							&lt;td&gt;{{ item.lv_xbranchcode }}&lt;/td&gt;
+							&lt;td&gt;{{ item.lv_xloanofficer }}&lt;/td&gt;
+							&lt;td&gt;{{ item.lv_loanofficer.name }}&lt;/td&gt;
+						&lt;/tr&gt;
+						{% endfor %}
+						&lt;!-- If no results, show a message --&gt;
+						{% if abc.results.entities.size == 0 %}
+						&lt;tr&gt;
+							&lt;td colspan="7" class="text-center"&gt;No commission records found.&lt;/td&gt;
+						&lt;/tr&gt;
+						{% endif %}
+					&lt;/tbody&gt;
+				&lt;/table&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+
+
+
+
+{% endcomment %} 
+&lt;!-- Last modified Sun Aug 31 5:00PM --&gt;lvcpdev</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

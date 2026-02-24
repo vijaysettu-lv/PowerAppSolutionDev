@@ -1,0 +1,25 @@
+<powerpagecomponent powerpagecomponentid="7c4815ce-fb15-f011-9989-002248045044">
+  <content>{
+  "append": true,
+  "appendto": true,
+  "create": true,
+  "delete": true,
+  "entitylogicalname": "lv_log",
+  "entityname": "lvcLog",
+  "read": true,
+  "scope": 756150000,
+  "write": true,
+  "adx_entitypermission_webrole": [
+    "3a36c49c-a610-42e9-b1d7-0dcfd8c9aa24",
+    "e1e17fc7-e0e5-4803-b01b-0ba213d4c790"
+  ]
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>lvcLog</name>
+  <powerpagecomponenttype>18</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

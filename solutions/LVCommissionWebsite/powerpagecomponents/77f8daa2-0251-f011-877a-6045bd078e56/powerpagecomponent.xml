@@ -1,0 +1,14 @@
+<powerpagecomponent powerpagecomponentid="77f8daa2-0251-f011-877a-6045bd078e56">
+  <content>{
+  "source": 0,
+  "value": "false"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Authentication/Registration/RequiresInvitation</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

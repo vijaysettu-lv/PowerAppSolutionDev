@@ -1,0 +1,242 @@
+<powerpagecomponent powerpagecomponentid="680de02f-2a4a-9782-e499-bb9ae5ec03a2">
+  <content>{
+  "copy": "&lt;!-- ENTER: Accounting --&gt;\n\n{% comment %} DEBUG: Adding debug output to troubleshoot period dropdown issue {% endcomment %}\n{% include 'snippet' snippet_name:'FetchXML - SetupQuery' %}\n\n{% comment %} ~pageAccounting {% endcomment %} \n\n{% if is_admin != true %}\n    {% if has_admin_backdoor == true %}\n        &lt;!-- Smart redirect for admins in testing mode --&gt;\n        &lt;div class=\"container mt-5\"&gt;\n            &lt;div class=\"alert alert-info text-center p-4\"&gt;\n                &lt;h4&gt;&lt;i class=\"fas fa-flask\"&gt;&lt;/i&gt; Administrator Testing Mode Active&lt;/h4&gt;\n                &lt;p class=\"mb-3\"&gt;You have removed your Administrator role for testing purposes.&lt;/p&gt;\n                &lt;button onclick=\"restoreAdminAccessFromPage()\" class=\"btn btn-primary btn-lg\"&gt;\n                    &lt;i class=\"fas fa-user-cog\"&gt;&lt;/i&gt; Restore Administrator Access\n                &lt;/button&gt;\n                &lt;hr class=\"my-3\"&gt;\n                &lt;p class=\"text-muted\"&gt;\n                    &lt;small&gt;Or continue testing as: \n                        &lt;a href=\"/Branch\" class=\"text-decoration-none\"&gt;Branch Manager&lt;/a&gt; | \n                        &lt;a href=\"/Loan-Officer\" class=\"text-decoration-none\"&gt;Loan Officer&lt;/a&gt;\n                    &lt;/small&gt;\n                &lt;/p&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;\n        \n        &lt;script&gt;\n        function restoreAdminAccessFromPage() {\n            const button = event.target;\n            \n            // Show loading state\n            button.innerHTML = '&lt;i class=\"fas fa-spinner fa-spin\"&gt;&lt;/i&gt; Restoring...';\n            button.disabled = true;\n            \n            // Get the admin role ID and contact ID from global variables\n            const adminRoleId = window.adminRoleId || '';\n            const contactId = window.contactId || '';\n            \n            if (!adminRoleId || !contactId) {\n                alert('Error: Missing admin role ID or contact ID. Cannot restore admin access.');\n                button.innerHTML = '&lt;i class=\"fas fa-user-cog\"&gt;&lt;/i&gt; Restore Administrator Access';\n                button.disabled = false;\n                return;\n            }\n            \n            // Call the role assignment API directly\n            const url = window.urlContactWebRole;\n            if (!url || url.trim() === '') {\n                console.error('❌ ERROR: window.urlContactWebRole is not configured!');\n                alert('ERROR: Administrator role recovery system is not properly configured.\\n\\nThe role assignment API URL is missing from system settings.\\n\\nPlease contact your system administrator to:\\n1. Configure the role assignment URL in the setup record\\n2. Manually restore your Administrator web role\\n\\nWithout this configuration, automated role recovery cannot function.');\n                button.innerHTML = '&lt;i class=\"fas fa-user-cog\"&gt;&lt;/i&gt; Restore Administrator Access';\n                button.disabled = false;\n                return;\n            }\n            \n            if (!url.startsWith('http')) {\n                console.error('❌ ERROR: window.urlContactWebRole appears invalid:', url);\n                alert('ERROR: Role assignment API URL appears to be misconfigured.\\n\\nExpected format: https://...\\nActual value: ' + url + '\\n\\nPlease contact your system administrator to correct the URL in system settings.');\n                button.innerHTML = '&lt;i class=\"fas fa-user-cog\"&gt;&lt;/i&gt; Restore Administrator Access';\n                button.disabled = false;\n                return;\n            }\n            \n            // Make API call to restore admin role\n            fetch(url, {\n                method: 'POST',\n                headers: {\n                    'Content-Type': 'application/json',\n                },\n                body: JSON.stringify({\n                    action: 'add',\n                    contactId: contactId,\n                    roleId: adminRoleId\n                })\n            })\n            .then(response =&gt; {\n                if (response.ok) {\n                    button.innerHTML = '&lt;i class=\"fas fa-check\"&gt;&lt;/i&gt; Restored! Redirecting...';\n                    \n                    // Wait 3 seconds for role assignment to take effect, then redirect\n                    setTimeout(() =&gt; {\n                        window.location.href = '/Accounting';\n                    }, 3000);\n                    \n                } else {\n                    throw new Error('API call failed');\n                }\n            })\n            .catch(error =&gt; {\n                console.error('Error restoring admin role:', error);\n                alert('Failed to restore admin role. Please try the manual method via your Profile page.');\n                button.innerHTML = '&lt;i class=\"fas fa-user-cog\"&gt;&lt;/i&gt; Restore Administrator Access';\n                button.disabled = false;\n            });\n        }\n        &lt;/script&gt;\n    {% else %}\n        &lt;!-- Normal redirect for non-admin users --&gt;\n        &lt;script&gt;\n            (function() {\n                let redir = \"~/\";\n\n                console.log(\"Accounting: G_Roles.isAdmin: \" + G_Roles.isAdmin + \"; isAssign: \" + G_Roles.isAssign);\n                console.log(\"Accounting: G_Roles.isBranch: \" + G_Roles.isBranch + \"; G_Roles.isLO: \" + G_Roles.isLO);\n                console.log(\"Accounting: Full G_Roles object:\", G_Roles);\n\n                if (G_Roles.isAdmin) {\n                    redir = \"\";\n                } else if (G_Roles.isAssign || (window.DEBUG_AdminVars &amp;&amp; window.DEBUG_AdminVars.has_admin_backdoor)) {\n                    redir = \"~/Accounting/Profiles\";\n                } else if (G_Roles.isBranch) {\n                    redir = \"/Branch\";\n                } else if (G_Roles.isLO) {\n                    redir = \"/Loan-Officer\";\n                }\n\n                if (redir != \"\")\n                {\n                    console.log(\"Accounting page: Access denied: Admin permission required. Redir=\" + redir);\n                    // Delay the redirect slightly to allow for logging\n                    setTimeout(function() {\n                        window.location.href = redir;\n                    }, 100);\n                }\n            })();\n        &lt;/script&gt;\n    {% endif %}\n\n{% else %}\n\n&lt;div class=\"row sectionBlockLayout text-start\" style=\"display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;\"&gt;\n\t&lt;div class=\"container\" style=\"display: flex; flex-wrap: wrap;\"&gt;\n\t\t&lt;div class=\"col-lg-12 columnBlockLayout email-modal-container my-2 my-md-4 my-lg-5\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; word-break: break-word; padding: 16px;\"&gt;\n\t\t\t{% include 'snippet' snippet_name:'FetchXML - BranchQuery' %}\n\t\t\t{% include 'snippet' snippet_name:'Commission Filter' %}                               {% comment %} CENTRALIZED FILTERING: applies all permission and page-specific filters, sets cpCommCount, cpCommTotal, cpAdjuCount, cpAdjuTotal {% endcomment %}\n\t\t\t{% include 'snippet' snippet_name:'FetchXML - Current Period' %}\n\n\t\t\t&lt;div id=\"divAccounting\" class=\"accountingContainer\"&gt;\n\t\t\t\t&lt;div class=\"accountingHeading\"&gt;\n\t\t\t\t\t&lt;h1 style=\"text-align: left;\"&gt;\n\t\t\t\t\t\t\n\t\t\t\t\t\tAccounting\n\t\t\t\t\t\n\t\t\t\t\t&lt;/h1&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t&lt;div class=\"admin-panel\"&gt;\n\t\t\t\t\t{% include 'snippet' snippet_name:'Current Period Selection' %}           {% comment %}    Period Selection Dropdown                       {% endcomment %}\n\t\t\t\t\t{% include 'snippet' snippet_name:'Admin Panel Navigation' %}             {% comment %}    Setup, Profiles, and also Assignment buttons    {% endcomment %}\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\t\t\t\n\t\t\t{% include 'snippet' snippet_name:'Dashboard Details' %}      {% comment %}                          {% endcomment %}\n\t\t\t\n\t\t\t&lt;div class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 25px;\"&gt;&lt;/div&gt;\n\t\t\t\n\t\t\t&lt;div class=\"ppFlexContainer\" style=\"display: flex; align-items: center; padding: 8px 0 8px 0;\"&gt;\n\t\t\t\t\n\t\t\t\t{% if cfgPrintEnabled %}                  {% comment %}      TODO8: this logic is duplicated across /web-pages/Accounting|Region|Branch|LoanOfficer                tag=2504021442              {% endcomment %} \n\t\t\t\t\t&lt;div onclick=\"printpage()\" data-component-theme=\"portalThemeColor10\" class=\"ppFlexContainer p911button\"&gt;\n\t\t\t\t\t\t&lt;p style=\"text-align: left; color: var(--portalThemeColor5); font-size: 18px;\"&gt;\n\t\t\t\t\t\t\t&lt;b aria-label=\"Text Commission Profile\" style=\"position: relative;\"&gt;\n\t\t\t\t\t\t\t\tPrint\n\t\t\t\t\t\t\t&lt;/b&gt;\n\t\t\t\t\t\t&lt;/p&gt;\n\t\t\t\t\t\t&lt;img src=\"/icon-print.png\" alt=\"icon-print\" name=\"icons-print.png\" style=\"width: 28.67%; height: 28px; max-width: 100%;\" /&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t{% endif %}\n\n\n\t\t\t\t&lt;div data-component-theme=\"portalThemeColor10\" class=\"ppFlexContainer p911button\"&gt;\n\t\t\t\t\t&lt;a href=\"/Branch{% if request.query %}{{request.query}}{% endif %}\" class=\"anchor-inherit-styles\"\n\t\t\t\t\t\t onclick=\"spinShow(true); setTimeout(function() { return true; }, 300);\"\"&gt;\n\t\t\t\t\t\t&lt;p style=\"text-align: left; color: var(--portalThemeColor5); font-size: 18px;\"&gt;​\n\t\t\t\t\t\t\t&lt;b&gt;Branch&lt;/b&gt;\n\t\t\t\t\t\t&lt;/p&gt;\n\t\t\t\t\t&lt;/a&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t&lt;div data-component-theme=\"portalThemeColor10\" class=\"ppFlexContainer p911button\"&gt;\n\t\t\t\t\t&lt;a href=\"/Loan-Officer{% if request.query %}{{request.query}}{% endif %}\" class=\"anchor-inherit-styles\"\n\t\t\t\t\t\t onclick=\"spinShow(true); setTimeout(function() { return true; }, 300);\"\"&gt;\n\t\t\t\t\t\t&lt;p style=\"text-align: left; color: var(--portalThemeColor5); font-size: 18px;\"&gt;​\n\t\t\t\t\t\t\t&lt;b&gt;Loan Officer&lt;/b&gt;\n\t\t\t\t\t\t&lt;/p&gt;\n\t\t\t\t\t&lt;/a&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;div id=\"divAcctgPrimaryCommTbl\" class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 25px;\"&gt;&lt;/div&gt;\n\t\t\t{%comment%}               'Primary Commissions Table' is a template                {%endcomment%}\n\t\t\t{% include 'Primary Commissions Table' %}\n\n\t\t\t&lt;div  id=\"divAcctgPrimaryAdjTbl\" class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 25px;\"&gt;&lt;/div&gt;\n\t\t\t{%comment%}                Is a template                                           {%endcomment%}\n\t\t\t{% include 'Primary Adjustments Table' %}\n\n\t\t\t{% include 'snippet' snippet_name:'Email Dialog' %}\n\t\t\t{% include 'Email Modal' %}\n\t\t&lt;/div&gt;\n\t&lt;/div&gt;\n&lt;/div&gt;\n\n{% endif %}\n\n&lt;!-- LEAVE: Accounting --&gt;\n \n",
+  "customjavascript": "\n",
+  "displayorder": 2,
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "feedbackpolicy": 756150000,
+  "hiddenfromsitemap": true,
+  "isroot": false,
+  "pagetemplateid": "cd587cbe-a61f-4c11-a750-6d0235a784ef",
+  "parentpageid": "362995e0-7dc5-4bbf-9595-062f468d2d44",
+  "partialurl": "Accounting",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "rootwebpageid": "f9e4fac8-bb2b-fab4-760d-3e3ce999cadb",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;p&gt;This is a sample landing page designed to be a starting point for your website&lt;/p&gt;\n",
+  "title": "Accounting"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Accounting</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <searchcontent>Accounting&lt;!-- ENTER: Accounting --&gt;
+
+{% comment %} DEBUG: Adding debug output to troubleshoot period dropdown issue {% endcomment %}
+{% include 'snippet' snippet_name:'FetchXML - SetupQuery' %}
+
+{% comment %} ~pageAccounting {% endcomment %} 
+
+{% if is_admin != true %}
+    {% if has_admin_backdoor == true %}
+        &lt;!-- Smart redirect for admins in testing mode --&gt;
+        &lt;div class="container mt-5"&gt;
+            &lt;div class="alert alert-info text-center p-4"&gt;
+                &lt;h4&gt;&lt;i class="fas fa-flask"&gt;&lt;/i&gt; Administrator Testing Mode Active&lt;/h4&gt;
+                &lt;p class="mb-3"&gt;You have removed your Administrator role for testing purposes.&lt;/p&gt;
+                &lt;button onclick="restoreAdminAccessFromPage()" class="btn btn-primary btn-lg"&gt;
+                    &lt;i class="fas fa-user-cog"&gt;&lt;/i&gt; Restore Administrator Access
+                &lt;/button&gt;
+                &lt;hr class="my-3"&gt;
+                &lt;p class="text-muted"&gt;
+                    &lt;small&gt;Or continue testing as: 
+                        &lt;a href="/Branch" class="text-decoration-none"&gt;Branch Manager&lt;/a&gt; | 
+                        &lt;a href="/Loan-Officer" class="text-decoration-none"&gt;Loan Officer&lt;/a&gt;
+                    &lt;/small&gt;
+                &lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        
+        &lt;script&gt;
+        function restoreAdminAccessFromPage() {
+            const button = event.target;
+            
+            // Show loading state
+            button.innerHTML = '&lt;i class="fas fa-spinner fa-spin"&gt;&lt;/i&gt; Restoring...';
+            button.disabled = true;
+            
+            // Get the admin role ID and contact ID from global variables
+            const adminRoleId = window.adminRoleId || '';
+            const contactId = window.contactId || '';
+            
+            if (!adminRoleId || !contactId) {
+                alert('Error: Missing admin role ID or contact ID. Cannot restore admin access.');
+                button.innerHTML = '&lt;i class="fas fa-user-cog"&gt;&lt;/i&gt; Restore Administrator Access';
+                button.disabled = false;
+                return;
+            }
+            
+            // Call the role assignment API directly
+            const url = window.urlContactWebRole;
+            if (!url || url.trim() === '') {
+                console.error('❌ ERROR: window.urlContactWebRole is not configured!');
+                alert('ERROR: Administrator role recovery system is not properly configured.\n\nThe role assignment API URL is missing from system settings.\n\nPlease contact your system administrator to:\n1. Configure the role assignment URL in the setup record\n2. Manually restore your Administrator web role\n\nWithout this configuration, automated role recovery cannot function.');
+                button.innerHTML = '&lt;i class="fas fa-user-cog"&gt;&lt;/i&gt; Restore Administrator Access';
+                button.disabled = false;
+                return;
+            }
+            
+            if (!url.startsWith('http')) {
+                console.error('❌ ERROR: window.urlContactWebRole appears invalid:', url);
+                alert('ERROR: Role assignment API URL appears to be misconfigured.\n\nExpected format: https://...\nActual value: ' + url + '\n\nPlease contact your system administrator to correct the URL in system settings.');
+                button.innerHTML = '&lt;i class="fas fa-user-cog"&gt;&lt;/i&gt; Restore Administrator Access';
+                button.disabled = false;
+                return;
+            }
+            
+            // Make API call to restore admin role
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    action: 'add',
+                    contactId: contactId,
+                    roleId: adminRoleId
+                })
+            })
+            .then(response =&gt; {
+                if (response.ok) {
+                    button.innerHTML = '&lt;i class="fas fa-check"&gt;&lt;/i&gt; Restored! Redirecting...';
+                    
+                    // Wait 3 seconds for role assignment to take effect, then redirect
+                    setTimeout(() =&gt; {
+                        window.location.href = '/Accounting';
+                    }, 3000);
+                    
+                } else {
+                    throw new Error('API call failed');
+                }
+            })
+            .catch(error =&gt; {
+                console.error('Error restoring admin role:', error);
+                alert('Failed to restore admin role. Please try the manual method via your Profile page.');
+                button.innerHTML = '&lt;i class="fas fa-user-cog"&gt;&lt;/i&gt; Restore Administrator Access';
+                button.disabled = false;
+            });
+        }
+        &lt;/script&gt;
+    {% else %}
+        &lt;!-- Normal redirect for non-admin users --&gt;
+        &lt;script&gt;
+            (function() {
+                let redir = "~/";
+
+                console.log("Accounting: G_Roles.isAdmin: " + G_Roles.isAdmin + "; isAssign: " + G_Roles.isAssign);
+                console.log("Accounting: G_Roles.isBranch: " + G_Roles.isBranch + "; G_Roles.isLO: " + G_Roles.isLO);
+                console.log("Accounting: Full G_Roles object:", G_Roles);
+
+                if (G_Roles.isAdmin) {
+                    redir = "";
+                } else if (G_Roles.isAssign || (window.DEBUG_AdminVars &amp;&amp; window.DEBUG_AdminVars.has_admin_backdoor)) {
+                    redir = "~/Accounting/Profiles";
+                } else if (G_Roles.isBranch) {
+                    redir = "/Branch";
+                } else if (G_Roles.isLO) {
+                    redir = "/Loan-Officer";
+                }
+
+                if (redir != "")
+                {
+                    console.log("Accounting page: Access denied: Admin permission required. Redir=" + redir);
+                    // Delay the redirect slightly to allow for logging
+                    setTimeout(function() {
+                        window.location.href = redir;
+                    }, 100);
+                }
+            })();
+        &lt;/script&gt;
+    {% endif %}
+
+{% else %}
+
+&lt;div class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;"&gt;
+	&lt;div class="container" style="display: flex; flex-wrap: wrap;"&gt;
+		&lt;div class="col-lg-12 columnBlockLayout email-modal-container my-2 my-md-4 my-lg-5" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; word-break: break-word; padding: 16px;"&gt;
+			{% include 'snippet' snippet_name:'FetchXML - BranchQuery' %}
+			{% include 'snippet' snippet_name:'Commission Filter' %}                               {% comment %} CENTRALIZED FILTERING: applies all permission and page-specific filters, sets cpCommCount, cpCommTotal, cpAdjuCount, cpAdjuTotal {% endcomment %}
+			{% include 'snippet' snippet_name:'FetchXML - Current Period' %}
+
+			&lt;div id="divAccounting" class="accountingContainer"&gt;
+				&lt;div class="accountingHeading"&gt;
+					&lt;h1 style="text-align: left;"&gt;
+						
+						Accounting
+					
+					&lt;/h1&gt;
+				&lt;/div&gt;
+
+				&lt;div class="admin-panel"&gt;
+					{% include 'snippet' snippet_name:'Current Period Selection' %}           {% comment %}    Period Selection Dropdown                       {% endcomment %}
+					{% include 'snippet' snippet_name:'Admin Panel Navigation' %}             {% comment %}    Setup, Profiles, and also Assignment buttons    {% endcomment %}
+				&lt;/div&gt;
+			&lt;/div&gt;
+			
+			{% include 'snippet' snippet_name:'Dashboard Details' %}      {% comment %}                          {% endcomment %}
+			
+			&lt;div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 25px;"&gt;&lt;/div&gt;
+			
+			&lt;div class="ppFlexContainer" style="display: flex; align-items: center; padding: 8px 0 8px 0;"&gt;
+				
+				{% if cfgPrintEnabled %}                  {% comment %}      TODO8: this logic is duplicated across /web-pages/Accounting|Region|Branch|LoanOfficer                tag=2504021442              {% endcomment %} 
+					&lt;div onclick="printpage()" data-component-theme="portalThemeColor10" class="ppFlexContainer p911button"&gt;
+						&lt;p style="text-align: left; color: var(--portalThemeColor5); font-size: 18px;"&gt;
+							&lt;b aria-label="Text Commission Profile" style="position: relative;"&gt;
+								Print
+							&lt;/b&gt;
+						&lt;/p&gt;
+						&lt;img src="/icon-print.png" alt="icon-print" name="icons-print.png" style="width: 28.67%; height: 28px; max-width: 100%;" /&gt;
+					&lt;/div&gt;
+				{% endif %}
+
+
+				&lt;div data-component-theme="portalThemeColor10" class="ppFlexContainer p911button"&gt;
+					&lt;a href="/Branch{% if request.query %}{{request.query}}{% endif %}" class="anchor-inherit-styles"
+						 onclick="spinShow(true); setTimeout(function() { return true; }, 300);""&gt;
+						&lt;p style="text-align: left; color: var(--portalThemeColor5); font-size: 18px;"&gt;​
+							&lt;b&gt;Branch&lt;/b&gt;
+						&lt;/p&gt;
+					&lt;/a&gt;
+				&lt;/div&gt;
+
+				&lt;div data-component-theme="portalThemeColor10" class="ppFlexContainer p911button"&gt;
+					&lt;a href="/Loan-Officer{% if request.query %}{{request.query}}{% endif %}" class="anchor-inherit-styles"
+						 onclick="spinShow(true); setTimeout(function() { return true; }, 300);""&gt;
+						&lt;p style="text-align: left; color: var(--portalThemeColor5); font-size: 18px;"&gt;​
+							&lt;b&gt;Loan Officer&lt;/b&gt;
+						&lt;/p&gt;
+					&lt;/a&gt;
+				&lt;/div&gt;
+
+			&lt;/div&gt;
+
+			&lt;div id="divAcctgPrimaryCommTbl" class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 25px;"&gt;&lt;/div&gt;
+			{%comment%}               'Primary Commissions Table' is a template                {%endcomment%}
+			{% include 'Primary Commissions Table' %}
+
+			&lt;div  id="divAcctgPrimaryAdjTbl" class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; padding: 8px; margin: 0px; min-height: 25px;"&gt;&lt;/div&gt;
+			{%comment%}                Is a template                                           {%endcomment%}
+			{% include 'Primary Adjustments Table' %}
+
+			{% include 'snippet' snippet_name:'Email Dialog' %}
+			{% include 'Email Modal' %}
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+
+{% endif %}
+
+&lt;!-- LEAVE: Accounting --&gt;
+ 
+Accounting</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

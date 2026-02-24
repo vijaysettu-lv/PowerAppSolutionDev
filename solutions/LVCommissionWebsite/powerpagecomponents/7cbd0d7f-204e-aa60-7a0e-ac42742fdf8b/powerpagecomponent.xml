@@ -1,0 +1,20 @@
+<powerpagecomponent powerpagecomponentid="7cbd0d7f-204e-aa60-7a0e-ac42742fdf8b">
+  <content>{
+  "displayimageonly": false,
+  "displayorder": 7,
+  "displaypagechildlinks": false,
+  "openinnewwindow": false,
+  "pageid": "e4b15869-ccb3-d282-6d12-4396b31c7b66",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "robotsfollowlink": true,
+  "weblinksetid": "bbd580f2-3d22-41e6-82f1-9e178b7779c9"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Email Log</name>
+  <powerpagecomponenttype>5</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

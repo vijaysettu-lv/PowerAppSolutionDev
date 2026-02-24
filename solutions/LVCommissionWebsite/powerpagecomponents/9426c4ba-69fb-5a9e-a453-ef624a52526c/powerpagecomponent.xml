@@ -1,0 +1,1312 @@
+<powerpagecomponent powerpagecomponentid="9426c4ba-69fb-5a9e-a453-ef624a52526c">
+  <content>{
+  "copy": "&lt;!-- Last modified Mon Nov 10 1:41PM --&gt;\n&lt;!-- Last modified Mon Nov 10 1:28PM --&gt;\n&lt;!-- Last modified Tue Sep 02 5:27PM --&gt;\n&lt;!-- Last modified thu jul 31 10:49am --&gt;\n{% include 'snippet' snippet_name:'FetchXML - SetupQuery' %}\n\n&lt;div class=\"row sectionBlockLayout text-start\" style=\"display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;\"&gt;\n\t&lt;div class=\"container\" style=\"display: flex; flex-wrap: wrap;\"&gt;\n\t\t&lt;div class=\"col-lg-12 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; padding: 16px; margin: 60px 0px;\"&gt;\n\n\t\t\t&lt;h1&gt;System Diagnostics &amp; Data Browser&lt;/h1&gt;\n\t\t\t&lt;p class=\"text-muted\"&gt;Comprehensive system information and data inspection tool&lt;/p&gt;\n\t\t\t&lt;p class=\"text-muted\"&gt;&lt;small&gt;Updated Thu Oct 23, 6:10am&lt;/small&gt;&lt;/p&gt;\n\n\t\t\t&lt;!-- Commission Summary Controls --&gt;\n\t\t\t&lt;div class=\"card mt-3\"&gt;\n\t\t\t\t&lt;div class=\"card-header bg-info text-white\"&gt;\n\t\t\t\t\t&lt;h5 class=\"mb-0\"&gt;&lt;i class=\"fas fa-chart-bar\"&gt;&lt;/i&gt; Commission Summary Reports&lt;/h5&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;div class=\"card-body\"&gt;\n\t\t\t\t\t&lt;p class=\"mb-3\"&gt;\n\t\t\t\t\t\t&lt;strong&gt;Note:&lt;/strong&gt; These reports query all commission data and may be slow on large installations.\n\t\t\t\t\t\tSelect which summaries to display below.\n\t\t\t\t\t&lt;/p&gt;\n\t\t\t\t\t&lt;div class=\"row\"&gt;\n\t\t\t\t\t\t&lt;div class=\"col-md-6\"&gt;\n\t\t\t\t\t\t\t&lt;div class=\"form-check\"&gt;\n\t\t\t\t\t\t\t\t&lt;input class=\"form-check-input\" type=\"checkbox\" id=\"showPeriodCheck\"&gt;\n\t\t\t\t\t\t\t\t&lt;label class=\"form-check-label\" for=\"showPeriodCheck\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;strong&gt;Commissions by Period&lt;/strong&gt; - Aggregate totals grouped by period\n\t\t\t\t\t\t\t\t&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\t&lt;div class=\"form-check mt-2\"&gt;\n\t\t\t\t\t\t\t\t&lt;input class=\"form-check-input\" type=\"checkbox\" id=\"showLoopingCheck\"&gt;\n\t\t\t\t\t\t\t\t&lt;label class=\"form-check-label\" for=\"showLoopingCheck\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;strong&gt;Looping Method&lt;/strong&gt; - Alternative calculation approach (slower)\n\t\t\t\t\t\t\t\t&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\t&lt;div class=\"form-check mt-2\"&gt;\n\t\t\t\t\t\t\t\t&lt;input class=\"form-check-input\" type=\"checkbox\" id=\"showBranchCheck\"&gt;\n\t\t\t\t\t\t\t\t&lt;label class=\"form-check-label\" for=\"showBranchCheck\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;strong&gt;By Period and Branch&lt;/strong&gt; - Grouped by period and branch\n\t\t\t\t\t\t\t\t&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t&lt;div class=\"col-md-6\"&gt;\n\t\t\t\t\t\t\t&lt;div class=\"form-check\"&gt;\n\t\t\t\t\t\t\t\t&lt;input class=\"form-check-input\" type=\"checkbox\" id=\"showOfficerCheck\"&gt;\n\t\t\t\t\t\t\t\t&lt;label class=\"form-check-label\" for=\"showOfficerCheck\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;strong&gt;By Period, Branch, and Loan Officer&lt;/strong&gt; - Full hierarchy\n\t\t\t\t\t\t\t\t&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\t&lt;div class=\"form-check mt-2\"&gt;\n\t\t\t\t\t\t\t\t&lt;input class=\"form-check-input\" type=\"checkbox\" id=\"showCommissionsCheck\"&gt;\n\t\t\t\t\t\t\t\t&lt;label class=\"form-check-label\" for=\"showCommissionsCheck\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;strong&gt;Raw Commission Data&lt;/strong&gt; - Latest period verification\n\t\t\t\t\t\t\t\t&lt;/label&gt;\n\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;div class=\"mt-3\"&gt;\n\t\t\t\t\t\t&lt;button class=\"btn btn-primary\" onclick=\"loadSelectedSections()\"&gt;\n\t\t\t\t\t\t\t&lt;i class=\"fas fa-sync-alt\"&gt;&lt;/i&gt; Load Selected Reports\n\t\t\t\t\t\t&lt;/button&gt;\n\t\t\t\t\t\t&lt;button class=\"btn btn-secondary ms-2\" onclick=\"clearAllSections()\"&gt;\n\t\t\t\t\t\t\t&lt;i class=\"fas fa-times\"&gt;&lt;/i&gt; Clear All\n\t\t\t\t\t\t&lt;/button&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;div id=\"loadingMessage\" class=\"mt-3 alert alert-info\" style=\"display: none;\"&gt;\n\t\t\t\t\t\t&lt;i class=\"fas fa-spinner fa-spin\"&gt;&lt;/i&gt; Loading selected reports...\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;!-- Commission Summary Report Output Area (populated by JavaScript) --&gt;\n\t\t\t&lt;div id=\"commissionReportsContainer\"&gt;&lt;/div&gt;\n\n\t\t\t{% comment %} I try to keep this in sync with same in rcm2, but never a guarantee {% endcomment %}\n\t\t\t&lt;div class=\"card mt-3\"&gt; &lt;!-- USER INFORMATION --&gt;\n\t\t\t\t&lt;div class=\"card-header\"&gt;\n\t\t\t\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#currentUserCollapse\" aria-expanded=\"true\" aria-controls=\"currentUserCollapse\"&gt;\n\t\t\t\t\t\tCurrent User Information\n\t\t\t\t\t&lt;/button&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t&lt;div class=\"collapse\" id=\"currentUserCollapse\"&gt;\n\t\t\t\t\t&lt;div class=\"card-body\"&gt;\n\t\t\t\t\t\t&lt;table class=\"user-table\"&gt;\n\t\t\t\t\t\t\t&lt;thead&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t&lt;th&gt;Variable&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th&gt;Value&lt;/th&gt;\n\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t&lt;/thead&gt;\n\t\t\t\t\t\t\t&lt;tbody&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.id&lt;/td&gt;&lt;td&gt;{{ user.id }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.username&lt;/td&gt;&lt;td&gt;{{ user.username }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.firstname&lt;/td&gt;&lt;td&gt;{{ user.firstname }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.middlename&lt;/td&gt;&lt;td&gt;{{ user.middlename }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lastname&lt;/td&gt;&lt;td&gt;{{ user.lastname }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.fullname             &lt;/td&gt;&lt;td&gt;{{ user.fullname }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.emailaddress1        &lt;/td&gt;&lt;td&gt;{{ user.emailaddress1 }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lv_branch.id&lt;/td&gt;&lt;td&gt;{{ user.lv_branch.id }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lv_branch.name&lt;/td&gt;&lt;td&gt;{{ user.lv_branch.name }}&lt;/td&gt;&lt;/tr&gt;\t\t\n\t\t\t\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lv_loanofficer.id&lt;/td&gt;&lt;td&gt;{{ user.lv_loanofficer.id }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lv_loanofficer.name&lt;/td&gt;&lt;td&gt;{{ user.lv_loanofficer.name }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lv_loanofficer.code&lt;/td&gt;&lt;td&gt;{{ user.lv_loanofficer.code }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lv_loanofficer.lv_code&lt;/td&gt;&lt;td&gt;{{ user.lv_loanofficer.lv_code }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.lv_loanofficer (full object)&lt;/td&gt;&lt;td&gt;{{ user.lv_loanofficer }}&lt;/td&gt;&lt;/tr&gt;\n\n\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t&lt;td&gt;user.roles&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t&lt;td&gt;\n\t\t\t\t\t\t\t\t\t\t{% for role in user.roles %}\n\t\t\t\t\t\t\t\t\t\t\t{{ role }} ;\n\t\t\t\t\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t\t\t\t\t&lt;/td&gt;\n\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\n\t\t\t\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.isAuthenticated&lt;/td&gt;&lt;td class=\"authenticated\"&gt;{{ user.isAuthenticated }}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;&lt;td&gt;user.type&lt;/td&gt;&lt;td&gt;{{ user.type }}&lt;/td&gt;&lt;/tr&gt;\n\n\t\t\t\t\t\t\t\t&lt;tr&gt;&lt;td&gt;userBranchList&lt;/td&gt;&lt;td&gt;{{userBranchList}}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;&lt;td&gt;userLoanOfficerList&lt;/td&gt;&lt;td&gt;{{userLoanOfficerList}}&lt;/td&gt;&lt;/tr&gt;\n\t\t\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t\t\t\t&lt;/table&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;div class=\"card mt-3\"&gt; &lt;!-- PERIOD INFORMATION --&gt;\n\t\t\t\t&lt;div class=\"card-header\"&gt;\n\t\t\t\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#periodCollapse\" aria-expanded=\"false\" aria-controls=\"periodCollapse\"&gt;\n\t\t\t\t\t\tPeriod\n\t\t\t\t\t&lt;/button&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t&lt;div class=\"collapse\" id=\"periodCollapse\"&gt;\n\t\t\t\t\t&lt;div class=\"card-body\"&gt;\n\t\t\t\t\t\t{% fetchxml periodData %}\n\t\t\t\t\t\t\t&lt;fetch&gt;\n\t\t\t\t\t\t\t\t&lt;entity name=\"lv_lvcompcommperiodcalc\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_periodno\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_name\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_visibleonweb\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_datefrom\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_dateto\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_periodcode\" /&gt;\n\n\t\t\t\t\t\t\t\t\t&lt;order attribute=\"lv_periodno\" descending=\"true\" /&gt;\n\t\t\t\t\t\t\t\t&lt;/entity&gt;\n\t\t\t\t\t\t\t&lt;/fetch&gt;\n\t\t\t\t\t\t{% endfetchxml %}\n\n\t\t\t\t\t\t&lt;p&gt;&lt;strong&gt;Count:&lt;/strong&gt; {{ periodData.results.entities.size }}&lt;/p&gt;\n\n\t\t\t\t\t\t&lt;table class=\"table table-striped sortable-table\" id=\"periodTable\"&gt;\n\t\t\t\t\t\t\t&lt;thead&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"periodno\"&gt;Period No&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"name\"&gt;Name&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"visible\"&gt;Visible&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"datefrom\"&gt;Date From&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"dateto\"&gt;Date To&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"periodcode\"&gt;Period Code&lt;/th&gt;\n\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t&lt;/thead&gt;\n\t\t\t\t\t\t\t&lt;tbody&gt;\n\t\t\t\t\t\t\t\t{% for period in periodData.results.entities %}\n\t\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ period.lv_periodno }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ period.lv_name }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ period.lv_visibleonweb }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ period.lv_datefrom | date: 'yyyy-MM-dd' }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ period.lv_dateto | date: 'yyyy-MM-dd' }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ period.lv_periodcode }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t\t\t\t&lt;/table&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;div class=\"card mt-3\"&gt; &lt;!-- LOAN OFFICER INFORMATION --&gt;\n\t\t\t\t&lt;div class=\"card-header\"&gt;\n\t\t\t\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#loanOfficerCollapse\" aria-expanded=\"false\" aria-controls=\"loanOfficerCollapse\"&gt;\n\t\t\t\t\t\tLoan Officers\n\t\t\t\t\t&lt;/button&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t&lt;div class=\"collapse\" id=\"loanOfficerCollapse\"&gt;\n\t\t\t\t\t&lt;div class=\"card-body\"&gt;\n\t\t\t\t\t\t{% fetchxml loanOfficerData %}\n\t\t\t\t\t\t\t&lt;fetch&gt;\n\t\t\t\t\t\t\t\t&lt;entity name=\"lv_lvcomploanofficer\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_name\"&gt;&lt;/attribute&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_code\"&gt;&lt;/attribute&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_xbranchcode\"&gt;&lt;/attribute&gt;\n\t\t\t\t\t\t\t\t\t&lt;order attribute=\"lv_name\" /&gt;\n\t\t\t\t\t\t\t\t&lt;/entity&gt;\n\t\t\t\t\t\t\t&lt;/fetch&gt;\n\t\t\t\t\t\t{% endfetchxml %}\n\n\t\t\t\t\t\t&lt;p&gt;&lt;strong&gt;Count:&lt;/strong&gt; {{ loanOfficerData.results.entities.size }}&lt;/p&gt;\n\n\t\t\t\t\t\t&lt;table class=\"table table-striped sortable-table\" id=\"loanOfficerTable\"&gt;\n\t\t\t\t\t\t\t&lt;thead&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"name\"&gt;Name&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"code\"&gt;Code&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"branchcode\"&gt;Branch Code&lt;/th&gt;\n\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t&lt;/thead&gt;\n\t\t\t\t\t\t\t&lt;tbody&gt;\n\t\t\t\t\t\t\t\t{% for officer in loanOfficerData.results.entities %}\n\t\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ officer.lv_name }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ officer.lv_code }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ officer.lv_xbranchcode }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t\t\t\t&lt;/table&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;div class=\"card mt-3\"&gt; &lt;!-- BRANCH LOAN OFFICER ASSIGNMENTS --&gt;\n\t\t\t\t&lt;div class=\"card-header\"&gt;\n\t\t\t\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#branchAssignmentsCollapse\" aria-expanded=\"false\" aria-controls=\"branchAssignmentsCollapse\"&gt;\n\t\t\t\t\t\tContact Branch Assignments\n\t\t\t\t\t&lt;/button&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t&lt;div class=\"collapse\" id=\"branchAssignmentsCollapse\"&gt;\n\t\t\t\t\t&lt;div class=\"card-body\"&gt;\n\t\t\t\t\t\t{% fetchxml branchAssignmentData %}\n\t\t\t\t\t\t\t&lt;fetch&gt;\n\t\t\t\t\t\t\t\t&lt;entity name=\"lv_contactbranchassignment\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_name\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_contactname\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_branchname\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_branchcode\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"createdby\" /&gt;\n\t\t\t\t\t\t\t\t&lt;/entity&gt;\n\t\t\t\t\t\t\t&lt;/fetch&gt;\n\t\t\t\t\t\t{% endfetchxml %}\n\n\t\t\t\t\t\t&lt;p&gt;&lt;strong&gt;Count:&lt;/strong&gt; {{ branchAssignmentData.results.entities.size }}&lt;/p&gt;\n\n\t\t\t\t\t\t&lt;table class=\"table table-striped sortable-table\" id=\"branchAssignmentTable\"&gt;\n\t\t\t\t\t\t\t&lt;thead&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"name\"&gt;Name&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"contact\"&gt;Contact&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"branch\"&gt;Branch&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"code\"&gt;Code&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"createdby\"&gt;Created By&lt;/th&gt;\n\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t&lt;/thead&gt;\n\t\t\t\t\t\t\t&lt;tbody&gt;\n\t\t\t\t\t\t\t\t{% for row in branchAssignmentData.results.entities %}\n\t\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ row.lv_name }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ row.lv_contactname }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ row.lv_branchname }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ row.lv_branchcode }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ row.createdby.name }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t\t\t\t&lt;/table&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;div class=\"card mt-3\"&gt; &lt;!-- Contact LO Relationships --&gt;\n\t\t\t\t&lt;div class=\"card-header\"&gt;\n\t\t\t\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#loRelationshipsCollapse\" aria-expanded=\"false\" aria-controls=\"loRelationshipsCollapse\"&gt;\n\t\t\t\t\t\tContact Loan Officer Relationships\n\t\t\t\t\t&lt;/button&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t&lt;div class=\"collapse\" id=\"loRelationshipsCollapse\"&gt;\n\t\t\t\t\t&lt;div class=\"card-body\"&gt;\n\t\t\t\t\t\t{% fetchxml loRelationshipData %}\n\t\t\t\t\t\t\t&lt;fetch&gt;\n\t\t\t\t\t\t\t\t&lt;entity name=\"lv_contactloanofficerrelationship\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_name\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_contactname\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_loanofficername\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_loanofficercode\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_relationshiptype\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_reason\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"createdby\" /&gt;\n\t\t\t\t\t\t\t\t&lt;/entity&gt;\n\t\t\t\t\t\t\t&lt;/fetch&gt;\n\t\t\t\t\t\t{% endfetchxml %}\n\n\t\t\t\t\t\t&lt;p&gt;&lt;strong&gt;Count:&lt;/strong&gt; {{ loRelationshipData.results.entities.size }}&lt;/p&gt;\n\n\t\t\t\t\t\t&lt;table class=\"table table-striped sortable-table\" id=\"loRelationshipTable\"&gt;\n\t\t\t\t\t\t\t&lt;thead&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"name\"&gt;Name&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"contact\"&gt;Contact&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"loanofficer\"&gt;Loan Officer&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"code\"&gt;Code&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"type\"&gt;Type&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"reason\"&gt;Reason&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"createdby\"&gt;Created By&lt;/th&gt;\n\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t&lt;/thead&gt;\n\t\t\t\t\t\t\t&lt;tbody&gt;\n\t\t\t\t\t\t\t\t{% for row in loRelationshipData.results.entities %}\n\t\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ row.lv_name }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ row.lv_contactname }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ row.lv_loanofficername }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ row.lv_loanofficercode }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{% if row.lv_relationshiptype == 'O' %}Oversight{% elsif row.lv_relationshiptype == 'X' %}Exclusion{% else %}{{ row.lv_relationshiptype }}{% endif %}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ row.lv_reason }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ row.createdby.name }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t\t\t\t&lt;/table&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;div class=\"card mt-3\"&gt; &lt;!-- LV COMP BRANCH --&gt;\n\t\t\t\t&lt;div class=\"card-header\"&gt;\n\t\t\t\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#lvCompBranchCollapse\" aria-expanded=\"false\" aria-controls=\"lvCompBranchCollapse\"&gt;\n\t\t\t\t\t\tlv_lvcompBranch\n\t\t\t\t\t&lt;/button&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t&lt;div class=\"collapse\" id=\"lvCompBranchCollapse\"&gt;\n\t\t\t\t\t&lt;div class=\"card-body\"&gt;\n\t\t\t\t\t\t{% fetchxml lvCompBranchData %}\n\t\t\t\t\t\t\t&lt;fetch&gt;\n\t\t\t\t\t\t\t\t&lt;entity name=\"lv_lvcompbranch\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_code\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_name\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;order attribute=\"lv_code\" /&gt;\n\t\t\t\t\t\t\t\t&lt;/entity&gt;\n\t\t\t\t\t\t\t&lt;/fetch&gt;\n\t\t\t\t\t\t{% endfetchxml %}\n\n\t\t\t\t\t\t&lt;p&gt;&lt;strong&gt;Count:&lt;/strong&gt; {{ lvCompBranchData.results.entities.size }}&lt;/p&gt;\n\n\t\t\t\t\t\t&lt;table class=\"table table-striped sortable-table\" id=\"lvCompBranchTable\"&gt;\n\t\t\t\t\t\t\t&lt;thead&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"code\"&gt;Code&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"name\"&gt;Name&lt;/th&gt;\n\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t&lt;/thead&gt;\n\t\t\t\t\t\t\t&lt;tbody&gt;\n\t\t\t\t\t\t\t\t{% for branch in lvCompBranchData.results.entities %}\n\t\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ branch.lv_code }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ branch.lv_name }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t\t\t\t&lt;/table&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;div class=\"card mt-3\"&gt; &lt;!-- DYN365BC BRANCH --&gt;\n\t\t\t\t&lt;div class=\"card-header\"&gt;\n\t\t\t\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#dyn365bcBranchCollapse\" aria-expanded=\"false\" aria-controls=\"dyn365bcBranchCollapse\"&gt;\n\t\t\t\t\t\tdyn365bc_branch_loanvision_loanvision_v2_0\n\t\t\t\t\t&lt;/button&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t&lt;div class=\"collapse\" id=\"dyn365bcBranchCollapse\"&gt;\n\t\t\t\t\t&lt;div class=\"card-body\"&gt;\n\t\t\t\t\t\t{% fetchxml dyn365bcBranchData %}\n\t\t\t\t\t\t\t&lt;fetch&gt;\n\t\t\t\t\t\t\t\t&lt;entity name=\"dyn365bc_branch_loanvision_loanvision_v2_0\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"dyn365bc_code\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"dyn365bc_name\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;order attribute=\"dyn365bc_code\" /&gt;\n\t\t\t\t\t\t\t\t&lt;/entity&gt;\n\t\t\t\t\t\t\t&lt;/fetch&gt;\n\t\t\t\t\t\t{% endfetchxml %}\n\n\t\t\t\t\t\t&lt;p&gt;&lt;strong&gt;Count:&lt;/strong&gt; {{ dyn365bcBranchData.results.entities.size }}&lt;/p&gt;\n\n\t\t\t\t\t\t&lt;table class=\"table table-striped sortable-table\" id=\"dyn365bcBranchTable\"&gt;\n\t\t\t\t\t\t\t&lt;thead&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"code\"&gt;Code&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;th class=\"sortable-header\" data-column=\"name\"&gt;Name&lt;/th&gt;\n\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t&lt;/thead&gt;\n\t\t\t\t\t\t\t&lt;tbody&gt;\n\t\t\t\t\t\t\t\t{% for branch in dyn365bcBranchData.results.entities %}\n\t\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ branch.dyn365bc_code }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ branch.dyn365bc_name }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t\t\t\t&lt;/table&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;!-- First Card: Commissions by Period (Hidden by default) --&gt;\n\t\t\t\t&lt;div class=\"card mt-3 commission-section\" data-section=\"period\" style=\"display: none;\"&gt;\n\t\t\t\t\t&lt;div class=\"card-header\"&gt;\n\t\t\t\t\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#periodCommissionsCollapse\" aria-expanded=\"true\" aria-controls=\"periodCommissionsCollapse\"&gt;\n\t\t\t\t\t\t\tCommissions by Period &lt;span class=\"text-muted\"&gt;(period)&lt;/span&gt;\n\t\t\t\t\t\t&lt;/button&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;div class=\"collapse show\" id=\"periodCommissionsCollapse\"&gt;\n\t\t\t\t\t\t&lt;div class=\"card-body\"&gt;\n\t\t\t\t\t\t\t{% fetchxml commissionDataByPeriod %}\n\t\t\t\t\t\t\t\t&lt;fetch distinct=\"false\" mapping=\"logical\" aggregate=\"true\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;entity name=\"lv_lvcompcommission\"&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_periodno\" groupby=\"true\" alias=\"period\" /&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_lvcompcommissionid\" aggregate=\"count\" alias=\"count\" /&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_amount\" aggregate=\"sum\" alias=\"total_amount\" /&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;order alias=\"period\" descending=\"true\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;/entity&gt;\n\t\t\t\t\t\t\t\t&lt;/fetch&gt;\n\t\t\t\t\t\t\t{% endfetchxml %}\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t{% comment %} Get period names separately to avoid groupby issues {% endcomment %}\n\t\t\t\t\t\t\t{% fetchxml periodNames %}\n\t\t\t\t\t\t\t\t&lt;fetch distinct=\"true\" mapping=\"logical\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;entity name=\"lv_lvcompcommperiodcalc\"&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_periodno\" /&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_name\" /&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;order attribute=\"lv_periodno\" descending=\"true\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;/entity&gt;\n\t\t\t\t\t\t\t\t&lt;/fetch&gt;\n\t\t\t\t\t\t\t{% endfetchxml %}\n\n\t\t\t\t\t\t\t&lt;div class=\"w-50\"&gt;\n\t\t\t\t\t\t\t\t&lt;table id=\"commissionTable\" class=\"table table-striped\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;thead&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;th class=\"w-15\"&gt;Period Number&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;th class=\"w-45\"&gt;Period Name&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;th class=\"w-20 text-end\"&gt;Count&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;th class=\"w-20 text-end\"&gt;Total Amount&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t\t&lt;/thead&gt;\n\t\t\t\t\t\t\t\t\t&lt;tbody&gt;\n\t\t\t\t\t\t\t\t\t\t{% assign total_count = 0 %}\n\t\t\t\t\t\t\t\t\t\t{% assign total_amount = 0 %}\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t{% for item in commissionDataByPeriod.results.entities %}\n\t\t\t\t\t\t\t\t\t\t\t{% comment %} Find matching period name {% endcomment %}\n\t\t\t\t\t\t\t\t\t\t\t{% assign period_name = \"Unknown\" %}\n\t\t\t\t\t\t\t\t\t\t\t{% for period in periodNames.results.entities %}\n\t\t\t\t\t\t\t\t\t\t\t\t{% if period.lv_periodno == item.period %}\n\t\t\t\t\t\t\t\t\t\t\t\t\t{% assign period_name = period.lv_name %}\n\t\t\t\t\t\t\t\t\t\t\t\t\t{% break %}\n\t\t\t\t\t\t\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"w-15\"&gt;{{ item.period }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"w-45\"&gt;{{ period_name }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"w-20 text-end\"&gt;{{ item.count }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"w-20 text-end lv-currency\"&gt;{{ item.total_amount }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t\t\t\t{% assign total_count = total_count | plus: item.count %}\n\t\t\t\t\t\t\t\t\t\t\t{% assign total_amount = total_amount | plus: item.total_amount %}\n\t\t\t\t\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t&lt;tr class=\"summary-row\"&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td colspan=\"2\"&gt;Total&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"text-end\"&gt;{{ total_count }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"text-end lv-currency\"&gt;{{ total_amount }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t\t\t\t\t\t&lt;/table&gt;\n\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;!-- Looping Card: Commissions by Period (Primitive Looping Approach) --&gt;\n\t\t\t\t&lt;div class=\"card mt-3 commission-section\" data-section=\"looping\" style=\"display: none;\"&gt;\n\t\t\t\t\t&lt;div class=\"card-header\"&gt;\n\t\t\t\t\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#loopingCollapse\" aria-expanded=\"false\" aria-controls=\"loopingCollapse\"&gt;\n\t\t\t\t\t\t\tCommissions by Period - Looping Method &lt;span class=\"text-muted\"&gt;(looping)&lt;/span&gt;\n\t\t\t\t\t\t&lt;/button&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;div class=\"collapse\" id=\"loopingCollapse\"&gt;\n\t\t\t\t\t\t&lt;div class=\"card-body\"&gt;\n\t\t\t\t\t\t\t{% comment %} First get all periods {% endcomment %}\n\t\t\t\t\t\t\t{% fetchxml allPeriods %}\n\t\t\t\t\t\t\t\t&lt;fetch distinct=\"true\" mapping=\"logical\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;entity name=\"lv_lvcompcommperiodcalc\"&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_periodno\" /&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_name\" /&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;order attribute=\"lv_periodno\" descending=\"true\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;/entity&gt;\n\t\t\t\t\t\t\t\t&lt;/fetch&gt;\n\t\t\t\t\t\t\t{% endfetchxml %}\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t&lt;div class=\"w-50\"&gt;\n\t\t\t\t\t\t\t\t&lt;table id=\"loopingCommissionTable\" class=\"table table-striped\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;thead&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;th class=\"w-15\"&gt;Period Number&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;th class=\"w-45\"&gt;Period Name&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;th class=\"w-20 text-end\"&gt;Count&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;th class=\"w-20 text-end\"&gt;Total Amount&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t\t&lt;/thead&gt;\n\t\t\t\t\t\t\t\t\t&lt;tbody&gt;\n\t\t\t\t\t\t\t\t\t\t{% assign loop_total_count = 0 %}\n\t\t\t\t\t\t\t\t\t\t{% assign loop_total_amount = 0.0 %}\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t{% comment %} Loop through each period and query commissions {% endcomment %}\n\t\t\t\t\t\t\t\t\t\t{% for period in allPeriods.results.entities %}\n\t\t\t\t\t\t\t\t\t\t\t{% assign currentPeriodNo = period.lv_periodno %}\n\t\t\t\t\t\t\t\t\t\t\t{% assign currentPeriodName = period.lv_name %}\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t{% comment %} Query commissions for this specific period {% endcomment %}\n\t\t\t\t\t\t\t\t\t\t\t{% fetchxml periodCommissions %}\n\t\t\t\t\t\t\t\t\t\t\t\t&lt;fetch distinct=\"false\" mapping=\"logical\"&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;entity name=\"lv_lvcompcommission\"&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_lvcompcommissionid\" /&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_amount\" /&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;filter type=\"and\"&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;condition attribute=\"lv_periodno\" operator=\"eq\" value=\"{{currentPeriodNo}}\" /&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;/filter&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;/entity&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t&lt;/fetch&gt;\n\t\t\t\t\t\t\t\t\t\t\t{% endfetchxml %}\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t{% comment %} Manual counting and summing {% endcomment %}\n\t\t\t\t\t\t\t\t\t\t\t{% assign period_count = 0 %}\n\t\t\t\t\t\t\t\t\t\t\t{% assign period_amount = 0.0 %}\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t{% for commission in periodCommissions.results.entities %}\n\t\t\t\t\t\t\t\t\t\t\t\t{% assign period_count = period_count | plus: 1 %}\n\t\t\t\t\t\t\t\t\t\t\t\t{% assign period_amount = period_amount | plus: commission.lv_amount %}\n\t\t\t\t\t\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t{% comment %} Only show rows with data {% endcomment %}\n\t\t\t\t\t\t\t\t\t\t\t{% if period_count &gt; 0 %}\n\t\t\t\t\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"w-15\"&gt;{{ currentPeriodNo }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"w-45\"&gt;{{ currentPeriodName }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"w-20 text-end\"&gt;{{ period_count }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"w-20 text-end lv-currency\"&gt;{{ period_amount }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t{% assign loop_total_count = loop_total_count | plus: period_count %}\n\t\t\t\t\t\t\t\t\t\t\t\t{% assign loop_total_amount = loop_total_amount | plus: period_amount %}\n\t\t\t\t\t\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t&lt;tr class=\"summary-row\"&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td colspan=\"2\"&gt;Total&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"text-end\"&gt;{{ loop_total_count }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"text-end lv-currency\"&gt;{{ loop_total_amount }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t\t\t\t\t\t&lt;/table&gt;\n\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t&lt;div class=\"mt-3\"&gt;\n\t\t\t\t\t\t\t\t&lt;p&gt;&lt;strong&gt;Method:&lt;/strong&gt; Primitive looping approach&lt;/p&gt;\n\t\t\t\t\t\t\t\t&lt;p&gt;&lt;strong&gt;Periods processed:&lt;/strong&gt; {{ allPeriods.results.entities.size }}&lt;/p&gt;\n\t\t\t\t\t\t\t\t&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; This method should work even when aggregate FetchXML fails, as it uses simple filtering on lv_periodno.&lt;/p&gt;\n\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;!-- Second Card: Commissions by Period and Branch, With Branch Name --&gt;\n\t\t\t&lt;div class=\"card mt-3 commission-section\" data-section=\"branch\" style=\"display: none;\"&gt;\n\t\t\t\t&lt;div class=\"card-header\"&gt;\n\t\t\t\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#branchCommissionsCollapse\" aria-expanded=\"true\" aria-controls=\"branchCommissionsCollapse\"&gt;\n\t\t\t\t\t\tCommissions by Period and Branch &lt;span class=\"text-muted\"&gt;(branch)&lt;/span&gt;\n\t\t\t\t\t&lt;/button&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;div class=\"collapse show\" id=\"branchCommissionsCollapse\"&gt;\n\t\t\t\t\t&lt;div class=\"card-body\"&gt;\n\t\t\t\t\t\t{% fetchxml commissionDataByBranch %}\n\t\t\t\t\t\t\t&lt;fetch distinct=\"false\" mapping=\"logical\" aggregate=\"true\"&gt;\n\t\t\t\t\t\t\t\t&lt;entity name=\"lv_lvcompcommission\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_periodno\" groupby=\"true\" alias=\"period\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_xbranchcode\" groupby=\"true\" alias=\"branch\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_lvcompcommissionid\" aggregate=\"count\" alias=\"count\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_amount\" aggregate=\"sum\" alias=\"total_amount\" /&gt;\n\n\t\t\t\t\t\t\t\t\t&lt;link-entity name=\"lv_lvcompcommperiodcalc\" from=\"lv_periodno\" to=\"lv_periodno\" link-type=\"inner\"&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_name\" groupby=\"true\" alias=\"period_name\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;/link-entity&gt;\n\n\t\t\t\t\t\t\t\t\t&lt;link-entity name=\"lv_lvcompbranch\" from=\"lv_code\" to=\"lv_xbranchcode\" link-type=\"inner\"&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_name\" groupby=\"true\" alias=\"branch_name\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;/link-entity&gt;\n\n\t\t\t\t\t\t\t\t\t&lt;order alias=\"period\" descending=\"true\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;order alias=\"branch\" descending=\"false\" /&gt;\n\t\t\t\t\t\t\t\t&lt;/entity&gt;\n\t\t\t\t\t\t\t&lt;/fetch&gt;\n\t\t\t\t\t\t{% endfetchxml %}\n\n\t\t\t\t\t\t&lt;div class=\"w-75\"&gt;\n\t\t\t\t\t\t\t&lt;table id=\"branchTable\" class=\"table table-striped\"&gt;\n\t\t\t\t\t\t\t\t&lt;thead&gt;\n\t\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;th class=\"w-10\"&gt;Period&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;th class=\"w-20\"&gt;Period Name&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;th class=\"w-10\"&gt;Branch&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;th class=\"w-20\"&gt;Branch Name&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;th class=\"w-20 text-end\"&gt;Count&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;th class=\"w-20 text-end\"&gt;Total Amount&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;/thead&gt;\n\t\t\t\t\t\t\t\t&lt;tbody&gt;\n\t\t\t\t\t\t\t\t\t{% assign total_count = 0 %}\n\t\t\t\t\t\t\t\t\t{% assign total_amount = 0.0 %}\n\t\t\t\t\t\t\t\t\t{% assign current_period = \"\" %}\n\t\t\t\t\t\t\t\t\t{% assign current_period_name = \"\" %}\n\t\t\t\t\t\t\t\t\t{% assign period_count = 0 %}\n\t\t\t\t\t\t\t\t\t{% assign period_amount = 0.0 %}\n\t\t\t\t\t\t\t\t\t{% assign period_index = 0 %}\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t{% for item in commissionDataByBranch.results.entities %}\n\t\t\t\t\t\t\t\t\t\t{% if current_period != item.period and forloop.index &gt; 1 %}\n\t\t\t\t\t\t\t\t\t\t\t&lt;tr class=\"period-summary\" data-period=\"{{ period_index }}\"&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t&lt;td colspan=\"4\" class=\"branch-toggle\" data-period=\"{{ period_index }}\"&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;i class=\"bi bi-caret-right-fill\"&gt;&lt;/i&gt; Period {{ current_period }} - {{ current_period_name }}\n\t\t\t\t\t\t\t\t\t\t\t\t&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"text-end\"&gt;{{ period_count }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"text-end lv-currency\"&gt;{{ period_amount }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t\t\t\t{% assign period_count = 0 %}\n\t\t\t\t\t\t\t\t\t\t\t{% assign period_amount = 0.0 %}\n\t\t\t\t\t\t\t\t\t\t\t{% assign period_index = period_index | plus: 1 %}\n\t\t\t\t\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t&lt;tr class=\"branch-row\" data-period=\"{{ period_index }}\"&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"w-10\"&gt;{{ item.period }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"w-20\"&gt;{{ item.period_name }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"w-10\"&gt;{{ item.branch }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"w-20\"&gt;{{ item.branch_name }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"w-20 text-end\"&gt;{{ item.count }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"w-20 text-end lv-currency\"&gt;{{ item.total_amount }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t{% assign current_period = item.period %}\n\t\t\t\t\t\t\t\t\t\t{% assign current_period_name = item.period_name %}\n\t\t\t\t\t\t\t\t\t\t{% assign period_count = period_count | plus: item.count %}\n\t\t\t\t\t\t\t\t\t\t{% assign period_amount = period_amount | plus: item.total_amount %}\n\t\t\t\t\t\t\t\t\t\t{% assign total_count = total_count | plus: item.count %}\n\t\t\t\t\t\t\t\t\t\t{% assign total_amount = total_amount | plus: item.total_amount %}\n\t\t\t\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t{% if commissionDataByBranch.results.entities.size &gt; 0 %}\n\t\t\t\t\t\t\t\t\t\t&lt;tr class=\"period-summary\" data-period=\"{{ period_index }}\"&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td colspan=\"4\" class=\"branch-toggle\" data-period=\"{{ period_index }}\"&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t&lt;i class=\"bi bi-caret-right-fill\"&gt;&lt;/i&gt; Period {{ current_period }} - {{ current_period_name }}\n\t\t\t\t\t\t\t\t\t\t\t&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"text-end\"&gt;{{ period_count }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"text-end lv-currency\"&gt;{{ period_amount }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t&lt;tr class=\"summary-row\"&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td colspan=\"4\"&gt;Total&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td class=\"text-end\"&gt;{{ total_count }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td class=\"text-end lv-currency\"&gt;{{ total_amount }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t\t\t\t\t&lt;/table&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;!-- Third Card: Commissions by Period, Branch, and Loan Officer --&gt;\n\t\t\t&lt;div class=\"card mt-3 commission-section\" data-section=\"officer\" style=\"display: none;\"&gt;\n\t\t\t\t&lt;div class=\"card-header\"&gt;\n\t\t\t\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#officerCommissionsCollapse\" aria-expanded=\"true\" aria-controls=\"officerCommissionsCollapse\"&gt;\n\t\t\t\t\t\tCommissions by Period, Branch, and Loan Officer &lt;span class=\"text-muted\"&gt;(officer)&lt;/span&gt;\n\t\t\t\t\t&lt;/button&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;div class=\"collapse show\" id=\"officerCommissionsCollapse\"&gt;\n\t\t\t\t\t&lt;div class=\"card-body\"&gt;\n\t\t\t\t\t\t{% fetchxml commissionByPeriod %}\n\t\t\t\t\t\t\t&lt;fetch distinct=\"false\" mapping=\"logical\" aggregate=\"true\"&gt;\n\t\t\t\t\t\t\t\t&lt;entity name=\"lv_lvcompcommission\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_periodno\" groupby=\"true\" alias=\"period\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_lvcompcommissionid\" aggregate=\"count\" alias=\"count\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_amount\" aggregate=\"sum\" alias=\"total_amount\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;link-entity name=\"lv_lvcompcommperiodcalc\" from=\"lv_periodno\" to=\"lv_periodno\" link-type=\"inner\"&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_name\" groupby=\"true\" alias=\"period_name\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;/link-entity&gt;\n\t\t\t\t\t\t\t\t\t&lt;order alias=\"period\" descending=\"true\" /&gt;\n\t\t\t\t\t\t\t\t&lt;/entity&gt;\n\t\t\t\t\t\t\t&lt;/fetch&gt;\n\t\t\t\t\t\t{% endfetchxml %}\n\n\t\t\t\t\t\t{% fetchxml commissionByBranch %}\n\t\t\t\t\t\t\t&lt;fetch distinct=\"false\" mapping=\"logical\" aggregate=\"true\"&gt;\n\t\t\t\t\t\t\t\t&lt;entity name=\"lv_lvcompcommission\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_periodno\" groupby=\"true\" alias=\"period\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_xbranchcode\" groupby=\"true\" alias=\"branch\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_lvcompcommissionid\" aggregate=\"count\" alias=\"count\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_amount\" aggregate=\"sum\" alias=\"total_amount\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;link-entity name=\"lv_lvcompcommperiodcalc\" from=\"lv_periodno\" to=\"lv_periodno\" link-type=\"inner\"&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_name\" groupby=\"true\" alias=\"period_name\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;/link-entity&gt;\n\t\t\t\t\t\t\t\t\t&lt;link-entity name=\"lv_lvcompbranch\" from=\"lv_code\" to=\"lv_xbranchcode\" link-type=\"inner\"&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_name\" groupby=\"true\" alias=\"branch_name\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;/link-entity&gt;\n\t\t\t\t\t\t\t\t\t&lt;order alias=\"period\" descending=\"true\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;order alias=\"branch\" descending=\"false\" /&gt;\n\t\t\t\t\t\t\t\t&lt;/entity&gt;\n\t\t\t\t\t\t\t&lt;/fetch&gt;\n\t\t\t\t\t\t{% endfetchxml %}\n\t\t\t\t\t\t\n\t\t\t\t\t\t{% fetchxml commissionByLoanOfficer %}\n\t\t\t\t\t\t\t&lt;fetch distinct=\"false\" mapping=\"logical\" aggregate=\"true\"&gt;\n\t\t\t\t\t\t\t\t&lt;entity name=\"lv_lvcompcommission\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_periodno\" groupby=\"true\" alias=\"period\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_xbranchcode\" groupby=\"true\" alias=\"branch\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_xloanofficercode\" groupby=\"true\" alias=\"loan_officer\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_lvcompcommissionid\" aggregate=\"count\" alias=\"count\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_amount\" aggregate=\"sum\" alias=\"total_amount\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;link-entity name=\"lv_lvcompcommperiodcalc\" from=\"lv_periodno\" to=\"lv_periodno\" link-type=\"inner\"&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_name\" groupby=\"true\" alias=\"period_name\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;/link-entity&gt;\n\t\t\t\t\t\t\t\t\t&lt;link-entity name=\"lv_lvcompbranch\" from=\"lv_code\" to=\"lv_xbranchcode\" link-type=\"inner\"&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_name\" groupby=\"true\" alias=\"branch_name\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;/link-entity&gt;\n\t\t\t\t\t\t\t\t\t&lt;order alias=\"period\" descending=\"true\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;order alias=\"branch\" descending=\"false\" /&gt;\n\t\t\t\t\t\t\t\t\t&lt;order alias=\"loan_officer\" descending=\"false\" /&gt;\n\t\t\t\t\t\t\t\t&lt;/entity&gt;\n\t\t\t\t\t\t\t&lt;/fetch&gt;\n\t\t\t\t\t\t{% endfetchxml %}\n\n\t\t\t\t\t\t&lt;div class=\"w-100\"&gt;\n\t\t\t\t\t\t\t&lt;table id=\"hierarchyTable\" class=\"table table-striped\"&gt;\n\t\t\t\t\t\t\t\t&lt;thead&gt;\n\t\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;th&gt;Period&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;th&gt;Period Name&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;th&gt;Branch/Loan Officer&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;th class=\"text-end\"&gt;Count&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;th class=\"text-end\"&gt;Total Amount&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;/thead&gt;\n\t\t\t\t\t\t\t\t&lt;tbody&gt;\n\t\t\t\t\t\t\t\t\t{% assign total_count = 0 %}\n\t\t\t\t\t\t\t\t\t{% assign total_amount = 0.0 %}\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t{% for period_item in commissionByPeriod.results.entities %}\n\t\t\t\t\t\t\t\t\t\t{% assign period = period_item.period %}\n\t\t\t\t\t\t\t\t\t\t{% assign period_name = period_item.period_name %}\n\t\t\t\t\t\t\t\t\t\t{% assign period_count = period_item.count %}\n\t\t\t\t\t\t\t\t\t\t{% assign period_amount = period_item.total_amount %}\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t{% assign total_count = total_count | plus: period_count %}\n\t\t\t\t\t\t\t\t\t\t{% assign total_amount = total_amount | plus: period_amount %}\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t&lt;tr class=\"period-row\" data-period=\"{{ period }}\"&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ period }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ period_name }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t&lt;i class=\"bi bi-caret-right-fill\"&gt;&lt;/i&gt; &lt;strong&gt;Period Total&lt;/strong&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"text-end\"&gt;{{ period_count }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"text-end lv-currency\"&gt;{{ period_amount }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t{% for branch_item in commissionByBranch.results.entities %}\n\t\t\t\t\t\t\t\t\t\t\t{% if branch_item.period == period %}\n\t\t\t\t\t\t\t\t\t\t\t\t{% assign branch = branch_item.branch %}\n\t\t\t\t\t\t\t\t\t\t\t\t{% assign branch_name = branch_item.branch_name %}\n\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t&lt;tr class=\"branch-row hidden-row\" data-period=\"{{ period }}\" data-branch=\"{{ branch }}\"&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td&gt;&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td&gt;&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;i class=\"bi bi-caret-right-fill\"&gt;&lt;/i&gt; Branch: {{ branch }} - {{ branch_name }}\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"text-end\"&gt;{{ branch_item.count }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"text-end lv-currency\"&gt;{{ branch_item.total_amount }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t{% for officer_item in commissionByLoanOfficer.results.entities %}\n\t\t\t\t\t\t\t\t\t\t\t\t\t{% if officer_item.period == period and officer_item.branch == branch %}\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;tr class=\"loan-officer-row hidden-row\" data-period=\"{{ period }}\" data-branch=\"{{ branch }}\"&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td&gt;&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td&gt;&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td style=\"padding-left: 2rem;\"&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tLoan Officer: {{ officer_item.loan_officer }}\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"text-end\"&gt;{{ officer_item.count }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td class=\"text-end lv-currency\"&gt;{{ officer_item.total_amount }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t\t\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t&lt;tr class=\"summary-row\"&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td colspan=\"3\"&gt;Total&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td class=\"text-end\"&gt;{{ total_count }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;td class=\"text-end lv-currency\"&gt;{{ total_amount }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t\t\t\t\t&lt;/table&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;!-- Fourth Card: Raw Commission Data Verification --&gt;\n\t\t\t&lt;div class=\"card mt-3 commission-section\" data-section=\"commissions\" style=\"display: none;\"&gt;\n\t\t\t\t&lt;div class=\"card-header\"&gt;\n\t\t\t\t\t&lt;button class=\"btn btn-link\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#commissionsCollapse\" aria-expanded=\"true\" aria-controls=\"commissionsCollapse\"&gt;\n\t\t\t\t\t\tRaw Commission Data Verification &lt;span class=\"text-muted\"&gt;(commissions)&lt;/span&gt;\n\t\t\t\t\t&lt;/button&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;div class=\"collapse show\" id=\"commissionsCollapse\"&gt;\n\t\t\t\t\t&lt;div class=\"card-body\"&gt;\n\t\t\t\t\t\t{% comment %} First find the latest period in the system {% endcomment %}\n\t\t\t\t\t\t{% fetchxml latestPeriod %}\n\t\t\t\t\t\t\t&lt;fetch distinct=\"false\" mapping=\"logical\" aggregate=\"true\" top=\"1\"&gt;\n\t\t\t\t\t\t\t\t&lt;entity name=\"lv_lvcompcommission\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;attribute name=\"lv_periodno\" aggregate=\"max\" alias=\"max_period\" /&gt;\n\t\t\t\t\t\t\t\t&lt;/entity&gt;\n\t\t\t\t\t\t\t&lt;/fetch&gt;\n\t\t\t\t\t\t{% endfetchxml %}\n\t\t\t\t\t\t\n\t\t\t\t\t\t{% assign maxPeriod = latestPeriod.results.entities[0].max_period %}\n\t\t\t\t\t\t\n\t\t\t\t\t\t{% comment %} Override sqUISelPeriodNo temporarily to use latest period {% endcomment %}\n\t\t\t\t\t\t{% assign originalPeriod = sqUISelPeriodNo %}\n\t\t\t\t\t\t{% assign sqUISelPeriodNo = maxPeriod %}\n\t\t\t\t\t\t\n\t\t\t\t\t\t&lt;p&gt;&lt;strong&gt;Latest Period in System:&lt;/strong&gt; {{ maxPeriod }}&lt;/p&gt;\n\t\t\t\t\t\t&lt;p&gt;&lt;strong&gt;Current Selected Period:&lt;/strong&gt; {{ originalPeriod }}&lt;/p&gt;\n\t\t\t\t\t\t\n\t\t\t\t\t\t{% comment %} Include Commission Filter to get the same data it uses {% endcomment %}\n\t\t\t\t\t\t{% include 'snippet' snippet_name:'Commission Filter' %}\n\t\t\t\t\t\t\n\t\t\t\t\t\t&lt;h5&gt;Commission Filter Results (Latest Period {{ maxPeriod }}):&lt;/h5&gt;\n\t\t\t\t\t\t&lt;p&gt;&lt;strong&gt;Raw Commission Records Found:&lt;/strong&gt; {{ allLoanBasedCommissions.results.entities.size }}&lt;/p&gt;\n\t\t\t\t\t\t&lt;p&gt;&lt;strong&gt;Filtered Commission Count:&lt;/strong&gt; {{ cpCommCount }}&lt;/p&gt;\n\t\t\t\t\t\t&lt;p&gt;&lt;strong&gt;Filtered Commission Total:&lt;/strong&gt; {{ cpCommTotal | format: 'C' }}&lt;/p&gt;\n\t\t\t\t\t\t\n\t\t\t\t\t\t{% if allLoanBasedCommissions.results.entities.size &gt; 0 %}\n\t\t\t\t\t\t\t&lt;h6&gt;First 20 Raw Commission Records:&lt;/h6&gt;\n\t\t\t\t\t\t\t&lt;div class=\"table-responsive\"&gt;\n\t\t\t\t\t\t\t\t&lt;table class=\"table table-sm table-striped\"&gt;\n\t\t\t\t\t\t\t\t\t&lt;thead class=\"table-dark\"&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;th&gt;Entry No&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;th&gt;Amount&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;th&gt;Borrower Name&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;th&gt;LO Name&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;th&gt;LO Code&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;th&gt;Branch Code&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;th&gt;Period No&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t\t&lt;th&gt;Type&lt;/th&gt;\n\t\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t\t&lt;/thead&gt;\n\t\t\t\t\t\t\t\t\t&lt;tbody&gt;\n\t\t\t\t\t\t\t\t\t\t{% assign recordCount = 0 %}\n\t\t\t\t\t\t\t\t\t\t{% for row in allLoanBasedCommissions.results.entities %}\n\t\t\t\t\t\t\t\t\t\t\t{% assign recordCount = recordCount | plus: 1 %}\n\t\t\t\t\t\t\t\t\t\t\t{% if recordCount &lt;= 20 %}\n\t\t\t\t\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ row.lv_entryno }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ row.lv_amount | format: 'C' }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ row.lv_xborrowername }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ row.lv_xloanofficername }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ row.lv_xloanofficercode }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ row.lv_xbranchcode }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ row.lv_periodno }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t\t&lt;td&gt;{{ row.lv_commissiontype }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t\t\t\t\t\t{% endfor %}\n\t\t\t\t\t\t\t\t\t&lt;/tbody&gt;\n\t\t\t\t\t\t\t\t&lt;/table&gt;\n\t\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t\t{% else %}\n\t\t\t\t\t\t\t&lt;p&gt;&lt;em&gt;No commission records found for the latest period.&lt;/em&gt;&lt;/p&gt;\n\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t\t\n\t\t\t\t\t\t{% comment %} Reset the period to original value {% endcomment %}\n\t\t\t\t\t\t{% assign sqUISelPeriodNo = originalPeriod %}\n\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t&lt;/div&gt;\n\t\t\t&lt;/div&gt;\n\n\t\t&lt;/div&gt;\n\t&lt;/div&gt;\n&lt;/div&gt;\n\n&lt;style&gt;\n\t.user-table {\n\t\twidth: 100%;\n\t\tborder-collapse: collapse;\n\t}\n\n\t.user-table th,\n\t.user-table td {\n\t\tpadding: 5px;\n\t\tborder: 1px solid #ccc;\n\t\ttext-align: left;\n\t}\n\n\t.user-table th {\n\t\tbackground-color: #f2f2f2;\n\t}\n\n\t.authenticated {\n\t\tcolor: green;\n\t\tfont-weight: bold;\n\t}\n\n\t.card-header .btn-link {\n\t\ttext-decoration: none;\n\t\tcolor: inherit;\n\t\tfont-weight: bold;\n\t}\n\n\t.card-header .btn-link:hover {\n\t\ttext-decoration: underline;\n\t}\n\n\t.summary-row {\n\t\tfont-weight: bold;\n\t\tbackground-color: #f8f9fa;\n\t\tborder-top: 2px solid #6c757d;\n\t}\n\n\t.period-summary {\n\t\tbackground-color: #e9ecef;\n\t\tfont-weight: bold;\n\t\tcursor: pointer;\n\t}\n\n\t.period-summary:hover {\n\t\tbackground-color: #dee2e6;\n\t}\n\n\t.branch-row {\n\t\tbackground-color: #f8f9fa;\n\t}\n\n\t.loan-officer-row {\n\t\tbackground-color: #ffffff;\n\t}\n\n\t.hidden-row {\n\t\tdisplay: none;\n\t}\n\n\t.bi-caret-right-fill {\n\t\ttransition: transform 0.2s;\n\t}\n\n\t.bi-caret-down-fill {\n\t\ttransform: rotate(90deg);\n\t}\n\n\t/* Sortable table styles */\n\t.sortable-header {\n\t\tcursor: pointer;\n\t\tuser-select: none;\n\t\tposition: relative;\n\t\tbackground-color: #f2f2f2 !important;\n\t}\n\n\t.sortable-header:hover {\n\t\tbackground-color: #e0e0e0 !important;\n\t}\n\n\t.sortable-header.sort-asc::after {\n\t\tcontent: ' ▲';\n\t\tfont-size: 0.8em;\n\t\tcolor: #0066cc;\n\t}\n\n\t.sortable-header.sort-desc::after {\n\t\tcontent: ' ▼';\n\t\tfont-size: 0.8em;\n\t\tcolor: #0066cc;\n\t}\n\n\t.sortable-table th {\n\t\tbackground-color: #f2f2f2;\n\t}\n&lt;/style&gt;\n\n&lt;script&gt;\ndocument.addEventListener('DOMContentLoaded', function() {\n    // Format all currency values\n    document.querySelectorAll('.lv-currency').forEach(function(element) {\n        const value = parseFloat(element.textContent.replace(/[,$]/g, ''));\n        if (!isNaN(value)) {\n            element.textContent = value.toLocaleString('en-US', {\n                style: 'currency',\n                currency: 'USD'\n            });\n        }\n    });\n\n    // Initialize table sorting for all sortable tables\n    initializeTableSorting();\n\n    function initializeTableSorting() {\n        document.querySelectorAll('.sortable-table').forEach(function(table) {\n            const headers = table.querySelectorAll('.sortable-header');\n            headers.forEach(function(header) {\n                header.addEventListener('click', function() {\n                    handleHeaderClick(table, header);\n                });\n            });\n        });\n    }\n\n    function handleHeaderClick(table, clickedHeader) {\n        const column = clickedHeader.dataset.column;\n        const currentSort = clickedHeader.classList.contains('sort-asc') ? 'asc' :\n                           clickedHeader.classList.contains('sort-desc') ? 'desc' : null;\n\n        // Clear all sort indicators from this table\n        table.querySelectorAll('.sortable-header').forEach(function(header) {\n            header.classList.remove('sort-asc', 'sort-desc');\n        });\n\n        // Determine new sort direction\n        let newDirection;\n        if (currentSort === 'asc') {\n            newDirection = 'desc';\n        } else if (currentSort === 'desc') {\n            newDirection = 'asc';\n        } else {\n            newDirection = 'asc';\n        }\n\n        // Add sort indicator to clicked header\n        clickedHeader.classList.add('sort-' + newDirection);\n\n        // Sort the table\n        sortTable(table, column, newDirection);\n    }\n\n    function sortTable(table, column, direction) {\n        const tbody = table.querySelector('tbody');\n        const rows = Array.from(tbody.querySelectorAll('tr'));\n\n        // Get column index\n        const headers = table.querySelectorAll('.sortable-header');\n        let columnIndex = -1;\n        for (let i = 0; i &lt; headers.length; i++) {\n            if (headers[i].dataset.column === column) {\n                columnIndex = i;\n                break;\n            }\n        }\n\n        if (columnIndex === -1) return;\n\n        // Sort rows\n        rows.sort(function(rowA, rowB) {\n            const cellA = rowA.cells[columnIndex].textContent.trim();\n            const cellB = rowB.cells[columnIndex].textContent.trim();\n\n            // Try to parse as numbers first\n            const numA = parseFloat(cellA.replace(/[,$]/g, ''));\n            const numB = parseFloat(cellB.replace(/[,$]/g, ''));\n\n            let comparison;\n            if (!isNaN(numA) &amp;&amp; !isNaN(numB)) {\n                // Numeric comparison\n                comparison = numA - numB;\n            } else {\n                // String comparison\n                comparison = cellA.localeCompare(cellB);\n            }\n\n            return direction === 'asc' ? comparison : -comparison;\n        });\n\n        // Clear tbody and re-append sorted rows\n        tbody.innerHTML = '';\n        rows.forEach(function(row) {\n            tbody.appendChild(row);\n        });\n    }\n\n    // Branch collapse/expand functionality for the branch table\n    document.querySelectorAll('.branch-toggle').forEach(function(toggle) {\n        toggle.addEventListener('click', function() {\n            const period = this.dataset.period;\n            const branchRows = document.querySelectorAll(`tr.branch-row[data-period=\"${period}\"]`);\n            const loanOfficerRows = document.querySelectorAll(`tr.loan-officer-row[data-period=\"${period}\"]`);\n            const icon = this.querySelector('i');\n            \n            const isHidden = branchRows[0] &amp;&amp; branchRows[0].classList.contains('hidden-row');\n            \n            branchRows.forEach(row =&gt; {\n                if (isHidden) {\n                    row.classList.remove('hidden-row');\n                } else {\n                    row.classList.add('hidden-row');\n                }\n            });\n            \n            // Always hide loan officer rows when collapsing period\n            if (!isHidden) {\n                loanOfficerRows.forEach(row =&gt; {\n                    row.classList.add('hidden-row');\n                });\n            }\n            \n            // Update icon\n            if (icon) {\n                if (isHidden) {\n                    icon.classList.remove('bi-caret-right-fill');\n                    icon.classList.add('bi-caret-down-fill');\n                } else {\n                    icon.classList.remove('bi-caret-down-fill');\n                    icon.classList.add('bi-caret-right-fill');\n                }\n            }\n        });\n    });\n\n    // Similar functionality for period rows in the hierarchy table\n    document.querySelectorAll('.period-row').forEach(function(row) {\n        row.addEventListener('click', function() {\n            const period = this.dataset.period;\n            const branchRows = document.querySelectorAll(`tr.branch-row[data-period=\"${period}\"]`);\n            const loanOfficerRows = document.querySelectorAll(`tr.loan-officer-row[data-period=\"${period}\"]`);\n            const icon = this.querySelector('i');\n            \n            const isHidden = branchRows[0] &amp;&amp; branchRows[0].classList.contains('hidden-row');\n            \n            branchRows.forEach(row =&gt; {\n                if (isHidden) {\n                    row.classList.remove('hidden-row');\n                } else {\n                    row.classList.add('hidden-row');\n                }\n            });\n            \n            // Always hide loan officer rows when collapsing period\n            if (!isHidden) {\n                loanOfficerRows.forEach(row =&gt; {\n                    row.classList.add('hidden-row');\n                });\n            }\n            \n            // Update icon\n            if (icon) {\n                if (isHidden) {\n                    icon.classList.remove('bi-caret-right-fill');\n                    icon.classList.add('bi-caret-down-fill');\n                } else {\n                    icon.classList.remove('bi-caret-down-fill');\n                    icon.classList.add('bi-caret-right-fill');\n                }\n            }\n        });\n    });\n\n    // Branch expand/collapse functionality for loan officers\n    document.querySelectorAll('.branch-row').forEach(function(row) {\n        row.addEventListener('click', function(e) {\n            e.stopPropagation(); // Prevent period row click\n            const period = this.dataset.period;\n            const branch = this.dataset.branch;\n            const loanOfficerRows = document.querySelectorAll(`tr.loan-officer-row[data-period=\"${period}\"][data-branch=\"${branch}\"]`);\n            const icon = this.querySelector('i');\n            \n            const isHidden = loanOfficerRows[0] &amp;&amp; loanOfficerRows[0].classList.contains('hidden-row');\n            \n            loanOfficerRows.forEach(row =&gt; {\n                if (isHidden) {\n                    row.classList.remove('hidden-row');\n                } else {\n                    row.classList.add('hidden-row');\n                }\n            });\n            \n            // Update icon\n            if (icon) {\n                if (isHidden) {\n                    icon.classList.remove('bi-caret-right-fill');\n                    icon.classList.add('bi-caret-down-fill');\n                } else {\n                    icon.classList.remove('bi-caret-down-fill');\n                    icon.classList.add('bi-caret-right-fill');\n                }\n            }\n        });\n    });\n});\n\n// Commission Section Control Functions\nfunction loadSelectedSections() {\n    const loadingMessage = document.getElementById('loadingMessage');\n    const container = document.getElementById('commissionReportsContainer');\n    loadingMessage.style.display = 'block';\n\n    // Hide all sections first (but don't destroy them)\n    document.querySelectorAll('.commission-section').forEach(section =&gt; {\n        section.style.display = 'none';\n    });\n\n    // Show selected sections by moving them to the container\n    const sections = ['period', 'looping', 'branch', 'officer', 'commissions'];\n    let anySelected = false;\n\n    sections.forEach(section =&gt; {\n        const checkbox = document.getElementById(`show${section.charAt(0).toUpperCase() + section.slice(1)}Check`);\n        if (checkbox &amp;&amp; checkbox.checked) {\n            // Search for section globally (it may have been moved previously)\n            const sectionDiv = document.querySelector(`.commission-section[data-section=\"${section}\"]`);\n            if (sectionDiv) {\n                sectionDiv.style.display = 'block';\n                // Move to container if not already there\n                if (sectionDiv.parentElement !== container) {\n                    container.appendChild(sectionDiv);\n                }\n                anySelected = true;\n            }\n        }\n    });\n\n    // Hide loading message after a short delay\n    setTimeout(() =&gt; {\n        loadingMessage.style.display = 'none';\n        if (!anySelected) {\n            alert('Please select at least one report to display.');\n        } else {\n            // Scroll to container\n            container.scrollIntoView({ behavior: 'smooth', block: 'start' });\n        }\n    }, 500);\n}\n\nfunction clearAllSections() {\n    // Hide all sections\n    document.querySelectorAll('.commission-section').forEach(section =&gt; {\n        section.style.display = 'none';\n    });\n\n    // Uncheck all checkboxes\n    const checkboxes = ['showPeriodCheck', 'showLoopingCheck', 'showBranchCheck', 'showOfficerCheck', 'showCommissionsCheck'];\n    checkboxes.forEach(id =&gt; {\n        const checkbox = document.getElementById(id);\n        if (checkbox) {\n            checkbox.checked = false;\n        }\n    });\n}\n&lt;/script&gt;\n&lt;!-- Last modified Tue Sep 02 5:27PM --&gt;\n&lt;!-- Last modified Mon Nov 10 1:28PM --&gt;\n&lt;!-- Last modified Mon Nov 10 1:41PM --&gt;",
+  "customjavascript": "\n",
+  "displayorder": 4,
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "feedbackpolicy": 756150000,
+  "hiddenfromsitemap": true,
+  "isroot": false,
+  "pagetemplateid": "cd587cbe-a61f-4c11-a750-6d0235a784ef",
+  "parentpageid": "362995e0-7dc5-4bbf-9595-062f468d2d44",
+  "partialurl": "Diag",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "rootwebpageid": "1fbe1936-197c-95df-44ed-0821fb35ea91",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;p&gt;This is a sample landing page designed to be a starting point for your website&lt;/p&gt;\n",
+  "title": "Diag"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Diag</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <searchcontent>Diag&lt;!-- Last modified Mon Nov 10 1:41PM --&gt;
+&lt;!-- Last modified Mon Nov 10 1:28PM --&gt;
+&lt;!-- Last modified Tue Sep 02 5:27PM --&gt;
+&lt;!-- Last modified thu jul 31 10:49am --&gt;
+{% include 'snippet' snippet_name:'FetchXML - SetupQuery' %}
+
+&lt;div class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;"&gt;
+	&lt;div class="container" style="display: flex; flex-wrap: wrap;"&gt;
+		&lt;div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; padding: 16px; margin: 60px 0px;"&gt;
+
+			&lt;h1&gt;System Diagnostics &amp; Data Browser&lt;/h1&gt;
+			&lt;p class="text-muted"&gt;Comprehensive system information and data inspection tool&lt;/p&gt;
+			&lt;p class="text-muted"&gt;&lt;small&gt;Updated Thu Oct 23, 6:10am&lt;/small&gt;&lt;/p&gt;
+
+			&lt;!-- Commission Summary Controls --&gt;
+			&lt;div class="card mt-3"&gt;
+				&lt;div class="card-header bg-info text-white"&gt;
+					&lt;h5 class="mb-0"&gt;&lt;i class="fas fa-chart-bar"&gt;&lt;/i&gt; Commission Summary Reports&lt;/h5&gt;
+				&lt;/div&gt;
+				&lt;div class="card-body"&gt;
+					&lt;p class="mb-3"&gt;
+						&lt;strong&gt;Note:&lt;/strong&gt; These reports query all commission data and may be slow on large installations.
+						Select which summaries to display below.
+					&lt;/p&gt;
+					&lt;div class="row"&gt;
+						&lt;div class="col-md-6"&gt;
+							&lt;div class="form-check"&gt;
+								&lt;input class="form-check-input" type="checkbox" id="showPeriodCheck"&gt;
+								&lt;label class="form-check-label" for="showPeriodCheck"&gt;
+									&lt;strong&gt;Commissions by Period&lt;/strong&gt; - Aggregate totals grouped by period
+								&lt;/label&gt;
+							&lt;/div&gt;
+							&lt;div class="form-check mt-2"&gt;
+								&lt;input class="form-check-input" type="checkbox" id="showLoopingCheck"&gt;
+								&lt;label class="form-check-label" for="showLoopingCheck"&gt;
+									&lt;strong&gt;Looping Method&lt;/strong&gt; - Alternative calculation approach (slower)
+								&lt;/label&gt;
+							&lt;/div&gt;
+							&lt;div class="form-check mt-2"&gt;
+								&lt;input class="form-check-input" type="checkbox" id="showBranchCheck"&gt;
+								&lt;label class="form-check-label" for="showBranchCheck"&gt;
+									&lt;strong&gt;By Period and Branch&lt;/strong&gt; - Grouped by period and branch
+								&lt;/label&gt;
+							&lt;/div&gt;
+						&lt;/div&gt;
+						&lt;div class="col-md-6"&gt;
+							&lt;div class="form-check"&gt;
+								&lt;input class="form-check-input" type="checkbox" id="showOfficerCheck"&gt;
+								&lt;label class="form-check-label" for="showOfficerCheck"&gt;
+									&lt;strong&gt;By Period, Branch, and Loan Officer&lt;/strong&gt; - Full hierarchy
+								&lt;/label&gt;
+							&lt;/div&gt;
+							&lt;div class="form-check mt-2"&gt;
+								&lt;input class="form-check-input" type="checkbox" id="showCommissionsCheck"&gt;
+								&lt;label class="form-check-label" for="showCommissionsCheck"&gt;
+									&lt;strong&gt;Raw Commission Data&lt;/strong&gt; - Latest period verification
+								&lt;/label&gt;
+							&lt;/div&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+					&lt;div class="mt-3"&gt;
+						&lt;button class="btn btn-primary" onclick="loadSelectedSections()"&gt;
+							&lt;i class="fas fa-sync-alt"&gt;&lt;/i&gt; Load Selected Reports
+						&lt;/button&gt;
+						&lt;button class="btn btn-secondary ms-2" onclick="clearAllSections()"&gt;
+							&lt;i class="fas fa-times"&gt;&lt;/i&gt; Clear All
+						&lt;/button&gt;
+					&lt;/div&gt;
+					&lt;div id="loadingMessage" class="mt-3 alert alert-info" style="display: none;"&gt;
+						&lt;i class="fas fa-spinner fa-spin"&gt;&lt;/i&gt; Loading selected reports...
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+
+			&lt;!-- Commission Summary Report Output Area (populated by JavaScript) --&gt;
+			&lt;div id="commissionReportsContainer"&gt;&lt;/div&gt;
+
+			{% comment %} I try to keep this in sync with same in rcm2, but never a guarantee {% endcomment %}
+			&lt;div class="card mt-3"&gt; &lt;!-- USER INFORMATION --&gt;
+				&lt;div class="card-header"&gt;
+					&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#currentUserCollapse" aria-expanded="true" aria-controls="currentUserCollapse"&gt;
+						Current User Information
+					&lt;/button&gt;
+				&lt;/div&gt;
+
+				&lt;div class="collapse" id="currentUserCollapse"&gt;
+					&lt;div class="card-body"&gt;
+						&lt;table class="user-table"&gt;
+							&lt;thead&gt;
+								&lt;tr&gt;
+									&lt;th&gt;Variable&lt;/th&gt;
+									&lt;th&gt;Value&lt;/th&gt;
+								&lt;/tr&gt;
+							&lt;/thead&gt;
+							&lt;tbody&gt;
+								&lt;tr&gt;&lt;td&gt;user.id&lt;/td&gt;&lt;td&gt;{{ user.id }}&lt;/td&gt;&lt;/tr&gt;
+								&lt;tr&gt;&lt;td&gt;user.username&lt;/td&gt;&lt;td&gt;{{ user.username }}&lt;/td&gt;&lt;/tr&gt;
+								&lt;tr&gt;&lt;td&gt;user.firstname&lt;/td&gt;&lt;td&gt;{{ user.firstname }}&lt;/td&gt;&lt;/tr&gt;
+								&lt;tr&gt;&lt;td&gt;user.middlename&lt;/td&gt;&lt;td&gt;{{ user.middlename }}&lt;/td&gt;&lt;/tr&gt;
+								&lt;tr&gt;&lt;td&gt;user.lastname&lt;/td&gt;&lt;td&gt;{{ user.lastname }}&lt;/td&gt;&lt;/tr&gt;
+								&lt;tr&gt;&lt;td&gt;user.fullname             &lt;/td&gt;&lt;td&gt;{{ user.fullname }}&lt;/td&gt;&lt;/tr&gt;
+								&lt;tr&gt;&lt;td&gt;user.emailaddress1        &lt;/td&gt;&lt;td&gt;{{ user.emailaddress1 }}&lt;/td&gt;&lt;/tr&gt;
+								&lt;tr&gt;&lt;td&gt;user.lv_branch.id&lt;/td&gt;&lt;td&gt;{{ user.lv_branch.id }}&lt;/td&gt;&lt;/tr&gt;
+								&lt;tr&gt;&lt;td&gt;user.lv_branch.name&lt;/td&gt;&lt;td&gt;{{ user.lv_branch.name }}&lt;/td&gt;&lt;/tr&gt;		
+								&lt;tr&gt;&lt;td&gt;user.lv_loanofficer.id&lt;/td&gt;&lt;td&gt;{{ user.lv_loanofficer.id }}&lt;/td&gt;&lt;/tr&gt;
+								&lt;tr&gt;&lt;td&gt;user.lv_loanofficer.name&lt;/td&gt;&lt;td&gt;{{ user.lv_loanofficer.name }}&lt;/td&gt;&lt;/tr&gt;
+								&lt;tr&gt;&lt;td&gt;user.lv_loanofficer.code&lt;/td&gt;&lt;td&gt;{{ user.lv_loanofficer.code }}&lt;/td&gt;&lt;/tr&gt;
+								&lt;tr&gt;&lt;td&gt;user.lv_loanofficer.lv_code&lt;/td&gt;&lt;td&gt;{{ user.lv_loanofficer.lv_code }}&lt;/td&gt;&lt;/tr&gt;
+								&lt;tr&gt;&lt;td&gt;user.lv_loanofficer (full object)&lt;/td&gt;&lt;td&gt;{{ user.lv_loanofficer }}&lt;/td&gt;&lt;/tr&gt;
+
+								&lt;tr&gt;
+									&lt;td&gt;user.roles&lt;/td&gt;
+									&lt;td&gt;
+										{% for role in user.roles %}
+											{{ role }} ;
+										{% endfor %}
+									&lt;/td&gt;
+								&lt;/tr&gt;
+
+								&lt;tr&gt;&lt;td&gt;user.isAuthenticated&lt;/td&gt;&lt;td class="authenticated"&gt;{{ user.isAuthenticated }}&lt;/td&gt;&lt;/tr&gt;
+								&lt;tr&gt;&lt;td&gt;user.type&lt;/td&gt;&lt;td&gt;{{ user.type }}&lt;/td&gt;&lt;/tr&gt;
+
+								&lt;tr&gt;&lt;td&gt;userBranchList&lt;/td&gt;&lt;td&gt;{{userBranchList}}&lt;/td&gt;&lt;/tr&gt;
+								&lt;tr&gt;&lt;td&gt;userLoanOfficerList&lt;/td&gt;&lt;td&gt;{{userLoanOfficerList}}&lt;/td&gt;&lt;/tr&gt;
+							&lt;/tbody&gt;
+						&lt;/table&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+
+			&lt;div class="card mt-3"&gt; &lt;!-- PERIOD INFORMATION --&gt;
+				&lt;div class="card-header"&gt;
+					&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#periodCollapse" aria-expanded="false" aria-controls="periodCollapse"&gt;
+						Period
+					&lt;/button&gt;
+				&lt;/div&gt;
+
+				&lt;div class="collapse" id="periodCollapse"&gt;
+					&lt;div class="card-body"&gt;
+						{% fetchxml periodData %}
+							&lt;fetch&gt;
+								&lt;entity name="lv_lvcompcommperiodcalc"&gt;
+									&lt;attribute name="lv_periodno" /&gt;
+									&lt;attribute name="lv_name" /&gt;
+									&lt;attribute name="lv_visibleonweb" /&gt;
+									&lt;attribute name="lv_datefrom" /&gt;
+									&lt;attribute name="lv_dateto" /&gt;
+									&lt;attribute name="lv_periodcode" /&gt;
+
+									&lt;order attribute="lv_periodno" descending="true" /&gt;
+								&lt;/entity&gt;
+							&lt;/fetch&gt;
+						{% endfetchxml %}
+
+						&lt;p&gt;&lt;strong&gt;Count:&lt;/strong&gt; {{ periodData.results.entities.size }}&lt;/p&gt;
+
+						&lt;table class="table table-striped sortable-table" id="periodTable"&gt;
+							&lt;thead&gt;
+								&lt;tr&gt;
+									&lt;th class="sortable-header" data-column="periodno"&gt;Period No&lt;/th&gt;
+									&lt;th class="sortable-header" data-column="name"&gt;Name&lt;/th&gt;
+									&lt;th class="sortable-header" data-column="visible"&gt;Visible&lt;/th&gt;
+									&lt;th class="sortable-header" data-column="datefrom"&gt;Date From&lt;/th&gt;
+									&lt;th class="sortable-header" data-column="dateto"&gt;Date To&lt;/th&gt;
+									&lt;th class="sortable-header" data-column="periodcode"&gt;Period Code&lt;/th&gt;
+								&lt;/tr&gt;
+							&lt;/thead&gt;
+							&lt;tbody&gt;
+								{% for period in periodData.results.entities %}
+									&lt;tr&gt;
+										&lt;td&gt;{{ period.lv_periodno }}&lt;/td&gt;
+										&lt;td&gt;{{ period.lv_name }}&lt;/td&gt;
+										&lt;td&gt;{{ period.lv_visibleonweb }}&lt;/td&gt;
+										&lt;td&gt;{{ period.lv_datefrom | date: 'yyyy-MM-dd' }}&lt;/td&gt;
+										&lt;td&gt;{{ period.lv_dateto | date: 'yyyy-MM-dd' }}&lt;/td&gt;
+										&lt;td&gt;{{ period.lv_periodcode }}&lt;/td&gt;
+									&lt;/tr&gt;
+								{% endfor %}
+							&lt;/tbody&gt;
+						&lt;/table&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+
+			&lt;div class="card mt-3"&gt; &lt;!-- LOAN OFFICER INFORMATION --&gt;
+				&lt;div class="card-header"&gt;
+					&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#loanOfficerCollapse" aria-expanded="false" aria-controls="loanOfficerCollapse"&gt;
+						Loan Officers
+					&lt;/button&gt;
+				&lt;/div&gt;
+
+				&lt;div class="collapse" id="loanOfficerCollapse"&gt;
+					&lt;div class="card-body"&gt;
+						{% fetchxml loanOfficerData %}
+							&lt;fetch&gt;
+								&lt;entity name="lv_lvcomploanofficer"&gt;
+									&lt;attribute name="lv_name"&gt;&lt;/attribute&gt;
+									&lt;attribute name="lv_code"&gt;&lt;/attribute&gt;
+									&lt;attribute name="lv_xbranchcode"&gt;&lt;/attribute&gt;
+									&lt;order attribute="lv_name" /&gt;
+								&lt;/entity&gt;
+							&lt;/fetch&gt;
+						{% endfetchxml %}
+
+						&lt;p&gt;&lt;strong&gt;Count:&lt;/strong&gt; {{ loanOfficerData.results.entities.size }}&lt;/p&gt;
+
+						&lt;table class="table table-striped sortable-table" id="loanOfficerTable"&gt;
+							&lt;thead&gt;
+								&lt;tr&gt;
+									&lt;th class="sortable-header" data-column="name"&gt;Name&lt;/th&gt;
+									&lt;th class="sortable-header" data-column="code"&gt;Code&lt;/th&gt;
+									&lt;th class="sortable-header" data-column="branchcode"&gt;Branch Code&lt;/th&gt;
+								&lt;/tr&gt;
+							&lt;/thead&gt;
+							&lt;tbody&gt;
+								{% for officer in loanOfficerData.results.entities %}
+									&lt;tr&gt;
+										&lt;td&gt;{{ officer.lv_name }}&lt;/td&gt;
+										&lt;td&gt;{{ officer.lv_code }}&lt;/td&gt;
+										&lt;td&gt;{{ officer.lv_xbranchcode }}&lt;/td&gt;
+									&lt;/tr&gt;
+								{% endfor %}
+							&lt;/tbody&gt;
+						&lt;/table&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+
+			&lt;div class="card mt-3"&gt; &lt;!-- BRANCH LOAN OFFICER ASSIGNMENTS --&gt;
+				&lt;div class="card-header"&gt;
+					&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#branchAssignmentsCollapse" aria-expanded="false" aria-controls="branchAssignmentsCollapse"&gt;
+						Contact Branch Assignments
+					&lt;/button&gt;
+				&lt;/div&gt;
+
+				&lt;div class="collapse" id="branchAssignmentsCollapse"&gt;
+					&lt;div class="card-body"&gt;
+						{% fetchxml branchAssignmentData %}
+							&lt;fetch&gt;
+								&lt;entity name="lv_contactbranchassignment"&gt;
+									&lt;attribute name="lv_name" /&gt;
+									&lt;attribute name="lv_contactname" /&gt;
+									&lt;attribute name="lv_branchname" /&gt;
+									&lt;attribute name="lv_branchcode" /&gt;
+									&lt;attribute name="createdby" /&gt;
+								&lt;/entity&gt;
+							&lt;/fetch&gt;
+						{% endfetchxml %}
+
+						&lt;p&gt;&lt;strong&gt;Count:&lt;/strong&gt; {{ branchAssignmentData.results.entities.size }}&lt;/p&gt;
+
+						&lt;table class="table table-striped sortable-table" id="branchAssignmentTable"&gt;
+							&lt;thead&gt;
+								&lt;tr&gt;
+									&lt;th class="sortable-header" data-column="name"&gt;Name&lt;/th&gt;
+									&lt;th class="sortable-header" data-column="contact"&gt;Contact&lt;/th&gt;
+									&lt;th class="sortable-header" data-column="branch"&gt;Branch&lt;/th&gt;
+									&lt;th class="sortable-header" data-column="code"&gt;Code&lt;/th&gt;
+									&lt;th class="sortable-header" data-column="createdby"&gt;Created By&lt;/th&gt;
+								&lt;/tr&gt;
+							&lt;/thead&gt;
+							&lt;tbody&gt;
+								{% for row in branchAssignmentData.results.entities %}
+									&lt;tr&gt;
+										&lt;td&gt;{{ row.lv_name }}&lt;/td&gt;
+										&lt;td&gt;{{ row.lv_contactname }}&lt;/td&gt;
+										&lt;td&gt;{{ row.lv_branchname }}&lt;/td&gt;
+										&lt;td&gt;{{ row.lv_branchcode }}&lt;/td&gt;
+										&lt;td&gt;{{ row.createdby.name }}&lt;/td&gt;
+									&lt;/tr&gt;
+								{% endfor %}
+							&lt;/tbody&gt;
+						&lt;/table&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+
+			&lt;div class="card mt-3"&gt; &lt;!-- Contact LO Relationships --&gt;
+				&lt;div class="card-header"&gt;
+					&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#loRelationshipsCollapse" aria-expanded="false" aria-controls="loRelationshipsCollapse"&gt;
+						Contact Loan Officer Relationships
+					&lt;/button&gt;
+				&lt;/div&gt;
+
+				&lt;div class="collapse" id="loRelationshipsCollapse"&gt;
+					&lt;div class="card-body"&gt;
+						{% fetchxml loRelationshipData %}
+							&lt;fetch&gt;
+								&lt;entity name="lv_contactloanofficerrelationship"&gt;
+									&lt;attribute name="lv_name" /&gt;
+									&lt;attribute name="lv_contactname" /&gt;
+									&lt;attribute name="lv_loanofficername" /&gt;
+									&lt;attribute name="lv_loanofficercode" /&gt;
+									&lt;attribute name="lv_relationshiptype" /&gt;
+									&lt;attribute name="lv_reason" /&gt;
+									&lt;attribute name="createdby" /&gt;
+								&lt;/entity&gt;
+							&lt;/fetch&gt;
+						{% endfetchxml %}
+
+						&lt;p&gt;&lt;strong&gt;Count:&lt;/strong&gt; {{ loRelationshipData.results.entities.size }}&lt;/p&gt;
+
+						&lt;table class="table table-striped sortable-table" id="loRelationshipTable"&gt;
+							&lt;thead&gt;
+								&lt;tr&gt;
+									&lt;th class="sortable-header" data-column="name"&gt;Name&lt;/th&gt;
+									&lt;th class="sortable-header" data-column="contact"&gt;Contact&lt;/th&gt;
+									&lt;th class="sortable-header" data-column="loanofficer"&gt;Loan Officer&lt;/th&gt;
+									&lt;th class="sortable-header" data-column="code"&gt;Code&lt;/th&gt;
+									&lt;th class="sortable-header" data-column="type"&gt;Type&lt;/th&gt;
+									&lt;th class="sortable-header" data-column="reason"&gt;Reason&lt;/th&gt;
+									&lt;th class="sortable-header" data-column="createdby"&gt;Created By&lt;/th&gt;
+								&lt;/tr&gt;
+							&lt;/thead&gt;
+							&lt;tbody&gt;
+								{% for row in loRelationshipData.results.entities %}
+									&lt;tr&gt;
+										&lt;td&gt;{{ row.lv_name }}&lt;/td&gt;
+										&lt;td&gt;{{ row.lv_contactname }}&lt;/td&gt;
+										&lt;td&gt;{{ row.lv_loanofficername }}&lt;/td&gt;
+										&lt;td&gt;{{ row.lv_loanofficercode }}&lt;/td&gt;
+										&lt;td&gt;{% if row.lv_relationshiptype == 'O' %}Oversight{% elsif row.lv_relationshiptype == 'X' %}Exclusion{% else %}{{ row.lv_relationshiptype }}{% endif %}&lt;/td&gt;
+										&lt;td&gt;{{ row.lv_reason }}&lt;/td&gt;
+										&lt;td&gt;{{ row.createdby.name }}&lt;/td&gt;
+									&lt;/tr&gt;
+								{% endfor %}
+							&lt;/tbody&gt;
+						&lt;/table&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+
+			&lt;div class="card mt-3"&gt; &lt;!-- LV COMP BRANCH --&gt;
+				&lt;div class="card-header"&gt;
+					&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#lvCompBranchCollapse" aria-expanded="false" aria-controls="lvCompBranchCollapse"&gt;
+						lv_lvcompBranch
+					&lt;/button&gt;
+				&lt;/div&gt;
+
+				&lt;div class="collapse" id="lvCompBranchCollapse"&gt;
+					&lt;div class="card-body"&gt;
+						{% fetchxml lvCompBranchData %}
+							&lt;fetch&gt;
+								&lt;entity name="lv_lvcompbranch"&gt;
+									&lt;attribute name="lv_code" /&gt;
+									&lt;attribute name="lv_name" /&gt;
+									&lt;order attribute="lv_code" /&gt;
+								&lt;/entity&gt;
+							&lt;/fetch&gt;
+						{% endfetchxml %}
+
+						&lt;p&gt;&lt;strong&gt;Count:&lt;/strong&gt; {{ lvCompBranchData.results.entities.size }}&lt;/p&gt;
+
+						&lt;table class="table table-striped sortable-table" id="lvCompBranchTable"&gt;
+							&lt;thead&gt;
+								&lt;tr&gt;
+									&lt;th class="sortable-header" data-column="code"&gt;Code&lt;/th&gt;
+									&lt;th class="sortable-header" data-column="name"&gt;Name&lt;/th&gt;
+								&lt;/tr&gt;
+							&lt;/thead&gt;
+							&lt;tbody&gt;
+								{% for branch in lvCompBranchData.results.entities %}
+									&lt;tr&gt;
+										&lt;td&gt;{{ branch.lv_code }}&lt;/td&gt;
+										&lt;td&gt;{{ branch.lv_name }}&lt;/td&gt;
+									&lt;/tr&gt;
+								{% endfor %}
+							&lt;/tbody&gt;
+						&lt;/table&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+
+			&lt;div class="card mt-3"&gt; &lt;!-- DYN365BC BRANCH --&gt;
+				&lt;div class="card-header"&gt;
+					&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#dyn365bcBranchCollapse" aria-expanded="false" aria-controls="dyn365bcBranchCollapse"&gt;
+						dyn365bc_branch_loanvision_loanvision_v2_0
+					&lt;/button&gt;
+				&lt;/div&gt;
+
+				&lt;div class="collapse" id="dyn365bcBranchCollapse"&gt;
+					&lt;div class="card-body"&gt;
+						{% fetchxml dyn365bcBranchData %}
+							&lt;fetch&gt;
+								&lt;entity name="dyn365bc_branch_loanvision_loanvision_v2_0"&gt;
+									&lt;attribute name="dyn365bc_code" /&gt;
+									&lt;attribute name="dyn365bc_name" /&gt;
+									&lt;order attribute="dyn365bc_code" /&gt;
+								&lt;/entity&gt;
+							&lt;/fetch&gt;
+						{% endfetchxml %}
+
+						&lt;p&gt;&lt;strong&gt;Count:&lt;/strong&gt; {{ dyn365bcBranchData.results.entities.size }}&lt;/p&gt;
+
+						&lt;table class="table table-striped sortable-table" id="dyn365bcBranchTable"&gt;
+							&lt;thead&gt;
+								&lt;tr&gt;
+									&lt;th class="sortable-header" data-column="code"&gt;Code&lt;/th&gt;
+									&lt;th class="sortable-header" data-column="name"&gt;Name&lt;/th&gt;
+								&lt;/tr&gt;
+							&lt;/thead&gt;
+							&lt;tbody&gt;
+								{% for branch in dyn365bcBranchData.results.entities %}
+									&lt;tr&gt;
+										&lt;td&gt;{{ branch.dyn365bc_code }}&lt;/td&gt;
+										&lt;td&gt;{{ branch.dyn365bc_name }}&lt;/td&gt;
+									&lt;/tr&gt;
+								{% endfor %}
+							&lt;/tbody&gt;
+						&lt;/table&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+
+			&lt;!-- First Card: Commissions by Period (Hidden by default) --&gt;
+				&lt;div class="card mt-3 commission-section" data-section="period" style="display: none;"&gt;
+					&lt;div class="card-header"&gt;
+						&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#periodCommissionsCollapse" aria-expanded="true" aria-controls="periodCommissionsCollapse"&gt;
+							Commissions by Period &lt;span class="text-muted"&gt;(period)&lt;/span&gt;
+						&lt;/button&gt;
+					&lt;/div&gt;
+					&lt;div class="collapse show" id="periodCommissionsCollapse"&gt;
+						&lt;div class="card-body"&gt;
+							{% fetchxml commissionDataByPeriod %}
+								&lt;fetch distinct="false" mapping="logical" aggregate="true"&gt;
+									&lt;entity name="lv_lvcompcommission"&gt;
+										&lt;attribute name="lv_periodno" groupby="true" alias="period" /&gt;
+										&lt;attribute name="lv_lvcompcommissionid" aggregate="count" alias="count" /&gt;
+										&lt;attribute name="lv_amount" aggregate="sum" alias="total_amount" /&gt;
+										&lt;order alias="period" descending="true" /&gt;
+									&lt;/entity&gt;
+								&lt;/fetch&gt;
+							{% endfetchxml %}
+							
+							{% comment %} Get period names separately to avoid groupby issues {% endcomment %}
+							{% fetchxml periodNames %}
+								&lt;fetch distinct="true" mapping="logical"&gt;
+									&lt;entity name="lv_lvcompcommperiodcalc"&gt;
+										&lt;attribute name="lv_periodno" /&gt;
+										&lt;attribute name="lv_name" /&gt;
+										&lt;order attribute="lv_periodno" descending="true" /&gt;
+									&lt;/entity&gt;
+								&lt;/fetch&gt;
+							{% endfetchxml %}
+
+							&lt;div class="w-50"&gt;
+								&lt;table id="commissionTable" class="table table-striped"&gt;
+									&lt;thead&gt;
+										&lt;tr&gt;
+											&lt;th class="w-15"&gt;Period Number&lt;/th&gt;
+											&lt;th class="w-45"&gt;Period Name&lt;/th&gt;
+											&lt;th class="w-20 text-end"&gt;Count&lt;/th&gt;
+											&lt;th class="w-20 text-end"&gt;Total Amount&lt;/th&gt;
+										&lt;/tr&gt;
+									&lt;/thead&gt;
+									&lt;tbody&gt;
+										{% assign total_count = 0 %}
+										{% assign total_amount = 0 %}
+										
+										{% for item in commissionDataByPeriod.results.entities %}
+											{% comment %} Find matching period name {% endcomment %}
+											{% assign period_name = "Unknown" %}
+											{% for period in periodNames.results.entities %}
+												{% if period.lv_periodno == item.period %}
+													{% assign period_name = period.lv_name %}
+													{% break %}
+												{% endif %}
+											{% endfor %}
+											
+											&lt;tr&gt;
+												&lt;td class="w-15"&gt;{{ item.period }}&lt;/td&gt;
+												&lt;td class="w-45"&gt;{{ period_name }}&lt;/td&gt;
+												&lt;td class="w-20 text-end"&gt;{{ item.count }}&lt;/td&gt;
+												&lt;td class="w-20 text-end lv-currency"&gt;{{ item.total_amount }}&lt;/td&gt;
+											&lt;/tr&gt;
+											{% assign total_count = total_count | plus: item.count %}
+											{% assign total_amount = total_amount | plus: item.total_amount %}
+										{% endfor %}
+										
+										&lt;tr class="summary-row"&gt;
+											&lt;td colspan="2"&gt;Total&lt;/td&gt;
+											&lt;td class="text-end"&gt;{{ total_count }}&lt;/td&gt;
+											&lt;td class="text-end lv-currency"&gt;{{ total_amount }}&lt;/td&gt;
+										&lt;/tr&gt;
+									&lt;/tbody&gt;
+								&lt;/table&gt;
+							&lt;/div&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+
+			&lt;!-- Looping Card: Commissions by Period (Primitive Looping Approach) --&gt;
+				&lt;div class="card mt-3 commission-section" data-section="looping" style="display: none;"&gt;
+					&lt;div class="card-header"&gt;
+						&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#loopingCollapse" aria-expanded="false" aria-controls="loopingCollapse"&gt;
+							Commissions by Period - Looping Method &lt;span class="text-muted"&gt;(looping)&lt;/span&gt;
+						&lt;/button&gt;
+					&lt;/div&gt;
+					&lt;div class="collapse" id="loopingCollapse"&gt;
+						&lt;div class="card-body"&gt;
+							{% comment %} First get all periods {% endcomment %}
+							{% fetchxml allPeriods %}
+								&lt;fetch distinct="true" mapping="logical"&gt;
+									&lt;entity name="lv_lvcompcommperiodcalc"&gt;
+										&lt;attribute name="lv_periodno" /&gt;
+										&lt;attribute name="lv_name" /&gt;
+										&lt;order attribute="lv_periodno" descending="true" /&gt;
+									&lt;/entity&gt;
+								&lt;/fetch&gt;
+							{% endfetchxml %}
+							
+							&lt;div class="w-50"&gt;
+								&lt;table id="loopingCommissionTable" class="table table-striped"&gt;
+									&lt;thead&gt;
+										&lt;tr&gt;
+											&lt;th class="w-15"&gt;Period Number&lt;/th&gt;
+											&lt;th class="w-45"&gt;Period Name&lt;/th&gt;
+											&lt;th class="w-20 text-end"&gt;Count&lt;/th&gt;
+											&lt;th class="w-20 text-end"&gt;Total Amount&lt;/th&gt;
+										&lt;/tr&gt;
+									&lt;/thead&gt;
+									&lt;tbody&gt;
+										{% assign loop_total_count = 0 %}
+										{% assign loop_total_amount = 0.0 %}
+										
+										{% comment %} Loop through each period and query commissions {% endcomment %}
+										{% for period in allPeriods.results.entities %}
+											{% assign currentPeriodNo = period.lv_periodno %}
+											{% assign currentPeriodName = period.lv_name %}
+											
+											{% comment %} Query commissions for this specific period {% endcomment %}
+											{% fetchxml periodCommissions %}
+												&lt;fetch distinct="false" mapping="logical"&gt;
+													&lt;entity name="lv_lvcompcommission"&gt;
+														&lt;attribute name="lv_lvcompcommissionid" /&gt;
+														&lt;attribute name="lv_amount" /&gt;
+														&lt;filter type="and"&gt;
+															&lt;condition attribute="lv_periodno" operator="eq" value="{{currentPeriodNo}}" /&gt;
+														&lt;/filter&gt;
+													&lt;/entity&gt;
+												&lt;/fetch&gt;
+											{% endfetchxml %}
+											
+											{% comment %} Manual counting and summing {% endcomment %}
+											{% assign period_count = 0 %}
+											{% assign period_amount = 0.0 %}
+											
+											{% for commission in periodCommissions.results.entities %}
+												{% assign period_count = period_count | plus: 1 %}
+												{% assign period_amount = period_amount | plus: commission.lv_amount %}
+											{% endfor %}
+											
+											{% comment %} Only show rows with data {% endcomment %}
+											{% if period_count &gt; 0 %}
+												&lt;tr&gt;
+													&lt;td class="w-15"&gt;{{ currentPeriodNo }}&lt;/td&gt;
+													&lt;td class="w-45"&gt;{{ currentPeriodName }}&lt;/td&gt;
+													&lt;td class="w-20 text-end"&gt;{{ period_count }}&lt;/td&gt;
+													&lt;td class="w-20 text-end lv-currency"&gt;{{ period_amount }}&lt;/td&gt;
+												&lt;/tr&gt;
+												{% assign loop_total_count = loop_total_count | plus: period_count %}
+												{% assign loop_total_amount = loop_total_amount | plus: period_amount %}
+											{% endif %}
+										{% endfor %}
+										
+										&lt;tr class="summary-row"&gt;
+											&lt;td colspan="2"&gt;Total&lt;/td&gt;
+											&lt;td class="text-end"&gt;{{ loop_total_count }}&lt;/td&gt;
+											&lt;td class="text-end lv-currency"&gt;{{ loop_total_amount }}&lt;/td&gt;
+										&lt;/tr&gt;
+									&lt;/tbody&gt;
+								&lt;/table&gt;
+							&lt;/div&gt;
+							
+							&lt;div class="mt-3"&gt;
+								&lt;p&gt;&lt;strong&gt;Method:&lt;/strong&gt; Primitive looping approach&lt;/p&gt;
+								&lt;p&gt;&lt;strong&gt;Periods processed:&lt;/strong&gt; {{ allPeriods.results.entities.size }}&lt;/p&gt;
+								&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; This method should work even when aggregate FetchXML fails, as it uses simple filtering on lv_periodno.&lt;/p&gt;
+							&lt;/div&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+
+			&lt;!-- Second Card: Commissions by Period and Branch, With Branch Name --&gt;
+			&lt;div class="card mt-3 commission-section" data-section="branch" style="display: none;"&gt;
+				&lt;div class="card-header"&gt;
+					&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#branchCommissionsCollapse" aria-expanded="true" aria-controls="branchCommissionsCollapse"&gt;
+						Commissions by Period and Branch &lt;span class="text-muted"&gt;(branch)&lt;/span&gt;
+					&lt;/button&gt;
+				&lt;/div&gt;
+				&lt;div class="collapse show" id="branchCommissionsCollapse"&gt;
+					&lt;div class="card-body"&gt;
+						{% fetchxml commissionDataByBranch %}
+							&lt;fetch distinct="false" mapping="logical" aggregate="true"&gt;
+								&lt;entity name="lv_lvcompcommission"&gt;
+									&lt;attribute name="lv_periodno" groupby="true" alias="period" /&gt;
+									&lt;attribute name="lv_xbranchcode" groupby="true" alias="branch" /&gt;
+									&lt;attribute name="lv_lvcompcommissionid" aggregate="count" alias="count" /&gt;
+									&lt;attribute name="lv_amount" aggregate="sum" alias="total_amount" /&gt;
+
+									&lt;link-entity name="lv_lvcompcommperiodcalc" from="lv_periodno" to="lv_periodno" link-type="inner"&gt;
+										&lt;attribute name="lv_name" groupby="true" alias="period_name" /&gt;
+									&lt;/link-entity&gt;
+
+									&lt;link-entity name="lv_lvcompbranch" from="lv_code" to="lv_xbranchcode" link-type="inner"&gt;
+										&lt;attribute name="lv_name" groupby="true" alias="branch_name" /&gt;
+									&lt;/link-entity&gt;
+
+									&lt;order alias="period" descending="true" /&gt;
+									&lt;order alias="branch" descending="false" /&gt;
+								&lt;/entity&gt;
+							&lt;/fetch&gt;
+						{% endfetchxml %}
+
+						&lt;div class="w-75"&gt;
+							&lt;table id="branchTable" class="table table-striped"&gt;
+								&lt;thead&gt;
+									&lt;tr&gt;
+										&lt;th class="w-10"&gt;Period&lt;/th&gt;
+										&lt;th class="w-20"&gt;Period Name&lt;/th&gt;
+										&lt;th class="w-10"&gt;Branch&lt;/th&gt;
+										&lt;th class="w-20"&gt;Branch Name&lt;/th&gt;
+										&lt;th class="w-20 text-end"&gt;Count&lt;/th&gt;
+										&lt;th class="w-20 text-end"&gt;Total Amount&lt;/th&gt;
+									&lt;/tr&gt;
+								&lt;/thead&gt;
+								&lt;tbody&gt;
+									{% assign total_count = 0 %}
+									{% assign total_amount = 0.0 %}
+									{% assign current_period = "" %}
+									{% assign current_period_name = "" %}
+									{% assign period_count = 0 %}
+									{% assign period_amount = 0.0 %}
+									{% assign period_index = 0 %}
+									
+									{% for item in commissionDataByBranch.results.entities %}
+										{% if current_period != item.period and forloop.index &gt; 1 %}
+											&lt;tr class="period-summary" data-period="{{ period_index }}"&gt;
+												&lt;td colspan="4" class="branch-toggle" data-period="{{ period_index }}"&gt;
+													&lt;i class="bi bi-caret-right-fill"&gt;&lt;/i&gt; Period {{ current_period }} - {{ current_period_name }}
+												&lt;/td&gt;
+												&lt;td class="text-end"&gt;{{ period_count }}&lt;/td&gt;
+												&lt;td class="text-end lv-currency"&gt;{{ period_amount }}&lt;/td&gt;
+											&lt;/tr&gt;
+											{% assign period_count = 0 %}
+											{% assign period_amount = 0.0 %}
+											{% assign period_index = period_index | plus: 1 %}
+										{% endif %}
+										
+										&lt;tr class="branch-row" data-period="{{ period_index }}"&gt;
+											&lt;td class="w-10"&gt;{{ item.period }}&lt;/td&gt;
+											&lt;td class="w-20"&gt;{{ item.period_name }}&lt;/td&gt;
+											&lt;td class="w-10"&gt;{{ item.branch }}&lt;/td&gt;
+											&lt;td class="w-20"&gt;{{ item.branch_name }}&lt;/td&gt;
+											&lt;td class="w-20 text-end"&gt;{{ item.count }}&lt;/td&gt;
+											&lt;td class="w-20 text-end lv-currency"&gt;{{ item.total_amount }}&lt;/td&gt;
+										&lt;/tr&gt;
+										
+										{% assign current_period = item.period %}
+										{% assign current_period_name = item.period_name %}
+										{% assign period_count = period_count | plus: item.count %}
+										{% assign period_amount = period_amount | plus: item.total_amount %}
+										{% assign total_count = total_count | plus: item.count %}
+										{% assign total_amount = total_amount | plus: item.total_amount %}
+									{% endfor %}
+									
+									{% if commissionDataByBranch.results.entities.size &gt; 0 %}
+										&lt;tr class="period-summary" data-period="{{ period_index }}"&gt;
+											&lt;td colspan="4" class="branch-toggle" data-period="{{ period_index }}"&gt;
+												&lt;i class="bi bi-caret-right-fill"&gt;&lt;/i&gt; Period {{ current_period }} - {{ current_period_name }}
+											&lt;/td&gt;
+											&lt;td class="text-end"&gt;{{ period_count }}&lt;/td&gt;
+											&lt;td class="text-end lv-currency"&gt;{{ period_amount }}&lt;/td&gt;
+										&lt;/tr&gt;
+									{% endif %}
+									
+									&lt;tr class="summary-row"&gt;
+										&lt;td colspan="4"&gt;Total&lt;/td&gt;
+										&lt;td class="text-end"&gt;{{ total_count }}&lt;/td&gt;
+										&lt;td class="text-end lv-currency"&gt;{{ total_amount }}&lt;/td&gt;
+									&lt;/tr&gt;
+								&lt;/tbody&gt;
+							&lt;/table&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+
+			&lt;!-- Third Card: Commissions by Period, Branch, and Loan Officer --&gt;
+			&lt;div class="card mt-3 commission-section" data-section="officer" style="display: none;"&gt;
+				&lt;div class="card-header"&gt;
+					&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#officerCommissionsCollapse" aria-expanded="true" aria-controls="officerCommissionsCollapse"&gt;
+						Commissions by Period, Branch, and Loan Officer &lt;span class="text-muted"&gt;(officer)&lt;/span&gt;
+					&lt;/button&gt;
+				&lt;/div&gt;
+				&lt;div class="collapse show" id="officerCommissionsCollapse"&gt;
+					&lt;div class="card-body"&gt;
+						{% fetchxml commissionByPeriod %}
+							&lt;fetch distinct="false" mapping="logical" aggregate="true"&gt;
+								&lt;entity name="lv_lvcompcommission"&gt;
+									&lt;attribute name="lv_periodno" groupby="true" alias="period" /&gt;
+									&lt;attribute name="lv_lvcompcommissionid" aggregate="count" alias="count" /&gt;
+									&lt;attribute name="lv_amount" aggregate="sum" alias="total_amount" /&gt;
+									&lt;link-entity name="lv_lvcompcommperiodcalc" from="lv_periodno" to="lv_periodno" link-type="inner"&gt;
+										&lt;attribute name="lv_name" groupby="true" alias="period_name" /&gt;
+									&lt;/link-entity&gt;
+									&lt;order alias="period" descending="true" /&gt;
+								&lt;/entity&gt;
+							&lt;/fetch&gt;
+						{% endfetchxml %}
+
+						{% fetchxml commissionByBranch %}
+							&lt;fetch distinct="false" mapping="logical" aggregate="true"&gt;
+								&lt;entity name="lv_lvcompcommission"&gt;
+									&lt;attribute name="lv_periodno" groupby="true" alias="period" /&gt;
+									&lt;attribute name="lv_xbranchcode" groupby="true" alias="branch" /&gt;
+									&lt;attribute name="lv_lvcompcommissionid" aggregate="count" alias="count" /&gt;
+									&lt;attribute name="lv_amount" aggregate="sum" alias="total_amount" /&gt;
+									&lt;link-entity name="lv_lvcompcommperiodcalc" from="lv_periodno" to="lv_periodno" link-type="inner"&gt;
+										&lt;attribute name="lv_name" groupby="true" alias="period_name" /&gt;
+									&lt;/link-entity&gt;
+									&lt;link-entity name="lv_lvcompbranch" from="lv_code" to="lv_xbranchcode" link-type="inner"&gt;
+										&lt;attribute name="lv_name" groupby="true" alias="branch_name" /&gt;
+									&lt;/link-entity&gt;
+									&lt;order alias="period" descending="true" /&gt;
+									&lt;order alias="branch" descending="false" /&gt;
+								&lt;/entity&gt;
+							&lt;/fetch&gt;
+						{% endfetchxml %}
+						
+						{% fetchxml commissionByLoanOfficer %}
+							&lt;fetch distinct="false" mapping="logical" aggregate="true"&gt;
+								&lt;entity name="lv_lvcompcommission"&gt;
+									&lt;attribute name="lv_periodno" groupby="true" alias="period" /&gt;
+									&lt;attribute name="lv_xbranchcode" groupby="true" alias="branch" /&gt;
+									&lt;attribute name="lv_xloanofficercode" groupby="true" alias="loan_officer" /&gt;
+									&lt;attribute name="lv_lvcompcommissionid" aggregate="count" alias="count" /&gt;
+									&lt;attribute name="lv_amount" aggregate="sum" alias="total_amount" /&gt;
+									&lt;link-entity name="lv_lvcompcommperiodcalc" from="lv_periodno" to="lv_periodno" link-type="inner"&gt;
+										&lt;attribute name="lv_name" groupby="true" alias="period_name" /&gt;
+									&lt;/link-entity&gt;
+									&lt;link-entity name="lv_lvcompbranch" from="lv_code" to="lv_xbranchcode" link-type="inner"&gt;
+										&lt;attribute name="lv_name" groupby="true" alias="branch_name" /&gt;
+									&lt;/link-entity&gt;
+									&lt;order alias="period" descending="true" /&gt;
+									&lt;order alias="branch" descending="false" /&gt;
+									&lt;order alias="loan_officer" descending="false" /&gt;
+								&lt;/entity&gt;
+							&lt;/fetch&gt;
+						{% endfetchxml %}
+
+						&lt;div class="w-100"&gt;
+							&lt;table id="hierarchyTable" class="table table-striped"&gt;
+								&lt;thead&gt;
+									&lt;tr&gt;
+										&lt;th&gt;Period&lt;/th&gt;
+										&lt;th&gt;Period Name&lt;/th&gt;
+										&lt;th&gt;Branch/Loan Officer&lt;/th&gt;
+										&lt;th class="text-end"&gt;Count&lt;/th&gt;
+										&lt;th class="text-end"&gt;Total Amount&lt;/th&gt;
+									&lt;/tr&gt;
+								&lt;/thead&gt;
+								&lt;tbody&gt;
+									{% assign total_count = 0 %}
+									{% assign total_amount = 0.0 %}
+									
+									{% for period_item in commissionByPeriod.results.entities %}
+										{% assign period = period_item.period %}
+										{% assign period_name = period_item.period_name %}
+										{% assign period_count = period_item.count %}
+										{% assign period_amount = period_item.total_amount %}
+										
+										{% assign total_count = total_count | plus: period_count %}
+										{% assign total_amount = total_amount | plus: period_amount %}
+										
+										&lt;tr class="period-row" data-period="{{ period }}"&gt;
+											&lt;td&gt;{{ period }}&lt;/td&gt;
+											&lt;td&gt;{{ period_name }}&lt;/td&gt;
+											&lt;td&gt;
+												&lt;i class="bi bi-caret-right-fill"&gt;&lt;/i&gt; &lt;strong&gt;Period Total&lt;/strong&gt;
+											&lt;/td&gt;
+											&lt;td class="text-end"&gt;{{ period_count }}&lt;/td&gt;
+											&lt;td class="text-end lv-currency"&gt;{{ period_amount }}&lt;/td&gt;
+										&lt;/tr&gt;
+										
+										{% for branch_item in commissionByBranch.results.entities %}
+											{% if branch_item.period == period %}
+												{% assign branch = branch_item.branch %}
+												{% assign branch_name = branch_item.branch_name %}
+												
+												&lt;tr class="branch-row hidden-row" data-period="{{ period }}" data-branch="{{ branch }}"&gt;
+													&lt;td&gt;&lt;/td&gt;
+													&lt;td&gt;&lt;/td&gt;
+													&lt;td&gt;
+														&lt;i class="bi bi-caret-right-fill"&gt;&lt;/i&gt; Branch: {{ branch }} - {{ branch_name }}
+													&lt;/td&gt;
+													&lt;td class="text-end"&gt;{{ branch_item.count }}&lt;/td&gt;
+													&lt;td class="text-end lv-currency"&gt;{{ branch_item.total_amount }}&lt;/td&gt;
+												&lt;/tr&gt;
+												
+												{% for officer_item in commissionByLoanOfficer.results.entities %}
+													{% if officer_item.period == period and officer_item.branch == branch %}
+														&lt;tr class="loan-officer-row hidden-row" data-period="{{ period }}" data-branch="{{ branch }}"&gt;
+															&lt;td&gt;&lt;/td&gt;
+															&lt;td&gt;&lt;/td&gt;
+															&lt;td style="padding-left: 2rem;"&gt;
+																Loan Officer: {{ officer_item.loan_officer }}
+															&lt;/td&gt;
+															&lt;td class="text-end"&gt;{{ officer_item.count }}&lt;/td&gt;
+															&lt;td class="text-end lv-currency"&gt;{{ officer_item.total_amount }}&lt;/td&gt;
+														&lt;/tr&gt;
+													{% endif %}
+												{% endfor %}
+											{% endif %}
+										{% endfor %}
+									{% endfor %}
+									
+									&lt;tr class="summary-row"&gt;
+										&lt;td colspan="3"&gt;Total&lt;/td&gt;
+										&lt;td class="text-end"&gt;{{ total_count }}&lt;/td&gt;
+										&lt;td class="text-end lv-currency"&gt;{{ total_amount }}&lt;/td&gt;
+									&lt;/tr&gt;
+								&lt;/tbody&gt;
+							&lt;/table&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+
+			&lt;!-- Fourth Card: Raw Commission Data Verification --&gt;
+			&lt;div class="card mt-3 commission-section" data-section="commissions" style="display: none;"&gt;
+				&lt;div class="card-header"&gt;
+					&lt;button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#commissionsCollapse" aria-expanded="true" aria-controls="commissionsCollapse"&gt;
+						Raw Commission Data Verification &lt;span class="text-muted"&gt;(commissions)&lt;/span&gt;
+					&lt;/button&gt;
+				&lt;/div&gt;
+				&lt;div class="collapse show" id="commissionsCollapse"&gt;
+					&lt;div class="card-body"&gt;
+						{% comment %} First find the latest period in the system {% endcomment %}
+						{% fetchxml latestPeriod %}
+							&lt;fetch distinct="false" mapping="logical" aggregate="true" top="1"&gt;
+								&lt;entity name="lv_lvcompcommission"&gt;
+									&lt;attribute name="lv_periodno" aggregate="max" alias="max_period" /&gt;
+								&lt;/entity&gt;
+							&lt;/fetch&gt;
+						{% endfetchxml %}
+						
+						{% assign maxPeriod = latestPeriod.results.entities[0].max_period %}
+						
+						{% comment %} Override sqUISelPeriodNo temporarily to use latest period {% endcomment %}
+						{% assign originalPeriod = sqUISelPeriodNo %}
+						{% assign sqUISelPeriodNo = maxPeriod %}
+						
+						&lt;p&gt;&lt;strong&gt;Latest Period in System:&lt;/strong&gt; {{ maxPeriod }}&lt;/p&gt;
+						&lt;p&gt;&lt;strong&gt;Current Selected Period:&lt;/strong&gt; {{ originalPeriod }}&lt;/p&gt;
+						
+						{% comment %} Include Commission Filter to get the same data it uses {% endcomment %}
+						{% include 'snippet' snippet_name:'Commission Filter' %}
+						
+						&lt;h5&gt;Commission Filter Results (Latest Period {{ maxPeriod }}):&lt;/h5&gt;
+						&lt;p&gt;&lt;strong&gt;Raw Commission Records Found:&lt;/strong&gt; {{ allLoanBasedCommissions.results.entities.size }}&lt;/p&gt;
+						&lt;p&gt;&lt;strong&gt;Filtered Commission Count:&lt;/strong&gt; {{ cpCommCount }}&lt;/p&gt;
+						&lt;p&gt;&lt;strong&gt;Filtered Commission Total:&lt;/strong&gt; {{ cpCommTotal | format: 'C' }}&lt;/p&gt;
+						
+						{% if allLoanBasedCommissions.results.entities.size &gt; 0 %}
+							&lt;h6&gt;First 20 Raw Commission Records:&lt;/h6&gt;
+							&lt;div class="table-responsive"&gt;
+								&lt;table class="table table-sm table-striped"&gt;
+									&lt;thead class="table-dark"&gt;
+										&lt;tr&gt;
+											&lt;th&gt;Entry No&lt;/th&gt;
+											&lt;th&gt;Amount&lt;/th&gt;
+											&lt;th&gt;Borrower Name&lt;/th&gt;
+											&lt;th&gt;LO Name&lt;/th&gt;
+											&lt;th&gt;LO Code&lt;/th&gt;
+											&lt;th&gt;Branch Code&lt;/th&gt;
+											&lt;th&gt;Period No&lt;/th&gt;
+											&lt;th&gt;Type&lt;/th&gt;
+										&lt;/tr&gt;
+									&lt;/thead&gt;
+									&lt;tbody&gt;
+										{% assign recordCount = 0 %}
+										{% for row in allLoanBasedCommissions.results.entities %}
+											{% assign recordCount = recordCount | plus: 1 %}
+											{% if recordCount &lt;= 20 %}
+												&lt;tr&gt;
+													&lt;td&gt;{{ row.lv_entryno }}&lt;/td&gt;
+													&lt;td&gt;{{ row.lv_amount | format: 'C' }}&lt;/td&gt;
+													&lt;td&gt;{{ row.lv_xborrowername }}&lt;/td&gt;
+													&lt;td&gt;{{ row.lv_xloanofficername }}&lt;/td&gt;
+													&lt;td&gt;{{ row.lv_xloanofficercode }}&lt;/td&gt;
+													&lt;td&gt;{{ row.lv_xbranchcode }}&lt;/td&gt;
+													&lt;td&gt;{{ row.lv_periodno }}&lt;/td&gt;
+													&lt;td&gt;{{ row.lv_commissiontype }}&lt;/td&gt;
+												&lt;/tr&gt;
+											{% endif %}
+										{% endfor %}
+									&lt;/tbody&gt;
+								&lt;/table&gt;
+							&lt;/div&gt;
+						{% else %}
+							&lt;p&gt;&lt;em&gt;No commission records found for the latest period.&lt;/em&gt;&lt;/p&gt;
+						{% endif %}
+						
+						{% comment %} Reset the period to original value {% endcomment %}
+						{% assign sqUISelPeriodNo = originalPeriod %}
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+	.user-table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+
+	.user-table th,
+	.user-table td {
+		padding: 5px;
+		border: 1px solid #ccc;
+		text-align: left;
+	}
+
+	.user-table th {
+		background-color: #f2f2f2;
+	}
+
+	.authenticated {
+		color: green;
+		font-weight: bold;
+	}
+
+	.card-header .btn-link {
+		text-decoration: none;
+		color: inherit;
+		font-weight: bold;
+	}
+
+	.card-header .btn-link:hover {
+		text-decoration: underline;
+	}
+
+	.summary-row {
+		font-weight: bold;
+		background-color: #f8f9fa;
+		border-top: 2px solid #6c757d;
+	}
+
+	.period-summary {
+		background-color: #e9ecef;
+		font-weight: bold;
+		cursor: pointer;
+	}
+
+	.period-summary:hover {
+		background-color: #dee2e6;
+	}
+
+	.branch-row {
+		background-color: #f8f9fa;
+	}
+
+	.loan-officer-row {
+		background-color: #ffffff;
+	}
+
+	.hidden-row {
+		display: none;
+	}
+
+	.bi-caret-right-fill {
+		transition: transform 0.2s;
+	}
+
+	.bi-caret-down-fill {
+		transform: rotate(90deg);
+	}
+
+	/* Sortable table styles */
+	.sortable-header {
+		cursor: pointer;
+		user-select: none;
+		position: relative;
+		background-color: #f2f2f2 !important;
+	}
+
+	.sortable-header:hover {
+		background-color: #e0e0e0 !important;
+	}
+
+	.sortable-header.sort-asc::after {
+		content: ' ▲';
+		font-size: 0.8em;
+		color: #0066cc;
+	}
+
+	.sortable-header.sort-desc::after {
+		content: ' ▼';
+		font-size: 0.8em;
+		color: #0066cc;
+	}
+
+	.sortable-table th {
+		background-color: #f2f2f2;
+	}
+&lt;/style&gt;
+
+&lt;script&gt;
+document.addEventListener('DOMContentLoaded', function() {
+    // Format all currency values
+    document.querySelectorAll('.lv-currency').forEach(function(element) {
+        const value = parseFloat(element.textContent.replace(/[,$]/g, ''));
+        if (!isNaN(value)) {
+            element.textContent = value.toLocaleString('en-US', {
+                style: 'currency',
+                currency: 'USD'
+            });
+        }
+    });
+
+    // Initialize table sorting for all sortable tables
+    initializeTableSorting();
+
+    function initializeTableSorting() {
+        document.querySelectorAll('.sortable-table').forEach(function(table) {
+            const headers = table.querySelectorAll('.sortable-header');
+            headers.forEach(function(header) {
+                header.addEventListener('click', function() {
+                    handleHeaderClick(table, header);
+                });
+            });
+        });
+    }
+
+    function handleHeaderClick(table, clickedHeader) {
+        const column = clickedHeader.dataset.column;
+        const currentSort = clickedHeader.classList.contains('sort-asc') ? 'asc' :
+                           clickedHeader.classList.contains('sort-desc') ? 'desc' : null;
+
+        // Clear all sort indicators from this table
+        table.querySelectorAll('.sortable-header').forEach(function(header) {
+            header.classList.remove('sort-asc', 'sort-desc');
+        });
+
+        // Determine new sort direction
+        let newDirection;
+        if (currentSort === 'asc') {
+            newDirection = 'desc';
+        } else if (currentSort === 'desc') {
+            newDirection = 'asc';
+        } else {
+            newDirection = 'asc';
+        }
+
+        // Add sort indicator to clicked header
+        clickedHeader.classList.add('sort-' + newDirection);
+
+        // Sort the table
+        sortTable(table, column, newDirection);
+    }
+
+    function sortTable(table, column, direction) {
+        const tbody = table.querySelector('tbody');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+
+        // Get column index
+        const headers = table.querySelectorAll('.sortable-header');
+        let columnIndex = -1;
+        for (let i = 0; i &lt; headers.length; i++) {
+            if (headers[i].dataset.column === column) {
+                columnIndex = i;
+                break;
+            }
+        }
+
+        if (columnIndex === -1) return;
+
+        // Sort rows
+        rows.sort(function(rowA, rowB) {
+            const cellA = rowA.cells[columnIndex].textContent.trim();
+            const cellB = rowB.cells[columnIndex].textContent.trim();
+
+            // Try to parse as numbers first
+            const numA = parseFloat(cellA.replace(/[,$]/g, ''));
+            const numB = parseFloat(cellB.replace(/[,$]/g, ''));
+
+            let comparison;
+            if (!isNaN(numA) &amp;&amp; !isNaN(numB)) {
+                // Numeric comparison
+                comparison = numA - numB;
+            } else {
+                // String comparison
+                comparison = cellA.localeCompare(cellB);
+            }
+
+            return direction === 'asc' ? comparison : -comparison;
+        });
+
+        // Clear tbody and re-append sorted rows
+        tbody.innerHTML = '';
+        rows.forEach(function(row) {
+            tbody.appendChild(row);
+        });
+    }
+
+    // Branch collapse/expand functionality for the branch table
+    document.querySelectorAll('.branch-toggle').forEach(function(toggle) {
+        toggle.addEventListener('click', function() {
+            const period = this.dataset.period;
+            const branchRows = document.querySelectorAll(`tr.branch-row[data-period="${period}"]`);
+            const loanOfficerRows = document.querySelectorAll(`tr.loan-officer-row[data-period="${period}"]`);
+            const icon = this.querySelector('i');
+            
+            const isHidden = branchRows[0] &amp;&amp; branchRows[0].classList.contains('hidden-row');
+            
+            branchRows.forEach(row =&gt; {
+                if (isHidden) {
+                    row.classList.remove('hidden-row');
+                } else {
+                    row.classList.add('hidden-row');
+                }
+            });
+            
+            // Always hide loan officer rows when collapsing period
+            if (!isHidden) {
+                loanOfficerRows.forEach(row =&gt; {
+                    row.classList.add('hidden-row');
+                });
+            }
+            
+            // Update icon
+            if (icon) {
+                if (isHidden) {
+                    icon.classList.remove('bi-caret-right-fill');
+                    icon.classList.add('bi-caret-down-fill');
+                } else {
+                    icon.classList.remove('bi-caret-down-fill');
+                    icon.classList.add('bi-caret-right-fill');
+                }
+            }
+        });
+    });
+
+    // Similar functionality for period rows in the hierarchy table
+    document.querySelectorAll('.period-row').forEach(function(row) {
+        row.addEventListener('click', function() {
+            const period = this.dataset.period;
+            const branchRows = document.querySelectorAll(`tr.branch-row[data-period="${period}"]`);
+            const loanOfficerRows = document.querySelectorAll(`tr.loan-officer-row[data-period="${period}"]`);
+            const icon = this.querySelector('i');
+            
+            const isHidden = branchRows[0] &amp;&amp; branchRows[0].classList.contains('hidden-row');
+            
+            branchRows.forEach(row =&gt; {
+                if (isHidden) {
+                    row.classList.remove('hidden-row');
+                } else {
+                    row.classList.add('hidden-row');
+                }
+            });
+            
+            // Always hide loan officer rows when collapsing period
+            if (!isHidden) {
+                loanOfficerRows.forEach(row =&gt; {
+                    row.classList.add('hidden-row');
+                });
+            }
+            
+            // Update icon
+            if (icon) {
+                if (isHidden) {
+                    icon.classList.remove('bi-caret-right-fill');
+                    icon.classList.add('bi-caret-down-fill');
+                } else {
+                    icon.classList.remove('bi-caret-down-fill');
+                    icon.classList.add('bi-caret-right-fill');
+                }
+            }
+        });
+    });
+
+    // Branch expand/collapse functionality for loan officers
+    document.querySelectorAll('.branch-row').forEach(function(row) {
+        row.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent period row click
+            const period = this.dataset.period;
+            const branch = this.dataset.branch;
+            const loanOfficerRows = document.querySelectorAll(`tr.loan-officer-row[data-period="${period}"][data-branch="${branch}"]`);
+            const icon = this.querySelector('i');
+            
+            const isHidden = loanOfficerRows[0] &amp;&amp; loanOfficerRows[0].classList.contains('hidden-row');
+            
+            loanOfficerRows.forEach(row =&gt; {
+                if (isHidden) {
+                    row.classList.remove('hidden-row');
+                } else {
+                    row.classList.add('hidden-row');
+                }
+            });
+            
+            // Update icon
+            if (icon) {
+                if (isHidden) {
+                    icon.classList.remove('bi-caret-right-fill');
+                    icon.classList.add('bi-caret-down-fill');
+                } else {
+                    icon.classList.remove('bi-caret-down-fill');
+                    icon.classList.add('bi-caret-right-fill');
+                }
+            }
+        });
+    });
+});
+
+// Commission Section Control Functions
+function loadSelectedSections() {
+    const loadingMessage = document.getElementById('loadingMessage');
+    const container = document.getElementById('commissionReportsContainer');
+    loadingMessage.style.display = 'block';
+
+    // Hide all sections first (but don't destroy them)
+    document.querySelectorAll('.commission-section').forEach(section =&gt; {
+        section.style.display = 'none';
+    });
+
+    // Show selected sections by moving them to the container
+    const sections = ['period', 'looping', 'branch', 'officer', 'commissions'];
+    let anySelected = false;
+
+    sections.forEach(section =&gt; {
+        const checkbox = document.getElementById(`show${section.charAt(0).toUpperCase() + section.slice(1)}Check`);
+        if (checkbox &amp;&amp; checkbox.checked) {
+            // Search for section globally (it may have been moved previously)
+            const sectionDiv = document.querySelector(`.commission-section[data-section="${section}"]`);
+            if (sectionDiv) {
+                sectionDiv.style.display = 'block';
+                // Move to container if not already there
+                if (sectionDiv.parentElement !== container) {
+                    container.appendChild(sectionDiv);
+                }
+                anySelected = true;
+            }
+        }
+    });
+
+    // Hide loading message after a short delay
+    setTimeout(() =&gt; {
+        loadingMessage.style.display = 'none';
+        if (!anySelected) {
+            alert('Please select at least one report to display.');
+        } else {
+            // Scroll to container
+            container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, 500);
+}
+
+function clearAllSections() {
+    // Hide all sections
+    document.querySelectorAll('.commission-section').forEach(section =&gt; {
+        section.style.display = 'none';
+    });
+
+    // Uncheck all checkboxes
+    const checkboxes = ['showPeriodCheck', 'showLoopingCheck', 'showBranchCheck', 'showOfficerCheck', 'showCommissionsCheck'];
+    checkboxes.forEach(id =&gt; {
+        const checkbox = document.getElementById(id);
+        if (checkbox) {
+            checkbox.checked = false;
+        }
+    });
+}
+&lt;/script&gt;
+&lt;!-- Last modified Tue Sep 02 5:27PM --&gt;
+&lt;!-- Last modified Mon Nov 10 1:28PM --&gt;
+&lt;!-- Last modified Mon Nov 10 1:41PM --&gt;Diag</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

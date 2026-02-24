@@ -1,0 +1,15 @@
+<powerpagesitelanguages>
+  <powerpagesitelanguage powerpagesitelanguageid="fda88e9f-84a9-433e-aa99-5397dc5359ce">
+    <content>{"publishingstate":"2177b470-e9b1-4c6b-8f73-91dc8f4d21e9"}</content>
+    <displayname>English</displayname>
+    <iscustomizable>1</iscustomizable>
+    <languagecode>en-US</languagecode>
+    <lcid>1033</lcid>
+    <name>English</name>
+    <powerpagesiteid>
+      <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+    </powerpagesiteid>
+    <statecode>0</statecode>
+    <statuscode>1</statuscode>
+  </powerpagesitelanguage>
+</powerpagesitelanguages>

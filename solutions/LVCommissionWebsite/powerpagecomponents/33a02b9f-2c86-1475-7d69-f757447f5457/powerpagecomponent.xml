@@ -1,0 +1,18 @@
+<powerpagecomponent powerpagecomponentid="33a02b9f-2c86-1475-7d69-f757447f5457">
+  <content>{
+  "right": 2,
+  "scope": 1,
+  "webpageid": "1fbe1936-197c-95df-44ed-0821fb35ea91",
+  "adx_webpageaccesscontrolrule_webrole": [
+    "e1e17fc7-e0e5-4803-b01b-0ba213d4c790"
+  ]
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Restrict Read on Diag</name>
+  <powerpagecomponenttype>10</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

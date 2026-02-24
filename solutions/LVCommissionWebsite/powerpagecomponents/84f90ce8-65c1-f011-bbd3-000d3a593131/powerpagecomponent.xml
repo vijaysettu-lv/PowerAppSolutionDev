@@ -1,0 +1,11 @@
+<powerpagecomponent powerpagecomponentid="84f90ce8-65c1-f011-bbd3-000d3a593131">
+  <content>{"botschemaname":"cr21a_ec008a12-bc91-4b0e-842f-06da606fc8b9","configjson":"{\"skillConfigViewName\":\"Loan Vision Commission Portal bot Answers\"}"}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Bot Consumer</name>
+  <powerpagecomponenttype>27</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

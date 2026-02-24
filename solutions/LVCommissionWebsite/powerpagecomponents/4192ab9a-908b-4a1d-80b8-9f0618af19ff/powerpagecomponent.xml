@@ -1,0 +1,13 @@
+<powerpagecomponent powerpagecomponentid="4192ab9a-908b-4a1d-80b8-9f0618af19ff">
+  <content>{
+  "value": "false"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Authentication/OpenIdConnect/AzureAD/ExternalLogoutEnabled</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

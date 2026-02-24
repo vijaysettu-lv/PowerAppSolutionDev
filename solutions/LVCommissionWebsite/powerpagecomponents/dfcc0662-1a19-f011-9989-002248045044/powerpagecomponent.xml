@@ -1,0 +1,24 @@
+<powerpagecomponent powerpagecomponentid="dfcc0662-1a19-f011-9989-002248045044">
+  <content>{
+  "append": true,
+  "appendto": true,
+  "create": true,
+  "delete": true,
+  "entitylogicalname": "lv_lvcompregionbranch",
+  "entityname": "lvcRegionBranch-Admin",
+  "read": true,
+  "scope": 756150000,
+  "write": true,
+  "adx_entitypermission_webrole": [
+    "007ff13c-35b2-410f-aaff-3b671f3876bd"
+  ]
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>lvcRegionBranch-Admin</name>
+  <powerpagecomponenttype>18</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

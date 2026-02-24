@@ -1,0 +1,18 @@
+<powerpagecomponent powerpagecomponentid="3484f39a-1025-f011-8c4d-6045bd078e56">
+  <content>{
+  "display_name": "Email Dialog",
+  "type": 756150001,
+  "value": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified wed aug 8 - added test content div for automated testing --&gt;\n&lt;div class=\"email-modal-container\"&gt;\n    &lt;dialog class=\"email-modal\"&gt;\n        &lt;button class=\"email-modal-close\" aria-label=\"Close modal\"&gt;&amp;times;&lt;/button&gt;\n        &lt;h2&gt;Email Subject&lt;/h2&gt;\n        &lt;form class=\"email-modal-form\" method=\"dialog\"&gt;\n            &lt;input type=\"text\" class=\"email-subject-input\" name=\"emailSubject\" required&gt;\n            &lt;button type=\"submit\"&gt;Create Email&lt;/button&gt;\n        &lt;/form&gt;\n    &lt;/dialog&gt;\n&lt;/div&gt;\n\n&lt;!-- Hidden div for automated testing - populated by JavaScript --&gt;\n&lt;div id=\"email-modal-test-content\" style=\"display: none;\"&gt;&lt;/div&gt;\n&lt;!-- Last modified wed aug 8 - added test content div for automated testing --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Email Dialog</name>
+  <powerpagecomponenttype>7</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

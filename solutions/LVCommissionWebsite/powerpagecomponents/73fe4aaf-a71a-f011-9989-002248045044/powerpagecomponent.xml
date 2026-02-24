@@ -1,0 +1,13 @@
+<powerpagecomponent powerpagecomponentid="73fe4aaf-a71a-f011-9989-002248045044">
+  <content>{
+  "pageid": "e4c0967d-c896-24d8-112b-9cca36ce4dfd"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Commission Setup</name>
+  <powerpagecomponenttype>13</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

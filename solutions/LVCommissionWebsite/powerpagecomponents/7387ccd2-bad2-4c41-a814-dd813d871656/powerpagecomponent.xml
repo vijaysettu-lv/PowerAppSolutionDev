@@ -1,0 +1,77 @@
+<powerpagecomponent powerpagecomponentid="7387ccd2-bad2-4c41-a814-dd813d871656">
+  <content>{
+  "copy": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Tue Sep 30 7:09AM --&gt;\n&lt;!-- Last modified Mon Sep 29 6:43PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n{% if user %}\n  {% if user.roles contains 'Administrators' %}\n    {% assign redirectURL = '/Accounting' %}\n  {% elsif user.roles contains 'Region Manager' %}\n    {% assign redirectURL = '/Region' %}\n  {% elsif user.roles contains 'Branch Manager' %}\n    {% assign redirectURL = '/Branch' %}\n  {% elsif user.roles contains 'Loan Officer' %}\n    {% assign redirectURL = '/Loan-Officer' %}\n  {% endif %}\n{% else %}\n  {% comment %} Auto-redirect unauthenticated users to sign-in page {% endcomment %}\n  {% assign redirectURL = '/Account/Login/' %}\n{% endif %}\n\n{% if redirectURL %}\n&lt;script&gt;\n  window.location.href = '{{ redirectURL }}';\n&lt;/script&gt;\n{% endif %}\n\n&lt;div data-component-theme=\"\" class=\"row sectionBlockLayout text-start\" style=\"display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;\"&gt;\n\t&lt;div class=\"container\" style=\"padding: 0px; display: flex; flex-wrap: wrap;\"&gt;\n\t  &lt;div class=\"col-lg-12 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; word-break: break-word;\"&gt;\n\t\t&lt;h1 style=\"text-align: left;\"&gt;Welcome to the Loan Vision Commissions Portal&lt;/h1&gt;\n\t\t{% if user %}\n\t\t\t&lt;p&gt;If you are seeing this page, it means you have been set up as a valid system user, but you have not been assigned any roles&lt;/p&gt;\n\t\t\t&lt;p&gt;Contact your system administrator and request to be assigned to a valid role.&lt;/p&gt;\n\t\t\t&lt;p&gt;Message ID: 12208&lt;/p&gt;\n\t\t{% else %}\n\t\t\t&lt;div class=\"container\"&gt;\n\t\t\t\t&lt;h1&gt;Redirecting to Sign In...&lt;/h1&gt;\n\t\t\t\t&lt;p&gt;Please wait while we redirect you to the sign-in page.&lt;/p&gt;\n\t\t\t&lt;/div&gt;\n\t\t{% endif %}\n\t  &lt;/div&gt;\n\t&lt;/div&gt;\n&lt;/div&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Mon Sep 29 6:43PM --&gt;\n&lt;!-- Last modified Tue Sep 30 7:09AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;",
+  "customjavascript": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;",
+  "displayorder": 1,
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "feedbackpolicy": 756150005,
+  "hiddenfromsitemap": false,
+  "isroot": false,
+  "pagetemplateid": "cd587cbe-a61f-4c11-a750-6d0235a784ef",
+  "partialurl": "/",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "rootwebpageid": "362995e0-7dc5-4bbf-9595-062f468d2d44",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;p&gt;This is a sample landing page for you to start creating your website.&lt;/p&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;",
+  "title": "Home"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Home</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <searchcontent>Home&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;
+&lt;!-- Last modified Tue Sep 30 7:09AM --&gt;
+&lt;!-- Last modified Mon Sep 29 6:43PM --&gt;
+&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;
+{% if user %}
+  {% if user.roles contains 'Administrators' %}
+    {% assign redirectURL = '/Accounting' %}
+  {% elsif user.roles contains 'Region Manager' %}
+    {% assign redirectURL = '/Region' %}
+  {% elsif user.roles contains 'Branch Manager' %}
+    {% assign redirectURL = '/Branch' %}
+  {% elsif user.roles contains 'Loan Officer' %}
+    {% assign redirectURL = '/Loan-Officer' %}
+  {% endif %}
+{% else %}
+  {% comment %} Auto-redirect unauthenticated users to sign-in page {% endcomment %}
+  {% assign redirectURL = '/Account/Login/' %}
+{% endif %}
+
+{% if redirectURL %}
+&lt;script&gt;
+  window.location.href = '{{ redirectURL }}';
+&lt;/script&gt;
+{% endif %}
+
+&lt;div data-component-theme="" class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;"&gt;
+	&lt;div class="container" style="padding: 0px; display: flex; flex-wrap: wrap;"&gt;
+	  &lt;div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; word-break: break-word;"&gt;
+		&lt;h1 style="text-align: left;"&gt;Welcome to the Loan Vision Commissions Portal&lt;/h1&gt;
+		{% if user %}
+			&lt;p&gt;If you are seeing this page, it means you have been set up as a valid system user, but you have not been assigned any roles&lt;/p&gt;
+			&lt;p&gt;Contact your system administrator and request to be assigned to a valid role.&lt;/p&gt;
+			&lt;p&gt;Message ID: 12208&lt;/p&gt;
+		{% else %}
+			&lt;div class="container"&gt;
+				&lt;h1&gt;Redirecting to Sign In...&lt;/h1&gt;
+				&lt;p&gt;Please wait while we redirect you to the sign-in page.&lt;/p&gt;
+			&lt;/div&gt;
+		{% endif %}
+	  &lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;
+&lt;!-- Last modified Mon Sep 29 6:43PM --&gt;
+&lt;!-- Last modified Tue Sep 30 7:09AM --&gt;
+&lt;!-- Last modified Tue Oct 21 12:39PM --&gt;Home</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

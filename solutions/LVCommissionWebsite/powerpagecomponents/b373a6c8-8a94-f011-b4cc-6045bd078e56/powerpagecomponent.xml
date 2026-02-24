@@ -1,0 +1,29 @@
+<powerpagecomponent powerpagecomponentid="b373a6c8-8a94-f011-b4cc-6045bd078e56">
+  <content>{
+  "copy": "\n",
+  "customjavascript": "\n",
+  "editorialcomments": "Rodj editorial comment for lvxdata",
+  "enablerating": false,
+  "excludefromsearch": false,
+  "feedbackpolicy": 756150000,
+  "hiddenfromsitemap": false,
+  "isroot": true,
+  "meta_description": "Rodj description for lvxdata",
+  "pagetemplateid": "cd587cbe-a61f-4c11-a750-6d0235a784ef",
+  "parentpageid": "362995e0-7dc5-4bbf-9595-062f468d2d44",
+  "partialurl": "lvxdata",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "sharedpageconfiguration": true,
+  "summary": "\n"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>lvxdata</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <searchcontent>
+lvxdata</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

@@ -1,0 +1,20 @@
+<powerpagecomponent powerpagecomponentid="1f1e99c0-1914-752d-c6e4-8b5d10b60533">
+  <content>{
+  "displayimageonly": false,
+  "displayorder": 5,
+  "displaypagechildlinks": false,
+  "openinnewwindow": false,
+  "pageid": "d85fe941-7ab6-731d-9103-e965c27159c2",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "robotsfollowlink": true,
+  "weblinksetid": "bbd580f2-3d22-41e6-82f1-9e178b7779c9"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Branch</name>
+  <powerpagecomponenttype>5</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

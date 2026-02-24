@@ -1,0 +1,18 @@
+<powerpagecomponent powerpagecomponentid="41a0f5bb-a6ea-f8ba-1241-05d6374e8844">
+  <content>{
+  "right": 2,
+  "scope": 1,
+  "webpageid": "09d0b2e7-1cc7-4019-0111-1a7b1ae522ee",
+  "adx_webpageaccesscontrolrule_webrole": [
+    "007ff13c-35b2-410f-aaff-3b671f3876bd"
+  ]
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Restrict Read on lvcpdev</name>
+  <powerpagecomponenttype>10</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

@@ -1,0 +1,19 @@
+<powerpagecomponent powerpagecomponentid="50f54870-a4fb-4907-8226-83d0c47fd8c8">
+  <content>{
+  "displayimageonly": false,
+  "displayorder": 3,
+  "displaypagechildlinks": false,
+  "openinnewwindow": false,
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "robotsfollowlink": true,
+  "weblinksetid": "bbd580f2-3d22-41e6-82f1-9e178b7779c9"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Region</name>
+  <powerpagecomponenttype>5</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

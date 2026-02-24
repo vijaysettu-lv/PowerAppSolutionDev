@@ -1,0 +1,42 @@
+<powerpagecomponent powerpagecomponentid="6849dfe1-5de8-277a-f4cf-593839d1f832">
+  <content>{
+  "copy": "&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;div class=\"row sectionBlockLayout text-start\" style=\"display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;\"&gt;\n  &lt;div class=\"container\" style=\"display: flex; flex-wrap: wrap;\"&gt;\n    &lt;div class=\"col-lg-12 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; padding: 16px; margin: 60px 0px;\"&gt;&lt;p&gt;X3 ex three&lt;/p&gt;&lt;/div&gt;\n  &lt;/div&gt;\n&lt;/div&gt;\n&lt;div class=\"row sectionBlockLayout text-start\" style=\"display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;\"&gt;\n  &lt;div class=\"container\" style=\"padding: 0px; display: flex; flex-wrap: wrap;\"&gt;&lt;div class=\"col-lg-12 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 250px;\"&gt;{% include 'entity_list' key: 'Rodj All branch lvnCommissionBranches' isModern:'true' isNLSearchEnabled:'true' %}&lt;/div&gt;&lt;/div&gt;\n&lt;/div&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n\n",
+  "customjavascript": "&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;",
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": false,
+  "hiddenfromsitemap": true,
+  "isroot": false,
+  "pagetemplateid": "cd587cbe-a61f-4c11-a750-6d0235a784ef",
+  "parentpageid": "362995e0-7dc5-4bbf-9595-062f468d2d44",
+  "partialurl": "lvcpx3",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "rootwebpageid": "2693ba16-d7b3-80ec-4af7-72db95bca349",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;p&gt;This is a sample landing page designed to be a starting point for your website&lt;/p&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;",
+  "title": "lvcpx3"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>lvcpx3</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <searchcontent>lvcpx3&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;
+&lt;div class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;"&gt;
+  &lt;div class="container" style="display: flex; flex-wrap: wrap;"&gt;
+    &lt;div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px; padding: 16px; margin: 60px 0px;"&gt;&lt;p&gt;X3 ex three&lt;/p&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="row sectionBlockLayout text-start" style="display: flex; flex-wrap: wrap; margin: 0px; min-height: auto; padding: 8px;"&gt;
+  &lt;div class="container" style="padding: 0px; display: flex; flex-wrap: wrap;"&gt;&lt;div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 250px;"&gt;{% include 'entity_list' key: 'Rodj All branch lvnCommissionBranches' isModern:'true' isNLSearchEnabled:'true' %}&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;
+
+lvcpx3</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

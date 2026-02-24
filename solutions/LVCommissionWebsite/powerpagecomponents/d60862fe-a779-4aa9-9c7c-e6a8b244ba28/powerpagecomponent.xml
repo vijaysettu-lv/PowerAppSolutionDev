@@ -1,0 +1,16 @@
+<powerpagecomponent powerpagecomponentid="d60862fe-a779-4aa9-9c7c-e6a8b244ba28">
+  <content>{
+  "displayorder": 21,
+  "pageid": "52a6fdfb-0848-7258-e45b-e3eb6577115f",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "weblinksetid": "3baf98b9-97fe-4c16-a5b4-071bd273fea8"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>lvxcpquery</name>
+  <powerpagecomponenttype>5</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

@@ -1,0 +1,20 @@
+<powerpagecomponent powerpagecomponentid="17b18c1a-a18b-5168-a46e-713785e742c3">
+  <content>{
+  "displayimageonly": false,
+  "displayorder": 2,
+  "displaypagechildlinks": false,
+  "openinnewwindow": false,
+  "pageid": "f9e4fac8-bb2b-fab4-760d-3e3ce999cadb",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "robotsfollowlink": true,
+  "weblinksetid": "bbd580f2-3d22-41e6-82f1-9e178b7779c9"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Accounting</name>
+  <powerpagecomponenttype>5</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

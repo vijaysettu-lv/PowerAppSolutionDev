@@ -1,0 +1,13 @@
+<powerpagecomponent powerpagecomponentid="afac2845-8b4e-46bc-8289-99d49ea0de53">
+  <content>{
+  "value": "false"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Header/ShowAllProfileNavigationLinks</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

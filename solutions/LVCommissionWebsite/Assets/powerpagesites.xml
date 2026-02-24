@@ -1,0 +1,11 @@
+<powerpagesites>
+  <powerpagesite powerpagesiteid="1a723423-7e7c-48fd-9672-1b994a058a35">
+    <content>{"defaultlanguage":"fda88e9f-84a9-433e-aa99-5397dc5359ce","footerwebtemplateid":"7d3042b3-525b-4fc5-8bc6-e4b0abb8d034","headerwebtemplateid":"8d50d2d8-a4e0-485d-9a59-edfcf57f7ac8","website_language":1033,"defaultbotconsumerid":"3e322444-75fd-f011-8406-00224804683f"}</content>
+    <datamodelversion>2.0</datamodelversion>
+    <iscustomizable>1</iscustomizable>
+    <name>LVCP - lvcp</name>
+    <primarydomainname>lvcp.powerappsportals.com</primarydomainname>
+    <statecode>0</statecode>
+    <statuscode>1</statuscode>
+  </powerpagesite>
+</powerpagesites>

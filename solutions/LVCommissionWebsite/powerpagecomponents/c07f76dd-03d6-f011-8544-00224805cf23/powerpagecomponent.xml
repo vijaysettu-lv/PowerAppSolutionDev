@@ -1,0 +1,14 @@
+<powerpagecomponent powerpagecomponentid="c07f76dd-03d6-f011-8544-00224805cf23">
+  <content>{
+  "value": "true",
+  "source": 0
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Webapi/lv_contactbranchassignment/enabled</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

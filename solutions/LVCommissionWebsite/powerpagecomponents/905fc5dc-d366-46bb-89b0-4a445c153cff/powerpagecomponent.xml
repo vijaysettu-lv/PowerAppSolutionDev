@@ -1,0 +1,14 @@
+<powerpagecomponent powerpagecomponentid="905fc5dc-d366-46bb-89b0-4a445c153cff">
+  <content>{
+  "source": 0,
+  "value": "false"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Search/Enabled</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

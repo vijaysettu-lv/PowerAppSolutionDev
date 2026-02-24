@@ -1,0 +1,14 @@
+<powerpagecomponent powerpagecomponentid="c128252b-cf1e-f011-998a-7c1e521b1a65">
+  <content>{
+  "botschemaname": "cr2de_1332f292-0567-4394-8b43-b572e5cf46de",
+  "configjson": "{\"skillConfigViewName\":\"CommPortalRCMDev bot Answers\"}"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Bot Consumer</name>
+  <powerpagecomponenttype>27</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

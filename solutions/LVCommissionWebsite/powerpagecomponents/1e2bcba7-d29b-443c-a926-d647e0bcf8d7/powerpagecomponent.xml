@@ -1,0 +1,137 @@
+<powerpagecomponent powerpagecomponentid="1e2bcba7-d29b-443c-a926-d647e0bcf8d7">
+  <content>{
+  "copy": "&lt;!-- Last modified Wed Oct 29 8:54AM --&gt;\n&lt;!-- Last modified Wed Oct 29 8:37AM --&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n\n{% comment %} Check for critical null branch data error {% endcomment %}\n{% if request.params.reason == 'null-branch-data' %}\n\t&lt;div class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; min-height: 50px; background: var(--portalThemeColor2);\"&gt;&lt;/div&gt;\n\t&lt;div class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; min-height: 50px; background: var(--portalThemeColor6);\"&gt;&lt;/div&gt;\n\t&lt;div class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; text-align: left; min-height: 600px;\"&gt;\n\t\t&lt;div class=\"container\" style=\"padding: 20px; display: flex; flex-wrap: wrap;\"&gt;\n\t\t\t&lt;div class=\"col-lg-12 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 300px; padding: 16px;\"&gt;\n\n\t\t\t\t&lt;div style=\"max-width: 700px; margin: 0 auto; padding: 40px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);\"&gt;\n\n\t\t\t\t\t&lt;h2 style=\"color: var(--portalThemeColor1); margin-top: 0; font-size: 24px;\"&gt;\n\t\t\t\t\t\tAccount Access Issue\n\t\t\t\t\t&lt;/h2&gt;\n\n\t\t\t\t\t&lt;p style=\"font-size: 16px; line-height: 1.6; color: #495057; margin: 20px 0;\"&gt;\n\t\t\t\t\t\tWe're unable to load your account at this time due to a configuration issue.\n\t\t\t\t\t\tPlease contact your system administrator for assistance.\n\t\t\t\t\t&lt;/p&gt;\n\n\t\t\t\t\t&lt;div style=\"margin: 30px 0;\"&gt;\n\t\t\t\t\t\t&lt;p style=\"font-size: 16px; margin-bottom: 10px;\"&gt;\n\t\t\t\t\t\t\t&lt;strong&gt;Contact Information:&lt;/strong&gt;\n\t\t\t\t\t\t&lt;/p&gt;\n\t\t\t\t\t\t&lt;p style=\"font-size: 16px; margin: 5px 0; color: #495057;\"&gt;\n\t\t\t\t\t\t\tYour email: {{ user.emailaddress1 }}\n\t\t\t\t\t\t&lt;/p&gt;\n\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t\t&lt;div style=\"margin-top: 30px; border-top: 1px solid #dee2e6; padding-top: 20px;\"&gt;\n\t\t\t\t\t\t&lt;a href=\"#\" onclick=\"toggleDetails(); return false;\" style=\"color: var(--portalThemeColor9); text-decoration: none; font-size: 14px;\"&gt;\n\t\t\t\t\t\t\t&lt;span id=\"detailsToggleText\"&gt;Show technical details&lt;/span&gt; &lt;span id=\"detailsToggleIcon\"&gt;▼&lt;/span&gt;\n\t\t\t\t\t\t&lt;/a&gt;\n\n\t\t\t\t\t\t&lt;div id=\"technicalDetails\" style=\"display: none; margin-top: 15px; padding: 15px; background-color: #fff; border: 1px solid #dee2e6; border-radius: 4px;\"&gt;\n\t\t\t\t\t\t\t&lt;h4 style=\"margin-top: 0; font-size: 14px; color: #6c757d;\"&gt;Technical Information&lt;/h4&gt;\n\t\t\t\t\t\t\t&lt;table style=\"width: 100%; font-size: 13px; color: #6c757d;\"&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t&lt;td style=\"padding: 4px 0; width: 140px;\"&gt;&lt;strong&gt;Error Code:&lt;/strong&gt;&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t&lt;td style=\"padding: 4px 0;\"&gt;NULL_BRANCH_ASSIGNMENT&lt;/td&gt;\n\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t&lt;td style=\"padding: 4px 0;\"&gt;&lt;strong&gt;User Name:&lt;/strong&gt;&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t&lt;td style=\"padding: 4px 0;\"&gt;{{ user.fullname }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t&lt;td style=\"padding: 4px 0;\"&gt;&lt;strong&gt;User ID:&lt;/strong&gt;&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t&lt;td style=\"padding: 4px 0; font-family: monospace; font-size: 11px;\"&gt;{{ user.id }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t{% if request.params.count %}\n\t\t\t\t\t\t\t\t&lt;tr&gt;\n\t\t\t\t\t\t\t\t\t&lt;td style=\"padding: 4px 0;\"&gt;&lt;strong&gt;Affected Records:&lt;/strong&gt;&lt;/td&gt;\n\t\t\t\t\t\t\t\t\t&lt;td style=\"padding: 4px 0;\"&gt;{{ request.params.count }}&lt;/td&gt;\n\t\t\t\t\t\t\t\t&lt;/tr&gt;\n\t\t\t\t\t\t\t\t{% endif %}\n\t\t\t\t\t\t\t&lt;/table&gt;\n\t\t\t\t\t\t\t&lt;p style=\"font-size: 12px; color: #6c757d; margin-top: 15px; margin-bottom: 0;\"&gt;\n\t\t\t\t\t\t\t\t&lt;em&gt;This error has been automatically logged for administrative review.&lt;/em&gt;\n\t\t\t\t\t\t\t&lt;/p&gt;\n\t\t\t\t\t\t&lt;/div&gt;\n\t\t\t\t\t&lt;/div&gt;\n\n\t\t\t\t&lt;/div&gt;\n\n\t\t\t&lt;/div&gt;\n\t\t&lt;/div&gt;\n\t&lt;/div&gt;\n\n\t&lt;script&gt;\n\tfunction toggleDetails() {\n\t\tconst details = document.getElementById('technicalDetails');\n\t\tconst toggleText = document.getElementById('detailsToggleText');\n\t\tconst toggleIcon = document.getElementById('detailsToggleIcon');\n\n\t\tif (details.style.display === 'none') {\n\t\t\tdetails.style.display = 'block';\n\t\t\ttoggleText.textContent = 'Hide technical details';\n\t\t\ttoggleIcon.textContent = '▲';\n\t\t} else {\n\t\t\tdetails.style.display = 'none';\n\t\t\ttoggleText.textContent = 'Show technical details';\n\t\t\ttoggleIcon.textContent = '▼';\n\t\t}\n\t}\n\t&lt;/script&gt;\n\n\t&lt;div class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; min-height: 315px; background: var(--portalThemeColor1);\"&gt;&lt;/div&gt;\n\n{% else %}\n\t{% comment %} Normal access denied page {% endcomment %}\n\t&lt;div class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; min-height: 50px; background: var(--portalThemeColor2);\"&gt;&lt;/div&gt;\n\t&lt;div class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; min-height: 50px; background: var(--portalThemeColor6);\"&gt;&lt;/div&gt;\n\t&lt;div class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; text-align: left; min-height: 374px;\"&gt;\n\t  &lt;div class=\"container\" style=\"padding: 0px; display: flex; flex-wrap: wrap;\"&gt;\n\t    &lt;div class=\"col-lg-12 columnBlockLayout\" style=\"flex-grow: 1; display: flex; flex-direction: column; min-width: 300px; padding: 16px;\"&gt;&lt;img src=\"/Cat-PC.png\" alt=\"\" name=\"Cat-PC.png\" style=\"width: 200px; height: 161px; margin-left: auto; margin-right: auto;\"&gt;\n\t      &lt;h2 style=\"text-align: center; color: var(--portalThemeColor9);\"&gt;You don't have access to this&lt;/h2&gt;\n\t      &lt;p style=\"text-align: center; color: var(--portalThemeColor8);\"&gt;Check your credentials or ask your admin to request access&lt;/p&gt;\n\t    &lt;/div&gt;\n\t  &lt;/div&gt;\n\t&lt;/div&gt;\n{% endif %}\n&lt;div class=\"row sectionBlockLayout\" style=\"display: flex; flex-wrap: wrap; min-height: 315px; background: var(--portalThemeColor1);\"&gt;&lt;/div&gt;\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n&lt;!-- Last modified Wed Oct 29 8:37AM --&gt;\n&lt;!-- Last modified Wed Oct 29 8:54AM --&gt;",
+  "customjavascript": "&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;",
+  "enablerating": false,
+  "enabletracking": false,
+  "excludefromsearch": true,
+  "hiddenfromsitemap": true,
+  "isroot": false,
+  "pagetemplateid": "cd587cbe-a61f-4c11-a750-6d0235a784ef",
+  "parentpageid": "362995e0-7dc5-4bbf-9595-062f468d2d44",
+  "partialurl": "access-denied",
+  "publishingstateid": "2177b470-e9b1-4c6b-8f73-91dc8f4d21e9",
+  "rootwebpageid": "d0f3844f-8ed3-4ec0-9cf6-d9d4dd9d5e25",
+  "sharedpageconfiguration": false,
+  "summary": "&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;\n\n&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>Access Denied</name>
+  <powerpagecomponenttype>2</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <powerpagesitelanguageid>
+    <powerpagesitelanguageid>fda88e9f-84a9-433e-aa99-5397dc5359ce</powerpagesitelanguageid>
+  </powerpagesitelanguageid>
+  <searchcontent>&lt;!-- Last modified Wed Oct 29 8:54AM --&gt;
+&lt;!-- Last modified Wed Oct 29 8:37AM --&gt;
+&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;
+
+{% comment %} Check for critical null branch data error {% endcomment %}
+{% if request.params.reason == 'null-branch-data' %}
+	&lt;div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; min-height: 50px; background: var(--portalThemeColor2);"&gt;&lt;/div&gt;
+	&lt;div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; min-height: 50px; background: var(--portalThemeColor6);"&gt;&lt;/div&gt;
+	&lt;div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; text-align: left; min-height: 600px;"&gt;
+		&lt;div class="container" style="padding: 20px; display: flex; flex-wrap: wrap;"&gt;
+			&lt;div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 300px; padding: 16px;"&gt;
+
+				&lt;div style="max-width: 700px; margin: 0 auto; padding: 40px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"&gt;
+
+					&lt;h2 style="color: var(--portalThemeColor1); margin-top: 0; font-size: 24px;"&gt;
+						Account Access Issue
+					&lt;/h2&gt;
+
+					&lt;p style="font-size: 16px; line-height: 1.6; color: #495057; margin: 20px 0;"&gt;
+						We're unable to load your account at this time due to a configuration issue.
+						Please contact your system administrator for assistance.
+					&lt;/p&gt;
+
+					&lt;div style="margin: 30px 0;"&gt;
+						&lt;p style="font-size: 16px; margin-bottom: 10px;"&gt;
+							&lt;strong&gt;Contact Information:&lt;/strong&gt;
+						&lt;/p&gt;
+						&lt;p style="font-size: 16px; margin: 5px 0; color: #495057;"&gt;
+							Your email: {{ user.emailaddress1 }}
+						&lt;/p&gt;
+					&lt;/div&gt;
+
+					&lt;div style="margin-top: 30px; border-top: 1px solid #dee2e6; padding-top: 20px;"&gt;
+						&lt;a href="#" onclick="toggleDetails(); return false;" style="color: var(--portalThemeColor9); text-decoration: none; font-size: 14px;"&gt;
+							&lt;span id="detailsToggleText"&gt;Show technical details&lt;/span&gt; &lt;span id="detailsToggleIcon"&gt;▼&lt;/span&gt;
+						&lt;/a&gt;
+
+						&lt;div id="technicalDetails" style="display: none; margin-top: 15px; padding: 15px; background-color: #fff; border: 1px solid #dee2e6; border-radius: 4px;"&gt;
+							&lt;h4 style="margin-top: 0; font-size: 14px; color: #6c757d;"&gt;Technical Information&lt;/h4&gt;
+							&lt;table style="width: 100%; font-size: 13px; color: #6c757d;"&gt;
+								&lt;tr&gt;
+									&lt;td style="padding: 4px 0; width: 140px;"&gt;&lt;strong&gt;Error Code:&lt;/strong&gt;&lt;/td&gt;
+									&lt;td style="padding: 4px 0;"&gt;NULL_BRANCH_ASSIGNMENT&lt;/td&gt;
+								&lt;/tr&gt;
+								&lt;tr&gt;
+									&lt;td style="padding: 4px 0;"&gt;&lt;strong&gt;User Name:&lt;/strong&gt;&lt;/td&gt;
+									&lt;td style="padding: 4px 0;"&gt;{{ user.fullname }}&lt;/td&gt;
+								&lt;/tr&gt;
+								&lt;tr&gt;
+									&lt;td style="padding: 4px 0;"&gt;&lt;strong&gt;User ID:&lt;/strong&gt;&lt;/td&gt;
+									&lt;td style="padding: 4px 0; font-family: monospace; font-size: 11px;"&gt;{{ user.id }}&lt;/td&gt;
+								&lt;/tr&gt;
+								{% if request.params.count %}
+								&lt;tr&gt;
+									&lt;td style="padding: 4px 0;"&gt;&lt;strong&gt;Affected Records:&lt;/strong&gt;&lt;/td&gt;
+									&lt;td style="padding: 4px 0;"&gt;{{ request.params.count }}&lt;/td&gt;
+								&lt;/tr&gt;
+								{% endif %}
+							&lt;/table&gt;
+							&lt;p style="font-size: 12px; color: #6c757d; margin-top: 15px; margin-bottom: 0;"&gt;
+								&lt;em&gt;This error has been automatically logged for administrative review.&lt;/em&gt;
+							&lt;/p&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+
+				&lt;/div&gt;
+
+			&lt;/div&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+
+	&lt;script&gt;
+	function toggleDetails() {
+		const details = document.getElementById('technicalDetails');
+		const toggleText = document.getElementById('detailsToggleText');
+		const toggleIcon = document.getElementById('detailsToggleIcon');
+
+		if (details.style.display === 'none') {
+			details.style.display = 'block';
+			toggleText.textContent = 'Hide technical details';
+			toggleIcon.textContent = '▲';
+		} else {
+			details.style.display = 'none';
+			toggleText.textContent = 'Show technical details';
+			toggleIcon.textContent = '▼';
+		}
+	}
+	&lt;/script&gt;
+
+	&lt;div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; min-height: 315px; background: var(--portalThemeColor1);"&gt;&lt;/div&gt;
+
+{% else %}
+	{% comment %} Normal access denied page {% endcomment %}
+	&lt;div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; min-height: 50px; background: var(--portalThemeColor2);"&gt;&lt;/div&gt;
+	&lt;div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; min-height: 50px; background: var(--portalThemeColor6);"&gt;&lt;/div&gt;
+	&lt;div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; text-align: left; min-height: 374px;"&gt;
+	  &lt;div class="container" style="padding: 0px; display: flex; flex-wrap: wrap;"&gt;
+	    &lt;div class="col-lg-12 columnBlockLayout" style="flex-grow: 1; display: flex; flex-direction: column; min-width: 300px; padding: 16px;"&gt;&lt;img src="/Cat-PC.png" alt="" name="Cat-PC.png" style="width: 200px; height: 161px; margin-left: auto; margin-right: auto;"&gt;
+	      &lt;h2 style="text-align: center; color: var(--portalThemeColor9);"&gt;You don't have access to this&lt;/h2&gt;
+	      &lt;p style="text-align: center; color: var(--portalThemeColor8);"&gt;Check your credentials or ask your admin to request access&lt;/p&gt;
+	    &lt;/div&gt;
+	  &lt;/div&gt;
+	&lt;/div&gt;
+{% endif %}
+&lt;div class="row sectionBlockLayout" style="display: flex; flex-wrap: wrap; min-height: 315px; background: var(--portalThemeColor1);"&gt;&lt;/div&gt;
+&lt;!-- Last modified Sat Aug 30 10:04AM --&gt;
+&lt;!-- Last modified Wed Oct 29 8:37AM --&gt;
+&lt;!-- Last modified Wed Oct 29 8:54AM --&gt;Access Denied</searchcontent>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>

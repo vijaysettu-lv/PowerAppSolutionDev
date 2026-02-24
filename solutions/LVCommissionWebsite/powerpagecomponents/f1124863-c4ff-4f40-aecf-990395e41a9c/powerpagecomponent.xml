@@ -1,0 +1,14 @@
+<powerpagecomponent powerpagecomponentid="f1124863-c4ff-4f40-aecf-990395e41a9c">
+  <content>{
+  "description": "Setting controls whether attachments will be displayed on Knowledge articles",
+  "value": "false"
+}</content>
+  <iscustomizable>1</iscustomizable>
+  <name>KnowledgeManagement/DisplayNotes</name>
+  <powerpagecomponenttype>9</powerpagecomponenttype>
+  <powerpagesiteid>
+    <powerpagesiteid>1a723423-7e7c-48fd-9672-1b994a058a35</powerpagesiteid>
+  </powerpagesiteid>
+  <statecode>0</statecode>
+  <statuscode>1</statuscode>
+</powerpagecomponent>
