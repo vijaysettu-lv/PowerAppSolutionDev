@@ -25,7 +25,7 @@ jobs:
           app-id: ${{ secrets.CLIENT_ID }}
           client-secret: ${{ secrets.CLIENT_SECRET }}
           tenant-id: ${{ secrets.TENANT_ID }}
-          solution-name: LV Commission Portal   # 🔹 Change this
+          solution-name: LVCommissionPortal  # 🔹 Change this
           solution-output-file: solution.zip
           managed: false
 
@@ -33,7 +33,7 @@ jobs:
         uses: microsoft/powerplatform-actions/unpack-solution@v1
         with:
           solution-file: solution.zip
-          solution-folder: solutions/LV Commission Portal
+          solution-folder: solutions/LVCommissionPortal
           solution-type: unmanaged
 
       - name: Commit and Push Changes
