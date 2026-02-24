@@ -1,15 +1,23 @@
-name: Export Power Platform Solution
+name: Export Multiple Power Platform Solutions
 
 on:
-  workflow_dispatch:   # Manual trigger
-  # OR enable auto export on push to main:
-  # push:
-  #   branches:
-  #     - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
-  export-and-branch-solution:
+  export-solutions:
     runs-on: windows-latest
+
+    strategy:
+      matrix:
+        solution:
+          - LVCommissionPortal
+          - LVCommissionDataflow
+          - LVCommissionWebsite
+          - LVCommissionPortalAutomations
+          - debtlog
 
     steps:
       - name: Checkout Repository
@@ -18,28 +26,28 @@ jobs:
       - name: Install Power Platform CLI
         uses: microsoft/powerplatform-actions/actions-install@v1
 
-      - name: Export Unmanaged Solution from Dev
+      - name: Export Unmanaged Solution
         uses: microsoft/powerplatform-actions/export-solution@v1
         with:
           environment-url: ${{ secrets.DEV_URL }}
           app-id: ${{ secrets.CLIENT_ID }}
           client-secret: ${{ secrets.CLIENT_SECRET }}
           tenant-id: ${{ secrets.TENANT_ID }}
-          solution-name: LVCommissionPortal
-          solution-output-file: solution.zip
+          solution-name: ${{ matrix.solution }}
+          solution-output-file: ${{ matrix.solution }}.zip
           managed: false
 
       - name: Unpack Solution
         uses: microsoft/powerplatform-actions/unpack-solution@v1
         with:
-          solution-file: solution.zip
-          solution-folder: solutions/LVCommissionPortal
+          solution-file: ${{ matrix.solution }}.zip
+          solution-folder: solutions/${{ matrix.solution }}
           solution-type: unmanaged
 
       - name: Commit and Push Changes
         run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
+          git config user.name "vijay.settu"
+          git config user.email "vijay.settu@loanvision.com"
           git add .
-          git commit -m "Auto-export solution from Dev"
+          git commit -m "Auto-export solutions from Dev" || echo "No changes to commit"
           git push
