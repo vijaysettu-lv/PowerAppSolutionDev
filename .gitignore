@@ -1,0 +1,7 @@
+# Ignore Power Platform solution export artifacts
+*.zip
+
+# Optional: Ignore build folders
+out/
+bin/
+obj/
